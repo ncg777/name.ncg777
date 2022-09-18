@@ -3,6 +3,7 @@ package name.ncg.Maths.DataStructures;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -151,10 +152,23 @@ public class FiniteBinaryRelation<
     return Functional.bindFirst(related(), e);
   }
   
+  public List<Y> rightRelata(X e) {
+    return this.stream().filter(
+      (p) -> rightRelated(e).test(p.getSecond()))
+        .map((p) -> p.getSecond())
+        .collect(Collectors.toList());
+  }
+  
   public Predicate<X> leftRelated(Y e){
     return Functional.bindSecond(related(), e);
   }
   
+  public List<X> leftRelata(Y e) {
+    return this.stream().filter(
+      (p) -> leftRelated(e).test(p.getFirst()))
+        .map((p) -> p.getFirst())
+        .collect(Collectors.toList());
+  }
   
   public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path) throws IOException {
     PrintWriter p = new PrintWriter(path);
