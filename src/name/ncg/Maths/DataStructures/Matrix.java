@@ -18,7 +18,7 @@ import java.util.TreeSet;
 // TODO: code tests
 
 /**
- * Generic mutable Matrix class with basic functionnality.
+ * Generic mutable Matrix class with basic functionality.
  * 
  * @author Nicolas Couture-Grenier
  * 
