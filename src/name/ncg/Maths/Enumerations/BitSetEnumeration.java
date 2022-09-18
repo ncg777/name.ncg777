@@ -3,12 +3,6 @@ package name.ncg.Maths.Enumerations;
 import java.util.BitSet;
 import java.util.Enumeration;
 
-/**
- * Enumerates all values of the mixed radix base given as parameter.
- * 
- * @link http://en.wikipedia.org/wiki/Mixed_radix
- * 
- */
 public class BitSetEnumeration implements Enumeration<BitSet> {
   private BitSet current;
   private int n;

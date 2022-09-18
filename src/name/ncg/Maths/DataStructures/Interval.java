@@ -1,7 +1,7 @@
 package name.ncg.Maths.DataStructures;
 
 /**
- * Interval on a total order.
+ * Interval on a total order with a notion of open and closed boundaries.
  * 
  * @author Nicolas Couture-Grenier
  * 
