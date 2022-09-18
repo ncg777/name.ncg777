@@ -123,18 +123,14 @@ public class FiniteBinaryRelation<
   public <V extends Comparable<? super V>>
   FiniteBinaryRelation<X,V> leftResidual(FiniteBinaryRelation<V,Y> R){
     return
-      CollectionUtils.cartesianProduct(domain(), R.domain()).stream().filter(
-      new Predicate<OrderedPair<X,V>>(){
-
-      @Override
-      public boolean test(OrderedPair<X,V> uv) {
+      CollectionUtils.cartesianProduct(domain(), R.domain()).stream().filter((uv) -> {
         TreeSet<Y> uSy = codomain().stream().filter(rightRelated(uv.getFirst())).collect(
           Collectors.toCollection(TreeSet<Y>::new));
         TreeSet<Y> vRy = R.codomain().stream().filter(R.rightRelated(uv.getSecond())).collect(
           Collectors.toCollection(TreeSet<Y>::new));
         // vRy ⊇ uSy
         return vRy.containsAll(uSy);
-      }}).collect(Collectors.toCollection(FiniteBinaryRelation<X,V>::new));
+      }).collect(Collectors.toCollection(FiniteBinaryRelation<X,V>::new));
   }
   
   public TreeSet<X> domain(){
