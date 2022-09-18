@@ -8,8 +8,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import name.ncg.Maths.Relations.Relation;
-
 public class Functional {
   public static <T,U,R> Function<T,R> bindSecond(
     BiFunction<T,U,R> b, final U u){
@@ -35,11 +33,6 @@ public class Functional {
   
   public static <T> java.util.function.Predicate<T> convertFromGuava(com.google.common.base.Predicate<T> p) {
     return (t) -> p.apply(t);
-  }
-  
-  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> 
-  java.util.function.BiPredicate<T, U> biPredicatefromRelation(Relation<T,U> r) {
-    return (t,u) -> r.apply(t, u);
   }
   
   public static <T> Stream<T> enumerationStream(Enumeration<T> e) {
