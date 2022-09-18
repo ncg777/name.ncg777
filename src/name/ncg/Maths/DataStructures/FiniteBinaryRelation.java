@@ -3,7 +3,9 @@ package name.ncg.Maths.DataStructures;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -18,6 +20,8 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
 import name.ncg.CS.Functional;
+import name.ncg.Maths.Enumerations.OrderedPairEnumeration;
+import name.ncg.Maths.Relations.Relation;
 
 /**
  * This class attempts to implement a binary relation as defined in 
@@ -43,6 +47,11 @@ public class FiniteBinaryRelation<
   
   public FiniteBinaryRelation(FiniteBinaryRelation<X,Y> rel) {
     super(rel);
+  }
+  
+  public FiniteBinaryRelation(Set<X> domain, Set<Y> codomain, Relation<X,Y> rel) {
+    super(Collections.list(new OrderedPairEnumeration<X,Y>(domain, codomain)).stream()
+      .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).collect(Collectors.toSet()));
   }
   
   public boolean add(X a, Y b) {return super.add(OrderedPair.makeOrderedPair(a,b));}
@@ -155,7 +164,7 @@ public class FiniteBinaryRelation<
   public List<Y> rightRelata(X e) {
     return this.stream().filter(
       (p) -> rightRelated(e).test(p.getSecond()))
-        .map((p) -> p.getSecond())
+        .map((p) -> p.getSecond()).distinct()
         .collect(Collectors.toList());
   }
   
@@ -166,7 +175,7 @@ public class FiniteBinaryRelation<
   public List<X> leftRelata(Y e) {
     return this.stream().filter(
       (p) -> leftRelated(e).test(p.getFirst()))
-        .map((p) -> p.getFirst())
+        .map((p) -> p.getFirst()).distinct()
         .collect(Collectors.toList());
   }
   

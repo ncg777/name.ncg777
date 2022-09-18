@@ -8,6 +8,14 @@ import name.ncg.Maths.Predicates.BoundRelationFirst;
 import name.ncg.Maths.Predicates.BoundRelationSecond;
 
 public interface Relation<T extends Comparable<? super T>, U extends Comparable<? super U>> extends BiPredicate<T,U>{
+  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> Relation<T,U> fromBiPredicate(BiPredicate<T,U> p) {
+    return new Relation<T,U>() {
+      public boolean apply(T a, U b) {
+        return p.test(a, b);
+      }
+    };
+  }
+  
   boolean apply(T a, U b);
 
   public default boolean test(T t, U u) {return apply(t,u); }
