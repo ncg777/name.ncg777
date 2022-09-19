@@ -12,12 +12,12 @@ import name.ncg.Maths.DataStructures.Sequence;
  * @author Nicolas Couture-Grenier
  * 
  */
-public class WeakOrdersEnumeration implements Enumeration<int[]> {
+public class WeakOrdersEnumeration implements Enumeration<Integer[]> {
   private CompositionEnumeration ce;
   private WordPermutationEnumeration me;
-  private int[] current_base;
+  private Integer[] current_base;
 
-  public WeakOrdersEnumeration(int n) {
+  public WeakOrdersEnumeration(Integer n) {
     super();
     ce = new CompositionEnumeration(n);
     nextBase();
@@ -26,8 +26,8 @@ public class WeakOrdersEnumeration implements Enumeration<int[]> {
 
   private void nextBase() {
     Sequence s = ce.nextElement().asSequence();
-    current_base = new int[s.size()];
-    for (int i = 0; i < s.size(); i++) {
+    current_base = new Integer[s.size()];
+    for (Integer i = 0; i < s.size(); i++) {
       current_base[i] = s.get(i);
     }
   }
@@ -39,7 +39,7 @@ public class WeakOrdersEnumeration implements Enumeration<int[]> {
   }
 
   @Override
-  public int[] nextElement() {
+  public Integer[] nextElement() {
     if (!me.hasMoreElements()) {
       nextBase();
       me = new WordPermutationEnumeration(current_base);

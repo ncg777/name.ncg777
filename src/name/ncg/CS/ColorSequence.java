@@ -13,7 +13,6 @@ public class ColorSequence {
   private int delta_level = -1;
   private int nbsubdiv = -1;
 
-
   public ColorSequence(int minNbColors) {
     double cuberoot = Math.pow(minNbColors, 1.0 / 3.0);
     nbsubdiv = (int) Math.ceil(cuberoot);
@@ -22,7 +21,7 @@ public class ColorSequence {
     delta_level = MAX_RGB / nbsubdiv;
 
 
-    Map<Integer, int[]> colors_in_order = new TreeMap<Integer, int[]>();
+    Map<Integer, Integer[]> colors_in_order = new TreeMap<Integer, Integer[]>();
     int[] level = new int[total];
     int nblevels = 2 * 2 * 2;
     int[] levels_count = new int[nblevels];
@@ -31,11 +30,11 @@ public class ColorSequence {
     }
 
     {
-      int[] base = {nbboubdaries, nbboubdaries, nbboubdaries};
+      Integer[] base = {nbboubdaries, nbboubdaries, nbboubdaries};
       MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
       int k = 0;
       while (mre.hasMoreElements()) {
-        int[] triple = mre.nextElement();
+        Integer[] triple = mre.nextElement();
         colors_in_order.put(k, triple);
         int max = -1;
         for (int j = 0; j < 3; j++) {
@@ -73,7 +72,7 @@ public class ColorSequence {
       }
       if (level[i] == current_level) {
         levels_count[current_level]--;
-        int[] c = colors_in_order.get(i);
+        Integer[] c = colors_in_order.get(i);
         int r = mapLevel(c[0]);
         int g = mapLevel(c[1]);
         int b = mapLevel(c[2]);

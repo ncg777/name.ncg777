@@ -2,13 +2,13 @@ package name.ncg.Maths.Enumerations;
 
 import java.util.Enumeration;
 
-public class WordEnumeration implements Enumeration<int[]>{
+public class WordEnumeration implements Enumeration<Integer[]>{
 
   private MixedRadixEnumeration mre;
   
-  public WordEnumeration(int length, int size) {
-    int[] base = new int[length];
-    for(int i=0;i<length;i++){
+  public WordEnumeration(Integer length, Integer size) {
+    Integer[] base = new Integer[length];
+    for(Integer i=0;i<length;i++){
       base[i] = size;
     }
     mre = new MixedRadixEnumeration(base);
@@ -19,7 +19,7 @@ public class WordEnumeration implements Enumeration<int[]>{
   }
 
   @Override
-  public int[] nextElement() {
+  public Integer[] nextElement() {
     return mre.nextElement();
   }
 

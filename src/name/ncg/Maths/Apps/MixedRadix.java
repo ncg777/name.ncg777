@@ -89,7 +89,7 @@ public class MixedRadix {
     slider.setPaintLabels(true);
     slider.setMaximum(3);
     slider.setMajorTickSpacing(1);
-    
+
     
     spinner.addChangeListener(new ChangeListener() {
       public void stateChanged(ChangeEvent arg0) {
@@ -110,7 +110,7 @@ public class MixedRadix {
       public void actionPerformed(ActionEvent arg0) {
         updateTextArea();
         ArrayList<String[]> s = new ArrayList<String[]>();
-        int[] base = new int[str.size()];
+        Integer[] base = new Integer[str.size()];
         for(int i=0;i<str.size();i++){
           String[] sa = str.get(i).split("\n");
           if(sa.length == 0){return;}
@@ -120,7 +120,7 @@ public class MixedRadix {
         MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
         String output = "";
         while(mre.hasMoreElements()){
-          int[] e = mre.nextElement();
+          Integer[] e = mre.nextElement();
           for(int i=0;i<e.length;i++){
             output += s.get(i)[e[i]] + ((i!=e.length-1)?" ":"");
           }

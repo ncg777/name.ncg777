@@ -10,26 +10,26 @@ import java.util.List;
  * @link http://en.wikipedia.org/wiki/Mixed_radix
  * 
  */
-public class MixedRadixEnumeration implements Enumeration<int[]> {
-  private int[] base;
-  private int[] current;
+public class MixedRadixEnumeration implements Enumeration<Integer[]> {
+  private Integer[] base;
+  private Integer[] current;
   private boolean isLast = false;
 
   public MixedRadixEnumeration(List<Integer> base0){
-    int[] base = new int[base0.size()];
-    for(int i=0;i<base0.size();i++){
+    Integer[] base = new Integer[base0.size()];
+    for(Integer i=0;i<base0.size();i++){
       base[i] = base0.get(i);
     }
     init(base);
   }
   
-  private void init(int[] base){
+  private void init(Integer[] base){
     if (base == null) {
       throw new IllegalArgumentException("Utilities.MixedRadixEnumeration - null base array");
     }
     this.base = Arrays.copyOf(base, base.length);
 
-    for (int i = 0; i < base.length; i++) {
+    for (Integer i = 0; i < base.length; i++) {
       if (base[i] < 1) {
         throw new IllegalArgumentException("Utilities.MixedRadixEnumeration - non-positive base");
       }
@@ -40,7 +40,7 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
   /**
    * @param base the base
    */
-  public MixedRadixEnumeration(int[] base) {
+  public MixedRadixEnumeration(Integer[] base) {
     super();
     init(base);
   }
@@ -55,7 +55,7 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     }
 
     boolean o = false;
-    for (int i = 0; i < base.length; i++) {
+    for (Integer i = 0; i < base.length; i++) {
       if (current[i] < (base[i] - 1)) {
         o = true;
         break;
@@ -68,20 +68,20 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
   }
 
   @Override
-  public int[] nextElement() {
+  public Integer[] nextElement() {
     if (!hasMoreElements()) {
       throw new IllegalStateException(
           "Utilities.MixedRadixEnumeration - call on nextElement, but there's no next element!");
     }
 
-    int[] o = new int[base.length];
+    Integer[] o = new Integer[base.length];
     if (current == null) {
-      for (int i = 0; i < base.length; i++) {
+      for (Integer i = 0; i < base.length; i++) {
         o[i] = 0;
       }
     } else {
       o = Arrays.copyOf(current, current.length);
-      for (int i = 0; i < base.length; i++) {
+      for (Integer i = 0; i < base.length; i++) {
         if (o[i] < (base[i] - 1)) {
           o[i]++;
           break;
@@ -95,12 +95,12 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     return o;
   }
 
-  public static int[] mapIndexToCoordinates(int index, int[] base) {
-    int[] o = new int[base.length];
-    int t = index;
+  public static Integer[] mapIndexToCoordinates(Integer index, Integer[] base) {
+    Integer[] o = new Integer[base.length];
+    Integer t = index;
 
-    for (int k = base.length - 1; k >= 0; k--) {
-      int b = base[k];
+    for (Integer k = base.length - 1; k >= 0; k--) {
+      Integer b = base[k];
       o[k] = t % b;
       t = t / b;
     }

@@ -11,11 +11,11 @@ import name.ncg.Maths.Combination;
  * 
  * @author Nicolas Couture-Grenier
  */
-public class WordPermutationEnumeration implements Enumeration<int[]> {
+public class WordPermutationEnumeration implements Enumeration<Integer[]> {
   private ArrayList<Integer> nonzeroindices;
   private Combination[][] combis;
-  private Enumeration<int[]> it;
-  private int n;
+  private Enumeration<Integer[]> it;
+  private Integer n;
   
   /**
    * For example, to enumerate the permutations of MISSISSIPPI, 
@@ -25,22 +25,22 @@ public class WordPermutationEnumeration implements Enumeration<int[]> {
    * In the enumerated arrays, the 0s represent the M, the 1s the I,
    * the 2s the S and the 3 the Ps.
    * 
-   * @param rk int[]
+   * @param rk Integer[]
    */
-  public WordPermutationEnumeration(int[] rk) {
+  public WordPermutationEnumeration(Integer[] rk) {
     super();
 
     if (rk == null) {
       throw new RuntimeException("MultiCombinationEnumeration, null array");
     }
 
-    int k = rk.length;
+    Integer k = rk.length;
 
     n = 0;
 
     nonzeroindices = new ArrayList<Integer>();
 
-    for (int i = 0; i < k; i++) {
+    for (Integer i = 0; i < k; i++) {
       if (rk[i] < 0) {
         throw new RuntimeException("Sequence : multiCombinationGenerate, null or negative element");
       }
@@ -50,14 +50,14 @@ public class WordPermutationEnumeration implements Enumeration<int[]> {
       }
     }
 
-    int c = 0;
+    Integer c = 0;
 
-    int nzsz = nonzeroindices.size();
+    Integer nzsz = nonzeroindices.size();
     combis = new Combination[nzsz][];
 
-    int[] sizes = new int[nzsz];
-    for (int i = 0; i < nzsz; i++) {
-      int nz = nonzeroindices.get(i);
+    Integer[] sizes = new Integer[nzsz];
+    for (Integer i = 0; i < nzsz; i++) {
+      Integer nz = nonzeroindices.get(i);
       c += rk[nz];
 
       combis[i] = Combination.generate(c, rk[nz]);
@@ -73,20 +73,20 @@ public class WordPermutationEnumeration implements Enumeration<int[]> {
   }
 
   @Override
-  public int[] nextElement() {
-    int[] mr = it.nextElement();
+  public Integer[] nextElement() {
+    Integer[] mr = it.nextElement();
 
     ArrayList<Integer> pos = new ArrayList<Integer>();
-    int[] x = new int[n];
+    Integer[] x = new Integer[n];
 
-    for (int i = 0; i < n; i++) {
+    for (Integer i = 0; i < n; i++) {
       x[i] = 0;
       pos.add(i);
     }
 
-    for (int i = mr.length - 1; i >= 0; i--) {
+    for (Integer i = mr.length - 1; i >= 0; i--) {
       Combination p = combis[i][mr[i]];
-      for (int j = p.getN() - 1; j >= 0; j--) {
+      for (Integer j = p.getN() - 1; j >= 0; j--) {
         if (p.get(j)) {
           x[pos.get(j)] = nonzeroindices.get(i);
           pos.remove(j);

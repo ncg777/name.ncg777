@@ -6,13 +6,13 @@ import java.util.Enumeration;
 public class KPermutationEnumeration implements Enumeration<ArrayList<Integer>>{
 
   private MixedRadixEnumeration mre;
-  private int n;
-  private int k;
-  public KPermutationEnumeration(int n, int k){
+  private Integer n;
+  private Integer k;
+  public KPermutationEnumeration(Integer n, Integer k){
     this.n = n;
     this.k = k;
-    int[] base = new int[k];
-    for(int i=0;i<k;i++){
+    Integer[] base = new Integer[k];
+    for(Integer i=0;i<k;i++){
       base[i] = n - i;
     }
     mre = new MixedRadixEnumeration(base);
@@ -26,11 +26,11 @@ public class KPermutationEnumeration implements Enumeration<ArrayList<Integer>>{
 
   @Override
   public ArrayList<Integer> nextElement() {
-    int[] m = mre.nextElement();
+    Integer[] m = mre.nextElement();
     ArrayList<Integer> o = new ArrayList<Integer>();
     ArrayList<Integer> l = new ArrayList<Integer>();
-    for(int i=0;i<n;i++){l.add(i);}
-    for(int i=0;i<k;i++){o.add(l.get(m[i])); l.remove(m[i]);}
+    for(Integer i=0;i<n;i++){l.add(i);}
+    for(Integer i=0;i<k;i++){o.add(l.get(m[i])); l.remove(m[i]);}
     return o;
   }
 }
