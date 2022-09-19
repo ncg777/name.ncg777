@@ -49,7 +49,7 @@ public class FiniteBinaryRelation<
     super(rel);
   }
   
-  public FiniteBinaryRelation(Set<X> domain, Set<Y> codomain, Relation<X,Y> rel) {
+  public FiniteBinaryRelation(Iterable<X> domain, Iterable<Y> codomain, Relation<X,Y> rel) {
     super(Collections.list(new OrderedPairEnumeration<X,Y>(domain, codomain)).stream()
       .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).collect(Collectors.toSet()));
   }

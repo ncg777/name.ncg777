@@ -2,6 +2,8 @@ package name.ncg.CS;
 
 import java.util.function.Function;
 
+import name.ncg.Music.PCS12;
+
 public class Parsers {
   public static Function<String, String> stringParser = (s) -> s;
   public static Function<String, Integer> integerParser = (s) -> Integer.parseInt(s.trim());
@@ -16,4 +18,6 @@ public class Parsers {
     }
     return o;
   };
+  
+  public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);
 }
