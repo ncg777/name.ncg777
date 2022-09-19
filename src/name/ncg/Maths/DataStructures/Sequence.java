@@ -591,7 +591,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
 
   @Override
   public String toString() {
-    return '(' + Joiner.on(' ').join(this) + ')';
+    return Joiner.on(' ').join(this);
   }
 
   /**

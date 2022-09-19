@@ -2,6 +2,7 @@ package name.ncg.CS;
 
 import java.util.function.Function;
 
+import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.PCS12;
 
 public class Parsers {
@@ -9,8 +10,7 @@ public class Parsers {
   public static Function<String, Integer> integerParser = (s) -> Integer.parseInt(s.trim());
   public static Function<String, Double> doubleParser = (s) -> Double.parseDouble(s.trim());
   public static Function<String, Integer[]> intArrayParser  = (s) -> {
-    String t = s.replaceAll("\\[", "").replaceAll("\\]", "");
-    String[] a = t.split(",");
+    String[] a = s.trim().split("\\s+");
     Integer[] o = new Integer[a.length];
     int i = 0;
     for(String x : a) {
@@ -18,6 +18,8 @@ public class Parsers {
     }
     return o;
   };
-  
+  public static Function<String, Sequence> sequenceParser  = (s) -> {
+    return Sequence.parse(s);
+  };
   public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);
 }
