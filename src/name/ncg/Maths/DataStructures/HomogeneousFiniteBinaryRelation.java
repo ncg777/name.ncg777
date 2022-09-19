@@ -1,6 +1,8 @@
 package name.ncg.Maths.DataStructures;
 
 import java.util.TreeSet;
+import name.ncg.Maths.Relations.Relation;
+
 @SuppressWarnings("serial")
 public class HomogeneousFiniteBinaryRelation<L extends Comparable<? super L>>
 extends FiniteBinaryRelation<L, L> { 
@@ -10,6 +12,10 @@ extends FiniteBinaryRelation<L, L> {
   }
   public HomogeneousFiniteBinaryRelation(FiniteBinaryRelation<L,L> rel) {
     super(rel);
+  }
+  
+  public HomogeneousFiniteBinaryRelation(Iterable<L> domain, Relation<L,L> rel) {
+    super(domain, domain,rel);
   }
   
   @Override
