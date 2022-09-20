@@ -925,6 +925,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   public static boolean equivalentUnderRotation(Sequence a, Sequence b) {
     return equivalenceShift(a, b) != null;
   }
+  
+  
 
   /**
    * Compares sequences backwards from the end and return the opposite of the result of comparison.
