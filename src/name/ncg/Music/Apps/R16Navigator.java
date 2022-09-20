@@ -130,7 +130,7 @@ public class R16Navigator {
     String current = model.get(list.getSelectedIndex());
     Rhythm16 r = Rhythm16.parseRhythm16Id(current);
     textCurrentHex.setText(r.toString());
-    textSpec.setText(Rhythm.calcSpectrum(r).toString().replaceAll("[)(]", ""));
+    textSpec.setText(Rhythm.calcSpectrum(r).toString());
     textSumPwd.setText("" + r.getComposition().asSequence().sumOfPairwiseDistances());
     textEntropy.setText(String.format("%1.6f", r.compositionEntropy()));
   }

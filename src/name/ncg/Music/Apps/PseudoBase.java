@@ -77,7 +77,7 @@ public class PseudoBase {
           }
           o.add(sum);
         }
-        txtResult.setText(o.toString().replaceAll("[)(]", ""));
+        txtResult.setText(o.toString());
       }
     });
     

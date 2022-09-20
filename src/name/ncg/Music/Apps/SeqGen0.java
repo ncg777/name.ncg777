@@ -155,11 +155,11 @@ public class SeqGen0 {
             Sequence t = o.bounceseq(_min, _amp);
             t.add(0,0);
             o = t.difference();
-            txtDelta.setText(o.toString().replaceAll("[)(]", ""));
+            txtDelta.setText(o.toString());
             
             Sequence o2 = o.antidifference(0);
             o2.remove(0);
-            txtSequence.setText(o2.toString().replaceAll("[)(]", ""));
+            txtSequence.setText(o2.toString());
             break;
             
           }

@@ -87,7 +87,7 @@ public class Tri {
         for(int i=_length; i>0; i--) {
           o.add(_start + i*_step); 
         }
-        txtResult.setText(o.toString().replaceAll("[)(]", ""));
+        txtResult.setText(o.toString());
       }
     });
     

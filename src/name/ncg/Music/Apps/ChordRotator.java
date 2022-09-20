@@ -54,7 +54,7 @@ public class ChordRotator {
     if(cboScale.getSelectedIndex() < 0 || textPitches == null) return;
     PCS12 ch = getSelectedChord();
     Sequence s = ch.asSequence();
-    textPitches.setText(s.toString().replaceAll("[)(]", ""));
+    textPitches.setText(s.toString());
   }
   
   JComboBox<String> cboScale = new JComboBox<String>();

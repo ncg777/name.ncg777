@@ -68,11 +68,11 @@ public class PCS12IntersectionAndUnion {
     
     PCS12 inter = s1.intersect(s2);
     textInter.setText(inter.toString());
-    textIntersectionPitches.setText(inter.asSequence().toString().replaceAll("[)(]", ""));
+    textIntersectionPitches.setText(inter.asSequence().toString());
     
     PCS12 union = s1.combineWith(s2);
     textUnion.setText(union.toString());
-    textUnionPitches.setText(union.asSequence().toString().replaceAll("[)(]", ""));
+    textUnionPitches.setText(union.asSequence().toString());
     
   }
   

@@ -144,7 +144,7 @@ public class RexRandomizer {
         R16List nr = R16List.fromRhythm(Rhythm.buildRhythm(len, newRhythm));
         String output = "";
         
-        output = nr.toString() + "\n" + pitchSeq.toString().replaceAll("[)(]", "");
+        output = nr.toString() + "\n" + pitchSeq.toString();
         
         txtrResult.setText(output);
        

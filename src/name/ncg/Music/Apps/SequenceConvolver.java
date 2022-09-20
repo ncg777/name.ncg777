@@ -82,7 +82,7 @@ public class SequenceConvolver {
           Sequence.parse(txtCarrier.getText().trim())
             .convolveWith(
               Sequence.parse(txtImpulse.getText().trim()))
-              .toString().replaceAll("[)(]", "")); 
+              .toString()); 
           
       }
     });

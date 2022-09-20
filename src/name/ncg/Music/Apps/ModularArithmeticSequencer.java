@@ -119,7 +119,7 @@ public class ModularArithmeticSequencer {
         }
         
         StringBuilder sb = new StringBuilder();
-        sb.append(o.toString().replaceAll("[)(]", "") + "\n");
+        sb.append(o.toString() + "\n");
         for(R16List rl : rs) {
           sb.append(rl.toString() + "\n");
         }

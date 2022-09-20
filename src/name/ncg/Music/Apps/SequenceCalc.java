@@ -150,7 +150,7 @@ public class SequenceCalc {
             output = input.multiply(k).toString();
             break;
         }
-        txtOutput.setText(output.replaceAll("[)(]", "").trim());
+        txtOutput.setText(output.trim());
         
       }
     });

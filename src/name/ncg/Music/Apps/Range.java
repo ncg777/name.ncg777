@@ -83,7 +83,7 @@ public class Range {
         for(int i=0; i<_length; i++) {
           o.add(_start + i*_step); 
         }
-        txtResult.setText(o.toString().replaceAll("[)(]", ""));
+        txtResult.setText(o.toString());
       }
     });
     

@@ -88,11 +88,11 @@ public class RhythmContours {
         if(comboBox.getSelectedItem() == Rn.Hex) {
           R16List r16 = R16List.parseR16Seq(textField.getText());
           
-          txtContour.setText(r16.asRhythm().getContour().toString().replaceAll("[)(]", ""));
-          txtShadowContour.setText(r16.asRhythm().getShadowContour().toString().replaceAll("[)(]", ""));
-          txtComposition.setText(r16.asRhythm().getComposition().toString().replaceAll("[)(]", ""));
-          textFieldBinary.setText(r16.asRhythm().asBinarySequence().toString().replaceAll("[)(]", ""));
-          textCompositionPartition.setText(r16.clusterPartition().toString().replaceAll("[)(]", ""));
+          txtContour.setText(r16.asRhythm().getContour().toString());
+          txtShadowContour.setText(r16.asRhythm().getShadowContour().toString());
+          txtComposition.setText(r16.asRhythm().getComposition().toString());
+          textFieldBinary.setText(r16.asRhythm().asBinarySequence().toString());
+          textCompositionPartition.setText(r16.clusterPartition().toString());
           String o = "";
           
           ArrayList<R16List> clusters = R16List.clusterRhythmPartition(r16.asRhythm().partitionByEquality());
@@ -103,16 +103,16 @@ public class RhythmContours {
           
           Sequence contourseq = r16.asRhythm().getContour().circularHoldNonZero().cyclicalForwardAntidifference(0).asOrdinalsUnipolar();
 
-          textContourSeq.setText(contourseq.toString().replaceAll("[)(]", ""));
+          textContourSeq.setText(contourseq.toString());
           lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
         } else if(comboBox.getSelectedItem() == Rn.Octal) {
           R12List r12 = R12List.parseR12Seq(textField.getText());
           
-          txtContour.setText(r12.asRhythm().getContour().toString().replaceAll("[)(]", ""));
-          txtShadowContour.setText(r12.asRhythm().getShadowContour().toString().replaceAll("[)(]", ""));
-          txtComposition.setText(r12.asRhythm().getComposition().toString().replaceAll("[)(]", ""));
-          textFieldBinary.setText(r12.asRhythm().asBinarySequence().toString().replaceAll("[)(]", ""));
-          textCompositionPartition.setText(r12.clusterPartition().toString().replaceAll("[)(]", ""));
+          txtContour.setText(r12.asRhythm().getContour().toString());
+          txtShadowContour.setText(r12.asRhythm().getShadowContour().toString());
+          txtComposition.setText(r12.asRhythm().getComposition().toString());
+          textFieldBinary.setText(r12.asRhythm().asBinarySequence().toString());
+          textCompositionPartition.setText(r12.clusterPartition().toString());
           String o = "";
           
           ArrayList<R12List> clusters = R12List.clusterRhythmPartition(r12.asRhythm().partitionByEquality());
@@ -122,7 +122,7 @@ public class RhythmContours {
           textAreaPartitions.setText(o);
           Sequence contourseq = r12.asRhythm().getContour().circularHoldNonZero()
               .cyclicalForwardAntidifference(0).asOrdinalsUnipolar();
-          textContourSeq.setText(contourseq.toString().replaceAll("[)(]", ""));
+          textContourSeq.setText(contourseq.toString());
           lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
         }
         

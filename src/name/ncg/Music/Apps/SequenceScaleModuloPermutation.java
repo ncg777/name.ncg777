@@ -117,7 +117,7 @@ public class SequenceScaleModuloPermutation {
           o.set(i, s.get(idx));
         }
         
-        txtResult.setText(o.toString().replaceAll("[)(]", ""));
+        txtResult.setText(o.toString());
       }
     });
     btnApply.setEnabled(false);

@@ -100,10 +100,10 @@ public class SequenceWrapper {
           o = s.antidifference(0).wrapseq(_min, _amp).difference();
         }
         
-        txtResult.setText(o.toString().replaceAll("[)(]", ""));
+        txtResult.setText(o.toString());
         Sequence o2 = o.antidifference(0);
         o2.remove(0);
-        txtResult2.setText(o2.toString().replaceAll("[)(]", ""));
+        txtResult2.setText(o2.toString());
       }
     });
     

@@ -77,7 +77,7 @@ public class Mapper {
         if(seq.getMax() >= sz || seq.getMin() < 0) {
           txtResult.setText("Error");
         } else {
-          txtResult.setText(seq.map(map).toString().replaceAll("[)(]", ""));
+          txtResult.setText(seq.map(map).toString());
         }
       }
     });
