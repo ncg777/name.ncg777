@@ -1,6 +1,11 @@
 package name.ncg.Maths.DataStructures;
 
+import java.io.IOException;
 import java.util.TreeSet;
+import java.util.function.Function;
+
+import com.opencsv.exceptions.CsvException;
+
 import name.ncg.Maths.Relations.Relation;
 
 @SuppressWarnings("serial")
@@ -61,4 +66,12 @@ extends FiniteBinaryRelation<L, L> {
     return o;
   }
   
+  public void writeToCSV(Function<L,String> lToString, String path) throws IOException {
+    super.writeToCSV(lToString, lToString, path);
+  }
+  public static <L extends Comparable<? super L>> 
+    HomogeneousFiniteBinaryRelation<L> 
+    readFromCSV (Function<String,L> lParser, String path) throws IOException, CsvException {
+    return new HomogeneousFiniteBinaryRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path));
+  }
 }
