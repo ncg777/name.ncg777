@@ -18,8 +18,7 @@ public class Parsers {
     }
     return o;
   };
-  public static Function<String, Sequence> sequenceParser  = (s) -> {
-    return Sequence.parse(s);
-  };
+  public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);
+  
   public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);
 }
