@@ -35,6 +35,57 @@ extends FiniteBinaryRelation<L, L> {
     return this.domain();
   }
   
+  public <V extends Comparable<? super V>> HomogeneousFiniteBinaryRelation<L> compose(
+      HomogeneousFiniteBinaryRelation<L> e) {
+    return new HomogeneousFiniteBinaryRelation<L>(super.compose(e));
+  }
+  
+  public HomogeneousFiniteBinaryRelation<L> converse() {
+    return new HomogeneousFiniteBinaryRelation<L>(super.converse());
+  }
+  
+  public HomogeneousFiniteBinaryRelation<L> intersect(HomogeneousFiniteBinaryRelation<L> e) {
+    return new HomogeneousFiniteBinaryRelation<L>(super.intersect(e));
+  }
+  
+  public HomogeneousFiniteBinaryRelation<L> union(HomogeneousFiniteBinaryRelation<L> e) {
+    return new HomogeneousFiniteBinaryRelation<L>(super.union(e));
+  }
+  
+  /**
+   * this → S 
+   * this \ S
+   * 
+   * R → S := {(v,w) |∀u[uRv → uSw]}
+   * 
+   * RHS of R matching RHS of S where u_R_RHS ⊇ u_S_RHS.
+   * 
+   * @param <W>
+   * @param S
+   * @return
+   */
+  public HomogeneousFiniteBinaryRelation<L> rightResidual(
+      HomogeneousFiniteBinaryRelation<L> S) {
+    return new HomogeneousFiniteBinaryRelation<L>(super.rightResidual(S));
+  }
+  
+  /**
+   * this ← R
+   * this / R
+   * 
+   * S ← R := {(u,v) |∀w[vRw → uSw]}
+   * 
+   * LHS of S matching LHS of R where LHS_R_w ⊇ LHS_S_w.
+   * 
+   * @param <V>
+   * @param R
+   * @return
+   */
+  public HomogeneousFiniteBinaryRelation<L> leftResidual(
+      HomogeneousFiniteBinaryRelation<L> R) {
+    return new HomogeneousFiniteBinaryRelation<L>(super.leftResidual(R));
+  }
+  
   public HomogeneousFiniteBinaryRelation<L> calcTransitiveClosure() {
     var o = new HomogeneousFiniteBinaryRelation<L>();
     boolean grew = false;
