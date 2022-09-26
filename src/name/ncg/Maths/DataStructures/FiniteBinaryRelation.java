@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
