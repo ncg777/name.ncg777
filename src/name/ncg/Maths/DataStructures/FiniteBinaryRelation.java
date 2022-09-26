@@ -109,10 +109,9 @@ public class FiniteBinaryRelation<
     return
       CollectionUtils.cartesianProduct(codomain(), S.codomain()).stream()
       .filter((vw) -> {
-        TreeSet<X> xSw = S.domain().stream().filter(S.leftRelated(vw.getSecond())).collect(
-          Collectors.toCollection(TreeSet<X>::new));
-        TreeSet<X> xRv = domain().stream().filter(leftRelated(vw.getFirst())).collect(
-          Collectors.toCollection(TreeSet<X>::new));
+        
+        TreeSet<X> xSw = S.leftRelata(vw.getSecond());
+        TreeSet<X> xRv = leftRelata(vw.getFirst());
         // xRv ⊇ xSw
         return xRv.containsAll(xSw);})
       .collect(Collectors.toCollection(FiniteBinaryRelation<Y,W>::new));
@@ -133,10 +132,8 @@ public class FiniteBinaryRelation<
   FiniteBinaryRelation<X,V> leftResidual(FiniteBinaryRelation<V,Y> R){
     return
       CollectionUtils.cartesianProduct(domain(), R.domain()).stream().filter((uv) -> {
-        TreeSet<Y> uSy = codomain().stream().filter(rightRelated(uv.getFirst())).collect(
-          Collectors.toCollection(TreeSet<Y>::new));
-        TreeSet<Y> vRy = R.codomain().stream().filter(R.rightRelated(uv.getSecond())).collect(
-          Collectors.toCollection(TreeSet<Y>::new));
+        TreeSet<Y> uSy = rightRelata(uv.getFirst()); 
+        TreeSet<Y> vRy = R.rightRelata(uv.getSecond());
         // vRy ⊇ uSy
         return vRy.containsAll(uSy);
       }).collect(Collectors.toCollection(FiniteBinaryRelation<X,V>::new));
@@ -160,22 +157,22 @@ public class FiniteBinaryRelation<
     return Functional.bindFirst(related(), e);
   }
   
-  public List<Y> rightRelata(X e) {
+  public TreeSet<Y> rightRelata(X e) {
     return this.stream().filter(
       (p) -> rightRelated(e).test(p.getSecond()))
         .map((p) -> p.getSecond()).distinct()
-        .collect(Collectors.toList());
+        .collect(Collectors.toCollection(TreeSet<Y>::new));
   }
   
   public Predicate<X> leftRelated(Y e){
     return Functional.bindSecond(related(), e);
   }
   
-  public List<X> leftRelata(Y e) {
+  public TreeSet<X> leftRelata(Y e) {
     return this.stream().filter(
       (p) -> leftRelated(e).test(p.getFirst()))
         .map((p) -> p.getFirst()).distinct()
-        .collect(Collectors.toList());
+        .collect(Collectors.toCollection(TreeSet<X>::new));
   }
   
   public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path) throws IOException {
