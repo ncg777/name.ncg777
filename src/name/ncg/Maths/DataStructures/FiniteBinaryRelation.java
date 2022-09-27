@@ -97,7 +97,7 @@ public class FiniteBinaryRelation<
    * 
    * R → S := {(v,w) |∀u[uRv → uSw]}
    * 
-   * RHS of R matching RHS of S where u_R_RHS ⊇ u_S_RHS.
+   * RHS of R matching RHS of S where u_R_RHS ⊆ u_S_RHS.
    * 
    * @param <W>
    * @param S
@@ -108,11 +108,10 @@ public class FiniteBinaryRelation<
     return
       CollectionUtils.cartesianProduct(codomain(), S.codomain()).stream()
       .filter((vw) -> {
-        
         TreeSet<X> xSw = S.leftRelata(vw.getSecond());
         TreeSet<X> xRv = leftRelata(vw.getFirst());
-        // xRv ⊇ xSw
-        return xRv.containsAll(xSw);})
+        
+        return xSw.containsAll(xRv);})
       .collect(Collectors.toCollection(FiniteBinaryRelation<Y,W>::new));
   }
   /**
@@ -121,7 +120,7 @@ public class FiniteBinaryRelation<
    * 
    * S ← R := {(u,v) |∀w[vRw → uSw]}
    * 
-   * LHS of S matching LHS of R where LHS_R_w ⊇ LHS_S_w.
+   * LHS of S matching LHS of R where LHS_R_w ⊆ LHS_S_w.
    * 
    * @param <V>
    * @param R
@@ -133,8 +132,8 @@ public class FiniteBinaryRelation<
       CollectionUtils.cartesianProduct(domain(), R.domain()).stream().filter((uv) -> {
         TreeSet<Y> uSy = rightRelata(uv.getFirst()); 
         TreeSet<Y> vRy = R.rightRelata(uv.getSecond());
-        // vRy ⊇ uSy
-        return vRy.containsAll(uSy);
+
+        return uSy.containsAll(vRy);
       }).collect(Collectors.toCollection(FiniteBinaryRelation<X,V>::new));
   }
   
