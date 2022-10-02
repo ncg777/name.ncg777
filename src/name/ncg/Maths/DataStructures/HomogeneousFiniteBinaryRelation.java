@@ -31,7 +31,9 @@ extends FiniteBinaryRelation<L, L> {
   public static <L extends Comparable<? super L>> HomogeneousFiniteBinaryRelation<L> identity(Iterable<L> domain) {
     return new HomogeneousFiniteBinaryRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> a.equals(b)));
   }
-  
+  public static <L extends Comparable<? super L>> HomogeneousFiniteBinaryRelation<L> universal(Iterable<L> domain) {
+    return new HomogeneousFiniteBinaryRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> true));
+  }
   @Override
   public TreeSet<L> domain(){
     TreeSet<L> o = new TreeSet<L>();
@@ -61,6 +63,10 @@ extends FiniteBinaryRelation<L, L> {
     return new HomogeneousFiniteBinaryRelation<L>(super.union(e));
   }
   
+  public HomogeneousFiniteBinaryRelation<L> minus(HomogeneousFiniteBinaryRelation<L> e) {
+    return new HomogeneousFiniteBinaryRelation<L>(super.minus(e));
+  }
+ 
   /**
    * this → S 
    * this \ S
@@ -106,9 +112,30 @@ extends FiniteBinaryRelation<L, L> {
     return o;
   }
   
-  public boolean isTransitive() {
-    return this.containsAll(transitiveClosure());
+  public boolean isTransitive() { return this.containsAll(transitiveClosure());}
+  public boolean isSymmetric() { return this.equals(this.converse()); }
+  public boolean isAsymmetric() { return this.intersect(this.converse()).isEmpty(); }
+  public boolean isAntisymmetric() {return HomogeneousFiniteBinaryRelation
+      .identity(domain()).containsAll(this.intersect(this.converse()));}
+  public boolean isIdempotent() { return this.compose(this).equals(this); }
+  public boolean isReflexive() { return this.containsAll(identity(domain()));}
+  public boolean isCoreflexive() { return identity(domain()).containsAll(this);}
+  public boolean isIrreflexive() { return HomogeneousFiniteBinaryRelation.identity(domain()).intersect(this).isEmpty();}
+  public boolean isEquivalence() { return isPreorder() && isSymmetric();}
+  public boolean isConnected() { return HomogeneousFiniteBinaryRelation
+      .universal(domain())
+      .equals(
+          HomogeneousFiniteBinaryRelation.identity(domain())
+          .union(this)
+          .union(this.converse()));}
+  public boolean isStronglyConnected() {
+    return this.union(this.converse()).equals(HomogeneousFiniteBinaryRelation.universal(domain()));
   }
+  public boolean isPreorder() { return isTransitive() && isReflexive(); }
+  public boolean isPartialOrder() { return isPreorder() && isAntisymmetric();}
+  public boolean isTotalOrder() { return isStronglyConnected() && isPartialOrder();}
+  public boolean isStrictPartialOrder() { return isTransitive() && isIrreflexive();}
+  public boolean isStrictTotalOrder() { return isConnected() && isStrictPartialOrder();}
   
   public void writeToCSV(Function<L,String> lToString, String path) throws IOException {
     super.writeToCSV(lToString, lToString, path);

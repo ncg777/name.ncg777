@@ -72,7 +72,11 @@ public class FiniteBinaryRelation<
     return o;
   }
   
-  
+  public FiniteBinaryRelation<X,Y> minus(FiniteBinaryRelation<X,Y> e) {
+    var o = new FiniteBinaryRelation<X,Y>(this);
+    o.removeAll(e);
+    return o;
+  }
   /***
    * this • S, the <a href="https://en.wikipedia.org/wiki/Composition_of_relations">composition</a> of this relation with S.
    * 
