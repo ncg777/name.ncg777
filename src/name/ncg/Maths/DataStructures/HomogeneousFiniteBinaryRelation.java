@@ -2,6 +2,7 @@ package name.ncg.Maths.DataStructures;
 
 import java.io.IOException;
 import java.util.TreeSet;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 
 import com.opencsv.exceptions.CsvException;
@@ -17,6 +18,10 @@ extends FiniteBinaryRelation<L, L> {
   }
   public HomogeneousFiniteBinaryRelation(FiniteBinaryRelation<L,L> rel) {
     super(rel);
+  }
+  
+  public HomogeneousFiniteBinaryRelation(Iterable<L> domain, BiPredicate<L,L> rel) {
+    super(domain, domain,Relation.fromBiPredicate(rel));
   }
   
   public HomogeneousFiniteBinaryRelation(Iterable<L> domain, Relation<L,L> rel) {
@@ -62,7 +67,7 @@ extends FiniteBinaryRelation<L, L> {
    * 
    * R → S := {(v,w) |∀u[uRv → uSw]}
    * 
-   * RHS of R matching RHS of S where u_R_RHS ⊇ u_S_RHS.
+   * RHS of R matching RHS of S where u_R_RHS ⊆ u_S_RHS.
    * 
    * @param <W>
    * @param S
@@ -79,7 +84,7 @@ extends FiniteBinaryRelation<L, L> {
    * 
    * S ← R := {(u,v) |∀w[vRw → uSw]}
    * 
-   * LHS of S matching LHS of R where LHS_R_w ⊇ LHS_S_w.
+   * LHS of S matching LHS of R where LHS_R_w ⊆ LHS_S_w.
    * 
    * @param <V>
    * @param R
@@ -113,7 +118,6 @@ extends FiniteBinaryRelation<L, L> {
               o.add(t);
               grew = true;
             }
-            
           }
         }
       }
