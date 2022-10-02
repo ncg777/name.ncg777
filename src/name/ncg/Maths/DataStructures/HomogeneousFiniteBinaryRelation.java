@@ -120,7 +120,7 @@ extends FiniteBinaryRelation<L, L> {
     return o;
   }
   
-  public boolean isTransitive() { return this.containsAll(transitiveClosure());}
+  public boolean isTransitive() { return this.containsAll(this.compose(this));}
   public boolean isSymmetric() { return this.equals(this.converse()); }
   public boolean isAsymmetric() { return this.intersect(this.converse()).isEmpty(); }
   public boolean isAntisymmetric() {return HomogeneousFiniteBinaryRelation
