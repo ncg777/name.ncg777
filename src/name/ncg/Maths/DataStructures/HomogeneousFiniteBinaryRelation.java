@@ -23,6 +23,10 @@ extends FiniteBinaryRelation<L, L> {
     super(domain, domain,rel);
   }
   
+  public static <L extends Comparable<? super L>> HomogeneousFiniteBinaryRelation<L> identity(Iterable<L> domain) {
+    return new HomogeneousFiniteBinaryRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> a.equals(b)));
+  }
+  
   @Override
   public TreeSet<L> domain(){
     TreeSet<L> o = new TreeSet<L>();
