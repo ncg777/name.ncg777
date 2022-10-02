@@ -2,6 +2,8 @@ package name.ncg.Music;
 
 import static name.ncg.Maths.DataStructures.Sequence.ReverseComparator;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,8 +12,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.opencsv.exceptions.CsvException;
+
+import name.ncg.CS.Parsers;
 import name.ncg.Maths.Combination;
 import name.ncg.Maths.Necklace;
+import name.ncg.Maths.DataStructures.FiniteBinaryRelation;
 import name.ncg.Maths.DataStructures.Sequence;
 
 
@@ -21,15 +27,20 @@ public class PCS12 extends Combination implements Serializable {
 
   static TreeMap<String, PCS12> ChordDict;
   static TreeMap<Combination, PCS12> ChordCombinationDict;
-
+  static TreeMap<PCS12, String> ForteNumbersDict;
+  
   Integer m_Order;
   Integer m_Transpose;
 
   static {
-    GenerateMaps();
+    try {
+      GenerateMaps();
+    } catch (IOException | CsvException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
   public int calcDistanceWith(PCS12 other) {
-    
     int maxn = Math.max(this.getN(), other.getN());
     
     int acc = 0;
@@ -157,7 +168,7 @@ public class PCS12 extends Combination implements Serializable {
       }
     }
 
-    output.add(new PCS12(new TreeSet<Integer>(), 0, 0));
+    output.add(PCS12.empty());
 
     return output;
   }
@@ -170,7 +181,24 @@ public class PCS12 extends Combination implements Serializable {
     return PCS12.identify(super.symmetricDifference(y));
   }
 
-  private static void GenerateMaps() {
+  public String getForteNumber() {return ForteNumbersDict.get(this);}
+  
+  private static void fillForteNumbersDict() throws IOException, CsvException {
+    ForteNumbersDict = new TreeMap<PCS12, String>();
+  
+    InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers.csv");
+    FiniteBinaryRelation<String,Sequence> r = FiniteBinaryRelation.readFromCSV(Parsers.stringParser, Parsers.sequenceParser, is);
+    
+    for(var p : r) {
+      PCS12 ch = PCS12.identify(p.getSecond());
+      
+      for(int i=0;i<12;i++) {
+        ForteNumbersDict.put(ch.transpose(i), p.getFirst());
+      }
+    }
+  }
+  
+  private static void GenerateMaps() throws IOException, CsvException {
     TreeSet<PCS12> t = generate();
 
     TreeMap<String, PCS12> output = new TreeMap<String, PCS12>();
@@ -184,6 +212,7 @@ public class PCS12 extends Combination implements Serializable {
     }
     ChordDict = output;
     ChordCombinationDict = output2;
+    fillForteNumbersDict();
   }
 
   public static PCS12Sequence parseSeq(String input) {
