@@ -209,9 +209,18 @@ public class FiniteBinaryRelation<
   public boolean isLeftUnique() {
     return HomogeneousFiniteBinaryRelation.identity(domain()).containsAll(this.compose(this.converse()));
   }
+  public boolean isLeftTotal(Iterable<X> domain) {
+    return HomogeneousFiniteBinaryRelation.identity(domain).containsAll(this.compose(this.converse()));
+  }
+  
   public boolean isRightUnique() {
     return HomogeneousFiniteBinaryRelation.identity(codomain()).containsAll(this.converse().compose(this));
   }
+  
+  public boolean isSurjective(Iterable<X> codomain) {
+    return HomogeneousFiniteBinaryRelation.identity(codomain).containsAll(this.converse().compose(this));
+  }
+  
   public boolean isManyToMany() {
     return !isLeftUnique() && !isRightUnique();
   }

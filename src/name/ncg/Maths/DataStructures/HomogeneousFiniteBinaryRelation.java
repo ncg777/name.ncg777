@@ -123,28 +123,44 @@ extends FiniteBinaryRelation<L, L> {
   public boolean isTransitive() { return this.containsAll(this.compose(this));}
   public boolean isSymmetric() { return this.equals(this.converse()); }
   public boolean isAsymmetric() { return this.intersect(this.converse()).isEmpty(); }
-  public boolean isAntisymmetric() {return HomogeneousFiniteBinaryRelation
-      .identity(domain()).containsAll(this.intersect(this.converse()));}
+  public boolean isAntisymmetric(Iterable<L> domain) {return HomogeneousFiniteBinaryRelation
+      .identity(domain).containsAll(this.intersect(this.converse()));}
+  public boolean isAntisymmetric() {return isAntisymmetric(domain());}
   public boolean isIdempotent() { return this.compose(this).equals(this); }
-  public boolean isReflexive() { return this.containsAll(identity(domain()));}
-  public boolean isCoreflexive() { return identity(domain()).containsAll(this);}
-  public boolean isIrreflexive() { return HomogeneousFiniteBinaryRelation.identity(domain()).intersect(this).isEmpty();}
+  public boolean isReflexive(Iterable<L> domain) { return this.containsAll(identity(domain));}
+  public boolean isReflexive() { return isReflexive(domain());}
+  public boolean isCoreflexive(Iterable<L> domain) { return identity(domain).containsAll(this);}
+  public boolean isCoreflexive() { return isCoreflexive(domain());}
+  public boolean isIrreflexive(Iterable<L> domain) { return HomogeneousFiniteBinaryRelation.identity(domain).intersect(this).isEmpty();}
+  public boolean isIrreflexive() { return isReflexive(domain());}
   public boolean isEquivalence() { return isPreorder() && isSymmetric();}
-  public boolean isConnected() { return HomogeneousFiniteBinaryRelation
-      .universal(domain())
+  public boolean isConnected(Iterable<L> domain) { return HomogeneousFiniteBinaryRelation
+      .universal(domain)
       .equals(
-          HomogeneousFiniteBinaryRelation.identity(domain())
+          HomogeneousFiniteBinaryRelation.identity(domain)
           .union(this)
           .union(this.converse()));}
-  public boolean isStronglyConnected() {
-    return this.union(this.converse()).equals(HomogeneousFiniteBinaryRelation.universal(domain()));
+  public boolean isConnected() { return isConnected(domain());}
+  public boolean isStronglyConnected(Iterable<L> domain) {
+    return this.union(this.converse()).equals(HomogeneousFiniteBinaryRelation.universal(domain));
   }
-  public boolean isPreorder() { return isTransitive() && isReflexive(); }
-  public boolean isPartialOrder() { return isPreorder() && isAntisymmetric();}
-  public boolean isTotalOrder() { return isStronglyConnected() && isPartialOrder();}
-  public boolean isStrictPartialOrder() { return isTransitive() && isIrreflexive();}
-  public boolean isStrictTotalOrder() { return isConnected() && isStrictPartialOrder();}
-  
+  public boolean isStronglyConnected() { return isStronglyConnected(domain());}
+  public boolean isPreorder(Iterable<L> domain) { return isTransitive() && isReflexive(domain); }
+  public boolean isPreorder() { return isPreorder(domain()); }
+  public boolean isPartialOrder(Iterable<L> domain) { return isPreorder(domain) && isAntisymmetric(domain);}
+  public boolean isPartialOrder() { return isPartialOrder(domain()); }
+  public boolean isTotalOrder(Iterable<L> domain) { return isStronglyConnected(domain) && isPartialOrder(domain);}
+  public boolean isTotalOrder() { return isTotalOrder(domain());}
+  public boolean isStrictPartialOrder(Iterable<L> domain) { return isTransitive() && isIrreflexive(domain);}
+  public boolean isStrictPartialOrder() { return isStrictPartialOrder(domain());} 
+  public boolean isStrictTotalOrder(Iterable<L> domain) { return isConnected(domain) && isStrictPartialOrder(domain);}
+  public boolean isStrictTotalOrder() { return isStrictTotalOrder(domain());} 
+  public boolean isBijective(Iterable<L> domain) {
+    return isLeftTotal(domain) && isSurjective(domain);
+  }
+  public boolean isBijective() {
+    return isBijective(domain());
+  }
   /***
    * 
    * @return R ∧ I− ≤ (R ∧ I−)•(R ∧ I−)
