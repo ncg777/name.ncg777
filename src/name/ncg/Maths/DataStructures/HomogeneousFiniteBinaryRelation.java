@@ -95,34 +95,19 @@ extends FiniteBinaryRelation<L, L> {
     return new HomogeneousFiniteBinaryRelation<L>(super.leftResidual(R));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> calcTransitiveClosure() {
-    var o = new HomogeneousFiniteBinaryRelation<L>();
-    boolean grew = false;
-    
-    do {
-      grew = false;
-      for(var p : this) {
-        if(!o.contains(p)) {
-          o.add(p);
-          grew = true;
-        }
-        
-        for(var q : this) {
-          if(!o.contains(q)) {
-            o.add(q);
-            grew = true;
-          }
-          if(p.getSecond().equals(q.getFirst())) {
-            var t = OrderedPair.makeOrderedPair(p.getFirst(), q.getSecond());
-            if(!o.contains(t)) {
-              o.add(t);
-              grew = true;
-            }
-          }
-        }
-      }
-    } while(grew);
+  public HomogeneousFiniteBinaryRelation<L> transitiveClosure() {
+    HomogeneousFiniteBinaryRelation<L> o = new HomogeneousFiniteBinaryRelation<L>(this);
+    int n = o.size();
+    while(true){
+      o = o.union(o.compose(o));
+      if(o.size() == n) break;
+      n = o.size();
+    }
     return o;
+  }
+  
+  public boolean isTransitive() {
+    return this.containsAll(transitiveClosure());
   }
   
   public void writeToCSV(Function<L,String> lToString, String path) throws IOException {

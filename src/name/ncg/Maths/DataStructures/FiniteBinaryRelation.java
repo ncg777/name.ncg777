@@ -3,6 +3,7 @@ package name.ncg.Maths.DataStructures;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
@@ -22,11 +23,13 @@ import name.ncg.Maths.Enumerations.OrderedPairEnumeration;
 import name.ncg.Maths.Relations.Relation;
 
 /**
- * This class attempts to implement a binary relation as defined in 
- * relation algebra.
+ * This class attempts to implement a 
+ * <a href="https://en.wikipedia.org/wiki/Binary_relation">binary relation</a> as used in a
+ * <a href="https://en.wikipedia.org/wiki/Relation_algebra">relation algebra</a>.
+ * <br />
  * 
- * See "Action logic and pure induction" by Vaughan Pratt, 
- * section 3.2 second paragraph.
+ * See also "Action logic and pure induction" by Vaughan Pratt, 
+ * section 3.2 second paragraph for explanations on left and right residual.
  * 
  * @author Nicolas Couture-Grenier
  *
@@ -57,41 +60,44 @@ public class FiniteBinaryRelation<
   public boolean add(X a, Y b) {return super.add(OrderedPair.makeOrderedPair(a,b));}
   public boolean remove(X a, Y b) {return super.remove(OrderedPair.makeOrderedPair(a,b));}
   
-  public FiniteBinaryRelation<X,Y> intersect(FiniteBinaryRelation<X,Y> e){
+  public FiniteBinaryRelation<X,Y> intersect(FiniteBinaryRelation<X,Y> S){
     FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
-    o.addAll(this); o.retainAll(e);
+    o.addAll(this); o.retainAll(S);
     return o;
   }
   
-  public FiniteBinaryRelation<X,Y> union(FiniteBinaryRelation<X,Y> e){
+  public FiniteBinaryRelation<X,Y> union(FiniteBinaryRelation<X,Y> S){
     FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
-    o.addAll(this); o.addAll(e);
+    o.addAll(this); o.addAll(S);
     return o;
   }
   
   
+  /***
+   * this • S, the <a href="https://en.wikipedia.org/wiki/Composition_of_relations">composition</a> of this relation with S.
+   * 
+   * @param <V>
+   * @param S
+   * @return
+   */
   public <V extends Comparable<? super V>>
-  FiniteBinaryRelation<X,V> compose(FiniteBinaryRelation<Y,V> e){
-    TreeSet<OrderedPair<OrderedPair<X,Y>,OrderedPair<Y,V>>> cartesian = 
-        new TreeSet<OrderedPair<OrderedPair<X,Y>,OrderedPair<Y,V>>>();
-    for(OrderedPair<X,Y> x : this){
-      for(OrderedPair<Y,V> y : e){
-        cartesian.add(OrderedPair.makeOrderedPair(x, y));
-      }
-    }
-    
-    return cartesian.stream().filter(
+  FiniteBinaryRelation<X,V> compose(FiniteBinaryRelation<Y,V> S){
+     return CollectionUtils.cartesianProduct(this,S).stream().filter(
       (t) -> t.getFirst().getSecond().equals(t.getSecond().getFirst()))
         .map((t) -> OrderedPair.makeOrderedPair(t.getFirst().getFirst(), t.getSecond().getSecond()))
         .collect(Collectors.toCollection(FiniteBinaryRelation<X,V>::new));
   }
   
+  /**
+   * R˘: the converse of R.
+   * 
+   * @return R˘
+   */
   public FiniteBinaryRelation<Y,X> converse(){
     return stream()
         .map((t) -> OrderedPair.makeOrderedPair(t.getSecond(), t.getFirst()))
         .collect(Collectors.toCollection(FiniteBinaryRelation<Y,X>::new));
     }
-  
 
   /**
    * this → S 
@@ -143,12 +149,17 @@ public class FiniteBinaryRelation<
     return stream().map((p) -> p.getFirst()).collect(
       Collectors.toCollection(TreeSet<X>::new));
   }
+  public boolean domainCovers(Collection<X> s) {
+    return domain().containsAll(s);
+  }
   
   public TreeSet<Y> codomain(){
     return stream().map((p) -> p.getSecond()).collect(
       Collectors.toCollection(TreeSet<Y>::new));
   }
-
+  public boolean codomainCovers(Collection<Y> s) {
+    return codomain().containsAll(s);
+  }
   public BiPredicate<X,Y> related(){
     return (t,u) -> contains(OrderedPair.makeOrderedPair(t, u));
   }
@@ -178,11 +189,9 @@ public class FiniteBinaryRelation<
   public boolean isLeftUnique() {
     return HomogeneousFiniteBinaryRelation.identity(domain()).containsAll(this.compose(this.converse()));
   }
-
   public boolean isRightUnique() {
     return HomogeneousFiniteBinaryRelation.identity(codomain()).containsAll(this.converse().compose(this));
   }
-  
   public boolean isManyToMany() {
     return !isLeftUnique() && !isRightUnique();
   }
@@ -230,4 +239,3 @@ public class FiniteBinaryRelation<
     return o;
   }
 }
- 
