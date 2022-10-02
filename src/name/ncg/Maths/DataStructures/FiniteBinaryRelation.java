@@ -209,30 +209,21 @@ public class FiniteBinaryRelation<
   public boolean isLeftUnique() {
     return HomogeneousFiniteBinaryRelation.identity(domain()).containsAll(this.compose(this.converse()));
   }
-  public boolean isLeftTotal(Iterable<X> domain) {
-    return HomogeneousFiniteBinaryRelation.identity(domain).containsAll(this.compose(this.converse()));
-  }
   
+  public boolean isLeftTotal(Iterable<X> domain) { return converse().isSurjective(domain); }
   public boolean isRightUnique() {
     return HomogeneousFiniteBinaryRelation.identity(codomain()).containsAll(this.converse().compose(this));
   }
+  public boolean isSurjective(Iterable<Y> codomain) {
+    return this.converse().compose(this).containsAll(HomogeneousFiniteBinaryRelation.identity(codomain));
+  }
+  public boolean isFunction(Iterable<X> domain) {return isRightUnique() && isLeftTotal(domain);}
   
-  public boolean isSurjective(Iterable<X> codomain) {
-    return HomogeneousFiniteBinaryRelation.identity(codomain).containsAll(this.converse().compose(this));
-  }
+  public boolean isManyToMany() {return !isLeftUnique() && !isRightUnique(); }
+  public boolean isManyToOne() { return !isLeftUnique() && isRightUnique();}
+  public boolean isOneToMany() { return isLeftUnique() && !isRightUnique(); }
+  public boolean isOneToOne() { return isLeftUnique() && !isRightUnique(); }
   
-  public boolean isManyToMany() {
-    return !isLeftUnique() && !isRightUnique();
-  }
-  public boolean isManyToOne() {
-    return !isLeftUnique() && isRightUnique();
-  }
-  public boolean isOneToMany() {
-    return isLeftUnique() && !isRightUnique();
-  }
-  public boolean isOneToOne() {
-    return isLeftUnique() && !isRightUnique();
-  }
   public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path) throws IOException {
     PrintWriter p = new PrintWriter(path);
     CSVWriter w = new CSVWriter(p,',', '"','\\', "\n");
