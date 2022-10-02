@@ -151,7 +151,7 @@ extends FiniteBinaryRelation<L, L> {
    */
   public boolean isDense(Iterable<L> domain) {
     var I = identity(domain);
-    var IComplement = I.complement(domain);
+    var IComplement = I.implicitComplement();
     var RIntersectIComplement = this.intersect(IComplement);
     return RIntersectIComplement.compose(RIntersectIComplement).containsAll(RIntersectIComplement);
   }
