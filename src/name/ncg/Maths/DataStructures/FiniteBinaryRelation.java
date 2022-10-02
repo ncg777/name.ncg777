@@ -1,8 +1,12 @@
 package name.ncg.Maths.DataStructures;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
@@ -242,12 +246,21 @@ public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
   Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
-    Function<String,Y> yParser, String path)  throws IOException, CsvException {
-    FileReader f = new FileReader(path);
+    Function<String,Y> yParser, InputStream is)  throws IOException, CsvException {
+    
+    return readFromCSV(xParser, yParser, new BufferedReader(new InputStreamReader(is)));
+    
+  }
+  
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+    Function<String, X> xParser, 
+    Function<String,Y> yParser, Reader reader)  throws IOException, CsvException {
     CSVParserBuilder b = new CSVParserBuilder();
     
     CSVParser p = b.withSeparator(',').withQuoteChar('"').withEscapeChar('\\').build();
-    CSVReaderBuilder rb = new CSVReaderBuilder(f);
+    CSVReaderBuilder rb = new CSVReaderBuilder(reader);
     CSVReader r = rb.withCSVParser(p).build();
     FiniteBinaryRelation<X,Y>  o =
       r.readAll().stream()
@@ -257,5 +270,13 @@ public class FiniteBinaryRelation<
       .collect(Collectors.toCollection(FiniteBinaryRelation<X,Y>::new));
     r.close();
     return o;
+  }
+  
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+    Function<String, X> xParser, 
+    Function<String,Y> yParser, String path)  throws IOException, CsvException {
+    return readFromCSV(xParser, yParser, new FileReader(path));
   }
 }

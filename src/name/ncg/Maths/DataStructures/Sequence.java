@@ -84,7 +84,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     String[] ss = s.trim().split("\\s+");
     Sequence output = new Sequence();
     for(String i : ss) {
-      output.add(Integer.parseInt(i.trim()));
+      if(!i.trim().isEmpty()) { output.add(Integer.parseInt(i.trim()));}
     }
     return output;
   }

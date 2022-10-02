@@ -9,6 +9,7 @@
 			<directory>resources</directory>
 			<targetPath>resources</targetPath>
 			<includes>
+				<include>**/*.csv</include>
 				<include>**/*.zip</include>
 			</includes>
 		</resource>

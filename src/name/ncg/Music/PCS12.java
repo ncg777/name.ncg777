@@ -163,7 +163,6 @@ public class PCS12 extends Combination implements Serializable {
   }
 
   public PCS12 combineWith(PCS12 x) {
-
     return PCS12.identify(Combination.merge(this, x));
   }
 
@@ -197,7 +196,7 @@ public class PCS12 extends Combination implements Serializable {
   }
 
   public static PCS12 empty() {
-    return new PCS12(new TreeSet<Integer>(), 0, 0);
+    return new PCS12(new TreeSet<Integer>(), 1, 0);
   }
 
   public static PCS12 identify(Combination input) {
@@ -217,10 +216,9 @@ public class PCS12 extends Combination implements Serializable {
     return o;
   }
 
+  public static PCS12 identify(Sequence input) { return PCS12.identify(new TreeSet<Integer>(input));}
   public static PCS12 identify(Set<Integer> input) {
-    if (input.isEmpty()) {
-      return new PCS12(new TreeSet<Integer>(), 0, 0);
-    }
+    if (input.isEmpty()) { return PCS12.empty();}
 
     boolean ex = false;
     Iterator<Integer> i = input.iterator();
