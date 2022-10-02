@@ -57,6 +57,22 @@ public class FiniteBinaryRelation<
       .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).collect(Collectors.toSet()));
   }
   
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>>  FiniteBinaryRelation<X,Y> universal(Iterable<X> domain,Iterable<Y> codomain) {
+    return new FiniteBinaryRelation<X,Y>(domain, codomain, (X a,Y b) -> true);
+  }
+  
+  public FiniteBinaryRelation<X,Y> complement(Iterable<X> domain,Iterable<Y> codomain) {
+    var u = universal(domain, codomain);
+    if(!u.containsAll(this)) {throw new RuntimeException("the relation exceeds the specified universe.");} 
+    return u.minus(this);
+  }
+  
+  public FiniteBinaryRelation<X,Y> implicitComplement() {
+    return complement(domain(), codomain());
+  }
+  
   public boolean add(X a, Y b) {return super.add(OrderedPair.makeOrderedPair(a,b));}
   public boolean remove(X a, Y b) {return super.remove(OrderedPair.makeOrderedPair(a,b));}
   

@@ -66,7 +66,15 @@ extends FiniteBinaryRelation<L, L> {
   public HomogeneousFiniteBinaryRelation<L> minus(HomogeneousFiniteBinaryRelation<L> e) {
     return new HomogeneousFiniteBinaryRelation<L>(super.minus(e));
   }
- 
+  
+  public HomogeneousFiniteBinaryRelation<L> complement(Iterable<L> domain) {
+    return new HomogeneousFiniteBinaryRelation<>(super.complement(domain, domain));
+  }
+  
+  public HomogeneousFiniteBinaryRelation<L> implicitComplement() {
+    return new HomogeneousFiniteBinaryRelation<>(super.implicitComplement());
+  }
+  
   /**
    * this → S 
    * this \ S
@@ -136,6 +144,18 @@ extends FiniteBinaryRelation<L, L> {
   public boolean isTotalOrder() { return isStronglyConnected() && isPartialOrder();}
   public boolean isStrictPartialOrder() { return isTransitive() && isIrreflexive();}
   public boolean isStrictTotalOrder() { return isConnected() && isStrictPartialOrder();}
+  
+  /***
+   * 
+   * @return R ∧ I− ≤ (R ∧ I−)•(R ∧ I−)
+   */
+  public boolean isDense(Iterable<L> domain) {
+    var I = identity(domain);
+    var IComplement = I.complement(domain);
+    var RIntersectIComplement = this.intersect(IComplement);
+    return RIntersectIComplement.compose(RIntersectIComplement).containsAll(RIntersectIComplement);
+  }
+  
   
   public void writeToCSV(Function<L,String> lToString, String path) throws IOException {
     super.writeToCSV(lToString, lToString, path);
