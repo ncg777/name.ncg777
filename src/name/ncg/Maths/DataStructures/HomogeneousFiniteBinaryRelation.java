@@ -141,7 +141,7 @@ extends FiniteBinaryRelation<L, L> {
           .union(this)
           .union(this.converse()));}
   public boolean isConnected() { return isConnected(domain());}
-  public boolean isStronglyConnected(Iterable<L> domain) {
+  public boolean isStronglyConnected(Iterable<L> domain) { 
     return this.union(this.converse()).equals(HomogeneousFiniteBinaryRelation.universal(domain));
   }
   public boolean isStronglyConnected() { return isStronglyConnected(domain());}
@@ -155,12 +155,9 @@ extends FiniteBinaryRelation<L, L> {
   public boolean isStrictPartialOrder() { return isStrictPartialOrder(domain());} 
   public boolean isStrictTotalOrder(Iterable<L> domain) { return isConnected(domain) && isStrictPartialOrder(domain);}
   public boolean isStrictTotalOrder() { return isStrictTotalOrder(domain());} 
-  public boolean isBijective(Iterable<L> domain) {
-    return isLeftTotal(domain) && isSurjective(domain);
-  }
-  public boolean isBijective() {
-    return isBijective(domain());
-  }
+  public boolean isBijective(Iterable<L> domain) { return isLeftTotal(domain) && isSurjective(domain);}
+  public boolean isBijective() { return isBijective(domain()); }
+  
   /***
    * 
    * @return R ∧ I− ≤ (R ∧ I−)•(R ∧ I−)
@@ -172,6 +169,7 @@ extends FiniteBinaryRelation<L, L> {
     return RIntersectIComplement.compose(RIntersectIComplement).containsAll(RIntersectIComplement);
   }
   
+  public boolean isDense() { return isDense(domain()); }
   
   public void writeToCSV(Function<L,String> lToString, String path) throws IOException {
     super.writeToCSV(lToString, lToString, path);
