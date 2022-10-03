@@ -240,6 +240,7 @@ public class FiniteBinaryRelation<
     }).collect(Collectors.toList()));
     
     w.close();
+    p.close();
   }
   
   public static <
@@ -269,6 +270,7 @@ public class FiniteBinaryRelation<
       })
       .collect(Collectors.toCollection(FiniteBinaryRelation<X,Y>::new));
     r.close();
+    reader.close();
     return o;
   }
   
