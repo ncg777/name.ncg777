@@ -71,7 +71,7 @@ extends FiniteBinaryRelation<L, L> {
     return new HomogeneousFiniteBinaryRelation<>(super.complement(domain, domain));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> implicitComplement() {
+  public HomogeneousFiniteBinaryRelation<L> complement() {
     return new HomogeneousFiniteBinaryRelation<>(super.implicitComplement());
   }
   
@@ -164,7 +164,7 @@ extends FiniteBinaryRelation<L, L> {
    */
   public boolean isDense(Iterable<L> domain) {
     var I = identity(domain);
-    var IComplement = I.implicitComplement();
+    var IComplement = I.complement();
     var RIntersectIComplement = this.intersect(IComplement);
     return RIntersectIComplement.compose(RIntersectIComplement).containsAll(RIntersectIComplement);
   }
