@@ -244,12 +244,8 @@ public class PCS12 extends Combination implements Serializable {
     }
 
     if (input.isEmpty()) { return empty(); }
-    PCS12 o = ChordCombinationDict.get(input);
 
-    if (o == null) {
-      o = empty();
-    }
-    return o;
+    return ChordCombinationDict.get(input);
   }
 
   public static PCS12 identify(Sequence input) { return PCS12.identify(new TreeSet<Integer>(input));}
