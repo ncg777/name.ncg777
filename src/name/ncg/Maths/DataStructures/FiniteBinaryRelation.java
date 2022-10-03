@@ -248,9 +248,10 @@ public class FiniteBinaryRelation<
   Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, InputStream is)  throws IOException, CsvException {
-    
-    return readFromCSV(xParser, yParser, new BufferedReader(new InputStreamReader(is)));
-    
+    var st = new InputStreamReader(is);
+    var o = readFromCSV(xParser, yParser, new BufferedReader(st));
+    st.close();
+    return o;
   }
   
   public static <
