@@ -157,7 +157,7 @@ public class ChordNavigator {
       textIV.setText(ch.getIntervalVector().toString().replaceAll("[,})({]", ""));
       PCS12 scale = PCS12.parse(cboScale.getSelectedItem().toString());
       textComplement.setText(scale.minus(ch).toString());
-      textForte.setText(ch.getForteNumber());
+      textForte.setText(ch.toForteNumberString());
       this.current = ch;
     }
     

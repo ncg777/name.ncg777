@@ -28,7 +28,8 @@ public class PCS12 extends Combination implements Serializable {
   static TreeMap<String, PCS12> ChordDict;
   static TreeMap<Combination, PCS12> ChordCombinationDict;
   static TreeMap<PCS12, String> ForteNumbersDict;
-  
+  static TreeMap<PCS12, Integer> ForteNumbersRotationDict;
+  static TreeMap<String, PCS12> ForteNumbersToPCS12Dict;
   Integer m_Order;
   Integer m_Transpose;
 
@@ -182,10 +183,13 @@ public class PCS12 extends Combination implements Serializable {
   }
 
   public String getForteNumber() {return ForteNumbersDict.get(this);}
+  public Integer getForteNumberRotation() {return ForteNumbersRotationDict.get(this);}
+  public String toForteNumberString() {return getForteNumber() + "+" + getForteNumberRotation().toString();}
   
   private static void fillForteNumbersDict() throws IOException, CsvException {
     ForteNumbersDict = new TreeMap<PCS12, String>();
-  
+    ForteNumbersRotationDict = new TreeMap<PCS12,Integer>();
+    ForteNumbersToPCS12Dict = new TreeMap<String, PCS12>();
     InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers.csv");
     FiniteBinaryRelation<String,Sequence> r = FiniteBinaryRelation.readFromCSV(Parsers.stringParser, Parsers.sequenceParser, is);
     
@@ -193,7 +197,12 @@ public class PCS12 extends Combination implements Serializable {
       PCS12 ch = PCS12.identify(p.getSecond());
       
       for(int i=0;i<12;i++) {
-        ForteNumbersDict.put(ch.transpose(i), p.getFirst());
+        PCS12 t = ch.transpose(i);
+        if(!ForteNumbersDict.containsKey(t)) {
+          ForteNumbersDict.put(t, p.getFirst());
+          ForteNumbersRotationDict.put(t, i);
+        }
+        ForteNumbersToPCS12Dict.put(p.getFirst()+ "+" + Integer.toString(i), t);
       }
     }
   }
