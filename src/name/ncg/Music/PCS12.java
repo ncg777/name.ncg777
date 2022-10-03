@@ -234,9 +234,7 @@ public class PCS12 extends Combination implements Serializable {
           "PCS12::IdentifyChord the combination is not bounded by 12");
     }
 
-    if (input.isEmpty()) {
-      return new PCS12(new TreeSet<Integer>(), 0, 0);
-    }
+    if (input.isEmpty()) { return empty(); }
     PCS12 o = ChordCombinationDict.get(input);
 
     if (o == null) {
