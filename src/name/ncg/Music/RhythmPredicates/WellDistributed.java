@@ -21,7 +21,7 @@ public class WellDistributed implements Predicate<Rhythm16Partition>  {
     double min = 0.0;
     double max = 0.0;
     double mean = (double)m/(double)n;
-    HeterogeneousPair<Integer,Integer> p = HeterogeneousPair.makeOrderedPair(m, n);
+    HeterogeneousPair<Integer,Integer> p = HeterogeneousPair.makeHeterogeneousPair(m, n);
     if(minmax.containsKey(p)) {
       min = minmax.get(p).getFirst();
       max = minmax.get(p).getSecond();
@@ -36,7 +36,7 @@ public class WellDistributed implements Predicate<Rhythm16Partition>  {
       int nbdivp1 = n-nbdiv;
       
       min = (nbdiv* Math.abs(div-mean) + nbdivp1*Math.abs(div+1-mean))/(double) n;
-      minmax.put(p,HeterogeneousPair.makeOrderedPair(min,max));
+      minmax.put(p,HeterogeneousPair.makeHeterogeneousPair(min,max));
     }
     
     double val = 0.0;

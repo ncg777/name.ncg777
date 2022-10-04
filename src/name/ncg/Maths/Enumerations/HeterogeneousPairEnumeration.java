@@ -32,12 +32,12 @@ public class  HeterogeneousPairEnumeration<
   public HeterogeneousPair<T,U> nextElement() {
     if(UIterator.hasNext()) {
       UCurrent = UIterator.next();
-      return HeterogeneousPair.makeOrderedPair(TCurrent, UCurrent); 
+      return HeterogeneousPair.makeHeterogeneousPair(TCurrent, UCurrent); 
     } else if(TIterator.hasNext()) {
       TCurrent = TIterator.next();
       UIterator = UIterable.iterator();
       UCurrent = UIterator.next();
-      return HeterogeneousPair.makeOrderedPair(TCurrent, UCurrent);
+      return HeterogeneousPair.makeHeterogeneousPair(TCurrent, UCurrent);
     }
     throw new NoSuchElementException("No more elements.");
   }

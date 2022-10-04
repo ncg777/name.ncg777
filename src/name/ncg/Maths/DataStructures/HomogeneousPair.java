@@ -4,12 +4,12 @@ package name.ncg.Maths.DataStructures;
 public class HomogeneousPair<T extends Comparable<? super T>>
     extends HeterogeneousPair<T,T> {
 
-  public static <T extends Comparable<? super T>> HomogeneousPair<T> makePair(
+  public static <T extends Comparable<? super T>> HomogeneousPair<T> makeHomogeneousPair(
       T first, T second) {
     return new HomogeneousPair<T>(first, second);
   }
   
-  public static <T extends Comparable<? super T>> HomogeneousPair<T> fromOrderedPair(HeterogeneousPair<T,T> o) {
+  public static <T extends Comparable<? super T>> HomogeneousPair<T> fromHeterogeneousPair(HeterogeneousPair<T,T> o) {
     return new HomogeneousPair<T>(o.getFirst(),o.getSecond());
   }
   

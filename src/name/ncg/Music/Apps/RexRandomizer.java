@@ -112,7 +112,7 @@ public class RexRandomizer {
         for(int i=0;i<c.size();i++) {
           int dur = c.get(i);
           int pm = pos % modul;
-          HomogeneousPair<Integer> p = HomogeneousPair.makePair(pitch, dur);
+          HomogeneousPair<Integer> p = HomogeneousPair.makeHomogeneousPair(pitch, dur);
           posM.get(map.get(pm)).add(p);
           pos += dur;
           pitch++;

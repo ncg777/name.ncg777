@@ -25,7 +25,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
    * @param second
    * @return HeterogeneousPair<T,U>
    */
-  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> HeterogeneousPair<T, U> makeOrderedPair(
+  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> HeterogeneousPair<T, U> makeHeterogeneousPair(
       T first, U second) {
     return new HeterogeneousPair<T, U>(first, second);
   }
@@ -41,7 +41,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
     return y;
   }
 
-  public HeterogeneousPair<U,T> converse() {return makeOrderedPair(y, x);}
+  public HeterogeneousPair<U,T> converse() {return makeHeterogeneousPair(y, x);}
   
   @Override
   public int hashCode() {

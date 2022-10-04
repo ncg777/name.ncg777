@@ -103,9 +103,9 @@ public class Engine {
     }
     
     if(generatesDeltas) {
-      return HomogeneousPair.makePair(o, o.cyclicalForwardAntidifference(0));
+      return HomogeneousPair.makeHomogeneousPair(o, o.cyclicalForwardAntidifference(0));
     } else {
-      return HomogeneousPair.makePair(o.cyclicalForwardDifference(), o);
+      return HomogeneousPair.makeHomogeneousPair(o.cyclicalForwardDifference(), o);
     }
   }
   

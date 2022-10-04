@@ -31,12 +31,12 @@ public class  HomogeneousPairEnumeration<
   public HomogeneousPair<T> nextElement() {
     if(T2Iterator.hasNext()) {
       T2Current = T2Iterator.next();
-      return HomogeneousPair.makePair(T1Current, T2Current); 
+      return HomogeneousPair.makeHomogeneousPair(T1Current, T2Current); 
     } else if(T1Iterator.hasNext()) {
       T1Current = T1Iterator.next();
       T2Iterator = T2Iterable.iterator();
       T2Current = T2Iterator.next();
-      return HomogeneousPair.makePair(T1Current, T2Current);
+      return HomogeneousPair.makeHomogeneousPair(T1Current, T2Current);
     }
     throw new NoSuchElementException("No more elements.");
   }

@@ -84,14 +84,14 @@ public class FiniteBinaryRelation<
   public boolean isEmpty() { return pairs.isEmpty(); }
   public boolean contains(HeterogeneousPair<X,Y> p) { return this.pairs.contains(p); }
   public boolean add(X a, Y b) {
-    var p = HeterogeneousPair.makeOrderedPair(a,b);
+    var p = HeterogeneousPair.makeHeterogeneousPair(a,b);
     boolean o = pairs.add(p);
     if(o) pairsReversed.add(p.converse());
     return o;
   }
   
   public boolean remove(X a, Y b) {
-    var p = HeterogeneousPair.makeOrderedPair(a,b);
+    var p = HeterogeneousPair.makeHeterogeneousPair(a,b);
     boolean o = pairs.remove(p);
     if(o) pairsReversed.remove(p.converse());
     return o;
@@ -135,7 +135,7 @@ public class FiniteBinaryRelation<
     FiniteBinaryRelation<X,V> o = new FiniteBinaryRelation<>();
     CollectionUtils.cartesianProduct(this.pairs,S.pairs).stream().filter(
       (t) -> t.getFirst().getSecond().equals(t.getSecond().getFirst()))
-        .map((t) -> HeterogeneousPair.makeOrderedPair(t.getFirst().getFirst(), t.getSecond().getSecond()))
+        .map((t) -> HeterogeneousPair.makeHeterogeneousPair(t.getFirst().getFirst(), t.getSecond().getSecond()))
         .forEach((p) -> o.add(p.getFirst(), p.getSecond()));
     return o;
   }
@@ -217,7 +217,7 @@ public class FiniteBinaryRelation<
     return codomain().containsAll(s);
   }
   public BiPredicate<X,Y> related(){
-    return (t,u) -> pairs.contains(HeterogeneousPair.makeOrderedPair(t, u));
+    return (t,u) -> pairs.contains(HeterogeneousPair.makeHeterogeneousPair(t, u));
   }
   
   public Predicate<Y> rightRelated(X e){
@@ -226,7 +226,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<Y> rightRelata(X e) {
     var o = new TreeSet<Y>();
-    HeterogeneousPair<X,Y> pivot = this.pairs.higher(HeterogeneousPair.makeOrderedPair(e, null));
+    HeterogeneousPair<X,Y> pivot = this.pairs.higher(HeterogeneousPair.makeHeterogeneousPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairs.tailSet(pivot)) {
@@ -242,7 +242,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<X> leftRelata(Y e) {
     var o = new TreeSet<X>();
-    HeterogeneousPair<Y,X> pivot = this.pairsReversed.higher(HeterogeneousPair.makeOrderedPair(e, null));
+    HeterogeneousPair<Y,X> pivot = this.pairsReversed.higher(HeterogeneousPair.makeHeterogeneousPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairsReversed.tailSet(pivot)) {

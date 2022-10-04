@@ -30,7 +30,7 @@ public class CollectionUtils {
         new TreeSet<HeterogeneousPair<A,B>>();
     for(A x : a){
       for(B y : b){
-        o.add(HeterogeneousPair.makeOrderedPair(x, y));
+        o.add(HeterogeneousPair.makeHeterogeneousPair(x, y));
       }
     }
     return o;

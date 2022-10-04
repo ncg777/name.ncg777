@@ -1082,7 +1082,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     Sequence seqepsc = new Sequence();
     for(int i=0; i<=c;i++) {
       
-      HeterogeneousPair<Integer,Integer> pair = HeterogeneousPair.makeOrderedPair(cs.get(i), V.get(i));
+      HeterogeneousPair<Integer,Integer> pair = HeterogeneousPair.makeHeterogeneousPair(cs.get(i), V.get(i));
       h.put(i, pair);
       if(!s.containsKey(pair)) {
         s.put(pair, new TreeMap<>());

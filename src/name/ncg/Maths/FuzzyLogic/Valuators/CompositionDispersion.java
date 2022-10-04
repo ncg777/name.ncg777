@@ -33,7 +33,7 @@ public class CompositionDispersion implements Function<Composition, FuzzyVariabl
 
     int n = input.getTotal();
     int s = t.size();
-    HeterogeneousPair<Integer, Integer> ns = HeterogeneousPair.makeOrderedPair(n, s);
+    HeterogeneousPair<Integer, Integer> ns = HeterogeneousPair.makeHeterogeneousPair(n, s);
 
     int min = 0;
     int max = 0;
