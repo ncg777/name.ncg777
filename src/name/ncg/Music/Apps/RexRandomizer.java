@@ -13,7 +13,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import name.ncg.Maths.DataStructures.CollectionUtils;
-import name.ncg.Maths.DataStructures.Pair;
+import name.ncg.Maths.DataStructures.HomogeneousPair;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R16List;
 import name.ncg.Music.Rhythm;
@@ -100,10 +100,10 @@ public class RexRandomizer {
         
         Sequence c = r.asRhythm().getComposition().asSequence();
         
-        TreeMap<Integer, TreeSet<Pair<Integer>>> posM = new TreeMap<>();
+        TreeMap<Integer, TreeSet<HomogeneousPair<Integer>>> posM = new TreeMap<>();
         
         for(int i=0;i<map.distinct().size();i++) {
-          posM.put(i, new TreeSet<Pair<Integer>>());
+          posM.put(i, new TreeSet<HomogeneousPair<Integer>>());
         }
         
         int pos = 0;
@@ -112,7 +112,7 @@ public class RexRandomizer {
         for(int i=0;i<c.size();i++) {
           int dur = c.get(i);
           int pm = pos % modul;
-          Pair<Integer> p = Pair.makePair(pitch, dur);
+          HomogeneousPair<Integer> p = HomogeneousPair.makePair(pitch, dur);
           posM.get(map.get(pm)).add(p);
           pos += dur;
           pitch++;
@@ -130,7 +130,7 @@ public class RexRandomizer {
             continue;
           } 
           
-          Pair<Integer> p = CollectionUtils.chooseAtRandom(posM.get(pm));
+          HomogeneousPair<Integer> p = CollectionUtils.chooseAtRandom(posM.get(pm));
           
           int pch = p.getFirst();
           int dur = p.getSecond();

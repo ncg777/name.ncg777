@@ -25,7 +25,7 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
 import name.ncg.CS.Functional;
-import name.ncg.Maths.Enumerations.OrderedPairEnumeration;
+import name.ncg.Maths.Enumerations.HeterogeneousPairEnumeration;
 import name.ncg.Maths.Relations.Relation;
 
 /**
@@ -45,10 +45,10 @@ import name.ncg.Maths.Relations.Relation;
 @SuppressWarnings("serial")
 public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> implements Iterable<OrderedPair<X,Y>>{
+  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>{
   
-  protected TreeSet<OrderedPair<X,Y>> pairs = new TreeSet<>();
-  protected TreeSet<OrderedPair<Y,X>> pairsReversed = new TreeSet<>();
+  protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>();
+  protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>();
   public FiniteBinaryRelation() {
   }
   
@@ -60,7 +60,7 @@ public class FiniteBinaryRelation<
     this(domain, codomain, Relation.fromBiPredicate(rel));
   }
   public FiniteBinaryRelation(Iterable<X> domain, Iterable<Y> codomain, Relation<X,Y> rel) {
-    Collections.list(new OrderedPairEnumeration<X,Y>(domain, codomain)).stream()
+    Collections.list(new HeterogeneousPairEnumeration<X,Y>(domain, codomain)).stream()
     .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).forEach((p) -> add(p.getFirst(), p.getSecond()));
   }
   
@@ -82,16 +82,16 @@ public class FiniteBinaryRelation<
   
   public int size() { return pairs.size(); }
   public boolean isEmpty() { return pairs.isEmpty(); }
-  public boolean contains(OrderedPair<X,Y> p) { return this.pairs.contains(p); }
+  public boolean contains(HeterogeneousPair<X,Y> p) { return this.pairs.contains(p); }
   public boolean add(X a, Y b) {
-    var p = OrderedPair.makeOrderedPair(a,b);
+    var p = HeterogeneousPair.makeOrderedPair(a,b);
     boolean o = pairs.add(p);
     if(o) pairsReversed.add(p.converse());
     return o;
   }
   
   public boolean remove(X a, Y b) {
-    var p = OrderedPair.makeOrderedPair(a,b);
+    var p = HeterogeneousPair.makeOrderedPair(a,b);
     boolean o = pairs.remove(p);
     if(o) pairsReversed.remove(p.converse());
     return o;
@@ -101,7 +101,6 @@ public class FiniteBinaryRelation<
   
   public FiniteBinaryRelation<X,Y> intersect(FiniteBinaryRelation<X,Y> S){
     FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
-    
     o.pairs.addAll(this.pairs);
     o.pairsReversed.addAll(this.pairsReversed);
     o.pairs.retainAll(S.pairs);
@@ -136,7 +135,7 @@ public class FiniteBinaryRelation<
     FiniteBinaryRelation<X,V> o = new FiniteBinaryRelation<>();
     CollectionUtils.cartesianProduct(this.pairs,S.pairs).stream().filter(
       (t) -> t.getFirst().getSecond().equals(t.getSecond().getFirst()))
-        .map((t) -> OrderedPair.makeOrderedPair(t.getFirst().getFirst(), t.getSecond().getSecond()))
+        .map((t) -> HeterogeneousPair.makeOrderedPair(t.getFirst().getFirst(), t.getSecond().getSecond()))
         .forEach((p) -> o.add(p.getFirst(), p.getSecond()));
     return o;
   }
@@ -218,7 +217,7 @@ public class FiniteBinaryRelation<
     return codomain().containsAll(s);
   }
   public BiPredicate<X,Y> related(){
-    return (t,u) -> pairs.contains(OrderedPair.makeOrderedPair(t, u));
+    return (t,u) -> pairs.contains(HeterogeneousPair.makeOrderedPair(t, u));
   }
   
   public Predicate<Y> rightRelated(X e){
@@ -227,7 +226,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<Y> rightRelata(X e) {
     var o = new TreeSet<Y>();
-    OrderedPair<X,Y> pivot = this.pairs.higher(OrderedPair.makeOrderedPair(e, null));
+    HeterogeneousPair<X,Y> pivot = this.pairs.higher(HeterogeneousPair.makeOrderedPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairs.tailSet(pivot)) {
@@ -243,7 +242,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<X> leftRelata(Y e) {
     var o = new TreeSet<X>();
-    OrderedPair<Y,X> pivot = this.pairsReversed.higher(OrderedPair.makeOrderedPair(e, null));
+    HeterogeneousPair<Y,X> pivot = this.pairsReversed.higher(HeterogeneousPair.makeOrderedPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairsReversed.tailSet(pivot)) {
@@ -336,7 +335,7 @@ public class FiniteBinaryRelation<
   }
 
   @Override
-  public Iterator<OrderedPair<X, Y>> iterator() {
+  public Iterator<HeterogeneousPair<X, Y>> iterator() {
     return Iterators.unmodifiableIterator(this.pairs.iterator());
   }
 }

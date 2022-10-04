@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 import junit.framework.TestCase;
 import name.ncg.Maths.DataStructures.FiniteBinaryRelation;
-import name.ncg.Maths.DataStructures.OrderedPair;
+import name.ncg.Maths.DataStructures.HeterogeneousPair;
 
 public class FiniteBinaryRelationTests extends TestCase {
   FiniteBinaryRelation<String,String> r;
@@ -57,16 +57,16 @@ public class FiniteBinaryRelationTests extends TestCase {
 
     FiniteBinaryRelation<String,String> o = r.compose(s);
     
-    assertTrue(o.contains(OrderedPair.makeOrderedPair("a", "c")));
-    assertTrue(o.contains(OrderedPair.makeOrderedPair("a", "c")));
-    assertTrue(o.contains(OrderedPair.makeOrderedPair("b", "d")));
-    assertTrue(o.contains(OrderedPair.makeOrderedPair("d", "g")));
+    assertTrue(o.contains(HeterogeneousPair.makeOrderedPair("a", "c")));
+    assertTrue(o.contains(HeterogeneousPair.makeOrderedPair("a", "c")));
+    assertTrue(o.contains(HeterogeneousPair.makeOrderedPair("b", "d")));
+    assertTrue(o.contains(HeterogeneousPair.makeOrderedPair("d", "g")));
     assertTrue(o.size()==4);
   }
 
   public final void testRight_residual() {
     FiniteBinaryRelation<String,String> e = rr_R.rightResidual(rr_S);
-    assertTrue(e.contains(OrderedPair.makeOrderedPair("p3", "o")));
+    assertTrue(e.contains(HeterogeneousPair.makeOrderedPair("p3", "o")));
     assertTrue(e.size()==1);
     
   }
@@ -74,7 +74,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   public final void testLeft_residual() {
     FiniteBinaryRelation<String,String> e = lr_S.leftResidual(lr_R);
     
-    assertTrue(e.contains(OrderedPair.makeOrderedPair("o", "p3")));
+    assertTrue(e.contains(HeterogeneousPair.makeOrderedPair("o", "p3")));
     assertTrue(e.size()==1);
   }
 

@@ -18,7 +18,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.Font;
 
-import name.ncg.Maths.DataStructures.Pair;
+import name.ncg.Maths.DataStructures.HomogeneousPair;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R12List;
 import name.ncg.Music.R16List;
@@ -114,7 +114,7 @@ public class Application {
         try {
           btnEvaluate.setEnabled(false);
           Engine engine = new Engine(chckbxDelta.isSelected());
-          Pair<Sequence> result = null;
+          HomogeneousPair<Sequence> result = null;
           if(comboBox_1.getSelectedItem() == Rn.Hex) {
             result = engine.evaluate(
               R16List.parseR16Seq(rhythm.getText()).asRhythm(), 

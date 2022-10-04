@@ -6,16 +6,16 @@ import com.google.common.base.Function;
 
 import name.ncg.Maths.Composition;
 import name.ncg.Maths.DataStructures.Interval;
-import name.ncg.Maths.DataStructures.OrderedPair;
+import name.ncg.Maths.DataStructures.HeterogeneousPair;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Maths.FuzzyLogic.FuzzyVariable;
 
 public class CompositionDispersion implements Function<Composition, FuzzyVariable> {
 
-  TreeMap<OrderedPair<Integer, Integer>, Interval<Integer>> minmax;
+  TreeMap<HeterogeneousPair<Integer, Integer>, Interval<Integer>> minmax;
 
   public CompositionDispersion() {
-    minmax = new TreeMap<OrderedPair<Integer, Integer>, Interval<Integer>>();
+    minmax = new TreeMap<HeterogeneousPair<Integer, Integer>, Interval<Integer>>();
   }
 
   /**
@@ -33,7 +33,7 @@ public class CompositionDispersion implements Function<Composition, FuzzyVariabl
 
     int n = input.getTotal();
     int s = t.size();
-    OrderedPair<Integer, Integer> ns = OrderedPair.makeOrderedPair(n, s);
+    HeterogeneousPair<Integer, Integer> ns = HeterogeneousPair.makeOrderedPair(n, s);
 
     int min = 0;
     int max = 0;

@@ -3,18 +3,18 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import name.ncg.Maths.DataStructures.OrderedPair;
+import name.ncg.Maths.DataStructures.HeterogeneousPair;
 
-public class  OrderedPairEnumeration<
+public class  HeterogeneousPairEnumeration<
   T extends Comparable<? super T>, 
-  U extends Comparable<? super U>> implements Enumeration<OrderedPair<T,U>> {
+  U extends Comparable<? super U>> implements Enumeration<HeterogeneousPair<T,U>> {
   
   private Iterator<T> TIterator;
   private T TCurrent;
   private Iterator<U> UIterator;
   private U UCurrent;
   private Iterable<U> UIterable;
-  public OrderedPairEnumeration(Iterable<T> IT, Iterable<U> IU) {
+  public HeterogeneousPairEnumeration(Iterable<T> IT, Iterable<U> IU) {
     TIterator = IT.iterator();
     TCurrent = TIterator.next();
     UIterator = IU.iterator();
@@ -29,15 +29,15 @@ public class  OrderedPairEnumeration<
   }
 
   @Override
-  public OrderedPair<T,U> nextElement() {
+  public HeterogeneousPair<T,U> nextElement() {
     if(UIterator.hasNext()) {
       UCurrent = UIterator.next();
-      return OrderedPair.makeOrderedPair(TCurrent, UCurrent); 
+      return HeterogeneousPair.makeOrderedPair(TCurrent, UCurrent); 
     } else if(TIterator.hasNext()) {
       TCurrent = TIterator.next();
       UIterator = UIterable.iterator();
       UCurrent = UIterator.next();
-      return OrderedPair.makeOrderedPair(TCurrent, UCurrent);
+      return HeterogeneousPair.makeOrderedPair(TCurrent, UCurrent);
     }
     throw new NoSuchElementException("No more elements.");
   }

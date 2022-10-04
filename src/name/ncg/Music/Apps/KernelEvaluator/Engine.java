@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-import name.ncg.Maths.DataStructures.Pair;
+import name.ncg.Maths.DataStructures.HomogeneousPair;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R16List;
 import name.ncg.Music.Rhythm;
@@ -55,11 +55,11 @@ public class Engine {
     this.generatesDeltas = generatesDeltas;
   }
 
-  public Pair<Sequence> evaluate(Rhythm rhythm, final String _parameters, String kernel) {
+  public HomogeneousPair<Sequence> evaluate(Rhythm rhythm, final String _parameters, String kernel) {
     return evaluate(rhythm, _parameters, KernelsByName.get(kernel));
   }
   
-  public Pair<Sequence> evaluate(Rhythm rhythm, final String _parameters, Kernel kernel) {
+  public HomogeneousPair<Sequence> evaluate(Rhythm rhythm, final String _parameters, Kernel kernel) {
 
     final String lines[] = _parameters.split("\n");
     final TreeMap<String, String> tokens = new TreeMap<String, String>();
@@ -103,9 +103,9 @@ public class Engine {
     }
     
     if(generatesDeltas) {
-      return Pair.makePair(o, o.cyclicalForwardAntidifference(0));
+      return HomogeneousPair.makePair(o, o.cyclicalForwardAntidifference(0));
     } else {
-      return Pair.makePair(o.cyclicalForwardDifference(), o);
+      return HomogeneousPair.makePair(o.cyclicalForwardDifference(), o);
     }
   }
   

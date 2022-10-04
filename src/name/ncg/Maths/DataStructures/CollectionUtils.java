@@ -24,13 +24,13 @@ public class CollectionUtils {
   public static <
   A extends Comparable<? super A>,
   B extends Comparable<? super B>> 
-  TreeSet<OrderedPair<A,B>> cartesianProduct(
+  TreeSet<HeterogeneousPair<A,B>> cartesianProduct(
   TreeSet<A> a, TreeSet<B> b){
-    TreeSet<OrderedPair<A,B>> o = 
-        new TreeSet<OrderedPair<A,B>>();
+    TreeSet<HeterogeneousPair<A,B>> o = 
+        new TreeSet<HeterogeneousPair<A,B>>();
     for(A x : a){
       for(B y : b){
-        o.add(OrderedPair.makeOrderedPair(x, y));
+        o.add(HeterogeneousPair.makeOrderedPair(x, y));
       }
     }
     return o;

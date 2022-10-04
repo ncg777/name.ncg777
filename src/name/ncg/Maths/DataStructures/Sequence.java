@@ -1022,12 +1022,12 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     int n = R.getN();
     Sequence CR = R.getComposition().asSequence();
     TreeMap<Integer, Integer> seg = new TreeMap<>();
-    //TreeSet<OrderedPair<Integer,Integer>> P = new TreeSet<>();
+    //TreeSet<HeterogeneousPair<Integer,Integer>> P = new TreeSet<>();
     TreeSet<Integer> F = Numbers.factors(n);
     F.remove(1); F.remove(n);
     TreeMap<Integer,Integer> I = new TreeMap<>();
-    TreeMap<Integer,OrderedPair<Integer,Integer>> h = new TreeMap<>();
-    TreeMap<OrderedPair<Integer,Integer>, TreeMap<Integer,Sequence>> s = new TreeMap<>();
+    TreeMap<Integer,HeterogeneousPair<Integer,Integer>> h = new TreeMap<>();
+    TreeMap<HeterogeneousPair<Integer,Integer>, TreeMap<Integer,Sequence>> s = new TreeMap<>();
     TreeMap<Integer, TreeMap<Integer, Integer>> coordf = new TreeMap<>();
     TreeMap<Integer,Sequence> epsf = new TreeMap<>();
     
@@ -1082,7 +1082,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     Sequence seqepsc = new Sequence();
     for(int i=0; i<=c;i++) {
       
-      OrderedPair<Integer,Integer> pair = OrderedPair.makeOrderedPair(cs.get(i), V.get(i));
+      HeterogeneousPair<Integer,Integer> pair = HeterogeneousPair.makeOrderedPair(cs.get(i), V.get(i));
       h.put(i, pair);
       if(!s.containsKey(pair)) {
         s.put(pair, new TreeMap<>());
@@ -1095,7 +1095,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     int szs = s.size();
     int __i=0;
     Sequence seqs = szs <= 1 ? _s0 : Sequence.genRnd(szs, amp, 0, maxamp, true);
-    for(OrderedPair<Integer,Integer> pair : s.keySet()) {
+    for(HeterogeneousPair<Integer,Integer> pair : s.keySet()) {
       
       Sequence sequence0 = new Sequence();
       sequence0.add(seqs.get(__i));

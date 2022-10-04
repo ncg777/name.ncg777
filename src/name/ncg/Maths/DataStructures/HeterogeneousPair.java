@@ -15,19 +15,19 @@ package name.ncg.Maths.DataStructures;
  * @param <T> The type of the first element
  * @param <U> The type of the second element
  */
-public class OrderedPair<T extends Comparable<? super T>, U extends Comparable<? super U>>
+public class HeterogeneousPair<T extends Comparable<? super T>, U extends Comparable<? super U>>
     implements
-      Comparable<OrderedPair<T, U>> {
+      Comparable<HeterogeneousPair<T, U>> {
   /**
    * Static method to construct a pair.
    * 
    * @param first
    * @param second
-   * @return OrderedPair<T,U>
+   * @return HeterogeneousPair<T,U>
    */
-  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> OrderedPair<T, U> makeOrderedPair(
+  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> HeterogeneousPair<T, U> makeOrderedPair(
       T first, U second) {
-    return new OrderedPair<T, U>(first, second);
+    return new HeterogeneousPair<T, U>(first, second);
   }
 
   protected T x;
@@ -41,7 +41,7 @@ public class OrderedPair<T extends Comparable<? super T>, U extends Comparable<?
     return y;
   }
 
-  public OrderedPair<U,T> converse() {return makeOrderedPair(y, x);}
+  public HeterogeneousPair<U,T> converse() {return makeOrderedPair(y, x);}
   
   @Override
   public int hashCode() {
@@ -62,7 +62,7 @@ public class OrderedPair<T extends Comparable<? super T>, U extends Comparable<?
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     @SuppressWarnings("unchecked")
-    OrderedPair<T, U> other = (OrderedPair<T, U>) obj;
+    HeterogeneousPair<T, U> other = (HeterogeneousPair<T, U>) obj;
     if (x == null) {
       if (other.x != null) return false;
     } else if (!x.equals(other.x)) return false;
@@ -72,16 +72,16 @@ public class OrderedPair<T extends Comparable<? super T>, U extends Comparable<?
     return true;
   }
 
-  protected OrderedPair(T p_x, U p_y) {
+  protected HeterogeneousPair(T p_x, U p_y) {
     x = p_x;
     y = p_y;
   }
 
   /**
-   * This compareTo function supports OrderedPair with null values.
+   * This compareTo function supports HeterogeneousPair with null values.
    */
   @Override
-  public int compareTo(OrderedPair<T, U> o) {
+  public int compareTo(HeterogeneousPair<T, U> o) {
     if (o == null) {
       return 1;
     }

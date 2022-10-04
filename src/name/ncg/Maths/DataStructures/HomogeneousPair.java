@@ -1,16 +1,16 @@
 package name.ncg.Maths.DataStructures;
 
 
-public class Pair<T extends Comparable<? super T>>
-    extends OrderedPair<T,T> {
+public class HomogeneousPair<T extends Comparable<? super T>>
+    extends HeterogeneousPair<T,T> {
 
-  public static <T extends Comparable<? super T>> Pair<T> makePair(
+  public static <T extends Comparable<? super T>> HomogeneousPair<T> makePair(
       T first, T second) {
-    return new Pair<T>(first, second);
+    return new HomogeneousPair<T>(first, second);
   }
   
-  public static <T extends Comparable<? super T>> Pair<T> fromOrderedPair(OrderedPair<T,T> o) {
-    return new Pair<T>(o.getFirst(),o.getSecond());
+  public static <T extends Comparable<? super T>> HomogeneousPair<T> fromOrderedPair(HeterogeneousPair<T,T> o) {
+    return new HomogeneousPair<T>(o.getFirst(),o.getSecond());
   }
   
 
@@ -33,7 +33,7 @@ public class Pair<T extends Comparable<? super T>>
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     @SuppressWarnings("unchecked")
-    Pair<T> other = (Pair<T>) obj;
+    HomogeneousPair<T> other = (HomogeneousPair<T>) obj;
     if (x == null) {
       if (other.x != null) return false;
     } else if (!x.equals(other.x)) return false;
@@ -43,7 +43,7 @@ public class Pair<T extends Comparable<? super T>>
     return true;
   }
 
-  private Pair(T p_x, T p_y) {
+  private HomogeneousPair(T p_x, T p_y) {
    super(p_x,p_y);
   }
 
