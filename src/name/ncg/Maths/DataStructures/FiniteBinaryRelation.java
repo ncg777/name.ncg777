@@ -9,12 +9,14 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import com.google.common.collect.Iterators;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -43,22 +45,23 @@ import name.ncg.Maths.Relations.Relation;
 @SuppressWarnings("serial")
 public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> 
-  extends TreeSet<OrderedPair<X,Y>> {
+  Y extends Comparable<? super Y>> implements Iterable<OrderedPair<X,Y>>{
   
+  protected TreeSet<OrderedPair<X,Y>> pairs = new TreeSet<>();
+  protected TreeSet<OrderedPair<Y,X>> pairsReversed = new TreeSet<>();
   public FiniteBinaryRelation() {
-    super();
   }
   
   public FiniteBinaryRelation(FiniteBinaryRelation<X,Y> rel) {
-    super(rel);
+    pairs.clear(); pairs.addAll(rel.pairs);
+    pairsReversed.clear(); pairsReversed.addAll(rel.pairsReversed);
   }
   public FiniteBinaryRelation(Iterable<X> domain, Iterable<Y> codomain, BiPredicate<X,Y> rel) {
     this(domain, codomain, Relation.fromBiPredicate(rel));
   }
   public FiniteBinaryRelation(Iterable<X> domain, Iterable<Y> codomain, Relation<X,Y> rel) {
-    super(Collections.list(new OrderedPairEnumeration<X,Y>(domain, codomain)).stream()
-      .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).collect(Collectors.toSet()));
+    Collections.list(new OrderedPairEnumeration<X,Y>(domain, codomain)).stream()
+    .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).forEach((p) -> add(p.getFirst(), p.getSecond()));
   }
   
   public static <
@@ -69,32 +72,56 @@ public class FiniteBinaryRelation<
   
   public FiniteBinaryRelation<X,Y> complement(Iterable<X> domain,Iterable<Y> codomain) {
     var u = universal(domain, codomain);
-    if(!u.containsAll(this)) {throw new RuntimeException("the relation exceeds the specified universe.");} 
+    if(!u.pairs.containsAll(this.pairs)) {throw new RuntimeException("the relation exceeds the specified universe.");} 
     return u.minus(this);
   }
   
-  public FiniteBinaryRelation<X,Y> implicitComplement() {
+  public FiniteBinaryRelation<X,Y> complement() {
     return complement(domain(), codomain());
   }
   
-  public boolean add(X a, Y b) {return super.add(OrderedPair.makeOrderedPair(a,b));}
-  public boolean remove(X a, Y b) {return super.remove(OrderedPair.makeOrderedPair(a,b));}
+  public int size() { return pairs.size(); }
+  public boolean isEmpty() { return pairs.isEmpty(); }
+  public boolean contains(OrderedPair<X,Y> p) { return this.pairs.contains(p); }
+  public boolean add(X a, Y b) {
+    var p = OrderedPair.makeOrderedPair(a,b);
+    boolean o = pairs.add(p);
+    if(o) pairsReversed.add(p.converse());
+    return o;
+  }
+  
+  public boolean remove(X a, Y b) {
+    var p = OrderedPair.makeOrderedPair(a,b);
+    boolean o = pairs.remove(p);
+    if(o) pairsReversed.remove(p.converse());
+    return o;
+  }
+  
+  public boolean containsAll(FiniteBinaryRelation<X,Y> r) { return pairs.containsAll(r.pairs); }
   
   public FiniteBinaryRelation<X,Y> intersect(FiniteBinaryRelation<X,Y> S){
     FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
-    o.addAll(this); o.retainAll(S);
+    
+    o.pairs.addAll(this.pairs);
+    o.pairsReversed.addAll(this.pairsReversed);
+    o.pairs.retainAll(S.pairs);
+    o.pairsReversed.retainAll(S.pairsReversed);
     return o;
   }
   
   public FiniteBinaryRelation<X,Y> union(FiniteBinaryRelation<X,Y> S){
     FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
-    o.addAll(this); o.addAll(S);
+    o.pairs.addAll(this.pairs);
+    o.pairsReversed.addAll(this.pairsReversed);
+    o.pairs.addAll(S.pairs);
+    o.pairsReversed.addAll(S.pairsReversed);
     return o;
   }
   
   public FiniteBinaryRelation<X,Y> minus(FiniteBinaryRelation<X,Y> e) {
     var o = new FiniteBinaryRelation<X,Y>(this);
-    o.removeAll(e);
+    o.pairs.removeAll(e.pairs);
+    o.pairsReversed.removeAll(e.pairsReversed);
     return o;
   }
   /***
@@ -106,10 +133,12 @@ public class FiniteBinaryRelation<
    */
   public <V extends Comparable<? super V>>
   FiniteBinaryRelation<X,V> compose(FiniteBinaryRelation<Y,V> S){
-     return CollectionUtils.cartesianProduct(this,S).stream().filter(
+    FiniteBinaryRelation<X,V> o = new FiniteBinaryRelation<>();
+    CollectionUtils.cartesianProduct(this.pairs,S.pairs).stream().filter(
       (t) -> t.getFirst().getSecond().equals(t.getSecond().getFirst()))
         .map((t) -> OrderedPair.makeOrderedPair(t.getFirst().getFirst(), t.getSecond().getSecond()))
-        .collect(Collectors.toCollection(FiniteBinaryRelation<X,V>::new));
+        .forEach((p) -> o.add(p.getFirst(), p.getSecond()));
+    return o;
   }
   
   /**
@@ -118,9 +147,10 @@ public class FiniteBinaryRelation<
    * @return R˘
    */
   public FiniteBinaryRelation<Y,X> converse(){
-    return stream()
-        .map((t) -> OrderedPair.makeOrderedPair(t.getSecond(), t.getFirst()))
-        .collect(Collectors.toCollection(FiniteBinaryRelation<Y,X>::new));
+    var o = new FiniteBinaryRelation<Y,X>();
+    o.pairs.addAll(pairsReversed);
+    o.pairsReversed.addAll(pairs);
+    return o;
     }
 
   /**
@@ -137,14 +167,16 @@ public class FiniteBinaryRelation<
    */
   public <W extends Comparable<? super W>>
   FiniteBinaryRelation<Y,W> rightResidual(FiniteBinaryRelation<X,W> S){
-    return
-      CollectionUtils.cartesianProduct(codomain(), S.codomain()).stream()
+    var o = new FiniteBinaryRelation<Y,W>();
+    
+    CollectionUtils.cartesianProduct(codomain(), S.codomain()).stream()
       .filter((vw) -> {
         TreeSet<X> xSw = S.leftRelata(vw.getSecond());
         TreeSet<X> xRv = leftRelata(vw.getFirst());
         
         return xSw.containsAll(xRv);})
-      .collect(Collectors.toCollection(FiniteBinaryRelation<Y,W>::new));
+      .forEach((p) -> o.add(p.getFirst(),p.getSecond()));
+    return o;
   }
   /**
    * this ← R
@@ -160,17 +192,18 @@ public class FiniteBinaryRelation<
    */
   public <V extends Comparable<? super V>>
   FiniteBinaryRelation<X,V> leftResidual(FiniteBinaryRelation<V,Y> R){
-    return
-      CollectionUtils.cartesianProduct(domain(), R.domain()).stream().filter((uv) -> {
+    var o = new FiniteBinaryRelation<X,V>();
+    CollectionUtils.cartesianProduct(domain(), R.domain()).stream().filter((uv) -> {
         TreeSet<Y> uSy = rightRelata(uv.getFirst()); 
         TreeSet<Y> vRy = R.rightRelata(uv.getSecond());
 
         return uSy.containsAll(vRy);
-      }).collect(Collectors.toCollection(FiniteBinaryRelation<X,V>::new));
+      }).forEach((p) -> o.add(p.getFirst(), p.getSecond()));
+    return o;
   }
   
   public TreeSet<X> domain(){
-    return stream().map((p) -> p.getFirst()).collect(
+    return pairs.stream().map((p) -> p.getFirst()).collect(
       Collectors.toCollection(TreeSet<X>::new));
   }
   public boolean domainCovers(Collection<X> s) {
@@ -178,14 +211,14 @@ public class FiniteBinaryRelation<
   }
   
   public TreeSet<Y> codomain(){
-    return stream().map((p) -> p.getSecond()).collect(
+    return pairs.stream().map((p) -> p.getSecond()).collect(
       Collectors.toCollection(TreeSet<Y>::new));
   }
   public boolean codomainCovers(Collection<Y> s) {
     return codomain().containsAll(s);
   }
   public BiPredicate<X,Y> related(){
-    return (t,u) -> contains(OrderedPair.makeOrderedPair(t, u));
+    return (t,u) -> pairs.contains(OrderedPair.makeOrderedPair(t, u));
   }
   
   public Predicate<Y> rightRelated(X e){
@@ -193,10 +226,15 @@ public class FiniteBinaryRelation<
   }
   
   public TreeSet<Y> rightRelata(X e) {
-    return this.stream().filter(
-      (p) -> rightRelated(e).test(p.getSecond()))
-        .map((p) -> p.getSecond()).distinct()
-        .collect(Collectors.toCollection(TreeSet<Y>::new));
+    var o = new TreeSet<Y>();
+    OrderedPair<X,Y> pivot = this.pairs.higher(OrderedPair.makeOrderedPair(e, null));
+    if(pivot == null) return o;
+    
+    for(var p : this.pairs.tailSet(pivot)) {
+      if(!p.getFirst().equals(e)) break;
+      o.add(p.getSecond());
+    }
+    return o;
   }
   
   public Predicate<X> leftRelated(Y e){
@@ -204,10 +242,15 @@ public class FiniteBinaryRelation<
   }
   
   public TreeSet<X> leftRelata(Y e) {
-    return this.stream().filter(
-      (p) -> leftRelated(e).test(p.getFirst()))
-        .map((p) -> p.getFirst()).distinct()
-        .collect(Collectors.toCollection(TreeSet<X>::new));
+    var o = new TreeSet<X>();
+    OrderedPair<Y,X> pivot = this.pairsReversed.higher(OrderedPair.makeOrderedPair(e, null));
+    if(pivot == null) return o;
+    
+    for(var p : this.pairsReversed.tailSet(pivot)) {
+      if(!p.getFirst().equals(e)) break;
+      o.add(p.getSecond());
+    }
+    return o;
   }
   
   public boolean isLeftUnique() {
@@ -241,7 +284,7 @@ public class FiniteBinaryRelation<
     PrintWriter p = new PrintWriter(path);
     CSVWriter w = new CSVWriter(p,',', '"','\\', "\n");
     
-    w.writeAll(this.stream().map((t) -> {
+    w.writeAll(this.pairs.stream().map((t) -> {
       String[] arr = new String[2];
       arr[0] = xToString.apply(t.getFirst());
       arr[1] = yToString.apply(t.getSecond());
@@ -273,12 +316,12 @@ public class FiniteBinaryRelation<
     CSVParser p = b.withSeparator(',').withQuoteChar('"').withEscapeChar('\\').build();
     CSVReaderBuilder rb = new CSVReaderBuilder(reader);
     CSVReader r = rb.withCSVParser(p).build();
-    FiniteBinaryRelation<X,Y>  o =
-      r.readAll().stream()
-      .map((s) -> {
-        return OrderedPair.makeOrderedPair(xParser.apply(s[0]), yParser.apply(s[1]));
-      })
-      .collect(Collectors.toCollection(FiniteBinaryRelation<X,Y>::new));
+    var o = new FiniteBinaryRelation<X,Y>();
+    
+    r.readAll().stream()
+      .forEach((s) -> {
+        o.add(xParser.apply(s[0]), yParser.apply(s[1]));
+      });
     r.close();
     reader.close();
     return o;
@@ -290,5 +333,10 @@ public class FiniteBinaryRelation<
     Function<String, X> xParser, 
     Function<String,Y> yParser, String path)  throws IOException, CsvException {
     return readFromCSV(xParser, yParser, new FileReader(path));
+  }
+
+  @Override
+  public Iterator<OrderedPair<X, Y>> iterator() {
+    return Iterators.unmodifiableIterator(this.pairs.iterator());
   }
 }

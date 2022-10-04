@@ -72,7 +72,7 @@ extends FiniteBinaryRelation<L, L> {
   }
   
   public HomogeneousFiniteBinaryRelation<L> complement() {
-    return new HomogeneousFiniteBinaryRelation<>(super.implicitComplement());
+    return new HomogeneousFiniteBinaryRelation<>(super.complement());
   }
   
   /**

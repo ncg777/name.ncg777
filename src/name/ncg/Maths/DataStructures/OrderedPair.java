@@ -41,6 +41,8 @@ public class OrderedPair<T extends Comparable<? super T>, U extends Comparable<?
     return y;
   }
 
+  public OrderedPair<U,T> converse() {return makeOrderedPair(y, x);}
+  
   @Override
   public int hashCode() {
     final int prime = 31;
