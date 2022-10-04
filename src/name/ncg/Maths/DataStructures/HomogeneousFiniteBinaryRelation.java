@@ -9,7 +9,6 @@ import com.opencsv.exceptions.CsvException;
 
 import name.ncg.Maths.Relations.Relation;
 
-@SuppressWarnings("serial")
 public class HomogeneousFiniteBinaryRelation<L extends Comparable<? super L>>
 extends FiniteBinaryRelation<L, L> { 
   

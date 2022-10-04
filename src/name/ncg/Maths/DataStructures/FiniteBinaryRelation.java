@@ -42,7 +42,6 @@ import name.ncg.Maths.Relations.Relation;
  * @param <X>
  * @param <Y>
  */
-@SuppressWarnings("serial")
 public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
   Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>{
