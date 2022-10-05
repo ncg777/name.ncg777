@@ -159,12 +159,12 @@ public class FiniteBinaryRelation<
     }
 
   /**
-   * this → S 
-   * this \ S
-   * 
-   * R → S := {(v,w) |∀u[uRv → uSw]}
-   * 
-   * RHS of R matching RHS of S where u_R_RHS ⊆ u_S_RHS.
+   * this → S <br />
+   * this \ S<br />
+   * <br />
+   * R → S := {(v,w) |∀u[uRv → uSw]}<br />
+   * <br />
+   * RHS of R matching RHS of S where u_R_RHS ⊆ u_S_RHS.<br />
    * 
    * @param <W>
    * @param S
@@ -184,12 +184,12 @@ public class FiniteBinaryRelation<
     return o;
   }
   /**
-   * this ← R
-   * this / R
-   * 
-   * S ← R := {(u,v) |∀w[vRw → uSw]}
-   * 
-   * LHS of S matching LHS of R where LHS_R_w ⊆ LHS_S_w.
+   * this ← R<br />
+   * this / R<br />
+   * <br />
+   * S ← R := {(u,v) |∀w[vRw → uSw]}<br />
+   * <br />
+   * LHS of S matching LHS of R where LHS_R_w ⊆ LHS_S_w.<br />
    * 
    * @param <V>
    * @param R
