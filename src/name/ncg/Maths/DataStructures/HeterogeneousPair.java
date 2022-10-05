@@ -4,6 +4,8 @@
 
 package name.ncg.Maths.DataStructures;
 
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 
 /**
  * This class represents an ordered pair of objects of 2 different types. It overrides hashCode and
@@ -63,13 +65,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
     if (getClass() != obj.getClass()) return false;
     @SuppressWarnings("unchecked")
     HeterogeneousPair<T, U> other = (HeterogeneousPair<T, U>) obj;
-    if (x == null) {
-      if (other.x != null) return false;
-    } else if (!x.equals(other.x)) return false;
-    if (y == null) {
-      if (other.y != null) return false;
-    } else if (!y.equals(other.y)) return false;
-    return true;
+    return this.compareTo(other) == 0;
   }
 
   protected HeterogeneousPair(T p_x, U p_y) {
@@ -82,50 +78,8 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
    */
   @Override
   public int compareTo(HeterogeneousPair<T, U> o) {
-    if (o == null) {
-      return 1;
-    }
-
-    if (x == null && o.x == null) {
-      if (y == null) {
-        if (o.y == null) {
-          return 0;
-        }// x = o.x = y = o.y = null
-        else {
-          return -1;
-        } // x = o.x = y = null, o.y != null
-      } else {
-        if (o.y == null) {
-          return 1;
-        } // x = o.x = o.y = null, y!=null
-        else {
-          return y.compareTo(o.y);
-        } // x = o.x = null, y!=null, o.y!=null
-      }
-    } else if (x == null && o.x != null) {
-      return -1;
-    } // x null, o.x!=null
-    else if (x != null && o.x == null) {
-      return 1;
-    } // x !=null, o.x = null
-    else { // x !=null, o.x !=null
-      if (y == null && o.y == null) {
-        return x.compareTo(o.x);
-      } // x !=null, o.x !=null, y = o.y = null
-      else if (y == null && o.y != null) {
-        return -1;
-      } // x !=null, o.x !=null, y = null, o.y!=null
-      else if (y != null && o.y == null) {
-        return 1;
-      } // x !=null, o.x !=null, y != null, o.y = null
-      else { // x, o.x, y, o.y != null
-        if (x.compareTo(o.x) == 0) {
-          return y.compareTo(o.y);
-        } else {
-          return x.compareTo(o.x);
-        }
-      }
-    }
+    return ComparisonChain.start().compare(x, o.x, Ordering.natural().nullsFirst())
+        .compare(y,o.y,Ordering.natural().nullsFirst()).result();
   }
 
   @Override

@@ -62,7 +62,11 @@ public class FiniteBinaryRelation<
     Collections.list(new HeterogeneousPairEnumeration<X,Y>(domain, codomain)).stream()
     .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).forEach((p) -> add(p.getFirst(), p.getSecond()));
   }
-  
+  public FiniteBinaryRelation(Iterable<X> domain, Function<X,Y> f) {
+    for(var x : domain) {
+      add(x, f.apply(x));
+    }
+  }
   public static <
   X extends Comparable<? super X>,
   Y extends Comparable<? super Y>>  FiniteBinaryRelation<X,Y> universal(Iterable<X> domain,Iterable<Y> codomain) {
@@ -227,7 +231,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<Y> rightRelata(X e) {
     var o = new TreeSet<Y>();
-    HeterogeneousPair<X,Y> pivot = this.pairs.higher(HeterogeneousPair.makeHeterogeneousPair(e, null));
+    HeterogeneousPair<X,Y> pivot = this.pairs.ceiling(HeterogeneousPair.makeHeterogeneousPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairs.tailSet(pivot)) {
@@ -243,7 +247,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<X> leftRelata(Y e) {
     var o = new TreeSet<X>();
-    HeterogeneousPair<Y,X> pivot = this.pairsReversed.higher(HeterogeneousPair.makeHeterogeneousPair(e, null));
+    HeterogeneousPair<Y,X> pivot = this.pairsReversed.ceiling(HeterogeneousPair.makeHeterogeneousPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairsReversed.tailSet(pivot)) {

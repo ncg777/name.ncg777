@@ -26,7 +26,9 @@ extends FiniteBinaryRelation<L, L> {
   public HomogeneousFiniteBinaryRelation(Iterable<L> domain, Relation<L,L> rel) {
     super(domain, domain,rel);
   }
-  
+  public HomogeneousFiniteBinaryRelation(Iterable<L> domain, Function<L,L> f) {
+    super(domain, f);
+  }
   public static <L extends Comparable<? super L>> HomogeneousFiniteBinaryRelation<L> identity(Iterable<L> domain) {
     return new HomogeneousFiniteBinaryRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> a.equals(b)));
   }

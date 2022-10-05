@@ -56,7 +56,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   public final void testCompose() {
 
     FiniteBinaryRelation<String,String> o = r.compose(s);
-    
+
     assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("a", "c")));
     assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("a", "c")));
     assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("b", "d")));
