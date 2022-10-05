@@ -134,10 +134,9 @@ public class FiniteBinaryRelation<
     var o = new FiniteBinaryRelation<X,V>();
     CollectionUtils.cartesianProduct(domain(), S.codomain()).stream()
       .filter((xv) -> {
-        TreeSet<Y> x = rightRelata(xv.getFirst());
-        TreeSet<Y> v = S.leftRelata(xv.getSecond());
-        x.retainAll(v);
-        return x.size() > 0;})
+        TreeSet<Y> common = rightRelata(xv.getFirst());
+        common.retainAll(S.leftRelata(xv.getSecond()));
+        return common.size() > 0;})
       .forEach((p) -> o.add(p.getFirst(),p.getSecond()));
     return o;
   }
