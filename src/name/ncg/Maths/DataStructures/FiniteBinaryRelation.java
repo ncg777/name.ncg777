@@ -131,11 +131,14 @@ public class FiniteBinaryRelation<
    */
   public <V extends Comparable<? super V>>
   FiniteBinaryRelation<X,V> compose(FiniteBinaryRelation<Y,V> S){
-    FiniteBinaryRelation<X,V> o = new FiniteBinaryRelation<>();
-    CollectionUtils.cartesianProduct(this.pairs,S.pairs).stream().filter(
-      (t) -> t.getFirst().getSecond().equals(t.getSecond().getFirst()))
-        .map((t) -> HeterogeneousPair.makeHeterogeneousPair(t.getFirst().getFirst(), t.getSecond().getSecond()))
-        .forEach((p) -> o.add(p.getFirst(), p.getSecond()));
+    var o = new FiniteBinaryRelation<X,V>();
+    CollectionUtils.cartesianProduct(domain(), S.codomain()).stream()
+      .filter((xv) -> {
+        TreeSet<Y> x = rightRelata(xv.getFirst());
+        TreeSet<Y> v = S.leftRelata(xv.getSecond());
+        x.retainAll(v);
+        return x.size() > 0;})
+      .forEach((p) -> o.add(p.getFirst(),p.getSecond()));
     return o;
   }
   
@@ -336,5 +339,10 @@ public class FiniteBinaryRelation<
   @Override
   public Iterator<HeterogeneousPair<X, Y>> iterator() {
     return Iterators.unmodifiableIterator(this.pairs.iterator());
+  }
+  
+  @Override
+  public String toString() {
+    return pairs.toString();
   }
 }
