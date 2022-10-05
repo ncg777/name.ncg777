@@ -34,13 +34,7 @@ public class HomogeneousPair<T extends Comparable<? super T>>
     if (getClass() != obj.getClass()) return false;
     @SuppressWarnings("unchecked")
     HomogeneousPair<T> other = (HomogeneousPair<T>) obj;
-    if (x == null) {
-      if (other.x != null) return false;
-    } else if (!x.equals(other.x)) return false;
-    if (y == null) {
-      if (other.y != null) return false;
-    } else if (!y.equals(other.y)) return false;
-    return true;
+    return this.compareTo(other) == 0;
   }
 
   private HomogeneousPair(T p_x, T p_y) {
