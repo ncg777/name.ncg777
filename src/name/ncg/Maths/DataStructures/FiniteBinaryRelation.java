@@ -17,6 +17,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Ordering;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -46,8 +47,8 @@ public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
   Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>{
   
-  protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>();
-  protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>();
+  protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>(Ordering.natural().nullsFirst());
+  protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
   public FiniteBinaryRelation() {
   }
   
@@ -207,16 +208,18 @@ public class FiniteBinaryRelation<
   }
   
   public TreeSet<X> domain(){
-    return pairs.stream().map((p) -> p.getFirst()).collect(
-      Collectors.toCollection(TreeSet<X>::new));
+    TreeSet<X> o = new TreeSet<X>(Ordering.natural().nullsFirst());
+    for(var p : pairs) o.add(p.getFirst());
+    return o;
   }
   public boolean domainCovers(Collection<X> s) {
     return domain().containsAll(s);
   }
   
   public TreeSet<Y> codomain(){
-    return pairs.stream().map((p) -> p.getSecond()).collect(
-      Collectors.toCollection(TreeSet<Y>::new));
+    TreeSet<Y> o = new TreeSet<Y>(Ordering.natural().nullsFirst());
+    for(var p : pairs) o.add(p.getSecond());
+    return o;
   }
   public boolean codomainCovers(Collection<Y> s) {
     return codomain().containsAll(s);
@@ -230,12 +233,12 @@ public class FiniteBinaryRelation<
   }
   
   public TreeSet<Y> rightRelata(X e) {
-    var o = new TreeSet<Y>();
+    var o = new TreeSet<Y>(Ordering.natural().nullsFirst());
     HeterogeneousPair<X,Y> pivot = this.pairs.ceiling(HeterogeneousPair.makeHeterogeneousPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairs.tailSet(pivot)) {
-      if(!p.getFirst().equals(e)) break;
+      if(!((e==null && p.getFirst() == null) || (e != null && e.equals(p.getFirst())))) break;
       o.add(p.getSecond());
     }
     return o;
@@ -246,12 +249,12 @@ public class FiniteBinaryRelation<
   }
   
   public TreeSet<X> leftRelata(Y e) {
-    var o = new TreeSet<X>();
+    var o = new TreeSet<X>(Ordering.natural().nullsFirst());
     HeterogeneousPair<Y,X> pivot = this.pairsReversed.ceiling(HeterogeneousPair.makeHeterogeneousPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairsReversed.tailSet(pivot)) {
-      if(!p.getFirst().equals(e)) break;
+      if(!((e==null && p.getFirst() == null) || (e != null && e.equals(p.getFirst())))) break;
       o.add(p.getSecond());
     }
     return o;

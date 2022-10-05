@@ -21,6 +21,8 @@ public class FiniteBinaryRelationTests extends TestCase {
   protected void setUp() throws Exception {
     super.setUp();
     r = new FiniteBinaryRelation<String,String>();
+    r.add(null,"b");
+    r.add("a",null);
     r.add("a","b");
     r.add("a","c");
     r.add("b","c");
@@ -28,6 +30,8 @@ public class FiniteBinaryRelationTests extends TestCase {
     r.add("d","f");
     
     s = new FiniteBinaryRelation<String,String>();
+    s.add(null,"c");
+    s.add("b",null);
     s.add("b","c");
     s.add("b","d");
     s.add("c","d");
@@ -56,12 +60,15 @@ public class FiniteBinaryRelationTests extends TestCase {
   public final void testCompose() {
 
     FiniteBinaryRelation<String,String> o = r.compose(s);
-
+    assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair(null, null)));
+    assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair(null, "c")));
+    assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair(null, "c")));
+    assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("a", null)));
     assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("a", "c")));
-    assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("a", "c")));
+    assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("a", "d")));
     assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("b", "d")));
     assertTrue(o.contains(HeterogeneousPair.makeHeterogeneousPair("d", "g")));
-    assertTrue(o.size()==4);
+    assertTrue(o.size()==8);
   }
 
   public final void testRight_residual() {
@@ -80,7 +87,8 @@ public class FiniteBinaryRelationTests extends TestCase {
 
   public final void testDomain() {
     TreeSet<String> d = r.domain();
-    assertTrue(d.size()==3);
+    assertTrue(d.size()==4);
+    d.contains(null);
     d.contains("a");
     d.contains("b");
     d.contains("d");
@@ -88,7 +96,8 @@ public class FiniteBinaryRelationTests extends TestCase {
 
   public final void testCodomain() {
     TreeSet<String> c = r.codomain();
-    assertTrue(c.size()==4);
+    assertTrue(c.size()==5);
+    c.contains(null);
     c.contains("b");
     c.contains("c");
     c.contains("e");
