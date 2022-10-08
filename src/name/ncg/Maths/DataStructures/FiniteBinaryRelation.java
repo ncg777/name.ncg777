@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -51,7 +52,11 @@ public class FiniteBinaryRelation<
   protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
   public FiniteBinaryRelation() {
   }
-  
+  public FiniteBinaryRelation(Map<X,Y> map) {
+    for(var e : map.entrySet()) {
+      add(e.getKey(),e.getValue());
+    }
+  }
   public FiniteBinaryRelation(FiniteBinaryRelation<X,Y> rel) {
     pairs.clear(); pairs.addAll(rel.pairs);
     pairsReversed.clear(); pairsReversed.addAll(rel.pairsReversed);

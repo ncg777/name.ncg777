@@ -80,6 +80,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
     return o;
   }
+  
   public static Sequence parse(String s) {
     String[] ss = s.trim().split("\\s+");
     Sequence output = new Sequence();
@@ -97,6 +98,13 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   
   public static Sequence tri(int o, int l,  int a) { 
     return stair(o,l,a).juxtapose(stair(o+l*a,l,-a));
+  }
+  
+  public HomogeneousFiniteBinaryRelation<Integer> toRelation() {
+    var o = new HomogeneousFiniteBinaryRelation<Integer>();
+    int i=0;
+    for(var e : this) o.add(i++, e);
+    return o;
   }
   
   public Sequence hold(Rhythm r) {

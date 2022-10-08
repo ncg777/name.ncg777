@@ -1,6 +1,7 @@
 package name.ncg.Maths.DataStructures;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -18,7 +19,9 @@ extends FiniteBinaryRelation<L, L> {
   public HomogeneousFiniteBinaryRelation(FiniteBinaryRelation<L,L> rel) {
     super(rel);
   }
-  
+  public HomogeneousFiniteBinaryRelation(Map<L,L> map) {
+    super(map);
+  }
   public HomogeneousFiniteBinaryRelation(Iterable<L> domain, BiPredicate<L,L> rel) {
     super(domain, domain,Relation.fromBiPredicate(rel));
   }
