@@ -40,7 +40,7 @@ public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparabl
       for(int j=0; j<bytesInBeat; j++) {
         sb.append(arr[(i*bytesInBeat)+j] + " ");
       }
-      l.add(BeatRhythm.parseBeatRhythm(sb.toString()));
+      l.add(BeatRhythm.parseBeatRhythm(sb.toString().trim()));
     }
     return l;
   }

@@ -41,7 +41,7 @@ public class BeatRhythm extends Rhythm {
   private static String toHexString(BitSet b) {
     StringBuilder sb = new StringBuilder();
     
-    for(int i=0; i<12; i++) {
+    for(int i=0; i<Clicks/8; i++) {
       BitSet byt = new BitSet(8);
       for(int j=0; j<8;j++) {
         byt.set(j, b.get((i*8) + j));
@@ -49,10 +49,6 @@ public class BeatRhythm extends Rhythm {
       sb.append(ByteToString(byt) + " ");
     }
     return sb.toString().trim();
-  }
-  @Override
-  public void set(int i, boolean v) {
-    super.set(i, v);
   }
   
   @Override
@@ -89,9 +85,12 @@ public class BeatRhythm extends Rhythm {
     return BeatRhythm.parseBeatRhythm(toHexString(new Combination(Clicks, input)));
   }
   
-  static BeatRhythm parseBeatRhythm(String s) {
-    if(!beatRhythmDict.containsKey(s)) throw new RuntimeException("not found");
-    return beatRhythmDict.get(s); 
+  public static BeatRhythm parseBeatRhythm(String s) {
+    if(!beatRhythmDict.containsKey(s.trim())) throw new RuntimeException("not found");
+    return beatRhythmDict.get(s.trim()); 
+  }
+  public static BeatRhythm fromRhythmClicks(Rhythm r) {
+    return parseBeatRhythm(toHexString(r));
   }
   
   static TreeSet<BeatRhythm> Generate(int n) {
@@ -110,11 +109,6 @@ public class BeatRhythm extends Rhythm {
 
     for (int l = 0; l < z; l++) {
       Necklace necklace = arr[l];
-
-      for (int k = 0; k < n; k++) {
-        if (necklace.get(k).equals(1)) {
-        }
-      }
 
       for (int j = 0; j < n; j++) {
         TreeSet<Integer> c = new TreeSet<Integer>();
