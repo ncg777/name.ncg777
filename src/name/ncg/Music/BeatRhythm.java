@@ -74,7 +74,7 @@ public class BeatRhythm extends Rhythm {
   }
   
   static {
-    for(int i=1;i<=8;i++) {
+    for(int i=1;i<=4;i++) {
       if(Clicks%i == 0) { beatRhythms.addAll(Generate(i)); } 
     }
     

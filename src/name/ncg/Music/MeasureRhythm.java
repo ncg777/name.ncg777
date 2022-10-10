@@ -5,34 +5,61 @@ import java.util.BitSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparable<BeatRhythmList>{
+import name.ncg.Maths.Enumerations.MixedRadixEnumeration;
+
+public class MeasureRhythm extends LinkedList<BeatRhythm>  implements Comparable<MeasureRhythm>{
   private static final long serialVersionUID = 1L;
 
-  public BeatRhythmList(List<BeatRhythm> m_l) {
+  public MeasureRhythm(List<BeatRhythm> m_l) {
     super();
     for (BeatRhythm i : m_l) {
       this.add(i);
     }
   }
 
-  public BeatRhythmList() {
+  public MeasureRhythm() {
     super();
   }
   
   public Rhythm asRhythm(){
     int n = size()*BeatRhythm.Clicks;
     BitSet b = new BitSet(n);
+    var arr = new ArrayList<Rhythm>();
+    for(var br : this) arr.add(br.getRhythmClicks());
     for(int i=0;i<n;i++){
-      b.set(i, this.get(i / BeatRhythm.Clicks).get(i%BeatRhythm.Clicks));
+      b.set(i, arr.get(i / BeatRhythm.Clicks).get(i%BeatRhythm.Clicks));
     }
     return new Rhythm(b,n);
   }
-  static public BeatRhythmList parseBeatRhythmSeq(String str) {
+  
+  public static TreeSet<MeasureRhythm> generate(int nbBeats) {
+    ArrayList<Rhythm> brs = BeatRhythm.getBeatRhythms().stream().map(b -> b.getRhythmClicks())
+        .collect(Collectors.toCollection(ArrayList<Rhythm>::new));
+    var brs_sz = brs.size();
+    Integer base[] = new Integer[nbBeats];
+    for(int i=0;i<nbBeats;i++) { base[i] = brs_sz; }
+    var mre = new MixedRadixEnumeration(base);
+    
+    TreeSet<MeasureRhythm> o = new TreeSet<>();
+    
+    while(mre.hasMoreElements()) {
+      var c = mre.nextElement();
+      var a = new ArrayList<Rhythm>();
+      for(int i=0; i<nbBeats;i++) {
+        a.add(brs.get(c[i]));
+      }
+      o.add(MeasureRhythm.fromRhythmArray(a));
+    }
+    return o;
+  }
+  
+  static public MeasureRhythm parseMeasureRhythm(String str) {
     String[] arr = str.trim().split("\\s+");
     int bytesInBeat = BeatRhythm.Clicks/8;
     if(arr.length%(bytesInBeat) != 0) throw new RuntimeException("segmentation error");
-    BeatRhythmList l = new BeatRhythmList();
+    MeasureRhythm l = new MeasureRhythm();
     int n = arr.length / (bytesInBeat);
     
     for(int i=0; i<n; i++) {
@@ -44,14 +71,28 @@ public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparabl
     }
     return l;
   }
+  
+  public ArrayList<MeasureRhythm> splitInPairs() {
+    if(this.size()%2 != 0) throw new RuntimeException("segmentation error");
+    
+    var o = new ArrayList<MeasureRhythm>();
+    
+    for(int i=0;i<this.size()/2;i++) {
+      var t = new MeasureRhythm();
+      t.add(this.get(i*2));
+      t.add(this.get((i*2)+1));
+      o.add(t);
+    }
+    return o;
+  }
 
-  public boolean isEquivalentUnderSyncronizedRotation(BeatRhythmList other) {
+  public boolean isEquivalentUnderSyncronizedRotation(MeasureRhythm other) {
     if(other == null) return false;
     if(this.size() != other.size()) return false;
     
     for(int i=0;i<this.size();i++) {
       
-      BeatRhythmList rot = BeatRhythmList.rotate(other, i*BeatRhythm.Clicks);
+      MeasureRhythm rot = MeasureRhythm.rotate(other, i*BeatRhythm.Clicks);
       boolean eq = true;
       for(int j=0;j<rot.size();j++) {
         if(!this.get(j).equals(rot.get(j))) {
@@ -64,11 +105,11 @@ public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparabl
     return false;
   }
   
-  public static ArrayList<BeatRhythmList> fromRhythmArray(ArrayList<Rhythm> list) {
-    ArrayList<BeatRhythmList> o = new ArrayList<>();
+  public static MeasureRhythm fromRhythmArray(ArrayList<Rhythm> list) {
+    MeasureRhythm o = new MeasureRhythm();
     
     for(Rhythm r : list) {
-      o.add(BeatRhythmList.fromRhythm(r));
+      o.add(BeatRhythm.fromRhythmClicks(r));
     }
     return o;
   }
@@ -87,12 +128,25 @@ public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparabl
     return t;
   }
   
-  public static BeatRhythmList rotate(BeatRhythmList r, int t) {
+  @Override
+  public int hashCode() {
+    return toString().hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (!super.equals(obj)) return false;
+    if (getClass() != obj.getClass()) return false;
+    return toString().equals(((MeasureRhythm)obj).toString());
+  }
+
+  public static MeasureRhythm rotate(MeasureRhythm r, int t) {
     return fromRhythm(new Rhythm(r.asRhythm().rotate(t), r.size()*BeatRhythm.Clicks));
   }
   
-  public static BeatRhythmList fromRhythm(Rhythm r){
-    BeatRhythmList output = new BeatRhythmList();
+  public static MeasureRhythm fromRhythm(Rhythm r){
+    MeasureRhythm output = new MeasureRhythm();
     if(r.getN() % BeatRhythm.Clicks != 0) {
       throw new RuntimeException("Rhythm's size is not divided by BeatRhythm.Clicks.");
     }
@@ -114,7 +168,7 @@ public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparabl
     return this.size()*BeatRhythm.Clicks;
   }
 
-  public static Boolean[] toBooleanArray(BeatRhythmList a) {
+  public static Boolean[] toBooleanArray(MeasureRhythm a) {
 
     Boolean output[] = new Boolean[a.size() * BeatRhythm.Clicks];
     for (int i = 0; i < a.size() * BeatRhythm.Clicks; i++) {
@@ -131,8 +185,8 @@ public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparabl
     return output;
   }
 
-  public static BeatRhythmList juxt(BeatRhythmList a, BeatRhythmList b) {
-    BeatRhythmList output = new BeatRhythmList();
+  public static MeasureRhythm juxt(MeasureRhythm a, MeasureRhythm b) {
+    MeasureRhythm output = new MeasureRhythm();
 
     for (int i = 0; i < a.size(); i++) {
       output.add(a.get(i));
@@ -143,14 +197,14 @@ public class BeatRhythmList extends LinkedList<BeatRhythm>  implements Comparabl
     return output;
   }
 
-  public void append(BeatRhythmList a) {
+  public void append(MeasureRhythm a) {
     for (int i = 0; i < a.size(); i++) {
       this.add(a.get(i));
     }
   }
 
   @Override
-  public int compareTo(BeatRhythmList o) {
+  public int compareTo(MeasureRhythm o) {
     return o.toString().compareTo(this.toString());
   }
 }
