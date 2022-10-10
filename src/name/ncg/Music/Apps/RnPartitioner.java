@@ -10,7 +10,6 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 
-import name.ncg.Maths.Combination;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R12List;
 import name.ncg.Music.R16List;
@@ -21,7 +20,6 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.TreeSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -40,7 +38,7 @@ public class RnPartitioner {
   private JTextField txtPartition;
   private JTextArea txtResult;
   private JSpinner spinner;
-  private JComboBox comboBox = new JComboBox<Rn>(new DefaultComboBoxModel<Rn>(Rn.values()));;
+  private JComboBox<Rn> comboBox = new JComboBox<Rn>(new DefaultComboBoxModel<Rn>(Rn.values()));;
   /**
    * Launch the application.
    */
@@ -105,7 +103,7 @@ public class RnPartitioner {
           int n= r1.getN();
           ArrayList<Rhythm> output = new ArrayList<Rhythm>();
           
-          for(int i=0;i<pdistinct;i++) output.add(new Rhythm(new BitSet(), n));
+          for(int i=0;i<pdistinct;i++) output.add(Rhythm.buildRhythm(new BitSet(), n));
           for(int i=0;i<n;i++) {
             output.get(p.get(i%k)).set(i, r1.get(i));
           }
@@ -125,7 +123,7 @@ public class RnPartitioner {
           int n= r1.getN();
           ArrayList<Rhythm> output = new ArrayList<Rhythm>();
           
-          for(int i=0;i<pdistinct;i++) output.add(new Rhythm(new BitSet(), n));
+          for(int i=0;i<pdistinct;i++) output.add(Rhythm.buildRhythm(new BitSet(), n));
           for(int i=0;i<n;i++) {
             output.get(p.get(i%k)).set(i, r1.get(i));
           }
@@ -161,7 +159,7 @@ public class RnPartitioner {
     });
     
     
-    spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
     JLabel lblMult = new JLabel("Mult:");
     lblMult.setFont(new Font("Unifont", Font.PLAIN, 11));

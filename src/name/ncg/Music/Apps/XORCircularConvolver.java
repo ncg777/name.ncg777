@@ -98,10 +98,11 @@ public class XORCircularConvolver {
           }
         }
         if(comboBox.getSelectedItem() == Rn.Hex) {
-          txtResult.setText(R16List.fromRhythm(new Rhythm(bs, carrier.getN())).toString());
+          
+          txtResult.setText(R16List.fromRhythm(Rhythm.buildRhythm(bs,carrier.getN())).toString());
         }
         if(comboBox.getSelectedItem() == Rn.Octal) {
-          txtResult.setText(R12List.fromRhythm(new Rhythm(bs, carrier.getN())).toString());
+          txtResult.setText(R12List.fromRhythm(Rhythm.buildRhythm(bs,carrier.getN())).toString());
         }
         
         

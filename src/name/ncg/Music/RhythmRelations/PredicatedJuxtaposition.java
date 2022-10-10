@@ -22,7 +22,7 @@ Relation<Rhythm, Rhythm>   {
     BitSet bs = new BitSet(ns);
     for(int i=0;i<a.getN();i++){bs.set(i,a.get(i));}
     for(int i=0;i<b.getN();i++){bs.set(i+a.getN(),b.get(i));}
-    Rhythm r = new Rhythm(bs, ns);
+    Rhythm r = Rhythm.buildRhythm(bs, ns);
     
     return ld.apply(r);
   }

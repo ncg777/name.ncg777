@@ -88,7 +88,7 @@ public class R16Divider {
           txtResult.setText("too few bytes");  
         } else {
           ArrayList<Rhythm> o = new ArrayList<Rhythm>();
-          for(int i=0;i<div;i++) {o.add(new Rhythm(new BitSet(), d));}
+          for(int i=0;i<div;i++) {o.add(Rhythm.buildRhythm(new BitSet(), d));}
           
           for(int i=0;i<d;i++) {
             

@@ -113,7 +113,19 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return this.compareTo((Combination) obj) == 0;
   }
-
+  
+  public String toBinaryString() {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < m_n; i++) {
+      if (this.get(i)) {
+        sb.append("1");
+      } else {
+        sb.append("0");
+      }
+    }
+    return sb.toString();
+  }
+  
   @Override
   public String toString() {
 

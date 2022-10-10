@@ -170,7 +170,7 @@ public class RhythmDiluter {
     
     int newLength = n * (to/from);
     
-    Rhythm o = new Rhythm(new BitSet(), newLength);
+    Rhythm o = Rhythm.buildRhythm(new BitSet(), newLength);
     for(int i=0; i<(n/from);i++) {
       
       for(int j=0;j<from;j++) {

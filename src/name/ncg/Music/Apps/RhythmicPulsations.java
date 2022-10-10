@@ -142,7 +142,7 @@ public class RhythmicPulsations {
             }
           }
           
-          Rhythm rh = new Rhythm(new BitSet(scompo_sum), scompo_sum);
+          Rhythm rh = Rhythm.buildRhythm(new BitSet(scompo_sum), scompo_sum);
           int acc = 0;
           
           for(int i=0; i<scompo.size(); i++) {

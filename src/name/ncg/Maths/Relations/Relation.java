@@ -4,6 +4,7 @@ import java.util.function.BiPredicate;
 
 import com.google.common.base.Predicate;
 
+import name.ncg.Maths.DataStructures.HeterogeneousPair;
 import name.ncg.Maths.Predicates.BoundRelationFirst;
 import name.ncg.Maths.Predicates.BoundRelationSecond;
 
@@ -15,7 +16,7 @@ public interface Relation<T extends Comparable<? super T>, U extends Comparable<
       }
     };
   }
-  
+  public default boolean apply(HeterogeneousPair<T,U> p) { return apply(p.getFirst(), p.getSecond()); }
   boolean apply(T a, U b);
 
   public default boolean test(T t, U u) {return apply(t,u); }

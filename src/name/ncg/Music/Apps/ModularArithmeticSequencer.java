@@ -110,7 +110,7 @@ public class ModularArithmeticSequencer {
         ArrayList<R16List> rs = new ArrayList<>();
         
         for(int i: distinct) {
-          Rhythm r = new Rhythm(new BitSet(), n);
+          Rhythm r = Rhythm.buildRhythm(new BitSet(), n);
           
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}

@@ -17,8 +17,10 @@ import name.ncg.Maths.DataStructures.Sequence;
 public class Rhythm extends Combination implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
-  public Rhythm(BitSet b, int n) {
+  protected Rhythm(int n, Set<Integer> s) {
+    super(n,s);
+  }
+  protected Rhythm(BitSet b, int n) {
     super(b, n);
   }
   
@@ -193,23 +195,12 @@ public class Rhythm extends Combination implements Serializable {
     }
     return o;
   }
+  
   @Override
   public String toString() {
     return this.toBinaryString();
   }
 
-  public String toBinaryString() {
-    String output = "";
-    for (int i = 0; i < m_n; i++) {
-      if (this.get(i)) {
-        output += "1";
-      } else {
-        output += "0";
-      }
-    }
-    return output;
-  }
-  
   public static boolean equivalentUnderRotation(Rhythm a, Rhythm b) {
     for (int i = 0; i < a.m_n; i++) {
       if (a.equals(rotate(b, i))) {

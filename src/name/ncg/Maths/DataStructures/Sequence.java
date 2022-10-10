@@ -107,6 +107,22 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return o;
   }
   
+  public Sequence composeWith(Sequence s) {
+    var rel = this.toRelation().compose(s.toRelation());
+    
+    var domain = rel.domain();
+    if(domain.first() == 0 && domain.last() == domain.size()-1) {
+      int n = domain.last();
+      Sequence o = new Sequence();
+      for(int i=0;i<=n;i++) {
+        o.add(rel.rightRelata(i).first());
+      }
+      return o;
+    } else {
+      throw new RuntimeException("sequence cannot be composed with other sequence");
+    }
+  }
+  
   public Sequence hold(Rhythm r) {
     int n = r.getN();
     int k = r.getK();

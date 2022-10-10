@@ -110,8 +110,8 @@ public class LyricalGuideMaker {
         }
       }
       
-      Rhythm rh = new Rhythm(new BitSet(scompo_sum), scompo_sum);
-      Rhythm baserh = new Rhythm(new BitSet(scompo_sum), scompo_sum);
+      Rhythm rh = Rhythm.buildRhythm(new BitSet(scompo_sum), scompo_sum);
+      Rhythm baserh = Rhythm.buildRhythm(new BitSet(scompo_sum), scompo_sum);
       
       int acc = 0;
       
