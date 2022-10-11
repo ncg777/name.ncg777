@@ -15,6 +15,7 @@ import name.ncg.Maths.DataStructures.CollectionUtils;
 import name.ncg.Maths.DataStructures.Matrix;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Maths.Relations.Relation;
+import name.ncg.Music.BeatRhythm;
 import name.ncg.Music.MeasureRhythm;
 import name.ncg.Music.Rhythm;
 import name.ncg.Music.RhythmPredicates.Bypass;
@@ -156,7 +157,7 @@ public class RhythmMatrix96ClicksBeatPairs {
                     pred0 = new Even();
                     break;
                   case 6:
-                    pred0 = new Ordinal(96);
+                    pred0 = new Ordinal(BeatRhythm.Clicks*2);
                     break;
                 }
                 pred = Predicates.and(pred, pred0);
@@ -193,7 +194,7 @@ public class RhythmMatrix96ClicksBeatPairs {
                     relSimul0 = new PredicatedDifferences(new Even());
                     break;
                   case 6:
-                    relSimul0 = new PredicatedDifferences(new Ordinal(96));
+                    relSimul0 = new PredicatedDifferences(new Ordinal(BeatRhythm.Clicks*2));
                     break;
                 }
                 relSimul = Relation.and(relSimul, relSimul0);
