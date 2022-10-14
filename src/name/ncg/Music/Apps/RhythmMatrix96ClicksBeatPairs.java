@@ -21,6 +21,7 @@ import name.ncg.Music.Rhythm;
 import name.ncg.Music.RhythmPredicates.Bypass;
 import name.ncg.Music.RhythmPredicates.EntropicDispersion;
 import name.ncg.Music.RhythmPredicates.Even;
+import name.ncg.Music.RhythmPredicates.LowEntropy;
 import name.ncg.Music.RhythmPredicates.Oddity;
 import name.ncg.Music.RhythmPredicates.Ordinal;
 import name.ncg.Music.RhythmPredicates.ShadowContourIsomorphic;
@@ -154,9 +155,12 @@ public class RhythmMatrix96ClicksBeatPairs {
                     pred0 = new EntropicDispersion();
                     break;
                   case 5:
-                    pred0 = new Even();
+                    pred0 = new LowEntropy();
                     break;
                   case 6:
+                    pred0 = new Even();
+                    break;
+                  case 7:
                     pred0 = new Ordinal(BeatRhythm.Clicks*2);
                     break;
                 }
@@ -191,9 +195,12 @@ public class RhythmMatrix96ClicksBeatPairs {
                     relSimul0 = new PredicatedDifferences(new EntropicDispersion());
                     break;
                   case 5:
-                    relSimul0 = new PredicatedDifferences(new Even());
+                    relSimul0 = new PredicatedDifferences(new LowEntropy());
                     break;
                   case 6:
+                    relSimul0 = new PredicatedDifferences(new Even());
+                    break;
+                  case 7:
                     relSimul0 = new PredicatedDifferences(new Ordinal(BeatRhythm.Clicks*2));
                     break;
                 }
@@ -321,11 +328,11 @@ public class RhythmMatrix96ClicksBeatPairs {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Even</li>\r\n<li>Ordinal</li>\r\n</ol></html>");
+    lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li><li>Even</li>\r\n<li>Ordinal</li>\r\n</ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Even</li>\r\n<li>Ordinal</li>\r\n</ol></html>");
+    lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li><li>Even</li>\r\n<li>Ordinal</li>\r\n</ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
