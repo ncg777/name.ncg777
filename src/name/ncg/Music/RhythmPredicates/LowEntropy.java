@@ -10,7 +10,7 @@ public class LowEntropy implements Predicate<Rhythm> {
   
   @Override
   public boolean apply(Rhythm arg0) {
-    return cd.apply(arg0).not().quantize(0.25);
+    return cd.apply(arg0).not().quantize(0.75);
   }
 
 }
