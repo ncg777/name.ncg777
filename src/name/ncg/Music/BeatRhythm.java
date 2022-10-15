@@ -17,6 +17,7 @@ public class BeatRhythm extends Rhythm {
   private static final long serialVersionUID = -5152258002409941959L;
   final public static int Clicks = 96; // must be divisible by 8
   final private int bitlen;
+  final private static int MAX_N = 4;
   private static TreeSet<BeatRhythm> beatRhythms = new TreeSet<>();
   private static TreeMap<String, BeatRhythm> beatRhythmDict = new TreeMap<>();
   
@@ -74,7 +75,7 @@ public class BeatRhythm extends Rhythm {
   }
   
   static {
-    for(int i=1;i<=4;i++) {
+    for(int i=1;i<=MAX_N;i++) {
       if(Clicks%i == 0) { beatRhythms.addAll(Generate(i)); } 
     }
     

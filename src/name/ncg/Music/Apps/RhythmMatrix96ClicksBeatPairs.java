@@ -177,7 +177,7 @@ public class RhythmMatrix96ClicksBeatPairs {
               }
               Relation<Rhythm, Rhythm> relHoriz = new PredicatedJuxtaposition(pred);
               
-              Relation<Rhythm, Rhythm> relSimul = new name.ncg.Music.RhythmRelations.Bypass();
+              Relation<Rhythm, Rhythm> relSimul = new name.ncg.Music.RhythmRelations.CompatibleBeatRhythms();
               for(int i=0;i<diffModes.size();i++) {
                 int diffMode = diffModes.get(i);
                 Relation<Rhythm, Rhythm> relSimul0 = null;

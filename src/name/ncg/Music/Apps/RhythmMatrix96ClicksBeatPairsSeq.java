@@ -55,7 +55,7 @@ public class RhythmMatrix96ClicksBeatPairsSeq {
    */
   private void initialize() {
     frmRseq = new JFrame();
-    frmRseq.setTitle("RhythmMatrix96ClicksBeatPairs Seq");
+    frmRseq.setTitle("RhythmMatrix96ClicksBeatPairsSeq");
     frmRseq.setBounds(100, 100, 471, 587);
     frmRseq.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
