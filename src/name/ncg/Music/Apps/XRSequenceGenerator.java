@@ -94,7 +94,6 @@ public class XRSequenceGenerator {
         
         ArrayList<Double> output = new ArrayList<Double>();
         String o = "";
-        //double triple = 0.667;
         double half = 0.5;
         for(int i=0;i<comp.size();i++) {
           int n = comp.get(i);
@@ -107,9 +106,6 @@ public class XRSequenceGenerator {
             possibles.add(half);
           }
           
-          //if(n <= 8 && (n%2) == 0) {
-            //possibles.add(triple);
-          //}
           for(int j=2;j<n;j++) {
             if(Numbers.lcm(n, j) == n) possibles.add(Integer.valueOf(j).doubleValue());
           }
@@ -133,8 +129,6 @@ public class XRSequenceGenerator {
           output.add(next);
           if(next == half) {
             o += "0.5";
-          //} else if(next == triple) {
-            //o += "0.667";
           } else {          
             o += Long.valueOf(Math.round(next)).toString();
           }

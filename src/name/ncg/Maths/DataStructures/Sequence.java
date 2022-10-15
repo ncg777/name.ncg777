@@ -32,9 +32,14 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     UP,
     DOWN,
     UPDOWN,
-    DOWNUP
+    DOWNUP,
+    SIGMAUP,
+    SIGMADOWN
   }
   
+  public static Sequence arp(ArpType arpType, int k) {
+    return arp(arpType,k,false,false);
+  }
   public static Sequence arp(ArpType arpType, int k, boolean repeatBottom, boolean repeatTop) {
     if(k < 2) { throw new RuntimeException("k<2"); }
     Sequence o = new Sequence();
@@ -76,6 +81,16 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
           o.add(0, k-1);
         }
         o = o.juxtapose(Sequence.stair(1, k-2,1));
+        break;
+      case SIGMAUP:
+        for(int i=0; i<k;i++) {
+          o = o.juxtapose(Sequence.stair(0, i+1, 1));
+        }
+        break;
+      case SIGMADOWN:
+        for(int i=0; i<k;i++) {
+          o = o.juxtapose(Sequence.stair(k-1, i+1, -1));
+        }
         break;
     }
     return o;
