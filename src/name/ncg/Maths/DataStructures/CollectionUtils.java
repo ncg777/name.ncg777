@@ -133,13 +133,18 @@ public class CollectionUtils {
     }
     
     double[] normalizedWeights = new double[n];
-    double sum = 0;
-    
+    double sum = 0.0;
+    double sum_normalized = 0.0;
     for(int j=0; j<n;j++) {
       sum += weights[j];
     }
     for(int j=0; j<n;j++) {
-      normalizedWeights[j] = weights[j]/sum;
+      if(j == n-1) {
+        normalizedWeights[j] = 1.0 - sum_normalized;
+      } else {
+        normalizedWeights[j] = weights[j]/sum;
+        sum_normalized += normalizedWeights[j];  
+      }
     }
     
     double acc = 0.0;

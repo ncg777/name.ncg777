@@ -25,7 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
 
-public class XRSequenceGenerator {
+public class XRSequenceGenerator96 {
 
   private JFrame frmXrSequenceGenerator;
   private JTextField textRhythm;
@@ -38,7 +38,7 @@ public class XRSequenceGenerator {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          XRSequenceGenerator window = new XRSequenceGenerator();
+          XRSequenceGenerator96 window = new XRSequenceGenerator96();
           window.frmXrSequenceGenerator.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -50,7 +50,7 @@ public class XRSequenceGenerator {
   /**
    * Create the application.
    */
-  public XRSequenceGenerator() {
+  public XRSequenceGenerator96() {
     initialize();
   }
 
@@ -59,7 +59,7 @@ public class XRSequenceGenerator {
    */
   private void initialize() {
     frmXrSequenceGenerator = new JFrame();
-    frmXrSequenceGenerator.setTitle("XR Sequence Generator");
+    frmXrSequenceGenerator.setTitle("XR Sequence Generator 96");
     frmXrSequenceGenerator.setBounds(100, 100, 450, 156);
     frmXrSequenceGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     SpringLayout springLayout = new SpringLayout();
@@ -94,20 +94,15 @@ public class XRSequenceGenerator {
         
         ArrayList<Double> output = new ArrayList<Double>();
         String o = "";
-        double half = 0.5;
         for(int i=0;i<comp.size();i++) {
           int n = comp.get(i);
           
           TreeSet<Double> possibles = new TreeSet<Double>();
           
           possibles.add(0.0);
-          possibles.add(1.0);
-          if(n <= 8) {
-            possibles.add(half);
-          }
           
-          for(int j=2;j<=n;j++) {
-            if(Numbers.lcm(n, j) == n) possibles.add(Integer.valueOf(j).doubleValue());
+          for(int j=8;j<=n;j++) {
+            if(Numbers.lcm(n, j) == n && j%8 == 0) possibles.add(Integer.valueOf(j).doubleValue());
           }
           
           double[] weights = null;
@@ -135,20 +130,13 @@ public class XRSequenceGenerator {
           
           if(i==0) next = CollectionUtils.chooseAtRandom(possibles);
           else next = CollectionUtils.chooseAtRandomWithWeights(possibles, weights);
-          output.add(next);
-          if(next == half) {
-            o += "0.5";
-          } else {          
-            o += Long.valueOf(Math.round(next)).toString();
-          }
+          output.add(next);          
+          o += Long.valueOf(Math.round(next)).toString();
+          
           if(i != comp.size()-1) o += " ";
         }
         
         textOutput.setText(o);
-        
-        
-        
-        
       }
     });
     springLayout.putConstraint(SpringLayout.NORTH, btnGenerate, 6, SpringLayout.SOUTH, textRhythm);
