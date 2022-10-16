@@ -431,16 +431,16 @@ public class RhythmMatrix96ClicksBeatPairs {
           .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
           .addGap(9))
     );
-    textArea_1.setForeground(Color.WHITE);
-    textArea_1.setBackground(Color.DARK_GRAY);
+    textArea_1.setForeground(new Color(0, 0, 0));
+    textArea_1.setBackground(new Color(255, 255, 255));
     textArea_1.setFont(new Font("Monospaced", Font.PLAIN, 10));
     
     textArea_1.setText("80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00");
     
     
     scrollPane_1.setViewportView(textArea_1);
-    textArea.setBackground(Color.DARK_GRAY);
-    textArea.setForeground(Color.WHITE);
+    textArea.setBackground(new Color(255, 255, 255));
+    textArea.setForeground(new Color(0, 0, 0));
     
     
     scrollPane.setViewportView(textArea);

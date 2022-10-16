@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
+import name.ncg.Music.RhythmPredicates.EntropicDispersion;
 import name.ncg.Music.RhythmPredicates.LowEntropy;
 import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 
@@ -115,7 +116,11 @@ public class SeqGen3 {
                 R = r.asRhythm();
               }
               
-              Sequence s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
+              Sequence s;
+              var pred = new PredicatedSeqRhythms(new EntropicDispersion());
+              do {
+                s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
+              } while(!pred.apply(s));
               
               int _min = (Integer)spinner_bounce_min.getValue();
               int _amp = (Integer)spinner_bounce_amp.getValue();
