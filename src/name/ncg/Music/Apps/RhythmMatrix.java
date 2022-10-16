@@ -11,7 +11,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.SpinnerNumberModel;
 
-import name.ncg.Maths.Numbers;
 import name.ncg.Maths.DataStructures.CollectionUtils;
 import name.ncg.Maths.DataStructures.Matrix;
 import name.ncg.Maths.DataStructures.Sequence;
@@ -104,7 +103,7 @@ public class RhythmMatrix {
     frmRhythmMatrix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JSpinner spinner = new JSpinner();
-    spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
         
     JLabel lblRows = new JLabel("Rows:");
     lblRows.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -115,7 +114,7 @@ public class RhythmMatrix {
     lblColumns.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JSpinner spinner_1 = new JSpinner();
-    spinner_1.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner_1.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));

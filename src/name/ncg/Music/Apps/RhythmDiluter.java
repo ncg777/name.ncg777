@@ -28,9 +28,9 @@ public class RhythmDiluter {
   private JTextField textRhythm;
   private JTextField textResult;
   JComboBox<Rn> comboBox = new JComboBox<Rn>(new DefaultComboBoxModel<Rn>(Rn.values()));
-  JSpinner spinnerFrom = new JSpinner(new SpinnerNumberModel(new Integer(2), new Integer(2), null, new Integer(1)));
+  JSpinner spinnerFrom = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   JSpinner spinnerOffset = new JSpinner();
-  JSpinner spinnerTo = new JSpinner(new SpinnerNumberModel(new Integer(2), new Integer(2), null, new Integer(1)));
+  JSpinner spinnerTo = new JSpinner(new SpinnerNumberModel(2, 2, null, 1));
   
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {

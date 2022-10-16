@@ -75,12 +75,12 @@ public class SeqGenFS {
     lblAmp.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JSpinner spinner_amp = new JSpinner();
-    spinner_amp.setModel(new SpinnerNumberModel(new Integer(4), new Integer(1), null, new Integer(1)));
-    JSpinner spinner_bounce_amp = new JSpinner(new SpinnerNumberModel(new Integer(12), new Integer(1), null, new Integer(1)));
+    spinner_amp.setModel(new SpinnerNumberModel(4, 1, null, 1));
+    JSpinner spinner_bounce_amp = new JSpinner(new SpinnerNumberModel(12, 1, null, 1));
     JLabel lblMaxamp = new JLabel("maxamp:");
-    JSpinner spinner_bounce_min = new JSpinner(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
+    JSpinner spinner_bounce_min = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
     JSpinner spinner_maxamp = new JSpinner();
-    spinner_maxamp.setModel(new SpinnerNumberModel(new Integer(7), new Integer(1), null, new Integer(1)));
+    spinner_maxamp.setModel(new SpinnerNumberModel(7, 1, null, 1));
     
     JLabel lblDelta = new JLabel("Delta sequence:");
     lblDelta.setHorizontalAlignment(SwingConstants.RIGHT);

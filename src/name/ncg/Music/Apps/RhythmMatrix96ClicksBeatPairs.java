@@ -40,9 +40,6 @@ import java.awt.Font;
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import name.ncg.Music.Rn;
 import javax.swing.JTextField;
 import java.awt.Color;
 
