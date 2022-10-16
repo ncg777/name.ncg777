@@ -94,10 +94,12 @@ public class RhythmMatrix96ClicksBeatPairs {
    * Initialize the contents of the frame.
    */
   private void initialize() {
+    btnGenerate.setForeground(new Color(0, 0, 0));
+    btnGenerate.setBackground(new Color(127, 255, 0));
     btnGenerate.setEnabled(false);
     new Thread(() -> {
         measureRhythm = MeasureRhythm.generate(2);
-        btnGenerate.setText("Generate");
+        btnGenerate.setText("GENERATE");
         btnGenerate.setEnabled(true);
       }).start();
     
@@ -124,7 +126,7 @@ public class RhythmMatrix96ClicksBeatPairs {
     JSpinner spinner_1 = new JSpinner();
     spinner_1.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
-    btnGenerate.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    btnGenerate.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 16));
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         new Thread(new Runnable() {
