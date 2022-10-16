@@ -24,6 +24,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
+import name.ncg.Statistics.RandomNumberGenerator;
+
 import javax.swing.SpinnerModel;
 
 public class SeqGen2 {
@@ -73,11 +75,6 @@ public class SeqGen2 {
     JSpinner spinner_amp = new JSpinner();
     spinner_amp.setModel(new SpinnerNumberModel(new Integer(4), new Integer(1), null, new Integer(1)));
     
-    JLabel lblSum = new JLabel("sum:");
-    lblSum.setHorizontalAlignment(SwingConstants.RIGHT);
-    
-    JSpinner spinner_sum = new JSpinner();
-    
     JLabel lblMaxamp = new JLabel("maxamp:");
     
     JSpinner spinner_maxamp = new JSpinner();
@@ -101,94 +98,68 @@ public class SeqGen2 {
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
- 
-        try {
-          while(true)
-          {
-            String str_R = txtRhythm.getText().trim();
-            
-            Sequence C = null;
-            if(comboBox.getSelectedItem() == Rn.Hex) {
-              R16List r = R16List.parseR16Seq(str_R);
-              C = r.asRhythm().getComposition().asSequence();
-            }
-            if(comboBox.getSelectedItem() == Rn.Octal) {
-              R12List r = R12List.parseR12Seq(str_R);
-              C = r.asRhythm().getComposition().asSequence();
-            }
-            Sequence s = new Sequence();
-            int current_dir = 0;
-
-            for(int i=0;i<C.size();i++) {
-              int v = (C.get((i+1)%C.size())) - C.get(i);
-              if(v > 0) {
-                current_dir = 1;
+        new Thread(() -> {
+          btnGenerate.setEnabled(false);
+          try {
+            while(true)
+            {
+              String str_R = txtRhythm.getText().trim();
+              
+              Sequence C = null;
+              if(comboBox.getSelectedItem() == Rn.Hex) {
+                R16List r = R16List.parseR16Seq(str_R);
+                C = r.asRhythm().getComposition().asSequence();
               }
-              else if(v < 0) {
-                current_dir = -1;
+              if(comboBox.getSelectedItem() == Rn.Octal) {
+                R12List r = R12List.parseR12Seq(str_R);
+                C = r.asRhythm().getComposition().asSequence();
+              }
+              Sequence s = C.cyclicalForwardDifference().signs().circularHoldNonZero();
+              
+              int k=0;
+              for(int i=0;i<s.size();i++) {
+                k += s.get(i);
+                s.set(i, k-1);
               }
               
-              s.add(current_dir);
-            }
-            
-            if(current_dir == 0) {
-              for(int i=0;i<s.size();i++) {
-                s.set(i, 1);
+              int n = s.asOrdinalsUnipolar().getMax()+1;
+              if(n < 2) {
+                throw new RuntimeException("rhythm is empty or too small");
               }
-            } else {
-              for(int i=0;i<s.size();i++) {
-                if(s.get(i) != 0) {
-                  break;
-                }
-                s.set(i, current_dir);
-              }
-            }
-            
-            int k=0;
-            for(int i=0;i<s.size();i++) {
-              k += s.get(i);
-              s.set(i, k-1);
-            }
-            
-            int n = s.asOrdinalsUnipolar().getMax()+1;
-            if(n < 2) {
-              throw new RuntimeException("rhythm is empty or too small");
-            }
-            Sequence rnd = Sequence.genRnd(
-              n, 
-              (int)spinner_amp.getValue(), 
-              (int)spinner_sum.getValue(), 
-              (int)spinner_maxamp.getValue(), 
-              chckbxExclude.isSelected());
-            rnd.add(0,0);
-            rnd = rnd.difference();
+              var maxamp = (int)spinner_maxamp.getValue();
+              int sum = RandomNumberGenerator.nextInt(maxamp);
+              Sequence rnd = Sequence.genRnd(
+                n, 
+                (int)spinner_amp.getValue(), 
+                sum, 
+                maxamp, 
+                chckbxExclude.isSelected()).cyclicalForwardDifference();
 
-            for(int i=0;i<s.size();i++) {
-              int index = s.get(i);
-              while(index < 0) index += rnd.size();
-              while(index >= rnd.size()) index -= rnd.size();
-              s.set(i, rnd.get(index));
+              for(int i=0;i<s.size();i++) {
+                int index = s.get(i);
+                while(index < 0) index += rnd.size();
+                while(index >= rnd.size()) index -= rnd.size();
+                s.set(i, rnd.get(index));
+              }
+              
+              int _min = (Integer)spinner_bounce_min.getValue();
+              int _amp = (Integer)spinner_bounce_amp.getValue();
+              
+              Sequence o = s.cyclicalForwardAntidifference(0);
+              txtDelta.setText(s.toString());
+              txtSequence.setText(o.bounceseq(_min, _amp).toString());
+              
+              break;
+              
             }
-            
-            int _min = (Integer)spinner_bounce_min.getValue();
-            int _amp = (Integer)spinner_bounce_amp.getValue();
-            
-            Sequence o = s.antidifference(0);
-            Sequence t = o.bounceseq(_min, _amp);
-            o = t.difference();
-            txtDelta.setText(o.toString());
-            
-            Sequence o2 = o.antidifference(0);
-            o2.remove(0);
-            txtSequence.setText(o2.toString());
-            
-            break;
-            
           }
-        }
-        catch(Exception ex) {
-          JOptionPane.showMessageDialog(frmSeqgen, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
-        }
+          catch(Exception ex) {
+            JOptionPane.showMessageDialog(frmSeqgen, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
+          }
+          btnGenerate.setEnabled(true);
+          
+        }).start();
+        
         
         
       }
@@ -223,17 +194,13 @@ public class SeqGen2 {
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
           .addContainerGap()
-          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+          .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
             .addGroup(groupLayout.createSequentialGroup()
-              .addComponent(lblXsMod, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+              .addComponent(lblXsMod, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
               .addGap(1)
               .addComponent(lblAmp)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(spinner_amp, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-              .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(lblSum)
-              .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(spinner_sum, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(lblMaxamp)
               .addPreferredGap(ComponentPlacement.RELATED)
@@ -241,21 +208,21 @@ public class SeqGen2 {
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(chckbxExclude)
               .addPreferredGap(ComponentPlacement.RELATED)
-              .addComponent(lblDeltaMin, GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+              .addComponent(lblDeltaMin, GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(spinner_bounce_min, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(lblDeltaAmp, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
               .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(spinner_bounce_amp, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-              .addGap(10)
+              .addPreferredGap(ComponentPlacement.RELATED)
               .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-              .addGap(2)
-              .addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-            .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 162, GroupLayout.PREFERRED_SIZE))
+            .addGroup(groupLayout.createSequentialGroup()
               .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                .addComponent(lblDelta, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                .addComponent(lblRhythm, GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+                .addComponent(lblDelta, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                .addComponent(lblRhythm, GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
               .addPreferredGap(ComponentPlacement.RELATED)
               .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
                 .addComponent(txtRhythm, Alignment.TRAILING)
@@ -267,12 +234,10 @@ public class SeqGen2 {
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(groupLayout.createSequentialGroup()
-              .addContainerGap(12, Short.MAX_VALUE)
-              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                .addComponent(btnGenerate, Alignment.TRAILING)
-                .addComponent(comboBox, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-              .addGap(6)
+            .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+              .addContainerGap()
+              .addComponent(btnGenerate)
+              .addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
               .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
                 .addComponent(lblRhythm)
                 .addComponent(txtRhythm, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -289,34 +254,16 @@ public class SeqGen2 {
               .addComponent(lblAmp))
             .addGroup(groupLayout.createSequentialGroup()
               .addGap(16)
-              .addComponent(spinner_amp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(18)
-              .addComponent(lblSum))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(16)
-              .addComponent(spinner_sum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(18)
-              .addComponent(lblMaxamp))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(16)
-              .addComponent(spinner_maxamp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(14)
-              .addComponent(chckbxExclude))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(15)
-              .addComponent(spinner_bounce_amp, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(18)
-              .addComponent(lblDeltaAmp))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(15)
-              .addComponent(spinner_bounce_min, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGap(18)
-              .addComponent(lblDeltaMin)))
+              .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+                .addComponent(spinner_amp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblMaxamp)
+                .addComponent(spinner_maxamp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(chckbxExclude)
+                .addComponent(lblDeltaMin)
+                .addComponent(spinner_bounce_min, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblDeltaAmp)
+                .addComponent(spinner_bounce_amp, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))))
           .addGap(48))
     );
     frmSeqgen.getContentPane().setLayout(groupLayout);

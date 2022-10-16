@@ -11,6 +11,8 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg.Maths.DataStructures.Sequence;
+import name.ncg.Music.RhythmPredicates.EntropicDispersion;
+import name.ncg.Music.RhythmPredicates.LowEntropy;
 import name.ncg.Music.RhythmPredicates.MaximizeQuality;
 import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 import javax.swing.SpinnerNumberModel;
@@ -26,7 +28,7 @@ public class RandomWalker1 {
   private JFrame frmRandomWalker1;
   private JTextField txtDelta;
   private JTextField txtXsmod;
-  private JSpinner spinner_n = new JSpinner(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+  private JSpinner spinner_n = new JSpinner(new SpinnerNumberModel(Integer.valueOf(2), Integer.valueOf(2), null, Integer.valueOf(1)));
   private JTextField txtSeq;
   /**
    * Launch the application.
@@ -93,42 +95,44 @@ public class RandomWalker1 {
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
  
-        try {
-          while(true)
-          {
-
-            int n = (int)spinner_n.getValue();
-            if(n < 2) n = 3;
-            var pred = new PredicatedSeqRhythms(new MaximizeQuality());
-            Sequence rnd;
-            while(true) {
-               rnd = Sequence.genRnd(
-                n+1, 
-                (int)spinner_amp.getValue(), 
-                (int)spinner_sum.getValue(), 
-                (int)spinner_maxamp.getValue(), 
-                chckbxExclude.isSelected());
-               
-               if(pred.apply(rnd) || n < 3) break;
-            }
-            Sequence rnd0 = new Sequence(rnd);
-            rnd0.remove(0);
-            rnd = rnd.difference();
-            txtSeq.setText(rnd0.toString().replaceAll("[()]", ""));
-            txtDelta.setText(rnd.toString().replaceAll("[()]", ""));
-            int xs = (int)spinner.getValue();
-            rnd = rnd.cyclicalForwardAntidifference(0);
-            
-            txtXsmod.setText(rnd.bounceseq(0, xs).toString().replaceAll("[()]", ""));
-            
-            break;
-            
-          }
-        }
-        catch(Exception ex) {
-          JOptionPane.showMessageDialog(frmRandomWalker1, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
-        }
         
+          new Thread(() -> {
+            try {
+              btnGenerate.setEnabled(false);
+              while(true)
+              {
+  
+                int n = (int)spinner_n.getValue();
+  
+                var pred = new PredicatedSeqRhythms(new EntropicDispersion());
+                Sequence rnd;
+                while(true) {
+                   rnd = Sequence.genRnd(
+                    n, 
+                    (int)spinner_amp.getValue(), 
+                    (int)spinner_sum.getValue(), 
+                    (int)spinner_maxamp.getValue(), 
+                    chckbxExclude.isSelected());
+                   
+                   if(pred.apply(rnd) || n < 3) break;
+                }
+                txtSeq.setText(rnd.toString());
+                txtDelta.setText(rnd.cyclicalForwardDifference().toString());
+                int xs = (int)spinner.getValue();
+                            
+                txtXsmod.setText(rnd.bounceseq(0, xs).toString());
+                
+                break;
+                
+              }
+          }
+          catch(Exception ex) {
+            JOptionPane.showMessageDialog(frmRandomWalker1, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
+          }
+          btnGenerate.setEnabled(true);
+            
+          }).start();;
+          
         
       }
     });
