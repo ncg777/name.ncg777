@@ -101,7 +101,8 @@ public class RhythmMatrix96ClicksBeatPairs {
       }).start();
     
     frmRhythmMatrix = new JFrame();
-    frmRhythmMatrix.getContentPane().setBackground(Color.BLACK);
+    frmRhythmMatrix.setBackground(Color.GRAY);
+    frmRhythmMatrix.getContentPane().setBackground(Color.GRAY);
     frmRhythmMatrix.setResizable(false);
     frmRhythmMatrix.setTitle("Random hex rhythm matrix — 96 Clicks/beat  — 1 bit/click — Mixed 2/1, 2/2, 2/3, 2/4 timesigs, synchronized");
     frmRhythmMatrix.setBounds(100, 100, 781, 545);
@@ -325,7 +326,7 @@ public class RhythmMatrix96ClicksBeatPairs {
     JScrollPane scrollPane_1 = new JScrollPane();
     
     JLabel lblNewLabel = new JLabel("Fixed rhythms — One rhythm per line — Line lenth can vary — Even number of beats per line only");
-    lblNewLabel.setForeground(Color.MAGENTA);
+    lblNewLabel.setForeground(Color.ORANGE);
     lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 11));
     
