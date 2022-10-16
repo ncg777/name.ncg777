@@ -138,7 +138,7 @@ public class RhythmWalker {
     txtrResult.setForeground(Color.WHITE);
     spinner.setBackground(Color.BLACK);
     spinner.setForeground(Color.WHITE);
-    spinner.setModel(new SpinnerNumberModel(new Integer(2), new Integer(2), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(2, 2, null, 1));
     frmRhythmPleasure.getContentPane().setLayout(groupLayout);
   }
 }

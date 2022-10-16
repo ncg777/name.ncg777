@@ -71,7 +71,7 @@ public class RnExpander {
     JLabel lblMult = new JLabel("Mult :");
     
     JSpinner spinner = new JSpinner();
-    spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
     JLabel lblResult = new JLabel("Result :");
     

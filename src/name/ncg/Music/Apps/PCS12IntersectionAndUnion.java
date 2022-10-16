@@ -8,25 +8,13 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 
 import javax.swing.DefaultComboBoxModel;
-
-import javax.swing.JScrollPane;
-
 import javax.swing.SwingConstants;
 
-import name.ncg.Maths.DataStructures.CollectionUtils;
 import name.ncg.Music.PCS12;
-
-import name.ncg.Music.PCS12Predicates.SubsetOf;
-
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
-import java.util.TreeSet;
-
-import com.google.common.base.Joiner;
-
-import javax.swing.JTextArea;
 
 public class PCS12IntersectionAndUnion {
 

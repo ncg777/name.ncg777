@@ -86,8 +86,8 @@ public class ChordMatrix {
   JComboBox<String> comboFilter = new JComboBox<String>();
   JTextArea textArea; 
   JSpinner spinner_k = new JSpinner(new SpinnerNumberModel(4, 2, 11, 1));
-  JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-  JSpinner spinner = new JSpinner(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+  JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
+  JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   private void initialize() {
     frmChordMatrix = new JFrame();
     frmChordMatrix.setTitle("PCS12 Matrix");

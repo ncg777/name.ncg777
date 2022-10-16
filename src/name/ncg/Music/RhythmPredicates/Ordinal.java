@@ -3,8 +3,6 @@ package name.ncg.Music.RhythmPredicates;
 import java.util.BitSet;
 import java.util.TreeSet;
 
-import com.google.common.base.Predicate;
-
 import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.Combination;
 import name.ncg.Maths.Numbers;

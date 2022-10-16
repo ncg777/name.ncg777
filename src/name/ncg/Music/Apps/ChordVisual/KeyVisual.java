@@ -9,6 +9,10 @@ import javax.swing.border.LineBorder;
 import name.ncg.Music.PCS12;
 
 public class KeyVisual extends JPanel {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -2303640931691547468L;
   PCS12 chord = null;
   JLabel lbl00 = new JLabel("");
   JLabel lbl01 = new JLabel("");

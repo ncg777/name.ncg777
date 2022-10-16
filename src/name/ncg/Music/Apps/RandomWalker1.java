@@ -12,8 +12,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.RhythmPredicates.EntropicDispersion;
-import name.ncg.Music.RhythmPredicates.LowEntropy;
-import name.ncg.Music.RhythmPredicates.MaximizeQuality;
 import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
@@ -65,7 +63,7 @@ public class RandomWalker1 {
     JLabel lblAmp = new JLabel("amp:");
     
     JSpinner spinner_amp = new JSpinner();
-    spinner_amp.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner_amp.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
     JLabel lblSum = new JLabel("sum:");
     
@@ -74,7 +72,7 @@ public class RandomWalker1 {
     JLabel lblMaxamp = new JLabel("maxamp:");
     
     JSpinner spinner_maxamp = new JSpinner();
-    spinner_maxamp.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner_maxamp.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
     JCheckBox chckbxExclude = new JCheckBox("exclude 0");
     
@@ -85,7 +83,7 @@ public class RandomWalker1 {
     txtDelta.setEditable(false);
     txtDelta.setColumns(10);
     JSpinner spinner = new JSpinner();
-    spinner.setModel(new SpinnerNumberModel(new Integer(8), new Integer(1), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(8, 1, null, 1));
     
     txtXsmod = new JTextField();
     txtXsmod.setEditable(false);

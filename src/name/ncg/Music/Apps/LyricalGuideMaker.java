@@ -1,6 +1,5 @@
 package name.ncg.Music.Apps;
 
-import java.awt.Dialog;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -10,7 +9,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg.Maths.Numbers;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R12List;
 import name.ncg.Music.R16List;
@@ -24,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.awt.event.ActionEvent;
 import java.util.regex.Matcher;
@@ -32,6 +29,7 @@ import java.util.regex.Pattern;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
+
 public class LyricalGuideMaker {
 
   private JFrame frmLyricalGuideMaker;

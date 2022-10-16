@@ -7,8 +7,6 @@ import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.HeterogeneousPair;
 import name.ncg.Music.Rhythm16Partition;
 
-import com.google.common.base.Predicate;
-
 public class WellDistributed implements StandardAndGuavaPredicate<Rhythm16Partition>  {
 
   private static Map<HeterogeneousPair<Integer,Integer>,HeterogeneousPair<Double,Double>> 

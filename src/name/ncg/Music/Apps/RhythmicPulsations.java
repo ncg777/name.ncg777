@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import name.ncg.Maths.Numbers;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R12List;
 import name.ncg.Music.R16List;

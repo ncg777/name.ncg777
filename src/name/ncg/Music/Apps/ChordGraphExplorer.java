@@ -3,7 +3,6 @@ package name.ncg.Music.Apps;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -26,30 +25,18 @@ import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Maths.Graphs.DiGraph;
 import name.ncg.Maths.Relations.Relation;
 import name.ncg.Music.PCS12;
-import name.ncg.Music.PCS12Predicates.Bypass;
-import name.ncg.Music.PCS12Predicates.Consonant;
 import name.ncg.Music.PCS12Predicates.SizeIs;
 import name.ncg.Music.PCS12Predicates.SubsetOf;
 import name.ncg.Music.PCS12Relations.CloseIVs;
 import name.ncg.Music.PCS12Relations.CommonNotesAtLeast;
 import name.ncg.Music.PCS12Relations.Different;
-import name.ncg.Music.PCS12Relations.MinDistConsonant;
-import name.ncg.Music.PCS12Relations.MinDistWithMinorSecond;
-import name.ncg.Music.PCS12Relations.NNotesDifference;
 
-import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
-
-import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-import javax.swing.JCheckBox;
-import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeListener;

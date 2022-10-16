@@ -81,7 +81,7 @@ public class RandomR16PartitionGenerator {
     final JSpinner spinner = new JSpinner();
     spinner.setForeground(Color.WHITE);
     spinner.setBackground(Color.BLACK);
-    spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
     final JCheckBox chckbxCircuit = new JCheckBox("Circuit");
     chckbxCircuit.setBackground(Color.BLACK);

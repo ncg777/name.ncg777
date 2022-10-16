@@ -20,14 +20,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.function.Predicate;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
 import name.ncg.Music.RhythmPredicates.EntropicDispersion;
-import name.ncg.Music.RhythmPredicates.LowEntropy;
 import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 
 public class SeqGenFS {

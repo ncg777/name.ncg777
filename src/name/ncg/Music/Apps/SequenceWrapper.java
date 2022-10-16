@@ -71,14 +71,14 @@ public class SequenceWrapper {
     lblMin.setFont(new Font("Unifont", Font.PLAIN, 12));
     
     JSpinner minSpinner = new JSpinner();
-    minSpinner.setModel(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
+    minSpinner.setModel(new SpinnerNumberModel(0, null, null, 1));
     
     JLabel lblAmp = new JLabel("\u0394^-1 Amp :");
     lblAmp.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblAmp.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JSpinner ampSpinner = new JSpinner();
-    ampSpinner.setModel(new SpinnerNumberModel(new Integer(12), new Integer(1), null, new Integer(1)));
+    ampSpinner.setModel(new SpinnerNumberModel(12, 1, null, 1));
     
     JCheckBox chckbxBounce = new JCheckBox("Bounce");
     chckbxBounce.setSelected(true);

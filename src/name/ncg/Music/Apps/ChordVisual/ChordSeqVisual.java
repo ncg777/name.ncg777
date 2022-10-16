@@ -2,17 +2,12 @@ package name.ncg.Music.Apps.ChordVisual;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JPanel;
-import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-
-import name.ncg.Music.PCS12;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;

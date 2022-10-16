@@ -74,7 +74,7 @@ public class RexRandomizer {
     textRex.setColumns(10);
     
     JSpinner spinner = new JSpinner();
-    spinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
     
     JLabel lblbars = new JLabel("#BARS :");
     lblbars.setFont(new Font("Unifont", Font.PLAIN, 11));

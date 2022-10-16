@@ -64,13 +64,13 @@ public class Range {
     lblLength.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JSpinner length = new JSpinner();
-    length.setModel(new SpinnerNumberModel(new Integer(128), null, null, new Integer(1)));
+    length.setModel(new SpinnerNumberModel(128, null, null, 1));
     
     JLabel lblStep = new JLabel("Step :");
     lblStep.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JSpinner step = new JSpinner();
-    step.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
+    step.setModel(new SpinnerNumberModel(1, null, null, 1));
     
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.addActionListener(new ActionListener() {

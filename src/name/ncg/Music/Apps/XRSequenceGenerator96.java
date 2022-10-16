@@ -10,7 +10,6 @@ import javax.swing.SwingConstants;
 import name.ncg.Maths.Numbers;
 import name.ncg.Maths.DataStructures.CollectionUtils;
 import name.ncg.Maths.DataStructures.Sequence;
-import name.ncg.Music.R12List;
 import name.ncg.Music.R16List;
 
 import javax.swing.SpringLayout;
@@ -21,9 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import name.ncg.Music.Rn;
 
 public class XRSequenceGenerator96 {
 

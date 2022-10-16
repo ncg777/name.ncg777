@@ -1,7 +1,5 @@
 package name.ncg.Music.SequencePredicates;
 
-import com.google.common.base.Predicate;
-
 import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.Sequence;
 

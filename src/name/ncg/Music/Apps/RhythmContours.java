@@ -14,11 +14,9 @@ import javax.swing.SwingConstants;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R12List;
 import name.ncg.Music.R16List;
-import name.ncg.Music.Rhythm;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;

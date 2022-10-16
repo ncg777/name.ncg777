@@ -4,8 +4,6 @@ import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.Rhythm16;
 
 
-import com.google.common.base.Predicate;
-
 public class Bypass16 implements StandardAndGuavaPredicate<Rhythm16> {
 
   @Override

@@ -26,7 +26,6 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
 import name.ncg.Music.RhythmPredicates.EntropicDispersion;
-import name.ncg.Music.RhythmPredicates.MaximizeQuality;
 
 public class SeqGenFixedSum {
 
@@ -36,8 +35,8 @@ public class SeqGenFixedSum {
   private JTextField txtSequence;
   private JComboBox<Rn> comboBox = new JComboBox<Rn>(new DefaultComboBoxModel<Rn>(Rn.values()));
   
-  JSpinner spinner_bounce_amp = new JSpinner(new SpinnerNumberModel(new Integer(12), new Integer(1), null, new Integer(1)));
-  JSpinner spinner_bounce_min = new JSpinner(new SpinnerNumberModel(new Integer(0), null, null, new Integer(1)));
+  JSpinner spinner_bounce_amp = new JSpinner(new SpinnerNumberModel(12, 1, null, 1));
+  JSpinner spinner_bounce_min = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
   
   /**
    * Launch the application.
@@ -75,7 +74,7 @@ public class SeqGenFixedSum {
     JLabel lblAmp = new JLabel("amp:");
     
     JSpinner spinner_amp = new JSpinner();
-    spinner_amp.setModel(new SpinnerNumberModel(new Integer(4), new Integer(1), null, new Integer(1)));
+    spinner_amp.setModel(new SpinnerNumberModel(4, 1, null, 1));
     
     JLabel lblSum = new JLabel("sum:");
     
@@ -84,7 +83,7 @@ public class SeqGenFixedSum {
     JLabel lblMaxamp = new JLabel("maxamp:");
     
     JSpinner spinner_maxamp = new JSpinner();
-    spinner_maxamp.setModel(new SpinnerNumberModel(new Integer(7), new Integer(1), null, new Integer(1)));
+    spinner_maxamp.setModel(new SpinnerNumberModel(7, 1, null, 1));
     
     JCheckBox chckbxExclude = new JCheckBox("exclude 0");
     

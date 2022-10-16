@@ -12,8 +12,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import java.awt.Font;
@@ -25,7 +23,6 @@ import name.ncg.Music.Rhythm;
 import name.ncg.Music.Rn;
 
 public class SequenceConvolverAbsoluteTime {
-  private enum Direction {LookForward, LookBehind};
   private JFrame frmArticulateAndSmooth;
   private JTextField txtS;
   private JTextField txtImpulse;

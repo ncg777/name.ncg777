@@ -63,7 +63,7 @@ public class LatticePath {
     
     JScrollPane scrollPane = new JScrollPane();
     final JSpinner spinner_total = new JSpinner();
-    spinner_total.setModel(new SpinnerNumberModel(new Integer(16), new Integer(1), null, new Integer(1)));
+    spinner_total.setModel(new SpinnerNumberModel(16, 1, null, 1));
     final JTextPane textPane = new JTextPane();
     textPane.setFont(new Font("Unifont", Font.PLAIN, 12));
     JButton btnGenerate = new JButton("Generate");

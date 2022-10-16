@@ -18,22 +18,18 @@ import name.ncg.Maths.DataStructures.CollectionUtils;
 import name.ncg.Maths.Graphs.DiGraph;
 import name.ncg.Maths.Relations.Relation;
 import name.ncg.Music.PCS12;
-import name.ncg.Music.PCS12Predicates.Consonant;
 import name.ncg.Music.PCS12Predicates.SizeIs;
 import name.ncg.Music.PCS12Predicates.SubsetOf;
 import name.ncg.Music.PCS12Relations.CloseIVs;
 import name.ncg.Music.PCS12Relations.CommonNotesAtLeast;
 import name.ncg.Music.PCS12Relations.Different;
 import name.ncg.Music.PCS12Relations.IVEQRotOrRev;
-import name.ncg.Music.PCS12Relations.MinDistConsonant;
-import name.ncg.Music.PCS12Relations.NNotesDifference;
 
 import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -222,7 +218,7 @@ public class ChordWalker {
     txtrResult.setForeground(Color.WHITE);
     spinner.setBackground(Color.BLACK);
     spinner.setForeground(Color.WHITE);
-    spinner.setModel(new SpinnerNumberModel(new Integer(2), new Integer(2), null, new Integer(1)));
+    spinner.setModel(new SpinnerNumberModel(2, 2, null, 1));
     frmChordPleasure.getContentPane().setLayout(groupLayout);
   }
 }
