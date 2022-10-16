@@ -21,7 +21,6 @@ import java.util.BitSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import java.awt.Font;
-import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 
 public class R16Divider {
