@@ -44,6 +44,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
 import javax.swing.JTextField;
+import java.awt.Color;
 
 public class RhythmMatrix96ClicksBeatPairs {
 
@@ -111,11 +112,11 @@ public class RhythmMatrix96ClicksBeatPairs {
         
     JLabel lblRows = new JLabel("Rows:");
     lblRows.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblRows.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
+    lblRows.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
     
     JLabel lblColumns = new JLabel("#BeatPairs:");
     lblColumns.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblColumns.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
+    lblColumns.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
     
     JSpinner spinner_1 = new JSpinner();
     spinner_1.setModel(new SpinnerNumberModel(1, 1, null, 1));
@@ -321,23 +322,25 @@ public class RhythmMatrix96ClicksBeatPairs {
     
     JScrollPane scrollPane_1 = new JScrollPane();
     
-    JLabel lblNewLabel = new JLabel("Fixed - 1 rhythm per line");
+    JLabel lblNewLabel = new JLabel("Fixed rhythms — One rhythm per line — Line lenth can vary — Even number of beats per line only");
     lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 11));
     
     JLabel lblNewLabel_1 = new JLabel("Result");
     lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_1.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     
-    JLabel lblMode = new JLabel("Filters:");
+    JLabel lblMode = new JLabel("Predicates:");
+    lblMode.setForeground(Color.BLUE);
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
     lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li><li>Even</li>\r\n<li>Ordinal (1/1)</li>\r\n<li>Ordinal (1/2)</li>\r\n</ol></html>");
-    lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
+    lblMode.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 10));
     
-    JLabel lblDiffs = new JLabel("Diffs:");
+    JLabel lblDiffs = new JLabel("Difference predicates:");
+    lblDiffs.setForeground(Color.BLUE);
     lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li><li>Even</li>\r\n<li>Ordinal (1/1)</li>\r\n<li>Ordinal (1/2)</li>\r\n</ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
+    lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 10));
     
     textFilterModes = new JTextField("1");
     textFilterModes.setColumns(10);
@@ -346,8 +349,9 @@ public class RhythmMatrix96ClicksBeatPairs {
     textDiffFilterModes.setColumns(10);
     
     JLabel lblNewLabel_2 = new JLabel("12 bytes = 1 beat");
-    lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel_2.setFont(new Font("DejaVu Sans Mono", Font.ITALIC, 12));
+    lblNewLabel_2.setForeground(Color.RED);
+    lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
+    lblNewLabel_2.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 10));
     
     GroupLayout groupLayout = new GroupLayout(frmRhythmMatrix.getContentPane());
     groupLayout.setHorizontalGroup(
@@ -356,38 +360,37 @@ public class RhythmMatrix96ClicksBeatPairs {
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
               .addContainerGap()
-              .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE))
+              .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE))
             .addGroup(groupLayout.createSequentialGroup()
               .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                 .addGroup(groupLayout.createSequentialGroup()
                   .addContainerGap()
-                  .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE))
+                  .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE))
                 .addGroup(groupLayout.createSequentialGroup()
                   .addContainerGap()
                   .addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 730, GroupLayout.PREFERRED_SIZE))
-                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-                  .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-                    .addGap(13)
-                    .addComponent(lblRows)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(spinner, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(lblColumns)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(lblMode, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(textFilterModes, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(lblDiffs, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(textDiffFilterModes, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(ComponentPlacement.RELATED)
-                    .addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                  .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 731, GroupLayout.PREFERRED_SIZE))))
+                .addGroup(groupLayout.createSequentialGroup()
+                  .addGap(13)
+                  .addComponent(lblRows)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(spinner, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(lblColumns)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(lblMode, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(textFilterModes, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(lblDiffs, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(textDiffFilterModes, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+                .addGroup(groupLayout.createSequentialGroup()
+                  .addContainerGap()
+                  .addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 731, GroupLayout.PREFERRED_SIZE)))
               .addGap(4))
             .addGroup(groupLayout.createSequentialGroup()
               .addContainerGap()
@@ -397,25 +400,20 @@ public class RhythmMatrix96ClicksBeatPairs {
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
+          .addContainerGap(13, Short.MAX_VALUE)
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(groupLayout.createSequentialGroup()
-              .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                  .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(lblMode, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(textFilterModes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(lblDiffs, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(textDiffFilterModes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                  .addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(lblRows)
-                  .addComponent(lblColumns)))
-              .addGap(17))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addContainerGap()
-              .addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-              .addPreferredGap(ComponentPlacement.RELATED)))
+            .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+              .addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(lblRows)
+              .addComponent(lblColumns))
+            .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+              .addComponent(lblMode, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+              .addComponent(lblDiffs, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+              .addComponent(textFilterModes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(textDiffFilterModes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+          .addGap(17)
           .addComponent(btnGenerate)
           .addGap(9)
           .addComponent(lblNewLabel)
@@ -424,7 +422,7 @@ public class RhythmMatrix96ClicksBeatPairs {
           .addPreferredGap(ComponentPlacement.UNRELATED)
           .addComponent(lblNewLabel_1)
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
           .addGap(9))
     );
     textArea_1.setFont(new Font("Monospaced", Font.PLAIN, 10));
