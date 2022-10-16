@@ -3,8 +3,6 @@ package name.ncg.Maths.DataStructures;
 import java.util.TreeSet;
 
 import junit.framework.TestCase;
-import name.ncg.Maths.DataStructures.FiniteBinaryRelation;
-import name.ncg.Maths.DataStructures.HeterogeneousPair;
 
 public class FiniteBinaryRelationTests extends TestCase {
   FiniteBinaryRelation<String,String> r;
