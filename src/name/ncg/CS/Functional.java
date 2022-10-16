@@ -38,4 +38,10 @@ public class Functional {
   public static <T> Stream<T> enumerationStream(Enumeration<T> e) {
     return Collections.list(e).stream();
   }
+  
+  public abstract interface StandardAndGuavaPredicate<T> extends com.google.common.base.Predicate<T>, Predicate<T> {
+    default public boolean test(T t) {
+      return apply(t);
+    }
+  }
 }

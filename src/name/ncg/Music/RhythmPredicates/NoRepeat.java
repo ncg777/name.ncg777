@@ -1,10 +1,9 @@
 package name.ncg.Music.RhythmPredicates;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.Rhythm16Partition;
 
-import com.google.common.base.Predicate;
-
-public class NoRepeat implements Predicate<Rhythm16Partition> {
+public class NoRepeat implements StandardAndGuavaPredicate<Rhythm16Partition> {
 
   @Override
   public boolean apply(Rhythm16Partition arg0) {

@@ -20,11 +20,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.function.Predicate;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
+import name.ncg.Music.RhythmPredicates.LowEntropy;
+import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 
 public class SeqGen3 {
 
@@ -96,39 +99,39 @@ public class SeqGen3 {
       public void actionPerformed(ActionEvent e) {
  
         try {
-          while(true)
-          {
-            String str_R = txtRhythm.getText().trim();
-            
-            Rhythm R = null;
-            if(comboBox.getSelectedItem() == Rn.Hex) {
-              R16List r = R16List.parseR16Seq(str_R);
-              R = r.asRhythm();
-            }
-            if(comboBox.getSelectedItem() == Rn.Octal) {
-              R12List r = R12List.parseR12Seq(str_R);
-              R = r.asRhythm();
-            }
-            
-            Sequence s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
-            
-            
-            int _min = (Integer)spinner_bounce_min.getValue();
-            int _amp = (Integer)spinner_bounce_amp.getValue();
+          new Thread(() -> {
+            btnGenerate.setEnabled(false);
+            while(true)
+            {
+              String str_R = txtRhythm.getText().trim();
+              
+              Rhythm R = null;
+              if(comboBox.getSelectedItem() == Rn.Hex) {
+                R16List r = R16List.parseR16Seq(str_R);
+                R = r.asRhythm();
+              }
+              if(comboBox.getSelectedItem() == Rn.Octal) {
+                R12List r = R12List.parseR12Seq(str_R);
+                R = r.asRhythm();
+              }
+              
+              Sequence s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
+              
+              int _min = (Integer)spinner_bounce_min.getValue();
+              int _amp = (Integer)spinner_bounce_amp.getValue();
 
-            Sequence o = s;
-            Sequence t = o.bounceseq(_min, _amp);
-            t.add(0,0);
-            o = t.difference();
-            txtDelta.setText(o.toString());
-            
-            Sequence o2 = o.antidifference(0);
-            o2.remove(0);
-            txtSequence.setText(o2.toString());
-           
-            break;
-            
-          }
+              Sequence o = s;
+              Sequence t = o.bounceseq(_min, _amp);
+              t.add(0,0);
+              o = t.difference();
+              txtDelta.setText(o.toString());
+              
+              Sequence o2 = o.antidifference(0);
+              o2.remove(0);
+              txtSequence.setText(o2.toString());
+              btnGenerate.setEnabled(true);
+              break;
+          }}).start();
         }
         catch(Exception ex) {
           JOptionPane.showMessageDialog(frmSeqgen, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);

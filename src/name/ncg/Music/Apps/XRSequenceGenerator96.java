@@ -30,7 +30,6 @@ public class XRSequenceGenerator96 {
   private JFrame frmXrSequenceGenerator;
   private JTextField textRhythm;
   private JTextField textOutput;
-  private JComboBox<Rn> comboBox = new JComboBox<Rn>(new DefaultComboBoxModel<Rn>(Rn.values()));
   /**
    * Launch the application.
    */
@@ -85,12 +84,7 @@ public class XRSequenceGenerator96 {
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Sequence comp = null;
-        if(comboBox.getSelectedItem() == Rn.Hex) {
-          comp = R16List.parseR16Seq(textRhythm.getText()).asRhythm().getComposition().asSequence();
-        }
-        if(comboBox.getSelectedItem() == Rn.Octal) {
-          comp = R12List.parseR12Seq(textRhythm.getText()).asRhythm().getComposition().asSequence();
-        }
+        comp = R16List.parseR16Seq(textRhythm.getText()).asRhythm().getComposition().asSequence();
         
         ArrayList<Double> output = new ArrayList<Double>();
         String o = "";
@@ -101,8 +95,8 @@ public class XRSequenceGenerator96 {
           
           possibles.add(0.0);
           
-          for(int j=8;j<=n;j++) {
-            if(Numbers.lcm(n, j) == n && j%8 == 0) possibles.add(Integer.valueOf(j).doubleValue());
+          for(int j=2;j<=n;j++) {
+            if(Numbers.lcm(n, j) == n && j%2 == 0) possibles.add(Integer.valueOf(j).doubleValue());
           }
           
           double[] weights = null;
@@ -161,12 +155,5 @@ public class XRSequenceGenerator96 {
     textOutput.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     frmXrSequenceGenerator.getContentPane().add(textOutput);
     textOutput.setColumns(10);
-    
-    
-    
-    springLayout.putConstraint(SpringLayout.NORTH, comboBox, 14, SpringLayout.SOUTH, lblNewLabel);
-    springLayout.putConstraint(SpringLayout.WEST, comboBox, 0, SpringLayout.WEST, lblNewLabel);
-    springLayout.putConstraint(SpringLayout.EAST, comboBox, 0, SpringLayout.EAST, lblNewLabel);
-    frmXrSequenceGenerator.getContentPane().add(comboBox);
   }
 }

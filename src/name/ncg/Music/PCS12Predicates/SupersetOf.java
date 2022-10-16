@@ -1,10 +1,9 @@
 package name.ncg.Music.PCS12Predicates;
 
-import com.google.common.base.Predicate;
-
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.PCS12;
 
-public class SupersetOf implements Predicate<PCS12>  {
+public class SupersetOf implements StandardAndGuavaPredicate<PCS12>  {
 
   private PCS12 pCS12;
   public SupersetOf(PCS12 pCS12) {

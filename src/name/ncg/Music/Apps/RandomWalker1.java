@@ -11,8 +11,8 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg.Maths.DataStructures.Sequence;
-import name.ncg.Music.SequencePredicates.SeqAllRhythmsMaximizeQuality;
-
+import name.ncg.Music.RhythmPredicates.MaximizeQuality;
+import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
@@ -99,7 +99,7 @@ public class RandomWalker1 {
 
             int n = (int)spinner_n.getValue();
             if(n < 2) n = 3;
-            SeqAllRhythmsMaximizeQuality pred = new SeqAllRhythmsMaximizeQuality();
+            var pred = new PredicatedSeqRhythms(new MaximizeQuality());
             Sequence rnd;
             while(true) {
                rnd = Sequence.genRnd(

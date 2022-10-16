@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates and open the template in the editor.
- */
-
 package name.ncg.Maths.Predicates;
 
-import com.google.common.base.Predicate;
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
+
 import java.util.Iterator;
 import java.util.TreeSet;
 
 
-public class MultiplesOf implements Predicate<Integer> {
+public class MultiplesOf implements StandardAndGuavaPredicate<Integer> {
   TreeSet<Integer> m_t;
   boolean ones;
 

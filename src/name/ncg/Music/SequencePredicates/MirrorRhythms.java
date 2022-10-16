@@ -1,13 +1,14 @@
 package name.ncg.Music.SequencePredicates;
 
-import com.google.common.base.Predicate;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.Rhythm;
 
-public class MirrorRhythms implements Predicate<Integer[]> {
+public class MirrorRhythms implements StandardAndGuavaPredicate<Integer[]> {
 
   @Override
   public boolean apply(Integer[] input) {

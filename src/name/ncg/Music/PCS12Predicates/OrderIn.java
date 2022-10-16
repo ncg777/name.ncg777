@@ -1,11 +1,12 @@
 package name.ncg.Music.PCS12Predicates;
 
-import com.google.common.base.Predicate;
 import java.util.Set;
 import java.util.TreeSet;
+
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.PCS12;
 
-public class OrderIn implements Predicate<PCS12> {
+public class OrderIn implements StandardAndGuavaPredicate<PCS12> {
   Set<Integer> s;
 
   public OrderIn(Set<Integer> p_s) {

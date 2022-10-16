@@ -1,11 +1,10 @@
 package name.ncg.Music.RhythmPredicates;
 
-import com.google.common.base.Predicate;
-
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.Rhythm;
 import name.ncg.Statistics.SpectrumMaximizeQuality;
 
-public class MaximizeQuality  implements Predicate<Rhythm>{
+public class MaximizeQuality  implements StandardAndGuavaPredicate<Rhythm>{
 
   @Override
   public boolean apply(Rhythm input) {

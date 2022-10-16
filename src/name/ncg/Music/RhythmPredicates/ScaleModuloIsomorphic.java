@@ -1,10 +1,9 @@
 package name.ncg.Music.RhythmPredicates;
 
-import com.google.common.base.Predicate;
-
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.Rhythm;
 
-public class ScaleModuloIsomorphic implements Predicate<Rhythm>  {
+public class ScaleModuloIsomorphic implements StandardAndGuavaPredicate<Rhythm>  {
 
   private int n;
   private int k;

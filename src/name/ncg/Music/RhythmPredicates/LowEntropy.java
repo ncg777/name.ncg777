@@ -1,11 +1,10 @@
 package name.ncg.Music.RhythmPredicates;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.FuzzyLogic.Valuators.CombinationEntropy;
 import name.ncg.Music.Rhythm;
 
-import com.google.common.base.Predicate;
-
-public class LowEntropy implements Predicate<Rhythm> {
+public class LowEntropy implements StandardAndGuavaPredicate<Rhythm> {
   private CombinationEntropy cd = new CombinationEntropy();
   
   @Override

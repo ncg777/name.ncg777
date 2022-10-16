@@ -1,7 +1,6 @@
 package name.ncg.Music.RhythmRelations;
 
-
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 import name.ncg.Maths.Relations.Relation;
 import name.ncg.Music.Rhythm;
@@ -21,7 +20,7 @@ Relation<Rhythm, Rhythm>   {
     Rhythm d1 = Rhythm.buildRhythm(a.minus(b));
     Rhythm d2 = Rhythm.buildRhythm(b.minus(a));
     
-    return ld.apply(d1) && ld.apply(d2); 
+    return ld.test(d1) && ld.test(d2); 
     
   }
 }

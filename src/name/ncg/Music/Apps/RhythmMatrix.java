@@ -38,12 +38,10 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -186,7 +184,7 @@ public class RhythmMatrix {
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new MaximumGap(3);
                     break;
                 }
-                pred = Predicates.and(pred, pred0);
+                pred = pred.and(pred0);
               }
               
               TreeSet<Rhythm> t = new TreeSet<Rhythm>();
@@ -198,7 +196,7 @@ public class RhythmMatrix {
                 for(Rhythm12 r : Rhythm12.getRhythms12()) t0.add(r.asRhythm());
               }
               for(Rhythm r : t0){
-                if(pred.apply(r)) {
+                if(pred.test(r)) {
                   t.add(r);
                 }
               }

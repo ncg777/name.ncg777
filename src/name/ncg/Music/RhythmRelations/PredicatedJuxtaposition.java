@@ -1,8 +1,7 @@
 package name.ncg.Music.RhythmRelations;
 
 import java.util.BitSet;
-
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 import name.ncg.Maths.Relations.Relation;
 import name.ncg.Music.Rhythm;
@@ -24,7 +23,7 @@ Relation<Rhythm, Rhythm>   {
     for(int i=0;i<b.getN();i++){bs.set(i+a.getN(),b.get(i));}
     Rhythm r = Rhythm.buildRhythm(bs, ns);
     
-    return ld.apply(r);
+    return ld.test(r);
   }
 
  

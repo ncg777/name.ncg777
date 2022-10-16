@@ -3,10 +3,11 @@ package name.ncg.Maths.Predicates;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.ComparableSet;
 import name.ncg.Maths.DataStructures.Sequence;
 
-public class ContiguousDistinctValuesExceptZero implements Predicate<Sequence>{
+public class ContiguousDistinctValuesExceptZero implements StandardAndGuavaPredicate<Sequence>{
 
   @Override
   public boolean apply(Sequence input) {

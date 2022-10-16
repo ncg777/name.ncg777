@@ -1,10 +1,9 @@
 package name.ncg.Maths.Predicates;
 
-import com.google.common.base.Predicate;
-
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.Sequence;
 
-public class Contiguous implements Predicate<Sequence>{
+public class Contiguous implements StandardAndGuavaPredicate<Sequence>{
 
   private int value;
   public Contiguous(int value){

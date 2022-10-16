@@ -5,11 +5,12 @@ import java.util.TreeSet;
 
 import com.google.common.base.Predicate;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.Combination;
 import name.ncg.Maths.Numbers;
 import name.ncg.Music.Rhythm;
 
-public class Ordinal implements Predicate<Rhythm>  {
+public class Ordinal implements StandardAndGuavaPredicate<Rhythm>  {
   private int n = -1;
   TreeSet<Combination> words = new TreeSet<Combination>();
   public Ordinal(int n) {

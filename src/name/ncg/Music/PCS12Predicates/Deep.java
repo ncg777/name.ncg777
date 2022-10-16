@@ -1,11 +1,10 @@
 package name.ncg.Music.PCS12Predicates;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.PCS12;
 
-import com.google.common.base.Predicate;
-
-public class Deep implements Predicate<PCS12>  {
+public class Deep implements StandardAndGuavaPredicate<PCS12>  {
 
   @Override
   public boolean apply(PCS12 arg0) {

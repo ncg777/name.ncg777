@@ -1,8 +1,7 @@
 package name.ncg.Music.RhythmRelations;
 
 import java.util.BitSet;
-
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 import name.ncg.Maths.Relations.Relation;
 import name.ncg.Music.Rhythm;
@@ -20,11 +19,11 @@ public class PredicatedIntersectionAndXOR implements
     o.or(a);
     o.and(b);
     
-    boolean r1 = ld.apply(Rhythm.buildRhythm(o, a.getN()));
+    boolean r1 = ld.test(Rhythm.buildRhythm(o, a.getN()));
     o = new BitSet(a.getN());
     o.or(a);
     o.xor(b);
-    boolean r2 = ld.apply(Rhythm.buildRhythm(o, a.getN()));
+    boolean r2 = ld.test(Rhythm.buildRhythm(o, a.getN()));
     return r1 && r2;
   }
 }

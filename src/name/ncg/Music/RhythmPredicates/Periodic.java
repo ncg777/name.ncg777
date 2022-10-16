@@ -1,11 +1,10 @@
 package name.ncg.Music.RhythmPredicates;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.FuzzyLogic.Valuators.CombinationPeriodicity;
 import name.ncg.Music.Rhythm;
 
-import com.google.common.base.Predicate;
-
-public class Periodic implements Predicate<Rhythm>  {
+public class Periodic implements StandardAndGuavaPredicate<Rhythm>  {
 
   private static CombinationPeriodicity cp = new CombinationPeriodicity();
   

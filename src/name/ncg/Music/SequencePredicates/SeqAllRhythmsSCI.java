@@ -1,13 +1,13 @@
 package name.ncg.Music.SequencePredicates;
 
-import com.google.common.base.Predicate;
 import java.util.Collection;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.Rhythm;
 import name.ncg.Music.RhythmPredicates.ShadowContourIsomorphic;
 
-public class SeqAllRhythmsSCI implements Predicate<Sequence> {
+public class SeqAllRhythmsSCI implements StandardAndGuavaPredicate<Sequence> {
   ShadowContourIsomorphic sci = new ShadowContourIsomorphic();
   
   @Override

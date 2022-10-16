@@ -1,15 +1,15 @@
 package name.ncg.Music.RhythmPredicates;
 
-import com.google.common.base.Predicate;
-
 import static name.ncg.Maths.DataStructures.CollectionUtils.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.Rhythm;
 
-public class CoprimeIntervals implements Predicate<Rhythm> {
+public class CoprimeIntervals implements StandardAndGuavaPredicate<Rhythm> {
 
   @Override
   public boolean apply(Rhythm input) {

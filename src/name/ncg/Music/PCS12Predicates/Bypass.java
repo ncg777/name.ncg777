@@ -1,10 +1,9 @@
 package name.ncg.Music.PCS12Predicates;
 
-import com.google.common.base.Predicate;
-
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.PCS12;
 
-public class Bypass implements Predicate<PCS12>  {
+public class Bypass implements StandardAndGuavaPredicate<PCS12>  {
 
   @Override
   public boolean apply(PCS12 arg0) {

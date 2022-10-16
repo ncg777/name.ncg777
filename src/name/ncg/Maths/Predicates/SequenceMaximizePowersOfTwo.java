@@ -2,13 +2,12 @@ package name.ncg.Maths.Predicates;
 
 import java.util.TreeMap;
 
-import com.google.common.base.Predicate;
-
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.CollectionUtils;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Statistics.SpectrumMaximizePowersOfTwo;
 
-public class SequenceMaximizePowersOfTwo implements Predicate<Sequence>{
+public class SequenceMaximizePowersOfTwo implements StandardAndGuavaPredicate<Sequence>{
 
   @Override
   public boolean apply(Sequence input) {

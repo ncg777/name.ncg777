@@ -1,8 +1,7 @@
 package name.ncg.Music.RhythmRelations;
 
 import java.util.BitSet;
-
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 import name.ncg.Maths.Relations.Relation;
 import name.ncg.Music.Rhythm;
@@ -20,6 +19,6 @@ public class PredicatedXOR implements
     o.or(a);
     o.xor(b);
     
-    return ld.apply(Rhythm.buildRhythm(o, a.getN()));
+    return ld.test(Rhythm.buildRhythm(o, a.getN()));
   }
 }

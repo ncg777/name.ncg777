@@ -1,12 +1,11 @@
 package name.ncg.Maths.Predicates;
 
-import com.google.common.base.Predicate;
-
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.Relations.Relation;
 
 public class BoundRelationSecond<T extends Comparable<? super T>, U extends Comparable<? super U>>
     implements
-      Predicate<T> {
+    StandardAndGuavaPredicate<T> {
   Relation<T, U> r;
   U b;
 

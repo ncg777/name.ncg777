@@ -1,6 +1,6 @@
 package name.ncg.Music.RhythmRelations;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 import name.ncg.Maths.DataStructures.Matrix;
 import name.ncg.Maths.Relations.Relation;
@@ -32,7 +32,7 @@ public class PredicatedPartitionJuxtaposition implements
     
     for(int i=0;i<m;i++){
       R16List r = new R16List(mat.getRow(i));
-      if(!ld.apply(r.asRhythm())){return false;}
+      if(!ld.test(r.asRhythm())){return false;}
     }
     return true;
   }

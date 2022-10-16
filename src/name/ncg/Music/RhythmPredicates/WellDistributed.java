@@ -3,12 +3,13 @@ package name.ncg.Music.RhythmPredicates;
 import java.util.Map;
 import java.util.TreeMap;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.HeterogeneousPair;
 import name.ncg.Music.Rhythm16Partition;
 
 import com.google.common.base.Predicate;
 
-public class WellDistributed implements Predicate<Rhythm16Partition>  {
+public class WellDistributed implements StandardAndGuavaPredicate<Rhythm16Partition>  {
 
   private static Map<HeterogeneousPair<Integer,Integer>,HeterogeneousPair<Double,Double>> 
     minmax = new TreeMap<HeterogeneousPair<Integer,Integer>,

@@ -1,12 +1,12 @@
 package name.ncg.Music.RhythmPredicates;
 
-import com.google.common.base.Predicate;
 import java.util.LinkedList;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.Rhythm;
 
-public class HasNoGaps implements Predicate<Rhythm> {
+public class HasNoGaps implements StandardAndGuavaPredicate<Rhythm> {
 
   public HasNoGaps() {
 

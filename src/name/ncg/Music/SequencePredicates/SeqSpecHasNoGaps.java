@@ -2,6 +2,7 @@ package name.ncg.Music.SequencePredicates;
 
 import com.google.common.base.Predicate;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Maths.DataStructures.Sequence;
 
 import static name.ncg.Maths.DataStructures.CollectionUtils.*;
@@ -10,7 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
-public class SeqSpecHasNoGaps implements Predicate<Integer[]> {
+public class SeqSpecHasNoGaps implements StandardAndGuavaPredicate<Integer[]> {
 
   @Override
   public boolean apply(Integer[] input) {

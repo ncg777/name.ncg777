@@ -13,7 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R12List;
 import name.ncg.Music.R16List;
-import name.ncg.Music.SequencePredicates.SeqAllRhythmsMaximizeQuality;
+import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
-import javax.swing.SpinnerModel;
+import name.ncg.Music.RhythmPredicates.MaximizeQuality;
 
 public class SeqGen0 {
 
@@ -134,7 +134,7 @@ public class SeqGen0 {
             if(n < 2) {
               throw new RuntimeException("rhythm is empty or too small");
             };
-            SeqAllRhythmsMaximizeQuality pred = new SeqAllRhythmsMaximizeQuality();
+            var pred = new PredicatedSeqRhythms(new MaximizeQuality());
             Sequence rnd;
             while(true) {
                rnd = Sequence.genRnd(

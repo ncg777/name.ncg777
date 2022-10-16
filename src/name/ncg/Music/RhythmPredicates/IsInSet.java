@@ -1,12 +1,11 @@
 package name.ncg.Music.RhythmPredicates;
 
+import name.ncg.CS.Functional.StandardAndGuavaPredicate;
 import name.ncg.Music.Rhythm;
 
 import java.util.Set;
 
-import com.google.common.base.Predicate;
-
-public class IsInSet implements Predicate<Rhythm> {
+public class IsInSet implements StandardAndGuavaPredicate<Rhythm> {
   private Set<Rhythm> set;
   public IsInSet(Set<Rhythm> set) {
     this.set = set;
