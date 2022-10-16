@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JLabel;
 
-import name.ncg.Maths.Composition;
+import name.ncg.Maths.DataStructures.Composition;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Music.R16List;
 import name.ncg.Music.Rhythm;

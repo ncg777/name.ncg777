@@ -11,7 +11,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
 
-import name.ncg.Maths.Combination;
+import name.ncg.Maths.DataStructures.Combination;
 import name.ncg.Maths.DataStructures.IterableComparator;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Maths.Enumerations.BitSetEnumeration;

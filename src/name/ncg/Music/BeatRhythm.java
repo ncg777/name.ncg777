@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.TreeMap;
 
-import name.ncg.Maths.Combination;
-import name.ncg.Maths.Necklace;
+import name.ncg.Maths.DataStructures.Combination;
+import name.ncg.Maths.DataStructures.Necklace;
 import name.ncg.Maths.DataStructures.Sequence.ReverseComparator;
 
 public class BeatRhythm extends Rhythm {

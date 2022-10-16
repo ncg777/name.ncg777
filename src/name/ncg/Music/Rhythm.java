@@ -9,9 +9,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.ncg.Maths.Combination;
-import name.ncg.Maths.Composition;
 import name.ncg.Maths.DataStructures.CollectionUtils;
+import name.ncg.Maths.DataStructures.Combination;
+import name.ncg.Maths.DataStructures.Composition;
 import name.ncg.Maths.DataStructures.Sequence;
 
 public class Rhythm extends Combination implements Serializable {

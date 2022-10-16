@@ -1,10 +1,9 @@
-package name.ncg.Maths;
+package name.ncg.Maths.DataStructures;
 
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import name.ncg.CS.Backtracker;
-import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Statistics.SegmentationScore;
 
 

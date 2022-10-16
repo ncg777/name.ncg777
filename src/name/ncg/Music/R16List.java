@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.ncg.Maths.Combination;
 import name.ncg.Maths.DataStructures.CollectionUtils;
+import name.ncg.Maths.DataStructures.Combination;
 import name.ncg.Maths.DataStructures.Sequence;
 
 public class R16List extends LinkedList<Rhythm16> implements Comparable<R16List>{

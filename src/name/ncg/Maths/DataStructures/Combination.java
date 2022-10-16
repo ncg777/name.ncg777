@@ -1,4 +1,4 @@
-package name.ncg.Maths;
+package name.ncg.Maths.DataStructures;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.io.Serializable;
 
-import name.ncg.Maths.DataStructures.CollectionUtils;
-import name.ncg.Maths.DataStructures.Sequence;
+import name.ncg.Maths.Numbers;
 import name.ncg.Maths.Enumerations.CombinationEnumeration;
 import name.ncg.Statistics.RandomNumberGenerator;
 

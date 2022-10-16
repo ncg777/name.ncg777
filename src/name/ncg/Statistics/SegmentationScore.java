@@ -1,6 +1,6 @@
 package name.ncg.Statistics;
 
-import name.ncg.Maths.Composition;
+import name.ncg.Maths.DataStructures.Composition;
 import name.ncg.Maths.DataStructures.Sequence;
 
 public class SegmentationScore {

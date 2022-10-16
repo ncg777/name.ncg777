@@ -2,7 +2,7 @@ package name.ncg.Maths.Enumerations;
 
 import java.util.Enumeration;
 
-import name.ncg.Maths.Composition;
+import name.ncg.Maths.DataStructures.Composition;
 
 public class CompositionEnumeration implements Enumeration<Composition> {
 

@@ -15,9 +15,9 @@ import java.util.TreeSet;
 import com.opencsv.exceptions.CsvException;
 
 import name.ncg.CS.Parsers;
-import name.ncg.Maths.Combination;
-import name.ncg.Maths.Necklace;
+import name.ncg.Maths.DataStructures.Combination;
 import name.ncg.Maths.DataStructures.FiniteBinaryRelation;
+import name.ncg.Maths.DataStructures.Necklace;
 import name.ncg.Maths.DataStructures.Sequence;
 
 

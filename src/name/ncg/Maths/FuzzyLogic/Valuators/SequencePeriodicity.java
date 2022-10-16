@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 import com.google.common.base.Function;
 
-import name.ncg.Maths.Composition;
+import name.ncg.Maths.DataStructures.Composition;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Maths.FuzzyLogic.FuzzyVariable;
 

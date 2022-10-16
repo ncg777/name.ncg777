@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.ncg.Maths.Combination;
-import name.ncg.Maths.Necklace;
+import name.ncg.Maths.DataStructures.Combination;
+import name.ncg.Maths.DataStructures.Necklace;
 import name.ncg.Maths.DataStructures.Sequence;
 
 import static com.google.common.math.IntMath.checkedPow;

@@ -2,7 +2,7 @@ package name.ncg.Maths.Relations;
 
 import java.util.TreeSet;
 
-import name.ncg.Maths.Combination;
+import name.ncg.Maths.DataStructures.Combination;
 
 public class CombinationFlatSymmetricDifference implements Relation<Combination, Combination> {
 

@@ -4,8 +4,8 @@ import java.util.BitSet;
 import java.util.TreeSet;
 
 import name.ncg.CS.Functional.StandardAndGuavaPredicate;
-import name.ncg.Maths.Combination;
 import name.ncg.Maths.Numbers;
+import name.ncg.Maths.DataStructures.Combination;
 import name.ncg.Music.Rhythm;
 
 public class Ordinal implements StandardAndGuavaPredicate<Rhythm>  {

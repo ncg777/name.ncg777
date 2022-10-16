@@ -1,11 +1,9 @@
-package name.ncg.Maths;
+package name.ncg.Maths.DataStructures;
 
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
-
-import name.ncg.Maths.DataStructures.Sequence;
 
 
 public class Bracelet extends Sequence {

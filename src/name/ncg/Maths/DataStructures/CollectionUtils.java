@@ -13,7 +13,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.ncg.Maths.Composition;
 import name.ncg.Statistics.RandomNumberGenerator;
 
 import com.google.common.base.Equivalence;
