@@ -102,6 +102,7 @@ public class RhythmMatrix96ClicksBeatPairs {
       }).start();
     
     frmRhythmMatrix = new JFrame();
+    frmRhythmMatrix.getContentPane().setBackground(Color.BLACK);
     frmRhythmMatrix.setResizable(false);
     frmRhythmMatrix.setTitle("Random hex rhythm matrix — 96 Clicks/beat  — 1 bit/click — Mixed 2/1, 2/2, 2/3, 2/4 timesigs, synchronized");
     frmRhythmMatrix.setBounds(100, 100, 781, 545);
@@ -111,10 +112,12 @@ public class RhythmMatrix96ClicksBeatPairs {
     spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
         
     JLabel lblRows = new JLabel("Rows:");
+    lblRows.setForeground(Color.GREEN);
     lblRows.setHorizontalAlignment(SwingConstants.RIGHT);
     lblRows.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
     
     JLabel lblColumns = new JLabel("#BeatPairs:");
+    lblColumns.setForeground(Color.GREEN);
     lblColumns.setHorizontalAlignment(SwingConstants.RIGHT);
     lblColumns.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
     
@@ -323,6 +326,7 @@ public class RhythmMatrix96ClicksBeatPairs {
     JScrollPane scrollPane_1 = new JScrollPane();
     
     JLabel lblNewLabel = new JLabel("Fixed rhythms — One rhythm per line — Line lenth can vary — Even number of beats per line only");
+    lblNewLabel.setForeground(Color.MAGENTA);
     lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 11));
     
@@ -331,13 +335,13 @@ public class RhythmMatrix96ClicksBeatPairs {
     lblNewLabel_1.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     
     JLabel lblMode = new JLabel("Predicates:");
-    lblMode.setForeground(Color.BLUE);
+    lblMode.setForeground(Color.CYAN);
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
     lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li><li>Even</li>\r\n<li>Ordinal (1/1)</li>\r\n<li>Ordinal (1/2)</li>\r\n</ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 10));
     
     JLabel lblDiffs = new JLabel("Difference predicates:");
-    lblDiffs.setForeground(Color.BLUE);
+    lblDiffs.setForeground(Color.CYAN);
     lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li><li>Even</li>\r\n<li>Ordinal (1/1)</li>\r\n<li>Ordinal (1/2)</li>\r\n</ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 10));
@@ -425,12 +429,16 @@ public class RhythmMatrix96ClicksBeatPairs {
           .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
           .addGap(9))
     );
+    textArea_1.setForeground(Color.WHITE);
+    textArea_1.setBackground(Color.DARK_GRAY);
     textArea_1.setFont(new Font("Monospaced", Font.PLAIN, 10));
     
     textArea_1.setText("80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00");
     
     
     scrollPane_1.setViewportView(textArea_1);
+    textArea.setBackground(Color.DARK_GRAY);
+    textArea.setForeground(Color.WHITE);
     
     
     scrollPane.setViewportView(textArea);
