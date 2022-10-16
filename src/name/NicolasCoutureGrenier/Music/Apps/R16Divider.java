@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import java.awt.Font;
 import javax.swing.SpinnerListModel;
+import javax.swing.SpinnerNumberModel;
 
 public class R16Divider {
 
@@ -80,13 +81,15 @@ public class R16Divider {
       public void actionPerformed(ActionEvent e) {
         R16List r = R16List.parseR16Seq(txtR.getText().trim());
         Rhythm r1 = r.asRhythm();
-        int div = Integer.valueOf((String)spinner.getValue());
+        int div = (int)spinner.getValue();
         int len = r.getN();
         int d = len/div;
         
-        if(d < 16) {
+        if(len%div != 0) {
+          txtResult.setText("Div does not divide length of rhythm");
+        } else if(d < 16) {
           txtResult.setText("too few bytes");  
-        } else {
+        }else {
           ArrayList<Rhythm> o = new ArrayList<Rhythm>();
           for(int i=0;i<div;i++) {o.add(Rhythm.buildRhythm(new BitSet(), d));}
           
@@ -110,7 +113,7 @@ public class R16Divider {
     });
     
     
-    spinner.setModel(new SpinnerListModel(new String[] {"2", "4", "8"}));
+    spinner.setModel(new SpinnerNumberModel(Integer.valueOf(2), Integer.valueOf(2), null, Integer.valueOf(1)));
     
     JLabel lblMult = new JLabel("Div:");
     lblMult.setFont(new Font("Unifont", Font.PLAIN, 11));
