@@ -127,7 +127,7 @@ public class XRSequenceGenerator {
             for(int j=0; j<possibles.size();j++){
               double p = it.next();
               double d = Math.abs(p - output.get(i-1));
-              weights[j] = 1.0-((d-mind)/(maxd-mind));
+              weights[j] = Math.sqrt(1.0-((d-mind)/(maxd-mind)));
             }
           }
           

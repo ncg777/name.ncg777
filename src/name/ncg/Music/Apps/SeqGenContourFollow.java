@@ -28,7 +28,7 @@ import name.ncg.Statistics.RandomNumberGenerator;
 
 import javax.swing.SpinnerModel;
 
-public class SeqGen2 {
+public class SeqGenContourFollow {
 
   private JFrame frmSeqgen;
   private JTextField txtDelta;
@@ -44,7 +44,7 @@ public class SeqGen2 {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SeqGen2 window = new SeqGen2();
+          SeqGenContourFollow window = new SeqGenContourFollow();
           window.frmSeqgen.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -56,7 +56,7 @@ public class SeqGen2 {
   /**
    * Create the application.
    */
-  public SeqGen2() {
+  public SeqGenContourFollow() {
     initialize();
   }
 
@@ -66,7 +66,7 @@ public class SeqGen2 {
   private void initialize() {
     frmSeqgen = new JFrame();
     frmSeqgen.setResizable(false);
-    frmSeqgen.setTitle("Sequence Generator 2");
+    frmSeqgen.setTitle("Sequence Generator (follows rhythm contour)");
     frmSeqgen.setBounds(100, 100, 958, 190);
     frmSeqgen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     JLabel lblAmp = new JLabel("amp:");

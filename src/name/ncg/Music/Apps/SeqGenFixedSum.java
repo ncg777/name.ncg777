@@ -25,9 +25,10 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.ncg.Music.Rn;
+import name.ncg.Music.RhythmPredicates.EntropicDispersion;
 import name.ncg.Music.RhythmPredicates.MaximizeQuality;
 
-public class SeqGen0 {
+public class SeqGenFixedSum {
 
   private JFrame frmSeqgen;
   private JTextField txtDelta;
@@ -45,7 +46,7 @@ public class SeqGen0 {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SeqGen0 window = new SeqGen0();
+          SeqGenFixedSum window = new SeqGenFixedSum();
           window.frmSeqgen.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -57,7 +58,7 @@ public class SeqGen0 {
   /**
    * Create the application.
    */
-  public SeqGen0() {
+  public SeqGenFixedSum() {
     initialize();
   }
 
@@ -67,7 +68,7 @@ public class SeqGen0 {
   private void initialize() {
     frmSeqgen = new JFrame();
     frmSeqgen.setResizable(false);
-    frmSeqgen.setTitle("Sequence Generator 0");
+    frmSeqgen.setTitle("Sequence Generator (fixed sum)");
     frmSeqgen.setBounds(100, 100, 1012, 166);
     frmSeqgen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -118,55 +119,59 @@ public class SeqGen0 {
     
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-
-        try {
-          while(true)
-          {
-            String str_R = txtRhythm.getText().trim();
-                       
-            int n = -1;
-            if(comboBox.getSelectedItem() == Rn.Hex) {
-              n = R16List.parseR16Seq(str_R).asRhythm().getK();
+        new Thread(() -> {
+          try {
+            btnGenerate.setEnabled(false);
+            while(true)
+            {
+              String str_R = txtRhythm.getText().trim();
+                         
+              int n = -1;
+              if(comboBox.getSelectedItem() == Rn.Hex) {
+                n = R16List.parseR16Seq(str_R).asRhythm().getK();
+              }
+              if(comboBox.getSelectedItem() == Rn.Octal) {
+                n = R12List.parseR12Seq(str_R).asRhythm().getK();
+              }
+              if(n < 2) {
+                throw new RuntimeException("rhythm is empty or too small");
+              };
+              var pred = new PredicatedSeqRhythms(new EntropicDispersion());
+              Sequence rnd;
+              while(true) {
+                 rnd = Sequence.genRnd(
+                  n, 
+                  (int)spinner_amp.getValue(), 
+                  (int)spinner_sum.getValue(), 
+                  (int)spinner_maxamp.getValue(), 
+                  chckbxExclude.isSelected());
+                 
+                 if(pred.apply(rnd)) break;
+              }
+              
+              int _min = (Integer)spinner_bounce_min.getValue();
+              int _amp = (Integer)spinner_bounce_amp.getValue();
+              
+              Sequence o = rnd;
+              
+              Sequence t = o.bounceseq(_min, _amp);
+              t.add(0,0);
+              o = t.difference();
+              txtDelta.setText(o.toString());
+              
+              Sequence o2 = o.antidifference(0);
+              o2.remove(0);
+              txtSequence.setText(o2.toString());
+              break;
+              
             }
-            if(comboBox.getSelectedItem() == Rn.Octal) {
-              n = R12List.parseR12Seq(str_R).asRhythm().getK();
-            }
-            if(n < 2) {
-              throw new RuntimeException("rhythm is empty or too small");
-            };
-            var pred = new PredicatedSeqRhythms(new MaximizeQuality());
-            Sequence rnd;
-            while(true) {
-               rnd = Sequence.genRnd(
-                n, 
-                (int)spinner_amp.getValue(), 
-                (int)spinner_sum.getValue(), 
-                (int)spinner_maxamp.getValue(), 
-                chckbxExclude.isSelected());
-               
-               if(pred.apply(rnd)) break;
-            }
-            
-            int _min = (Integer)spinner_bounce_min.getValue();
-            int _amp = (Integer)spinner_bounce_amp.getValue();
-            
-            Sequence o = rnd;
-            
-            Sequence t = o.bounceseq(_min, _amp);
-            t.add(0,0);
-            o = t.difference();
-            txtDelta.setText(o.toString());
-            
-            Sequence o2 = o.antidifference(0);
-            o2.remove(0);
-            txtSequence.setText(o2.toString());
-            break;
-            
           }
-        }
-        catch(Exception ex) {
-          JOptionPane.showMessageDialog(frmSeqgen, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
-        }
+          catch(Exception ex) {
+            JOptionPane.showMessageDialog(frmSeqgen, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
+          }
+          btnGenerate.setEnabled(true);
+        }).start();
+        
         
         
       }

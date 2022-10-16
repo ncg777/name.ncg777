@@ -30,7 +30,7 @@ import name.ncg.Music.RhythmPredicates.EntropicDispersion;
 import name.ncg.Music.RhythmPredicates.LowEntropy;
 import name.ncg.Music.SequencePredicates.PredicatedSeqRhythms;
 
-public class SeqGen3 {
+public class SeqGenFS {
 
   private JFrame frmSeqgen;
   private JTextField txtDelta;
@@ -46,7 +46,7 @@ public class SeqGen3 {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SeqGen3 window = new SeqGen3();
+          SeqGenFS window = new SeqGenFS();
           window.frmSeqgen.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -58,7 +58,7 @@ public class SeqGen3 {
   /**
    * Create the application.
    */
-  public SeqGen3() {
+  public SeqGenFS() {
     initialize();
   }
 
@@ -68,7 +68,7 @@ public class SeqGen3 {
   private void initialize() {
     frmSeqgen = new JFrame();
     frmSeqgen.setResizable(false);
-    frmSeqgen.setTitle("Sequence Generator 3");
+    frmSeqgen.setTitle("Sequence Generator FS (Factors & Subsequence words)");
     frmSeqgen.setBounds(100, 100, 955, 193);
     frmSeqgen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     JLabel lblAmp = new JLabel("amp:");
@@ -99,54 +99,52 @@ public class SeqGen3 {
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
  
-        try {
+        
           new Thread(() -> {
-            btnGenerate.setEnabled(false);
-            while(true)
-            {
-              String str_R = txtRhythm.getText().trim();
-              
-              Rhythm R = null;
-              if(comboBox.getSelectedItem() == Rn.Hex) {
-                R16List r = R16List.parseR16Seq(str_R);
-                R = r.asRhythm();
-              }
-              if(comboBox.getSelectedItem() == Rn.Octal) {
-                R12List r = R12List.parseR12Seq(str_R);
-                R = r.asRhythm();
-              }
-              
-              Sequence s;
-              var pred = new PredicatedSeqRhythms(new EntropicDispersion());
-              do {
-                s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
-              } while(!pred.apply(s));
-              
-              int _min = (Integer)spinner_bounce_min.getValue();
-              int _amp = (Integer)spinner_bounce_amp.getValue();
-
-              Sequence o = s;
-              Sequence t = o.bounceseq(_min, _amp);
-              t.add(0,0);
-              o = t.difference();
-              txtDelta.setText(o.toString());
-              
-              Sequence o2 = o.antidifference(0);
-              o2.remove(0);
-              txtSequence.setText(o2.toString());
-              btnGenerate.setEnabled(true);
-              break;
-          }}).start();
+            try {
+              btnGenerate.setEnabled(false);
+              while(true)
+              {
+                String str_R = txtRhythm.getText().trim();
+                
+                Rhythm R = null;
+                if(comboBox.getSelectedItem() == Rn.Hex) {
+                  R16List r = R16List.parseR16Seq(str_R);
+                  R = r.asRhythm();
+                }
+                if(comboBox.getSelectedItem() == Rn.Octal) {
+                  R12List r = R12List.parseR12Seq(str_R);
+                  R = r.asRhythm();
+                }
+                
+                Sequence s;
+                var pred = new PredicatedSeqRhythms(new EntropicDispersion());
+                do {
+                  s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
+                } while(!pred.apply(s));
+                
+                int _min = (Integer)spinner_bounce_min.getValue();
+                int _amp = (Integer)spinner_bounce_amp.getValue();
+  
+                Sequence o = s;
+                Sequence t = o.bounceseq(_min, _amp);
+                t.add(0,0);
+                o = t.difference();
+                txtDelta.setText(o.toString());
+                
+                Sequence o2 = o.antidifference(0);
+                o2.remove(0);
+                txtSequence.setText(o2.toString());
+                
+                break;
+              } 
+            } catch(Exception ex) {
+              JOptionPane.showMessageDialog(frmSeqgen, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
+            }
+            btnGenerate.setEnabled(true);
+          }).start();
         }
-        catch(Exception ex) {
-          JOptionPane.showMessageDialog(frmSeqgen, ex.getMessage(), "Nope", JOptionPane.INFORMATION_MESSAGE);
-        }
-        
-        
-      }
-    });
-    
-    
+      });
     
     JLabel lblRhythm = new JLabel("Rhythm :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);

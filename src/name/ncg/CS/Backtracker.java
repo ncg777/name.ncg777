@@ -2,9 +2,10 @@ package name.ncg.CS;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.apache.commons.math3.util.Precision;
-import com.google.common.base.Function;
+
 
 public class Backtracker<T> {
 

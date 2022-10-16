@@ -3,9 +3,6 @@ package name.ncg.Maths;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-
-import com.google.common.base.Function;
-
 import name.ncg.CS.Backtracker;
 import name.ncg.Maths.DataStructures.Sequence;
 import name.ncg.Statistics.SegmentationScore;
@@ -128,18 +125,8 @@ public class Composition extends Combination {
   }
   public List<Composition> segment() {
     Backtracker<Composition> b =
-        Backtracker.Maximizer(new Function<Composition,List<Composition>>(){
-
-      @Override
-      public List<Composition> apply(Composition arg0) {
-        return Composition.refinements(arg0);
-      }
-      
-    },
-    new Function<Composition,Double>() {
-
-      @Override
-      public Double apply(Composition arg0) {
+        Backtracker.Maximizer((c) -> Composition.refinements(c),
+            (c) -> {
         Sequence s = Composition.this.asSequence();
         
         double[] d = new double[s.size()];
@@ -148,10 +135,8 @@ public class Composition extends Combination {
           d[k++] = i.doubleValue();
         }
         
-        return SegmentationScore.evaluate(d, arg0);
-      }
-      
-    });
+        return SegmentationScore.evaluate(d, c);
+      });
     List<Composition> out = new ArrayList<Composition>();
     
     b.backtrack(new Composition(getK()+1), out);
