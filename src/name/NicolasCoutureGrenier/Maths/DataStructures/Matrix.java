@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+import com.google.common.base.Joiner;
+
 
 // TODO: code tests
 
@@ -25,7 +27,6 @@ import java.util.TreeSet;
  * @param <T>
  */
 public class Matrix<T> {
-  /** The ArrayList of ArrayLists containing the values of the matrix. */
   protected TreeMap<Integer, TreeMap<Integer, T>> mat;
   /** lock holds the flag specifying if the matrix is read-only or not. */
   protected boolean lock = false;
@@ -168,15 +169,12 @@ public class Matrix<T> {
    */
   @Override
   public String toString() {
-    String s = "";
+    StringBuilder sb = new StringBuilder();
+    var joiner = Joiner.on(" ");
     for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-        s += String.valueOf(this.get(i, j)) + " ";
-      }
-      s += "\n";
-
+      sb.append(joiner.join(getRow(i)) + "\n");
     }
-    return s;
+    return sb.toString();
   }
 
 
