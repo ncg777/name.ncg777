@@ -22,10 +22,14 @@ public class Ordinal implements StandardAndGuavaPredicate<Rhythm>  {
       
       for(int i=1; i<=k; i++) {
         BitSet b = new BitSet(n);
+        BitSet brev = new BitSet(n);
         for(int j=0; j<i; j++) {
           b.set(j*f, true);
+          brev.set(n-(j*f+1), true);
         }
+        
         words.add(new Combination(b, this.n));
+        words.add(new Combination(brev, this.n));
       }
     }
   }

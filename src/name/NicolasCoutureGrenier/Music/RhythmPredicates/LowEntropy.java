@@ -9,7 +9,7 @@ public class LowEntropy implements StandardAndGuavaPredicate<Rhythm> {
   
   @Override
   public boolean apply(Rhythm arg0) {
-    return cd.apply(arg0).not().quantize(0.75);
+    return cd.apply(arg0).not().quantize(Math.exp(0.5)*Math.exp(-1.0));
   }
 
 }
