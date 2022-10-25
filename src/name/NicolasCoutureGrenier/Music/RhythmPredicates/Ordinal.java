@@ -25,7 +25,7 @@ public class Ordinal implements StandardAndGuavaPredicate<Rhythm>  {
         BitSet brev = new BitSet(n);
         for(int j=0; j<i; j++) {
           b.set(j*f, true);
-          brev.set(n-(j*f+1), true);
+          brev.set(n-((j+1)*f), true);
         }
         
         words.add(new Combination(b, this.n));
