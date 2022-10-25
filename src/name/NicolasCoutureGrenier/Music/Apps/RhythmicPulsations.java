@@ -153,7 +153,7 @@ public class RhythmicPulsations {
                         
             for(int j=0; j<m; j++) {
               if(!isTail) {
-                rh.set(j*d, true);
+                rh.set(acc+j*d, true);
               } else {
                 rh.set(acc + c-((j+1)*d), true); 
               }
