@@ -150,24 +150,15 @@ public class RhythmicPulsations {
             int d = sdurations.get(i%sdurations.size());
             
             int m = smultiples.get(i%smultiples.size());
-            
-            int start = acc;
-            int end = acc + c - 1;
-            if(isTail) {
-              int tmp = start;
-              start = end;
-              end = tmp;
-            }
-            
-            int inc = isTail ? -1 : 1;
-            inc *= d;
-            int cnt = 0;
-            
-            for(int j=start;isTail?j>=end:j<=end;j+=inc) {
-              if(cnt++ < m) {
-                rh.set(j%scompo_sum, true);
+                        
+            for(int j=0; j<m; j++) {
+              if(!isTail) {
+                rh.set(j*d, true);
+              } else {
+                rh.set(acc + c-((j+1)*d), true); 
               }
             }
+            
             acc+=c;
           }
           if(comboBox.getSelectedItem() == Rn.Hex) result.setText(R16List.fromRhythm(rh).toString());
