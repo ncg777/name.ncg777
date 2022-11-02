@@ -12,7 +12,7 @@ public class LowEntropy implements StandardAndGuavaPredicate<Rhythm> {
   public boolean apply(Rhythm arg0) {
     Double bound = null;
     if(!_cache.containsKey(arg0.getN())) {
-      bound = Math.log(Numbers.reverseTriangularNumber(arg0.getN())*0.5);
+      bound = Math.log((double)Numbers.reverseTriangularNumber(arg0.getN())*0.5);
       _cache.put(arg0.getN(), bound);
     } else {
       bound = _cache.get(arg0.getN());
