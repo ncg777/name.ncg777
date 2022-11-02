@@ -1,15 +1,24 @@
 package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 
+import java.util.TreeMap;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
-import name.NicolasCoutureGrenier.Maths.FuzzyLogic.Valuators.CombinationEntropy;
+import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 public class LowEntropy implements StandardAndGuavaPredicate<Rhythm> {
-  private CombinationEntropy cd = new CombinationEntropy();
-  
+  private static TreeMap<Integer,Double> _cache = new TreeMap<Integer,Double>();
   @Override
   public boolean apply(Rhythm arg0) {
-    return cd.apply(arg0).not().quantize(Math.exp(0.5)*Math.exp(-1.0));
+    Double bound = null;
+    if(!_cache.containsKey(arg0.getN())) {
+      bound = Math.log(Numbers.reverseTriangularNumber(arg0.getN())*0.5);
+      _cache.put(arg0.getN(), bound);
+    } else {
+      bound = _cache.get(arg0.getN());
+    }
+    double h = arg0.getComposition().asSequence().entropy();
+    return h < bound;
   }
 
 }

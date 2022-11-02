@@ -188,4 +188,8 @@ public class Numbers {
     }
     return o;
   }
+  
+  public static int reverseTriangularNumber(int n) {
+    return Double.valueOf(Math.floor((Math.sqrt((double)(1+8*n))-1.0)/2.0)).intValue();
+  }
 }

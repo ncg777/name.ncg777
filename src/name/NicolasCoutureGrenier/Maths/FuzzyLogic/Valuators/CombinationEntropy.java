@@ -4,6 +4,7 @@ import java.util.TreeMap;
 
 import com.google.common.base.Function;
 
+import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Interval;
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
@@ -20,7 +21,7 @@ public class CombinationEntropy implements Function<Combination, FuzzyVariable> 
     double max = Double.MIN_VALUE;
 
     if (!minmax.containsKey(n)) {
-      int k = Double.valueOf(Math.floor((Math.sqrt((double)(1+8*n))-1.0)/2.0)).intValue();
+      int k = Numbers.reverseTriangularNumber(n);
       max = Math.log(k);
       minmax.put(n, Interval.makeClosedInterval(0.0, max+0.0000000000000005));
     } else {
