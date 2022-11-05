@@ -34,8 +34,6 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
