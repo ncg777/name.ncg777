@@ -33,6 +33,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.awt.event.ActionEvent;
@@ -72,7 +74,7 @@ public class RhythmMatrix96ClicksBeatPairs {
   public RhythmMatrix96ClicksBeatPairs() {
     initialize();
   }
-  private double[] adjustWeights(ArrayList<Rhythm> row, ArrayList<Rhythm> possibles, int j, double[] weights) {
+  private double[] adjustWeights(ArrayList<Rhythm> row, ArrayList<Rhythm> possibles, int j, Double[] weights) {
     double[] o = new double[possibles.size()];
     for(int i=0;i<possibles.size();i++) {
       int count = 0;
@@ -104,8 +106,8 @@ public class RhythmMatrix96ClicksBeatPairs {
     frmRhythmMatrix.setBackground(Color.GRAY);
     frmRhythmMatrix.getContentPane().setBackground(Color.GRAY);
     frmRhythmMatrix.setResizable(false);
-    frmRhythmMatrix.setTitle("Random hex rhythm matrix — 96 clicks/beat  — 1 bit/click — Mixed 2/1, 2/2, 2/3, 2/4 timesigs, synchronized");
-    frmRhythmMatrix.setBounds(100, 100, 781, 545);
+    frmRhythmMatrix.setTitle("Random hex rhythm matrix — 96 clicks/beat  — 1 bit/click — Mixed 2/1, 2/2, 2/3, 2/4, 2/6, 2/8 timesigs, synchronized");
+    frmRhythmMatrix.setBounds(100, 100, 832, 545);
     frmRhythmMatrix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JSpinner spinner = new JSpinner();
@@ -229,11 +231,22 @@ public class RhythmMatrix96ClicksBeatPairs {
                 fixedSize++;
               }
               m += fixedSize;
-              TreeMap<String, ArrayList<Rhythm>> cachePossibles = new TreeMap<>();
-              TreeMap<String, double[]> cacheWeights = new TreeMap<>();
-              Function<String, ArrayList<Rhythm>> possibles = (String str) -> {
-                if(cachePossibles.containsKey(str)) return (ArrayList<Rhythm>)cachePossibles.get(str);
-                Rhythm r = Rhythm.buildRhythm(str);
+              
+              TreeMap<Rhythm, Double[]> cacheWeights = new TreeMap<>();
+              BiFunction<Rhythm,ArrayList<Rhythm>, Double[]> calcWeights = (Rhythm r, ArrayList<Rhythm> p) -> {
+                if(cacheWeights.containsKey(r)) return cacheWeights.get(r);
+                Double weights[] = new Double[p.size()];
+                
+                for(int i=0;i<p.size();i++) {
+                  weights[i] = 1.0-Math.sqrt(r.calcNormalizedDistanceWith(p.get(i)));
+                }
+                cacheWeights.put(r, weights);
+                return weights;
+              };
+              
+              TreeMap<Rhythm, ArrayList<Rhythm>> cachePossibles = new TreeMap<>();
+              BiFunction<Rhythm, Integer, ArrayList<Rhythm>> possibles = (Rhythm r, Integer j) -> {
+                if(cachePossibles.containsKey(r)) return cachePossibles.get(r);
                 ArrayList<Rhythm> p = new ArrayList<>();
                 
                 for(Rhythm s : t) {
@@ -241,17 +254,11 @@ public class RhythmMatrix96ClicksBeatPairs {
                       p.add(s); 
                    }
                 }
-                
-                cachePossibles.put(str, p);
-                double weights[] = new double[p.size()];
-                
-                for(int i=0;i<p.size();i++) {
-                  weights[i] = 1.0-Math.sqrt(r.calcNormalizedDistanceWith(p.get(i)));
-                }
-                cacheWeights.put(str, weights);
-                
+                cachePossibles.put(r, p);
                 return p;
               };
+              
+              
               
               int maxFailures = n*m*500;
               int failures = 0;
@@ -263,13 +270,13 @@ public class RhythmMatrix96ClicksBeatPairs {
                     failures++;
                     ArrayList<Rhythm> p = null;
                     if(j>0) {
-                      p = possibles.apply(output.get(i, j-1).toBinaryString());
+                      p = possibles.apply(output.get(i, j-1), j);
                     }
                     
                     Rhythm r = null;
                     
                     if(j > 0) {
-                      r = CollectionUtils.chooseAtRandomWithWeights(p, adjustWeights(output.getRow(i), p, j, cacheWeights.get(output.get(i, j-1).toBinaryString())));  
+                      r = CollectionUtils.chooseAtRandomWithWeights(p, adjustWeights(output.getRow(i), p, j, calcWeights.apply(output.get(i, j-1), p)));  
                     } else {
                       r = CollectionUtils.chooseAtRandom(t);
                     }
@@ -314,7 +321,7 @@ public class RhythmMatrix96ClicksBeatPairs {
               textArea.setText(tmpMat.toString());
               
             } catch(Exception x) {
-              textArea.setText("Error");
+              textArea.setText(x.getMessage());
             }
             btnGenerate.setEnabled(true);
           }}).start();
@@ -363,16 +370,10 @@ public class RhythmMatrix96ClicksBeatPairs {
         .addGroup(groupLayout.createSequentialGroup()
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
-              .addContainerGap()
-              .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE))
-            .addGroup(groupLayout.createSequentialGroup()
               .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                 .addGroup(groupLayout.createSequentialGroup()
                   .addContainerGap()
                   .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE))
-                .addGroup(groupLayout.createSequentialGroup()
-                  .addContainerGap()
-                  .addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 730, GroupLayout.PREFERRED_SIZE))
                 .addGroup(groupLayout.createSequentialGroup()
                   .addGap(13)
                   .addComponent(lblRows)
@@ -391,20 +392,26 @@ public class RhythmMatrix96ClicksBeatPairs {
                   .addPreferredGap(ComponentPlacement.RELATED)
                   .addComponent(textDiffFilterModes, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
                   .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+                  .addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))
                 .addGroup(groupLayout.createSequentialGroup()
                   .addContainerGap()
-                  .addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 731, GroupLayout.PREFERRED_SIZE)))
+                  .addComponent(btnGenerate, GroupLayout.PREFERRED_SIZE, 782, GroupLayout.PREFERRED_SIZE))
+                .addGroup(groupLayout.createSequentialGroup()
+                  .addContainerGap()
+                  .addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 781, GroupLayout.PREFERRED_SIZE)))
               .addGap(4))
             .addGroup(groupLayout.createSequentialGroup()
               .addContainerGap()
-              .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 731, GroupLayout.PREFERRED_SIZE)))
+              .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE))
+            .addGroup(groupLayout.createSequentialGroup()
+              .addContainerGap()
+              .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 781, GroupLayout.PREFERRED_SIZE)))
           .addContainerGap())
     );
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
-          .addContainerGap(13, Short.MAX_VALUE)
+          .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
             .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
               .addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -423,11 +430,11 @@ public class RhythmMatrix96ClicksBeatPairs {
           .addComponent(lblNewLabel)
           .addPreferredGap(ComponentPlacement.RELATED)
           .addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.UNRELATED)
+          .addPreferredGap(ComponentPlacement.RELATED)
           .addComponent(lblNewLabel_1)
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-          .addGap(9))
+          .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+          .addGap(20))
     );
     textArea_1.setForeground(new Color(0, 0, 0));
     textArea_1.setBackground(new Color(255, 255, 255));

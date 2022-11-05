@@ -25,7 +25,7 @@ public class CompatibleBeatRhythms implements Relation<Rhythm, Rhythm>{
         ny = nx;
         nx = tmp;
       }
-      if(nx % ny != 0) return false;
+      if(ny % nx != 0) return false;
     }
     return true;
   }
