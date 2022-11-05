@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.NicolasCoutureGrenier.Music.Rn;
-import name.NicolasCoutureGrenier.Music.RhythmPredicates.EntropicDispersion;
+import name.NicolasCoutureGrenier.Music.RhythmPredicates.LowEntropy;
 import name.NicolasCoutureGrenier.Music.SequencePredicates.PredicatedSeqRhythms;
 
 public class SeqGenFS {
@@ -116,7 +116,7 @@ public class SeqGenFS {
                 }
                 
                 Sequence s;
-                var pred = new PredicatedSeqRhythms(new EntropicDispersion());
+                var pred = new PredicatedSeqRhythms(new LowEntropy());
                 do {
                   s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
                 } while(!pred.apply(s));

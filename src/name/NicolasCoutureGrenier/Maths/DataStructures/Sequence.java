@@ -1082,7 +1082,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     for(int i=0; i<nbf;i++) {
       double[] weights = new double[F.size()];
       int j = 0;
-      for(int _f : F) { weights[j++] = 1.0/Math.exp((double) _f); }
+      for(int _f : F) { weights[j++] = Math.exp(-Math.abs(Math.sqrt(n) - (double) _f)); }
       int f = F.size() == 1 ? F.first() : CollectionUtils.chooseAtRandomWithWeights(F, weights);
       int kp = n / f;
       F.remove(f);
@@ -1108,8 +1108,6 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     
     for(int i=0; i<F2.size();i++) {
       int f = F2.get(i);
-      int kp = n / f;
-      epsf.put(f, Sequence.genRnd(kp, amp, 0, maxamp, true));
       coordf.put(f, new TreeMap<>());
       acc = 0;
       for(int j=0; j<k;j++) {
