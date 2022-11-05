@@ -91,7 +91,7 @@ public class XRSequenceGenerator96 {
           
           possibles.add(0.0);
           
-          for(int j=2;j<=n;j++) {
+          for(int j=12;j<=n;j++) {
             if(Numbers.lcm(n, j) == n && j%2 == 0) possibles.add(Integer.valueOf(j).doubleValue());
           }
           

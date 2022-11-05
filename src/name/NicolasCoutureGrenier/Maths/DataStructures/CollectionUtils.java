@@ -152,7 +152,7 @@ public class CollectionUtils {
     int k = 0;
     double r = RandomNumberGenerator.nextDouble();
 
-    while (true) {
+    while (i.hasNext()) {
       o = i.next();
       acc += normalizedWeights[k];
       if(r <= acc) break;
