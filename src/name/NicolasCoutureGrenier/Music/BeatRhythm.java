@@ -17,7 +17,7 @@ public class BeatRhythm extends Rhythm {
   private static final long serialVersionUID = -5152258002409941959L;
   final public static int Clicks = 96; // must be divisible by 8
   final private int bitlen;
-  final private static int MAX_N = 8;
+  final private static int MAX_N = 4;
   private static TreeSet<BeatRhythm> beatRhythms = new TreeSet<>();
   private static TreeMap<String, BeatRhythm> beatRhythmDict = new TreeMap<>();
   
