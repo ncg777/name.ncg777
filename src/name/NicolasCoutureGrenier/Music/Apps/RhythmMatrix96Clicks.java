@@ -32,14 +32,10 @@ import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedJuxtaposition;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
