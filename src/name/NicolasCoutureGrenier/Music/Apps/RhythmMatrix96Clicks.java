@@ -246,7 +246,7 @@ public class RhythmMatrix96Clicks {
                     relSimul0 = new PredicatedDifferences(new Ordinal(BeatRhythm.Clicks * 2));
                     break;
                   case 9:
-                    relSimul = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
+                    relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
                 }
                 relSimul = Relation.and(relSimul, relSimul0);
               }
