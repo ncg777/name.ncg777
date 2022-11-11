@@ -1,15 +1,14 @@
 package name.NicolasCoutureGrenier.Music;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import name.NicolasCoutureGrenier.Maths.Enumerations.MixedRadixEnumeration;
 
-public class MeasureRhythm extends LinkedList<BeatRhythm>  implements Comparable<MeasureRhythm>{
+public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<MeasureRhythm>, Serializable{
   private static final long serialVersionUID = 1L;
 
   public MeasureRhythm(List<BeatRhythm> m_l) {
@@ -35,23 +34,25 @@ public class MeasureRhythm extends LinkedList<BeatRhythm>  implements Comparable
   }
   
   public static TreeSet<MeasureRhythm> generate(int nbBeats) {
-    ArrayList<Rhythm> brs = BeatRhythm.getBeatRhythms().stream().map(b -> b.getRhythmClicks())
-        .collect(Collectors.toCollection(ArrayList<Rhythm>::new));
+    ArrayList<BeatRhythm> brs = new ArrayList<BeatRhythm>();
+    brs.addAll(BeatRhythm.getBeatRhythms());
     var brs_sz = brs.size();
     Integer base[] = new Integer[nbBeats];
-    for(int i=0;i<nbBeats;i++) { base[i] = brs_sz; }
+    int total = 1;
+    for(int i=0;i<nbBeats;i++) { base[i] = brs_sz; total*=base[i]; }
     var mre = new MixedRadixEnumeration(base);
     
-    TreeSet<MeasureRhythm> o = new TreeSet<>();
-    
+    var o =new TreeSet<MeasureRhythm>();
+    int tmp = 0;
     while(mre.hasMoreElements()) {
-      var c = mre.nextElement();
-      var a = new ArrayList<Rhythm>();
+      Integer[] coord = mre.nextElement();
+      var a = new ArrayList<BeatRhythm>();
       for(int i=0; i<nbBeats;i++) {
-        a.add(brs.get(c[i]));
+        a.add(brs.get(coord[i]));
       }
-      o.add(MeasureRhythm.fromRhythmArray(a));
-    }
+      o.add(new MeasureRhythm(a));
+      System.out.println(tmp++ + " / " + total);
+    };
     return o;
   }
   
@@ -72,15 +73,17 @@ public class MeasureRhythm extends LinkedList<BeatRhythm>  implements Comparable
     return l;
   }
   
-  public ArrayList<MeasureRhythm> splitInPairs() {
-    if(this.size()%2 != 0) throw new RuntimeException("segmentation error");
+  public ArrayList<MeasureRhythm> splitInChunks(int n) {
+    if(this.size()%n != 0) throw new RuntimeException("segmentation error");
     
     var o = new ArrayList<MeasureRhythm>();
     
-    for(int i=0;i<this.size()/2;i++) {
+    for(int i=0;i<this.size()/n;i++) {
       var t = new MeasureRhythm();
-      t.add(this.get(i*2));
-      t.add(this.get((i*2)+1));
+      for(int j=0; j<n;j++) {
+        t.add(this.get((i*n)+j));
+      }
+      
       o.add(t);
     }
     return o;
@@ -116,16 +119,16 @@ public class MeasureRhythm extends LinkedList<BeatRhythm>  implements Comparable
     
   @Override
   public String toString() {
-    String t = "";
+    StringBuilder t = new StringBuilder();
     int n = this.size();
 
     for (int i = 0; i < n; i++) {
-      t += this.get(i).toString();
+      t.append(this.get(i).toString());
       if (i != (n - 1)) {
-        t += " ";
+        t.append(" ");
       }
     }
-    return t;
+    return t.toString();
   }
   
   @Override
@@ -138,7 +141,9 @@ public class MeasureRhythm extends LinkedList<BeatRhythm>  implements Comparable
     if (this == obj) return true;
     if (!super.equals(obj)) return false;
     if (getClass() != obj.getClass()) return false;
-    return toString().equals(((MeasureRhythm)obj).toString());
+    
+    
+    return this.toString().equals(((MeasureRhythm)obj).toString());
   }
 
   public static MeasureRhythm rotate(MeasureRhythm r, int t) {

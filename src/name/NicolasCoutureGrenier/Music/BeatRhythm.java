@@ -2,6 +2,7 @@ package name.NicolasCoutureGrenier.Music;
 
 import static com.google.common.math.IntMath.checkedPow;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
@@ -13,7 +14,7 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence.ReverseComparator;
 
-public class BeatRhythm extends Rhythm {
+public class BeatRhythm extends Rhythm implements Serializable {
   private static final long serialVersionUID = -5152258002409941959L;
   final public static int Clicks = 96; // must be divisible by 8
   final private int bitlen;

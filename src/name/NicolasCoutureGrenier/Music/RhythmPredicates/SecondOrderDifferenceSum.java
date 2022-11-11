@@ -1,0 +1,31 @@
+package name.NicolasCoutureGrenier.Music.RhythmPredicates;
+
+import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
+import name.NicolasCoutureGrenier.Music.Rhythm;
+
+public class SecondOrderDifferenceSum implements StandardAndGuavaPredicate<Rhythm>{
+  public static enum Keep {
+    Negative,
+    Positive,
+    Zero
+  }
+  private Keep keep = null;
+  public SecondOrderDifferenceSum(Keep keep) {
+    if(keep == null) throw new RuntimeException("keep cannot be null");
+    this.keep = keep;
+  }
+
+  @Override
+  public boolean apply(Rhythm input) {
+    int sum = input.getComposition().asSequence().cyclicalForwardDifference().cyclicalForwardDifference().sum();    
+    
+    switch(keep) {
+      case Zero: return sum == 0;
+      case Negative : return sum < 0;
+      case Positive: return sum > 0;
+    }
+    
+    throw new RuntimeException("this should never happen");
+  }
+
+}

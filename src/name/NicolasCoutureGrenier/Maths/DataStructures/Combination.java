@@ -173,16 +173,14 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
       return 1;
     }
 
+    
     BitSet a = new BitSet();
     a.or(this);
     BitSet b = new BitSet();
     b.or(o);
-    BitSet c = new BitSet();
-    c.or(this);
+    a.xor(b);
 
-    c.xor(b);
-
-    int i = c.nextSetBit(0);
+    int i = a.nextSetBit(0);
 
     if (i == -1) {
       return 0;
