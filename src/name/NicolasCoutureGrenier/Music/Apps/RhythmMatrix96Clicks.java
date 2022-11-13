@@ -371,7 +371,7 @@ public class RhythmMatrix96Clicks {
     JScrollPane scrollPane_1 = new JScrollPane();
 
     JLabel lblNewLabel = new JLabel(
-        "Fixed rhythms — One rhythm per line — Line lenth can vary — Even number of beats per line only");
+        "Fixed rhythms — One rhythm per line — Line lenth can vary — #beats must be multiple of 4");
     lblNewLabel.setForeground(Color.ORANGE);
     lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 11));
