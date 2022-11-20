@@ -307,7 +307,7 @@ public class RhythmMatrix {
                 double weights[] = new double[p.size()];
                 
                 for(int i=0;i<p.size();i++) {
-                  weights[i] = 1.0/(Math.exp(r.calcNormalizedDistanceWith(p.get(i))));
+                  weights[i] = 1.0 - Math.sqrt(r.calcNormalizedDistanceWith(p.get(i)));
                 }
                 cacheWeights.put(r.toBinaryString(), weights);
                 
