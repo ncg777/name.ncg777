@@ -74,16 +74,16 @@ public class TribbleRhythmMatrixSeq {
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        String[] r96str = textBeatRhythmList.getText().split("\n+"); 
-        int m = r96str.length;
-        MeasureRhythm[][] r96s = new MeasureRhythm[m][];
+        String[] groundstr = textBeatRhythmList.getText().split("\n+"); 
+        int m = groundstr.length;
+        MeasureRhythm[][] rgrounds = new MeasureRhythm[m][];
         
         
         for(int i=0;i<m;i++) {
-          var a = MeasureRhythm.parseMeasureRhythm(r96str[i]).splitInChunks(4);
+          var a = MeasureRhythm.parseMeasureRhythm(groundstr[i]).splitInChunks(4);
           int j=0;
-          r96s[i] = new MeasureRhythm[a.size()];
-          for(var x : a) r96s[i][j++] = x;
+          rgrounds[i] = new MeasureRhythm[a.size()];
+          for(var x : a) rgrounds[i][j++] = x;
         }
         
         Sequence s = Sequence.parse(textSequence.getText());
@@ -93,7 +93,7 @@ public class TribbleRhythmMatrixSeq {
           for(int i=0;i<m;i++) {
             String line ="";
             for(int j : s) {
-              line += r96s[i][j%r96s[i].length].toString() + " ";
+              line += rgrounds[i][j%rgrounds[i].length].toString() + " ";
             }
             o+=line.trim();
             if(i<m-1) {o+="\n";}

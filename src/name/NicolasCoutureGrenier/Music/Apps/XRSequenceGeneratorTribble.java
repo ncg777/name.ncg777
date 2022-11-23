@@ -91,8 +91,8 @@ public class XRSequenceGeneratorTribble {
           
           possibles.add(0.0);
           
-          for(int j=12;j<=n;j++) {
-            if(Numbers.lcm(n, j) == n && j%2 == 0) possibles.add(Integer.valueOf(j).doubleValue());
+          for(int j=1;j<=n;j++) {
+            if(Numbers.lcm(n, j) == n) possibles.add(Integer.valueOf(j).doubleValue());
           }
           
           double[] weights = null;
