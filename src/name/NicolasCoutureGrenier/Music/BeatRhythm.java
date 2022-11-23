@@ -16,7 +16,7 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence.ReverseComparato
 
 public class BeatRhythm extends Rhythm implements Serializable {
   private static final long serialVersionUID = -5152258002409941959L;
-  final public static int Clicks = 96; // must be divisible by 8
+  final public static int NbBits = 12;
   final private int bitlen;
   final private static int MAX_N = 4;
   private static TreeSet<BeatRhythm> beatRhythms = new TreeSet<>();
@@ -27,35 +27,35 @@ public class BeatRhythm extends Rhythm implements Serializable {
     return (TreeSet<BeatRhythm>)beatRhythms.clone();
   }
   
-  public BitSet getBitSetClicks() {
-    BitSet bitsetClicks = new BitSet(96);
+  public BitSet getGroundBitSet() {
+    BitSet groundBitset = new BitSet(NbBits);
     for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
-      bitsetClicks.set(i*bitlen, true);
+      groundBitset.set(i*bitlen, true);
     }
-    return bitsetClicks;
+    return groundBitset;
   }
   
-  public Rhythm getRhythmClicks() {
-    return Rhythm.buildRhythm(getBitSetClicks(), Clicks);
+  public Rhythm getGroundRhythm() {
+    return Rhythm.buildRhythm(getGroundBitSet(), NbBits);
   }
   
   
-  private static String toHexString(BitSet b) {
+  private static String toTribbleString(BitSet b) {
     StringBuilder sb = new StringBuilder();
     
-    for(int i=0; i<Clicks/8; i++) {
-      BitSet byt = new BitSet(8);
-      for(int j=0; j<8;j++) {
-        byt.set(j, b.get((i*8) + j));
+    for(int i=0; i<NbBits/4; i++) {
+      BitSet nibble = new BitSet(4);
+      for(int j=0; j<4;j++) {
+        nibble.set(j, b.get((i*4) + j));
       }
-      sb.append(ByteToString(byt) + " ");
+      sb.append(NibbleToString(nibble));
     }
     return sb.toString().trim();
   }
   
   @Override
   public String toString() {
-    return toHexString(getBitSetClicks());
+    return toTribbleString(getGroundBitSet());
   }
   
   @Override
@@ -77,22 +77,22 @@ public class BeatRhythm extends Rhythm implements Serializable {
   
   static {
     for(int i=1;i<=MAX_N;i++) {
-      if(Clicks%i == 0) { beatRhythms.addAll(Generate(i)); } 
+      if(NbBits%i == 0) { beatRhythms.addAll(Generate(i)); } 
     }
     
     for(var b : beatRhythms) { beatRhythmDict.put(b.toString(), b);}
   }
   
   public static BeatRhythm identifyBeatRhythm(Set<Integer> input) {
-    return BeatRhythm.parseBeatRhythm(toHexString(new Combination(Clicks, input)));
+    return BeatRhythm.parseBeatRhythm(toTribbleString(new Combination(NbBits, input)));
   }
   
   public static BeatRhythm parseBeatRhythm(String s) {
     if(!beatRhythmDict.containsKey(s.trim())) throw new RuntimeException("not found");
     return beatRhythmDict.get(s.trim()); 
   }
-  public static BeatRhythm fromRhythmClicks(Rhythm r) {
-    return parseBeatRhythm(toHexString(r));
+  public static BeatRhythm fromGroundRhythm(Rhythm r) {
+    return parseBeatRhythm(toTribbleString(r));
   }
   
   static TreeSet<BeatRhythm> Generate(int n) {
@@ -130,26 +130,26 @@ public class BeatRhythm extends Rhythm implements Serializable {
     return output;
   }
   
-  private static String ByteToString(BitSet b) {
+  private static String NibbleToString(BitSet b) {
     int intbyte = 0;
     
     for (int i = b.nextSetBit(0); i >= 0; i = b.nextSetBit(i + 1)) {
-        intbyte += checkedPow(2, 7 - i);  
+        intbyte += checkedPow(2, 3 - i);  
     }
-    return String.format("%02X", intbyte);
+    return String.format("%X", intbyte);
   }
   
   
   public BeatRhythm(BitSet b, int n) {
     super(b, n);
-    if(Clicks%n != 0) throw new IllegalArgumentException("Unsupported division");
-    bitlen = Clicks / getN();
+    if(NbBits%n != 0) throw new IllegalArgumentException("Unsupported division");
+    bitlen = NbBits / getN();
   }
 
   public BeatRhythm(Integer n, Set<Integer> s) {
     super(n, s);
-    if(Clicks%n != 0) throw new IllegalArgumentException("Unsupported division");
-    bitlen = Clicks / getN();
+    if(NbBits%n != 0) throw new IllegalArgumentException("Unsupported division");
+    bitlen = NbBits / getN();
   }
 
 }

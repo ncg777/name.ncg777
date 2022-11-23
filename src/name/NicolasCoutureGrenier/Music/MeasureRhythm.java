@@ -23,12 +23,12 @@ public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<
   }
   
   public Rhythm asRhythm(){
-    int n = size()*BeatRhythm.Clicks;
+    int n = size()*BeatRhythm.NbBits;
     BitSet b = new BitSet(n);
     var arr = new ArrayList<Rhythm>();
-    for(var br : this) arr.add(br.getRhythmClicks());
+    for(var br : this) arr.add(br.getGroundRhythm());
     for(int i=0;i<n;i++){
-      b.set(i, arr.get(i / BeatRhythm.Clicks).get(i%BeatRhythm.Clicks));
+      b.set(i, arr.get(i / BeatRhythm.NbBits).get(i%BeatRhythm.NbBits));
     }
     return new Rhythm(b,n);
   }
@@ -58,17 +58,11 @@ public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<
   
   static public MeasureRhythm parseMeasureRhythm(String str) {
     String[] arr = str.trim().split("\\s+");
-    int bytesInBeat = BeatRhythm.Clicks/8;
-    if(arr.length%(bytesInBeat) != 0) throw new RuntimeException("segmentation error");
     MeasureRhythm l = new MeasureRhythm();
-    int n = arr.length / (bytesInBeat);
+    int n = arr.length;
     
     for(int i=0; i<n; i++) {
-      StringBuilder sb = new StringBuilder();
-      for(int j=0; j<bytesInBeat; j++) {
-        sb.append(arr[(i*bytesInBeat)+j] + " ");
-      }
-      l.add(BeatRhythm.parseBeatRhythm(sb.toString().trim()));
+      l.add(BeatRhythm.parseBeatRhythm(arr[i]));
     }
     return l;
   }
@@ -95,7 +89,7 @@ public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<
     
     for(int i=0;i<this.size();i++) {
       
-      MeasureRhythm rot = MeasureRhythm.rotate(other, i*BeatRhythm.Clicks);
+      MeasureRhythm rot = MeasureRhythm.rotate(other, i*BeatRhythm.NbBits);
       boolean eq = true;
       for(int j=0;j<rot.size();j++) {
         if(!this.get(j).equals(rot.get(j))) {
@@ -112,7 +106,7 @@ public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<
     MeasureRhythm o = new MeasureRhythm();
     
     for(Rhythm r : list) {
-      o.add(BeatRhythm.fromRhythmClicks(r));
+      o.add(BeatRhythm.fromGroundRhythm(r));
     }
     return o;
   }
@@ -147,20 +141,20 @@ public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<
   }
 
   public static MeasureRhythm rotate(MeasureRhythm r, int t) {
-    return fromRhythm(new Rhythm(r.asRhythm().rotate(t), r.size()*BeatRhythm.Clicks));
+    return fromRhythm(new Rhythm(r.asRhythm().rotate(t), r.size()*BeatRhythm.NbBits));
   }
   
   public static MeasureRhythm fromRhythm(Rhythm r){
     MeasureRhythm output = new MeasureRhythm();
-    if(r.getN() % BeatRhythm.Clicks != 0) {
-      throw new RuntimeException("Rhythm's size is not divided by BeatRhythm.Clicks.");
+    if(r.getN() % BeatRhythm.NbBits != 0) {
+      throw new RuntimeException("Rhythm's size is not divided by BeatRhythm.NbBits.");
     }
     int k = 0;
     while(k<r.getN()) {
       TreeSet<Integer> t = new TreeSet<Integer>();
-      for(int i=0;i<BeatRhythm.Clicks;i++) {
+      for(int i=0;i<BeatRhythm.NbBits;i++) {
         if(r.get(k)) {
-          t.add(k%BeatRhythm.Clicks);
+          t.add(k%BeatRhythm.NbBits);
         }
         k++;
       }
@@ -170,21 +164,21 @@ public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<
   }
  
   public Integer getN() {
-    return this.size()*BeatRhythm.Clicks;
+    return this.size()*BeatRhythm.NbBits;
   }
 
   public static Boolean[] toBooleanArray(MeasureRhythm a) {
 
-    Boolean output[] = new Boolean[a.size() * BeatRhythm.Clicks];
-    for (int i = 0; i < a.size() * BeatRhythm.Clicks; i++) {
+    Boolean output[] = new Boolean[a.size() * BeatRhythm.NbBits];
+    for (int i = 0; i < a.size() * BeatRhythm.NbBits; i++) {
       output[i] = false;
     }
 
     for (int i = 0; i < a.size(); i++) {
-      Rhythm x = a.get(i).getRhythmClicks();
+      Rhythm x = a.get(i).getGroundRhythm();
 
       for (int j = x.nextSetBit(0); j >= 0; j = x.nextSetBit(j + 1)) {
-        output[j + (i * BeatRhythm.Clicks)] = true;
+        output[j + (i * BeatRhythm.NbBits)] = true;
       }
     }
     return output;

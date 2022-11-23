@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import java.awt.Font;
 
-public class RhythmMatrix96ClicksSeq {
+public class TribbleRhythmMatrixSeq {
 
   private JFrame frmRseq;
   private JTextArea textBeatRhythmList;
@@ -34,7 +34,7 @@ public class RhythmMatrix96ClicksSeq {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          RhythmMatrix96ClicksSeq window = new RhythmMatrix96ClicksSeq();
+          TribbleRhythmMatrixSeq window = new TribbleRhythmMatrixSeq();
           window.frmRseq.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -46,7 +46,7 @@ public class RhythmMatrix96ClicksSeq {
   /**
    * Create the application.
    */
-  public RhythmMatrix96ClicksSeq() {
+  public TribbleRhythmMatrixSeq() {
     initialize();
   }
 
@@ -55,7 +55,7 @@ public class RhythmMatrix96ClicksSeq {
    */
   private void initialize() {
     frmRseq = new JFrame();
-    frmRseq.setTitle("RhythmMatrix96ClicksSeq");
+    frmRseq.setTitle("TribbleRhythmMatrixSeq");
     frmRseq.setBounds(100, 100, 471, 587);
     frmRseq.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

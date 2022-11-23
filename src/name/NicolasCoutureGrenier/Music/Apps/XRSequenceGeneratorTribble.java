@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.awt.event.ActionEvent;
 
-public class XRSequenceGenerator96 {
+public class XRSequenceGeneratorTribble {
 
   private JFrame frmXrSequenceGenerator;
   private JTextField textRhythm;
@@ -33,7 +33,7 @@ public class XRSequenceGenerator96 {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          XRSequenceGenerator96 window = new XRSequenceGenerator96();
+          XRSequenceGeneratorTribble window = new XRSequenceGeneratorTribble();
           window.frmXrSequenceGenerator.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -45,7 +45,7 @@ public class XRSequenceGenerator96 {
   /**
    * Create the application.
    */
-  public XRSequenceGenerator96() {
+  public XRSequenceGeneratorTribble() {
     initialize();
   }
 

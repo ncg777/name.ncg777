@@ -49,7 +49,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.Color;
 
-public class RhythmMatrix96Clicks {
+public class TribbleRhythmMatrix {
 
   private JFrame frmRhythmMatrix;
   private JTextArea textArea_1 = new JTextArea();
@@ -64,7 +64,7 @@ public class RhythmMatrix96Clicks {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          RhythmMatrix96Clicks window = new RhythmMatrix96Clicks();
+          TribbleRhythmMatrix window = new TribbleRhythmMatrix();
           window.frmRhythmMatrix.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -76,7 +76,7 @@ public class RhythmMatrix96Clicks {
   /**
    * Create the application.
    */
-  public RhythmMatrix96Clicks() {
+  public TribbleRhythmMatrix() {
     initialize();
   }
 
@@ -134,7 +134,7 @@ public class RhythmMatrix96Clicks {
     frmRhythmMatrix.getContentPane().setBackground(Color.GRAY);
     frmRhythmMatrix.setResizable(false);
     frmRhythmMatrix.setTitle(
-        "Random hex rhythm matrix — 96 clicks/beat  — 1 bit/click — Mixed 4/1, 4/2, 4/3, 4/4 timesigs, synchronized");
+        "Random tribble rhythm matrix — 12 bit words  — Mixed 4/1, 4/2, 4/3, 4/4 timesigs, synchronized");
     frmRhythmMatrix.setBounds(100, 100, 832, 545);
     frmRhythmMatrix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -192,10 +192,10 @@ public class RhythmMatrix96Clicks {
                     pred0 = new Even();
                     break;
                   case 7:
-                    pred0 = new Ordinal(BeatRhythm.Clicks * 4);
+                    pred0 = new Ordinal(BeatRhythm.NbBits * 4);
                     break;
                   case 8:
-                    pred0 = new Ordinal(BeatRhythm.Clicks * 2);
+                    pred0 = new Ordinal(BeatRhythm.NbBits * 2);
                     break;
                   case 9:
                     pred0 = new SecondOrderDifferenceSum(Keep.Zero);
@@ -240,13 +240,14 @@ public class RhythmMatrix96Clicks {
                     relSimul0 = new PredicatedDifferences(new Even());
                     break;
                   case 7:
-                    relSimul0 = new PredicatedDifferences(new Ordinal(BeatRhythm.Clicks * 4));
+                    relSimul0 = new PredicatedDifferences(new Ordinal(BeatRhythm.NbBits * 4));
                     break;
                   case 8:
-                    relSimul0 = new PredicatedDifferences(new Ordinal(BeatRhythm.Clicks * 2));
+                    relSimul0 = new PredicatedDifferences(new Ordinal(BeatRhythm.NbBits * 2));
                     break;
                   case 9:
                     relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
+                    break;
                 }
                 relSimul = Relation.and(relSimul, relSimul0);
               }
@@ -371,7 +372,7 @@ public class RhythmMatrix96Clicks {
     JScrollPane scrollPane_1 = new JScrollPane();
 
     JLabel lblNewLabel = new JLabel(
-        "Fixed rhythms — One rhythm per line — Line lenth can vary — #beats must be multiple of 4");
+        "Fixed rhythms — One rhythm per line — Line lenth can vary — #tribble must be multiple of 4");
     lblNewLabel.setForeground(Color.ORANGE);
     lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 11));
@@ -400,7 +401,7 @@ public class RhythmMatrix96Clicks {
     textDiffFilterModes = new JTextField("1");
     textDiffFilterModes.setColumns(10);
 
-    JLabel lblNewLabel_2 = new JLabel("12 bytes = 1 beat");
+    JLabel lblNewLabel_2 = new JLabel("1 tribble = 1 beat");
     lblNewLabel_2.setForeground(Color.RED);
     lblNewLabel_2.setHorizontalAlignment(SwingConstants.LEFT);
     lblNewLabel_2.setFont(new Font("DejaVu Sans Mono", Font.BOLD, 10));
@@ -479,7 +480,7 @@ public class RhythmMatrix96Clicks {
     textArea_1.setFont(new Font("Monospaced", Font.PLAIN, 10));
 
     textArea_1.setText(
-        "80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00\n00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00 00 00 00 00");
+        "800 000 800 000\n000 800 000 800");
 
 
     scrollPane_1.setViewportView(textArea_1);
