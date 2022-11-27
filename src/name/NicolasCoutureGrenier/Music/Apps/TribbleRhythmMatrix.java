@@ -107,6 +107,20 @@ public class TribbleRhythmMatrix {
     btnGenerate.setBackground(new Color(127, 255, 0));
     btnGenerate.setEnabled(false);
     
+    /*
+    try {
+      TreeSet<MeasureRhythm> mr = MeasureRhythm.generate(4);
+      
+      FileOutputStream os = new FileOutputStream("d:/measureRhythms.bin");
+      ObjectOutputStream oos = new ObjectOutputStream(os);
+      oos.writeObject(mr);
+      oos.flush();
+      oos.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+    }
+     */
+    
     InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/measureRhythms.bin");
     ObjectInputStream objectInputStream;
     try {

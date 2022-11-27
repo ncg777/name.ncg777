@@ -11,10 +11,8 @@ import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 
 import static com.google.common.math.IntMath.checkedPow;
-import static name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils.*;
 import static name.NicolasCoutureGrenier.Maths.DataStructures.Sequence.ReverseComparator;
 
 public class Rhythm12 extends Rhythm implements Serializable{
@@ -22,11 +20,7 @@ public class Rhythm12 extends Rhythm implements Serializable{
   private static final long serialVersionUID = 1L;
 
   static TreeMap<String, Rhythm12> RhythmDictByOctal;
-  static TreeMap<String, Rhythm12> RhythmDictById;
-
-  Integer m_Order;
-  Integer m_Phase;
-
+  
   String m_str;
 
   static {
@@ -47,22 +41,14 @@ public class Rhythm12 extends Rhythm implements Serializable{
     return output;
   }
 
-  public static Rhythm12 parseRhythm12Octal(String input) {
+  public static Rhythm12 parseRhythm12Octal(String input) {    
     return RhythmDictByOctal.get(input);
   }
 
-  public static Rhythm12 parseRhythm12Id(String input) {
-    return RhythmDictById.get(input);
-  }
-
-  private Rhythm12(Set<Integer> p_s, Integer p_Order, Integer p_Phase) {
+  private Rhythm12(Set<Integer> p_s) {
     super(12, p_s);
 
-    m_Order = p_Order;
-    m_Phase = p_Phase;
-
     m_str = Rhythm12.toString(this);
-
   }
 
   public Rhythm asRhythm() {
@@ -86,10 +72,6 @@ public class Rhythm12 extends Rhythm implements Serializable{
     return m_str;
   }
   
-  public String getId(){
-    return String.format("%02d-%03d.%02d", getK(),getOrder(),getPhase());
-  }
-  
   public static String toString(Combination c) {
     int msb = 0;
     int lsb = 0;
@@ -104,18 +86,9 @@ public class Rhythm12 extends Rhythm implements Serializable{
     return String.format("%02o %02o", msb, lsb);
   }
 
-  public Integer getOrder() {
-    return m_Order;
-  }
-
   public static Rhythm12 getZeroRhythm(){
     return parseRhythm12Octal("00 00");
   }
-  public Integer getPhase() {
-    return m_Phase;
-  }
-
-
 
   static TreeSet<Rhythm12> Generate() {
     Integer[] o = new Integer[12];
@@ -156,7 +129,7 @@ public class Rhythm12 extends Rhythm implements Serializable{
           }
         }
         if (!c.isEmpty()) {
-          output.add(new Rhythm12(c, o[sz_tmp - 1], j));
+          output.add(new Rhythm12(c));
 
         }
       }
@@ -165,7 +138,7 @@ public class Rhythm12 extends Rhythm implements Serializable{
       }
     }
 
-    output.add(new Rhythm12(new TreeSet<Integer>(), 0, 0));
+    output.add(new Rhythm12(new TreeSet<Integer>()));
 
     return output;
   }
@@ -211,16 +184,13 @@ public class Rhythm12 extends Rhythm implements Serializable{
     TreeSet<Rhythm12> t = Generate();
 
     TreeMap<String, Rhythm12> outputByOctal = new TreeMap<String, Rhythm12>();
-    TreeMap<String, Rhythm12> outputById = new TreeMap<String, Rhythm12>();
     Iterator<Rhythm12> i = t.iterator();
 
     while (i.hasNext()) {
       Rhythm12 tmp = i.next();
       outputByOctal.put(tmp.toString(), tmp);
-      outputById.put(tmp.getId(), tmp);
     }
     RhythmDictByOctal = outputByOctal;
-    RhythmDictById = outputById;
   }
 
   public static LinkedList<Rhythm12> parseRhythm12Seq(String input) {
@@ -238,38 +208,5 @@ public class Rhythm12 extends Rhythm implements Serializable{
 
   public static Rhythm12 identifyRhythm12(Combination input) {
     return RhythmDictByOctal.get(Rhythm12.toString(input));
-  }
-
-  public static Rhythm12 tapEcho(Rhythm12 r, int nbTaps, int tapLen) {
-    BitSet x = new BitSet(12);
-    x.or(r);
-    for(int i=0;i<nbTaps;i++){
-      for(int j=0;j<12;j++) {
-        if(x.get(j)) {
-          x.set((j+tapLen*(i+1))%12);
-        }
-      }
-    }
-    return identifyRhythm12(new Combination(x, 12));
-  }
-  public static Sequence calcSpectrum24(Rhythm12 a, Rhythm12 b) {
-    Integer[] x = new Integer[24];
-
-    for (int i = 0; i < 12; i++) {
-      x[i] = a.get(i) ? 1 : 0;
-      x[i + 12] = b.get(i) ? 1 : 0;
-    }
-    TreeMap<Integer, Sequence> s = calcIntervalVector(x);
-    if (!s.containsKey(1)) {
-      Sequence q = new Sequence();
-      for (int i = 0; i < 12; i++) {
-        q.add(0);
-      }
-
-      return q;
-    } else {
-      return s.get(1);
-    }
-
   }
 }

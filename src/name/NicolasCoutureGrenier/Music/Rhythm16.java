@@ -11,10 +11,8 @@ import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 
 import static com.google.common.math.IntMath.checkedPow;
-import static name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils.*;
 import static name.NicolasCoutureGrenier.Maths.DataStructures.Sequence.ReverseComparator;
 
 public class Rhythm16 extends Rhythm implements Serializable{
@@ -22,10 +20,6 @@ public class Rhythm16 extends Rhythm implements Serializable{
   private static final long serialVersionUID = 1L;
 
   static TreeMap<String, Rhythm16> RhythmDictByHex;
-  static TreeMap<String, Rhythm16> RhythmDictById;
-
-  Integer m_Order;
-  Integer m_Phase;
 
   String m_str;
 
@@ -50,16 +44,9 @@ public class Rhythm16 extends Rhythm implements Serializable{
   public static Rhythm16 parseRhythm16Hex(String input) {
     return RhythmDictByHex.get(input);
   }
-
-  public static Rhythm16 parseRhythm16Id(String input) {
-    return RhythmDictById.get(input);
-  }
-
-  private Rhythm16(Set<Integer> p_s, Integer p_Order, Integer p_Phase) {
+  
+  private Rhythm16(Set<Integer> p_s) {
     super(16, p_s);
-
-    m_Order = p_Order;
-    m_Phase = p_Phase;
 
     m_str = Rhythm16.toString(this);
 
@@ -86,10 +73,6 @@ public class Rhythm16 extends Rhythm implements Serializable{
     return m_str;
   }
   
-  public String getId(){
-    return String.format("%02d-%03d.%02d", getK(),getOrder(),getPhase());
-  }
-  
   public static String toString(Combination c) {
     int msb = 0;
     int lsb = 0;
@@ -104,18 +87,10 @@ public class Rhythm16 extends Rhythm implements Serializable{
     return String.format("%02X %02X", msb, lsb);
   }
 
-  public Integer getOrder() {
-    return m_Order;
-  }
 
   public static Rhythm16 getZeroRhythm(){
     return parseRhythm16Hex("00 00");
   }
-  public Integer getPhase() {
-    return m_Phase;
-  }
-
-
 
   static TreeSet<Rhythm16> Generate() {
     Integer[] o = new Integer[16];
@@ -156,7 +131,7 @@ public class Rhythm16 extends Rhythm implements Serializable{
           }
         }
         if (!c.isEmpty()) {
-          output.add(new Rhythm16(c, o[sz_tmp - 1], j));
+          output.add(new Rhythm16(c));
 
         }
       }
@@ -165,7 +140,7 @@ public class Rhythm16 extends Rhythm implements Serializable{
       }
     }
 
-    output.add(new Rhythm16(new TreeSet<Integer>(), 0, 0));
+    output.add(new Rhythm16(new TreeSet<Integer>()));
 
     return output;
   }
@@ -211,16 +186,13 @@ public class Rhythm16 extends Rhythm implements Serializable{
     TreeSet<Rhythm16> t = Generate();
 
     TreeMap<String, Rhythm16> outputByHex = new TreeMap<String, Rhythm16>();
-    TreeMap<String, Rhythm16> outputById = new TreeMap<String, Rhythm16>();
     Iterator<Rhythm16> i = t.iterator();
 
     while (i.hasNext()) {
       Rhythm16 tmp = i.next();
       outputByHex.put(tmp.toString(), tmp);
-      outputById.put(tmp.getId(), tmp);
     }
     RhythmDictByHex = outputByHex;
-    RhythmDictById = outputById;
   }
 
   public static LinkedList<Rhythm16> parseRhythm16Seq(String input) {
@@ -238,38 +210,5 @@ public class Rhythm16 extends Rhythm implements Serializable{
 
   public static Rhythm16 identifyRhythm16(Combination input) {
     return RhythmDictByHex.get(Rhythm16.toString(input));
-  }
-
-  public static Rhythm16 tapEcho(Rhythm16 r, int nbTaps, int tapLen) {
-    BitSet x = new BitSet(16);
-    x.or(r);
-    for(int i=0;i<nbTaps;i++){
-      for(int j=0;j<16;j++) {
-        if(x.get(j)) {
-          x.set((j+tapLen*(i+1))%16);
-        }
-      }
-    }
-    return identifyRhythm16(new Combination(x, 16));
-  }
-  public static Sequence calcSpectrum32(Rhythm16 a, Rhythm16 b) {
-    Integer[] x = new Integer[32];
-
-    for (int i = 0; i < 16; i++) {
-      x[i] = a.get(i) ? 1 : 0;
-      x[i + 16] = b.get(i) ? 1 : 0;
-    }
-    TreeMap<Integer, Sequence> s = calcIntervalVector(x);
-    if (!s.containsKey(1)) {
-      Sequence q = new Sequence();
-      for (int i = 0; i < 16; i++) {
-        q.add(0);
-      }
-
-      return q;
-    } else {
-      return s.get(1);
-    }
-
   }
 }
