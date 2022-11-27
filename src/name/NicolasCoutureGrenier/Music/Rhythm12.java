@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
@@ -18,31 +16,25 @@ import static name.NicolasCoutureGrenier.Maths.DataStructures.Sequence.ReverseCo
 public class Rhythm12 extends Rhythm implements Serializable{
 
   private static final long serialVersionUID = 1L;
-
-  static TreeMap<String, Rhythm12> RhythmDictByOctal;
   
   String m_str;
-
-  static {
-    generateMaps();
-  }
 
   public static Rhythm12 rotate(Rhythm12 r, int t) {
     return identifyRhythm12(Rhythm.rotate(r, t));
   }
 
-  public static TreeMap<String, Rhythm12> getRhythm12Dict() {
-    return RhythmDictByOctal;
-  }
-
-  public static TreeSet<Rhythm12> getRhythms12() {
-    TreeSet<Rhythm12> output = new TreeSet<Rhythm12>();
-    output.addAll(RhythmDictByOctal.values());
-    return output;
-  }
-
   public static Rhythm12 parseRhythm12Octal(String input) {    
-    return RhythmDictByOctal.get(input);
+    String binstr = Integer.toBinaryString(Integer.parseInt(input.replaceAll("\\s+", ""), 8));
+    StringBuilder sb = new StringBuilder(binstr);
+    int k = 12-binstr.length();
+    while(k-- > 0) {sb.insert(0, '0');}
+    binstr = sb.toString();
+    BitSet b = new BitSet(12);
+    
+    for(int i=0;i<12;i++) {
+      b.set(i, binstr.charAt(i) == '1');
+    }
+    return new Rhythm12(b);
   }
 
   private Rhythm12(Set<Integer> p_s) {
@@ -50,7 +42,9 @@ public class Rhythm12 extends Rhythm implements Serializable{
 
     m_str = Rhythm12.toString(this);
   }
-
+  protected Rhythm12(BitSet b) {
+    super(b, 12);
+  }
   public Rhythm asRhythm() {
     BitSet b = new BitSet(12);
     b.or(this);
@@ -90,7 +84,7 @@ public class Rhythm12 extends Rhythm implements Serializable{
     return parseRhythm12Octal("00 00");
   }
 
-  static TreeSet<Rhythm12> Generate() {
+  public static TreeSet<Rhythm12> Generate() {
     Integer[] o = new Integer[12];
 
     for (int i = 0; i < 12; i++) {
@@ -179,34 +173,12 @@ public class Rhythm12 extends Rhythm implements Serializable{
     return identifyRhythm12(new Combination(x, 12));
 
   }
-  
-  private static void generateMaps() {
-    TreeSet<Rhythm12> t = Generate();
-
-    TreeMap<String, Rhythm12> outputByOctal = new TreeMap<String, Rhythm12>();
-    Iterator<Rhythm12> i = t.iterator();
-
-    while (i.hasNext()) {
-      Rhythm12 tmp = i.next();
-      outputByOctal.put(tmp.toString(), tmp);
-    }
-    RhythmDictByOctal = outputByOctal;
-  }
-
-  public static LinkedList<Rhythm12> parseRhythm12Seq(String input) {
-    String[] s = input.split("\\s");
-    LinkedList<Rhythm12> output = new LinkedList<Rhythm12>();
-    for (int i = 0; i < s.length; i++) {
-      output.add(parseRhythm12Octal(s[i]));
-    }
-    return output;
-  }
 
   public static Rhythm12 identifyRhythm12(Set<Integer> input) {
-    return RhythmDictByOctal.get(Rhythm12.toString(new Combination(12, input)));
+    return new Rhythm12(input);
   }
 
   public static Rhythm12 identifyRhythm12(Combination input) {
-    return RhythmDictByOctal.get(Rhythm12.toString(input));
+    return new Rhythm12(input);
   }
 }

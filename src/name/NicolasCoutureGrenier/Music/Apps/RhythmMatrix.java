@@ -59,7 +59,8 @@ public class RhythmMatrix {
   private JComboBox<Rn> comboBox = new JComboBox<Rn>(new DefaultComboBoxModel<Rn>(Rn.values()));
   private JTextField textFilterModes;
   private JTextField textDiffFilterModes;
-  
+  private TreeSet<Rhythm16> r16set = Rhythm16.Generate();
+  private TreeSet<Rhythm12> r12set = Rhythm12.Generate();
   /**
    * Launch the application.
    */
@@ -194,10 +195,10 @@ public class RhythmMatrix {
               TreeSet<Rhythm> t = new TreeSet<Rhythm>();
               TreeSet<Rhythm> t0 = new TreeSet<Rhythm>();
               if(comboBox.getSelectedItem() == Rn.Hex) {
-                for(Rhythm16 r : Rhythm16.getRhythms16()) t0.add(r.asRhythm());
+                for(Rhythm16 r : r16set) t0.add(r.asRhythm());
               }
               if(comboBox.getSelectedItem() == Rn.Octal) {
-                for(Rhythm12 r : Rhythm12.getRhythms12()) t0.add(r.asRhythm());
+                for(Rhythm12 r : r12set) t0.add(r.asRhythm());
               }
               for(Rhythm r : t0){
                 if(pred.test(r)) {

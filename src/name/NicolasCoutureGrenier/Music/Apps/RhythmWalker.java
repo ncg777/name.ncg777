@@ -69,7 +69,7 @@ public class RhythmWalker {
     frmRhythmPleasure.setBounds(100, 100, 450, 300);
     frmRhythmPleasure.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    TreeSet<Rhythm> t = new TreeSet<Rhythm>(); t.addAll(Rhythm16.getRhythms16());
+    TreeSet<Rhythm> t = new TreeSet<Rhythm>(); t.addAll(Rhythm16.Generate());
     CollectionUtils.filter(t,new ShadowContourIsomorphic());
     d = new DiGraph<Rhythm>(t,new PredicatedJuxtaposition(new ShadowContourIsomorphic()));
     List<String> s0 =new ArrayList<String>();

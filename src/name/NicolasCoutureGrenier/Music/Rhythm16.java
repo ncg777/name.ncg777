@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
@@ -19,30 +17,24 @@ public class Rhythm16 extends Rhythm implements Serializable{
 
   private static final long serialVersionUID = 1L;
 
-  static TreeMap<String, Rhythm16> RhythmDictByHex;
-
   String m_str;
-
-  static {
-    generateMaps();
-  }
 
   public static Rhythm16 rotate(Rhythm16 r, int t) {
     return identifyRhythm16(Rhythm.rotate(r, t));
   }
 
-  public static TreeMap<String, Rhythm16> getRhythm16Dict() {
-    return RhythmDictByHex;
-  }
-
-  public static TreeSet<Rhythm16> getRhythms16() {
-    TreeSet<Rhythm16> output = new TreeSet<Rhythm16>();
-    output.addAll(RhythmDictByHex.values());
-    return output;
-  }
-
   public static Rhythm16 parseRhythm16Hex(String input) {
-    return RhythmDictByHex.get(input);
+    String binstr = Integer.toBinaryString(Integer.parseInt(input.replaceAll("\\s+", ""), 16));
+    StringBuilder sb = new StringBuilder(binstr);
+    int k = 16-binstr.length();
+    while(k-- > 0) {sb.insert(0, '0');}
+    binstr = sb.toString();
+    BitSet b = new BitSet(16);
+    
+    for(int i=0;i<16;i++) {
+      b.set(i, binstr.charAt(i) == '1');
+    }
+    return new Rhythm16(b);
   }
   
   private Rhythm16(Set<Integer> p_s) {
@@ -51,7 +43,9 @@ public class Rhythm16 extends Rhythm implements Serializable{
     m_str = Rhythm16.toString(this);
 
   }
-
+  protected Rhythm16(BitSet b) {
+    super(b, 16);
+  }
   public Rhythm asRhythm() {
     BitSet b = new BitSet(16);
     b.or(this);
@@ -92,7 +86,7 @@ public class Rhythm16 extends Rhythm implements Serializable{
     return parseRhythm16Hex("00 00");
   }
 
-  static TreeSet<Rhythm16> Generate() {
+  public static TreeSet<Rhythm16> Generate() {
     Integer[] o = new Integer[16];
 
     for (int i = 0; i < 16; i++) {
@@ -181,34 +175,12 @@ public class Rhythm16 extends Rhythm implements Serializable{
     return identifyRhythm16(new Combination(x, 16));
 
   }
-  
-  private static void generateMaps() {
-    TreeSet<Rhythm16> t = Generate();
-
-    TreeMap<String, Rhythm16> outputByHex = new TreeMap<String, Rhythm16>();
-    Iterator<Rhythm16> i = t.iterator();
-
-    while (i.hasNext()) {
-      Rhythm16 tmp = i.next();
-      outputByHex.put(tmp.toString(), tmp);
-    }
-    RhythmDictByHex = outputByHex;
-  }
-
-  public static LinkedList<Rhythm16> parseRhythm16Seq(String input) {
-    String[] s = input.split("\\s");
-    LinkedList<Rhythm16> output = new LinkedList<Rhythm16>();
-    for (int i = 0; i < s.length; i++) {
-      output.add(parseRhythm16Hex(s[i]));
-    }
-    return output;
-  }
 
   public static Rhythm16 identifyRhythm16(Set<Integer> input) {
-    return RhythmDictByHex.get(Rhythm16.toString(new Combination(16, input)));
+    return new Rhythm16(input);
   }
 
   public static Rhythm16 identifyRhythm16(Combination input) {
-    return RhythmDictByHex.get(Rhythm16.toString(input));
+    return new Rhythm16(input);
   }
 }
