@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.awt.event.ActionEvent;
@@ -82,7 +83,7 @@ public class RhythmMatrix {
   public RhythmMatrix() {
     initialize();
   }
-  private double[] adjustWeights(ArrayList<Rhythm> row, ArrayList<Rhythm> possibles, int j, double[] weights) {
+  private double[] adjustWeights(ArrayList<Rhythm> row, ArrayList<Rhythm> possibles, int j, Double[] weights) {
     double[] o = new double[possibles.size()];
     for(int i=0;i<possibles.size();i++) {
       int count = 0;
@@ -288,10 +289,7 @@ public class RhythmMatrix {
                 fixedSize++;
               }
               m += fixedSize;
-              TreeMap<String, ArrayList<Rhythm>> cachePossibles = new TreeMap<>();
-              TreeMap<String, double[]> cacheWeights = new TreeMap<>();
               Function<String, ArrayList<Rhythm>> possibles = (String str) -> {
-                if(cachePossibles.containsKey(str)) return (ArrayList<Rhythm>)cachePossibles.get(str);
                 Rhythm r = null;
                 
                 if(comboBox.getSelectedItem() == Rn.Hex) r = Rhythm16.parseRhythm16Hex(str).asRhythm();
@@ -304,17 +302,18 @@ public class RhythmMatrix {
                    }
                 }
                 
-                cachePossibles.put(str, p);
-                double weights[] = new double[p.size()];
-                
-                for(int i=0;i<p.size();i++) {
-                  weights[i] = 1.0 - Math.sqrt(r.calcNormalizedDistanceWith(p.get(i)));
-                }
-                cacheWeights.put(r.toBinaryString(), weights);
-                
                 return p;
               };
               
+              BiFunction<Rhythm, ArrayList<Rhythm>, Double[]> calcWeights =
+                  (Rhythm r, ArrayList<Rhythm> p) -> {
+                    Double weights[] = new Double[p.size()];
+
+                    for (int i = 0; i < p.size(); i++) {
+                      weights[i] = 1.0 - Math.sqrt(r.calcNormalizedDistanceWith(p.get(i)));
+                    }
+                    return weights;
+                  };
               
               
               int maxFailures = n*m*500;
@@ -339,7 +338,7 @@ public class RhythmMatrix {
                     Rhythm r = null;
                     
                     if(j > 0) {
-                      r = CollectionUtils.chooseAtRandomWithWeights(p, adjustWeights(output.getRow(i), p, j, cacheWeights.get(output.get(i, j-1).toBinaryString())));  
+                      r = CollectionUtils.chooseAtRandomWithWeights(p, adjustWeights(output.getRow(i), p, j, calcWeights.apply(output.get(i, j-1), p)));  
                     } else {
                       r = CollectionUtils.chooseAtRandom(t);
                     }
