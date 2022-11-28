@@ -171,7 +171,7 @@ public class R16List extends LinkedList<Rhythm16> implements Comparable<R16List>
   public static R16List fromRhythm(Rhythm r){
     R16List output = new R16List();
     if(r.getN() % 16 != 0) {
-      throw new RuntimeException("Rhythm's size is not divided by 16.");
+      throw new RuntimeException("Rhythm's size is not divisible by 16.");
     }
     int k = 0;
     while(k<r.getN()) {

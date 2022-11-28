@@ -169,7 +169,7 @@ public class R12List extends LinkedList<Rhythm12>  implements Comparable<R12List
   public static R12List fromRhythm(Rhythm r){
     R12List output = new R12List();
     if(r.getN() % 12 != 0) {
-      throw new RuntimeException("Rhythm's size is not divided by 12.");
+      throw new RuntimeException("Rhythm's size is not divisible by 12.");
     }
     int k = 0;
     while(k<r.getN()) {

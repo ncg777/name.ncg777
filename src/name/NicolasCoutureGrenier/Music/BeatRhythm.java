@@ -21,17 +21,21 @@ public class BeatRhythm extends Rhythm implements Serializable {
   final private static int MAX_N = 4;
   private static TreeSet<BeatRhythm> beatRhythms = new TreeSet<>();
   private static TreeMap<String, BeatRhythm> beatRhythmDict = new TreeMap<>();
-  
+  private BitSet groundBitset = null;
+  private String tribble_str = null;
   @SuppressWarnings("unchecked")
   public static TreeSet<BeatRhythm> getBeatRhythms() {
     return (TreeSet<BeatRhythm>)beatRhythms.clone();
   }
   
   public BitSet getGroundBitSet() {
-    BitSet groundBitset = new BitSet(NbBits);
-    for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
-      groundBitset.set(i*bitlen, true);
+    if(groundBitset == null) {
+      groundBitset = new BitSet(NbBits);
+      for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
+        groundBitset.set(i*bitlen, true);
+      }
     }
+    
     return groundBitset;
   }
   
@@ -55,7 +59,8 @@ public class BeatRhythm extends Rhythm implements Serializable {
   
   @Override
   public String toString() {
-    return toTribbleString(getGroundBitSet());
+    if(tribble_str == null) {tribble_str = toTribbleString(getGroundBitSet());}
+    return tribble_str;
   }
   
   @Override

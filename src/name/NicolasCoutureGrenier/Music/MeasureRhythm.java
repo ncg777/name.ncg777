@@ -51,7 +51,7 @@ public class MeasureRhythm extends ArrayList<BeatRhythm>  implements Comparable<
         a.add(brs.get(coord[i]));
       }
       o.add(new MeasureRhythm(a));
-      System.out.println(tmp++ + " / " + total);
+      System.out.println(++tmp + " / " + total);
     };
     return o;
   }
