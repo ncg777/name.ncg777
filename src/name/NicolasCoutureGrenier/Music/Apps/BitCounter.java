@@ -12,6 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -69,6 +70,8 @@ public class BitCounter {
             lblCount.setText(Integer.toString(R16List.parseR16Seq(str).asRhythm().getK()));
           } else if(comboBox.getSelectedItem() == Rn.Octal) {
             lblCount.setText(Integer.toString(R12List.parseR12Seq(str).asRhythm().getK()));
+          }else if(comboBox.getSelectedItem() == Rn.Tribble) {
+            lblCount.setText(Integer.toString(R48List.parseR48Seq(str).asRhythm().getK()));
           }
           
           

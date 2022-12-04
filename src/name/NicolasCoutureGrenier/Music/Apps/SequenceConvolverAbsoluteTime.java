@@ -19,6 +19,7 @@ import java.awt.Font;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 import name.NicolasCoutureGrenier.Music.Rn;
 
@@ -99,7 +100,7 @@ public class SequenceConvolverAbsoluteTime {
         Rhythm r = null;
         if(comboBox.getSelectedItem() == Rn.Hex) r = R16List.parseR16Seq(txtR.getText()).asRhythm();
         if(comboBox.getSelectedItem() == Rn.Octal) r = R12List.parseR12Seq(txtR.getText()).asRhythm();
-          
+        if(comboBox.getSelectedItem() == Rn.Tribble) r = R48List.parseR48Seq(txtR.getText()).asRhythm();
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[()]", ""));
       }
     });

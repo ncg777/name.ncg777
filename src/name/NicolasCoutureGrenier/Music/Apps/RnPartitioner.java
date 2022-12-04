@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import javax.swing.JButton;
@@ -131,6 +132,26 @@ public class RnPartitioner {
           String strOut = "";
           for(int i=0; i<output.size();i++) {
             strOut += R12List.expand(R12List.fromRhythm(output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
+          }
+          txtResult.setText(strOut);
+        }else if(comboBox.getSelectedItem() == Rn.Tribble) {
+          R48List r = R48List.parseR48Seq(txtR.getText().trim());
+          Rhythm r1 = r.asRhythm();
+          Sequence p0 = Sequence.parse(txtPartition.getText());
+          Sequence p = p0.asOrdinalsUnipolar();
+          int k = p.size();
+          int pdistinct = p.distinct().size();
+          int n= r1.getN();
+          ArrayList<Rhythm> output = new ArrayList<Rhythm>();
+          
+          for(int i=0;i<pdistinct;i++) output.add(Rhythm.buildRhythm(new BitSet(), n));
+          for(int i=0;i<n;i++) {
+            output.get(p.get(i%k)).set(i, r1.get(i));
+          }
+          
+          String strOut = "";
+          for(int i=0; i<output.size();i++) {
+            strOut += R48List.expand(R48List.fromRhythm(output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
           }
           txtResult.setText(strOut);
         }

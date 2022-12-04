@@ -17,9 +17,11 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 import name.NicolasCoutureGrenier.Music.Rhythm12;
 import name.NicolasCoutureGrenier.Music.Rhythm16;
+import name.NicolasCoutureGrenier.Music.Rhythm48;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.Bypass;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.EntropicDispersion;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.Even;
@@ -36,7 +38,6 @@ import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedJuxtaposition;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -62,6 +63,7 @@ public class RhythmMatrix {
   private JTextField textDiffFilterModes;
   private TreeSet<Rhythm16> r16set = Rhythm16.Generate();
   private TreeSet<Rhythm12> r12set = Rhythm12.Generate();
+  private TreeSet<Rhythm48> r48set = Rhythm48.Generate();
   /**
    * Launch the application.
    */
@@ -161,30 +163,37 @@ public class RhythmMatrix {
                   case 7:
                     if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new Ordinal(16);
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new Ordinal(12);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new Ordinal(48);
                     break;
                   case 8:
                     if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new Ordinal(8);
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new Ordinal(6);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new Ordinal(24);
                     break;
                   case 9:
                     if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new Ordinal(4);
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new Ordinal(3);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new Ordinal(12);
                     break;
                   case 10:
                     if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new Ordinal(2);
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new Ordinal(2);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new Ordinal(6);
                     break;
                   case 11:
                     if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new MaximumGap(16);
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new MaximumGap(12);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new MaximumGap(48);
                     break;
                   case 12:
                     if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new MaximumGap(8);
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new MaximumGap(6);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new MaximumGap(24);
                     break;
                   case 13:
                     if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new MaximumGap(4);
                     if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new MaximumGap(3);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new MaximumGap(12);
                     break;
                   case 14:
                     pred0 = new SecondOrderDifferenceSum(Keep.Zero);
@@ -200,6 +209,9 @@ public class RhythmMatrix {
               }
               if(comboBox.getSelectedItem() == Rn.Octal) {
                 for(Rhythm12 r : r12set) t0.add(r.asRhythm());
+              }
+              if(comboBox.getSelectedItem() == Rn.Tribble) {
+                for(Rhythm48 r : r48set) t0.add(r.asRhythm());
               }
               for(Rhythm r : t0){
                 if(pred.test(r)) {
@@ -234,30 +246,37 @@ public class RhythmMatrix {
                   case 7:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new Ordinal(16));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new Ordinal(12));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new Ordinal(48));
                     break;
                   case 8:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new Ordinal(8));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new Ordinal(6));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new Ordinal(24));
                     break;
                   case 9:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new Ordinal(4));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new Ordinal(3));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new Ordinal(12));
                     break;
                   case 10:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new Ordinal(2));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new Ordinal(2));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new Ordinal(6));
                     break;
                   case 11:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new MaximumGap(16));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MaximumGap(12));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new MaximumGap(48));
                     break;
                   case 12:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new MaximumGap(8));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MaximumGap(6));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new MaximumGap(24));
                     break;
                   case 13:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new MaximumGap(4));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MaximumGap(3));
+                    if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MaximumGap(12));
                     break;
                   case 14:
                     relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
@@ -285,6 +304,12 @@ public class RhythmMatrix {
                   for(int j=0;j<n;j++) {
                     output.set(i, j, r.get(j%r.size()));
                   }
+                } else if(comboBox.getSelectedItem() == Rn.Tribble) {
+                  output.insertRow(fixedSize);
+                  R48List r = R48List.parseR48Seq(strFixed[i].trim());
+                  for(int j=0;j<n;j++) {
+                    output.set(i, j, r.get(j%r.size()));
+                  }
                 }
                 fixedSize++;
               }
@@ -294,6 +319,7 @@ public class RhythmMatrix {
                 
                 if(comboBox.getSelectedItem() == Rn.Hex) r = Rhythm16.parseRhythm16Hex(str).asRhythm();
                 if(comboBox.getSelectedItem() == Rn.Octal) r = Rhythm12.parseRhythm12Octal(str).asRhythm();
+                if(comboBox.getSelectedItem() == Rn.Tribble) r = Rhythm48.parseRhythm48Tribbles(str).asRhythm();
                 ArrayList<Rhythm> p = new ArrayList<>();
                 
                 for(Rhythm s : t) {
@@ -330,6 +356,8 @@ public class RhythmMatrix {
                         p = possibles.apply(Rhythm16.fromRhythm(output.get(i, j-1)).toString());
                       } else if(comboBox.getSelectedItem() == Rn.Octal) {
                         p = possibles.apply(Rhythm12.fromRhythm(output.get(i, j-1)).toString());
+                      } else if(comboBox.getSelectedItem() == Rn.Tribble) {
+                        p = possibles.apply(Rhythm48.fromRhythm(output.get(i, j-1)).toString());
                       }
                       
                     }
@@ -397,6 +425,17 @@ public class RhythmMatrix {
                   }
                 }
                 textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
+              } else if(comboBox.getSelectedItem() == Rn.Tribble) {
+                
+                Matrix<Rhythm48> tmpMat = new Matrix<Rhythm48>(m,n);
+                Matrix<Rhythm48> tmpMatNot = new Matrix<Rhythm48>(m,n);
+                for(int i=0;i<m;i++) {
+                  for(int j=0;j<n;j++) {
+                    tmpMat.set(i, j, Rhythm48.fromRhythm(output.get(i, j)));
+                    tmpMatNot.set(i, j, Rhythm48.not(Rhythm48.fromRhythm(output.get(i, j))));
+                  }
+                }
+                textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
               }
               
             } catch(Exception x) {
@@ -435,6 +474,7 @@ public class RhythmMatrix {
       public void actionPerformed(ActionEvent e) {
         if(comboBox.getSelectedItem() == Rn.Hex) textArea_1.setText("80 80\r\n08 08");
         if(comboBox.getSelectedItem() == Rn.Octal) textArea_1.setText("40 40\r\n04 04");
+        if(comboBox.getSelectedItem() == Rn.Tribble) textArea_1.setText("800 000 800 000\r\n000 800 000 800");
       }
     });
     

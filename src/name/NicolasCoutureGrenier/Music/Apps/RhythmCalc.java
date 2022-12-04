@@ -11,6 +11,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -138,7 +139,29 @@ public class RhythmCalc {
           }
           output.setText(o);
         }
-        
+        else if(comboBox.getSelectedItem() == Rn.Tribble) {
+          R48List a = R48List.parseR48Seq(rhA.getText());
+          R48List b = R48List.parseR48Seq(rhB.getText());
+          String o = "";
+          
+          switch((Operation) operation.getSelectedItem()) {
+            case And:
+              o = R48List.and(a, b).toString();
+              break;
+            case Convolve:
+              o = R48List.convolve(a, b).toString();
+              break;
+            case Or:
+              o = R48List.or(a, b).toString();
+              break;
+            case Xor:
+              o = R48List.xor(a, b).toString();
+              break;
+            case Minus:
+              o = R48List.minus(a, b).toString();
+          }
+          output.setText(o);
+        }
       }
     });
     
@@ -157,6 +180,8 @@ public class RhythmCalc {
           output.setText(R16List.not(R16List.parseR16Seq(output.getText())).toString());
         } else if(comboBox.getSelectedItem() == Rn.Octal) {
           output.setText(R12List.not(R12List.parseR12Seq(output.getText())).toString());
+        } else if(comboBox.getSelectedItem() == Rn.Tribble) {
+          output.setText(R48List.not(R48List.parseR48Seq(output.getText())).toString());
         }
         
       }

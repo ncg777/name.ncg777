@@ -13,6 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import javax.swing.SpinnerNumberModel;
@@ -112,6 +113,10 @@ public class SeqGenFS {
                 }
                 if(comboBox.getSelectedItem() == Rn.Octal) {
                   R12List r = R12List.parseR12Seq(str_R);
+                  R = r.asRhythm();
+                }
+                if(comboBox.getSelectedItem() == Rn.Tribble) {
+                  R48List r = R48List.parseR48Seq(str_R);
                   R = r.asRhythm();
                 }
                 

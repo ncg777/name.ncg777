@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import java.awt.Font;
@@ -121,6 +122,7 @@ public class RhythmicPulsations {
           int scompo_sum = scompo.sum();
           if(comboBox.getSelectedItem() == Rn.Hex && scompo_sum%16 != 0) throw new Exception("Sum of composition must be a multiple of 16.");
           if(comboBox.getSelectedItem() == Rn.Octal && scompo_sum%12 != 0) throw new Exception("Sum of composition must be a multiple of 12.");
+          if(comboBox.getSelectedItem() == Rn.Tribble && scompo_sum%48 != 0) throw new Exception("Sum of composition must be a multiple of 48.");
           
           ArrayList<String> hOrT = new ArrayList<String>();
           String[] hOrTarr = headTails.getText().split("\\s+");
@@ -163,7 +165,7 @@ public class RhythmicPulsations {
           }
           if(comboBox.getSelectedItem() == Rn.Hex) result.setText(R16List.fromRhythm(rh).toString());
           if(comboBox.getSelectedItem() == Rn.Octal) result.setText(R12List.fromRhythm(rh).toString());
-          
+          if(comboBox.getSelectedItem() == Rn.Tribble) result.setText(R48List.fromRhythm(rh).toString());
         } catch(Exception ex) {
           result.setText(ex.getMessage());
         }

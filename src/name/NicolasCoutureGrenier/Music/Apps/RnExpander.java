@@ -13,6 +13,7 @@ import javax.swing.SpinnerNumberModel;
 
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -92,6 +93,10 @@ public class RnExpander {
           R12List o = R12List.rotate(R12List.expand(R12List.parseR12Seq(txtRhythm.getText()), (int)spinner.getValue(), chckbxFill.isSelected()), (int)rot.getValue());
           txtResult.setText(o.toString());
           txtNot.setText(R12List.not(o).toString());
+        } else if(comboBox.getSelectedItem() == Rn.Tribble) {
+          R48List o = R48List.rotate(R48List.expand(R48List.parseR48Seq(txtRhythm.getText()), (int)spinner.getValue(), chckbxFill.isSelected()), (int)rot.getValue());
+          txtResult.setText(o.toString());
+          txtNot.setText(R48List.not(o).toString());
         }
         
         

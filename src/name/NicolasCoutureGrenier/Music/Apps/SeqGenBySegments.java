@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import java.awt.event.ActionListener;
@@ -89,6 +90,9 @@ public class SeqGenBySegments {
           }
           if(comboBox.getSelectedItem() == Rn.Octal) {
             r = R12List.parseR12Seq(str_R).asRhythm();
+          }
+          if(comboBox.getSelectedItem() == Rn.Tribble) {
+            r = R48List.parseR48Seq(str_R).asRhythm();
           }
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();

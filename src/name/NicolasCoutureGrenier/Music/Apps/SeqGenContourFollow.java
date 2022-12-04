@@ -13,6 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
@@ -110,6 +111,10 @@ public class SeqGenContourFollow {
               }
               if(comboBox.getSelectedItem() == Rn.Octal) {
                 R12List r = R12List.parseR12Seq(str_R);
+                C = r.asRhythm().getComposition().asSequence();
+              }
+              if(comboBox.getSelectedItem() == Rn.Tribble) {
+                R48List r = R48List.parseR48Seq(str_R);
                 C = r.asRhythm().getComposition().asSequence();
               }
               Sequence s = C.cyclicalForwardDifference().signs().circularHoldNonZero();

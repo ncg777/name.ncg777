@@ -12,6 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import javax.swing.JLabel;
@@ -98,7 +99,9 @@ public class LyricalGuideMaker {
       if(comboBox.getSelectedItem() == Rn.Octal) {
         if(scompo_sum%12 != 0) throw new Exception("Sum of composition must be a multiple of 12.");
       }
-      
+      if(comboBox.getSelectedItem() == Rn.Tribble) {
+        if(scompo_sum%48 != 0) throw new Exception("Sum of composition must be a multiple of 48.");
+      }
       if(sdurations.getMin() < 0) { throw new Exception("Periods must be positive"); }
     
       
@@ -144,6 +147,10 @@ public class LyricalGuideMaker {
       if(comboBox.getSelectedItem() == Rn.Octal) {
         textRhythm.setText(R12List.fromRhythm(rh).toString());
         textBaseRhythm.setText(R12List.fromRhythm(baserh).toString());
+      }
+      if(comboBox.getSelectedItem() == Rn.Tribble) {
+        textRhythm.setText(R48List.fromRhythm(rh).toString());
+        textBaseRhythm.setText(R48List.fromRhythm(baserh).toString());
       }
       textSequence.setText(completeSequence.toString().replaceAll("[)(,]", ""));
       textStrippedLyrics.setText(strippedLyrics);

@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import java.awt.event.ActionListener;
@@ -87,6 +88,10 @@ public class XORCircularConvolver {
           carrier = R12List.parseR12Seq(txtCarrier.getText()).asRhythm();
           impulse = R12List.parseR12Seq(txtImpulse.getText()).asRhythm();
         }
+        if(comboBox.getSelectedItem() == Rn.Tribble) {
+          carrier = R48List.parseR48Seq(txtCarrier.getText()).asRhythm();
+          impulse = R48List.parseR48Seq(txtImpulse.getText()).asRhythm();
+        }
         BitSet bs = new BitSet(carrier.getN());
         
         for(int i=0;i<carrier.getN();i++) {
@@ -98,13 +103,14 @@ public class XORCircularConvolver {
           }
         }
         if(comboBox.getSelectedItem() == Rn.Hex) {
-          
           txtResult.setText(R16List.fromRhythm(Rhythm.buildRhythm(bs,carrier.getN())).toString());
         }
         if(comboBox.getSelectedItem() == Rn.Octal) {
           txtResult.setText(R12List.fromRhythm(Rhythm.buildRhythm(bs,carrier.getN())).toString());
         }
-        
+        if(comboBox.getSelectedItem() == Rn.Tribble) {
+          txtResult.setText(R48List.fromRhythm(Rhythm.buildRhythm(bs,carrier.getN())).toString());
+        }
         
       }
     });

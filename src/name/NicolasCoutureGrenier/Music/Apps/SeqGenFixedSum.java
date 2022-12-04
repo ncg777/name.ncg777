@@ -13,6 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.SequencePredicates.PredicatedSeqRhythms;
 
 import javax.swing.SpinnerNumberModel;
@@ -131,6 +132,9 @@ public class SeqGenFixedSum {
               }
               if(comboBox.getSelectedItem() == Rn.Octal) {
                 n = R12List.parseR12Seq(str_R).asRhythm().getK();
+              }
+              if(comboBox.getSelectedItem() == Rn.Tribble) {
+                n = R48List.parseR48Seq(str_R).asRhythm().getK();
               }
               if(n < 2) {
                 throw new RuntimeException("rhythm is empty or too small");

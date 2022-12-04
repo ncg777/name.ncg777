@@ -13,6 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import java.awt.event.ActionListener;
@@ -84,6 +85,7 @@ public class RhythmicSeqGen {
           }
           if(comboBox.getSelectedItem() == Rn.Hex) rhythms.add(R16List.parseR16Seq(l[0].trim()).asRhythm());
           if(comboBox.getSelectedItem() == Rn.Octal) rhythms.add(R12List.parseR12Seq(l[0].trim()).asRhythm());
+          if(comboBox.getSelectedItem() == Rn.Tribble) rhythms.add(R48List.parseR48Seq(l[0].trim()).asRhythm());
           muls.add(Integer.valueOf(l[1].trim()));
         }
         

@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -100,6 +101,20 @@ public class Decimator {
           textField_1.setText("");
           R12List beforeLast = r;
           R12List last = r.decimate();
+          while(true) {
+            textField_1.append(last.toString() + "\n");
+            beforeLast = last;
+            last = last.decimate();
+            if(beforeLast.equals(last)) {
+              break;
+            }
+          }
+        }else if(comboBox.getSelectedItem() == Rn.Tribble) {
+          String str_R = textField.getText().trim();
+          R48List r = R48List.parseR48Seq(str_R);
+          textField_1.setText("");
+          R48List beforeLast = r;
+          R48List last = r.decimate();
           while(true) {
             textField_1.append(last.toString() + "\n");
             beforeLast = last;

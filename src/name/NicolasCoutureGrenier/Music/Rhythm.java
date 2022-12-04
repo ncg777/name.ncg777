@@ -50,6 +50,15 @@ public class Rhythm extends Combination implements Serializable {
     return scaleModulo(this, k, n);
   }
   
+  public Rhythm juxtapose(Rhythm other) {
+    int ns = this.getN()+other.getN();
+    BitSet bs = new BitSet(ns);
+    for(int i=0;i<this.getN();i++){bs.set(i,this.get(i));}
+    for(int i=0;i<other.getN();i++){bs.set(i+this.getN(),other.get(i));}
+    Rhythm r = Rhythm.buildRhythm(bs, ns);
+    return r;
+  }
+  
   public static Rhythm buildRhythm(String p_str) {
     int l = p_str.length();
     TreeSet<Integer> t = new TreeSet<Integer>();

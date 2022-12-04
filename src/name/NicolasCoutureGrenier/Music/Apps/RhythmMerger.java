@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -102,6 +103,28 @@ public class RhythmMerger {
           R12List a = R12List.parseR12Seq(txtRhythma.getText());
           R12List b = R12List.parseR12Seq(txtRhythmb.getText());
           R12List o = new R12List();
+          
+          int n = Numbers.lcm(a.size(), b.size())*2;
+          
+          boolean alt = true;
+          int ca = 0;
+          int cb = 0;
+          
+          for(int i=0;i<n;i++) {
+            if(alt) {
+              o.add(a.get((ca++)%a.size()));
+            }
+            else {
+              o.add(b.get((cb++)%b.size()));
+            }
+            alt = !alt;
+          }
+          
+          txtResult.setText(o.toString());
+        } else if(comboBox.getSelectedItem()==Rn.Tribble) {
+          R48List a = R48List.parseR48Seq(txtRhythma.getText());
+          R48List b = R48List.parseR48Seq(txtRhythmb.getText());
+          R48List o = new R48List();
           
           int n = Numbers.lcm(a.size(), b.size())*2;
           

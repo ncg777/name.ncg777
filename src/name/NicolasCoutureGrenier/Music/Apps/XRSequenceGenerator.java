@@ -12,6 +12,7 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import javax.swing.SpringLayout;
 import javax.swing.JTextField;
@@ -85,11 +86,16 @@ public class XRSequenceGenerator {
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Sequence comp = null;
+        boolean useHalf = true;
         if(comboBox.getSelectedItem() == Rn.Hex) {
           comp = R16List.parseR16Seq(textRhythm.getText()).asRhythm().getComposition().asSequence();
         }
         if(comboBox.getSelectedItem() == Rn.Octal) {
           comp = R12List.parseR12Seq(textRhythm.getText()).asRhythm().getComposition().asSequence();
+        }
+        if(comboBox.getSelectedItem() == Rn.Tribble) {
+          useHalf = false;
+          comp = R48List.parseR48Seq(textRhythm.getText()).asRhythm().getComposition().asSequence();
         }
         
         ArrayList<Double> output = new ArrayList<Double>();
@@ -102,7 +108,7 @@ public class XRSequenceGenerator {
           
           possibles.add(0.0);
           possibles.add(1.0);
-          if(n <= 8) {
+          if(useHalf && n <= 8) {
             possibles.add(half);
           }
           

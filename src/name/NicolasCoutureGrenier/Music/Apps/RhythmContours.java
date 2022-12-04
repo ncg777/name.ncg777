@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -119,6 +120,25 @@ public class RhythmContours {
           }
           textAreaPartitions.setText(o);
           Sequence contourseq = r12.asRhythm().getContour().circularHoldNonZero()
+              .cyclicalForwardAntidifference(0).asOrdinalsUnipolar();
+          textContourSeq.setText(contourseq.toString());
+          lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
+        }else if(comboBox.getSelectedItem() == Rn.Tribble) {
+          R12List r48 = R12List.parseR12Seq(textField.getText());
+          
+          txtContour.setText(r48.asRhythm().getContour().toString());
+          txtShadowContour.setText(r48.asRhythm().getShadowContour().toString());
+          txtComposition.setText(r48.asRhythm().getComposition().toString());
+          textFieldBinary.setText(r48.asRhythm().asBinarySequence().toString());
+          textCompositionPartition.setText(r48.clusterPartition().toString());
+          String o = "";
+          
+          ArrayList<R48List> clusters = R48List.clusterRhythmPartition(r48.asRhythm().partitionByEquality());
+          for(R48List r : clusters) {
+            o += r.toString() + "\n";
+          }
+          textAreaPartitions.setText(o);
+          Sequence contourseq = r48.asRhythm().getContour().circularHoldNonZero()
               .cyclicalForwardAntidifference(0).asOrdinalsUnipolar();
           textContourSeq.setText(contourseq.toString());
           lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());

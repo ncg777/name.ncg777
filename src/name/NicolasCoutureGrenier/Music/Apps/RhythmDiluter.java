@@ -9,6 +9,7 @@ import javax.swing.DefaultComboBoxModel;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 import name.NicolasCoutureGrenier.Music.Rn;
 import javax.swing.JLabel;
@@ -140,6 +141,9 @@ public class RhythmDiluter {
     if(comboBox.getSelectedItem() == Rn.Octal) {
       r = R12List.parseR12Seq(textRhythm.getText()).asRhythm();
     }
+    if(comboBox.getSelectedItem() == Rn.Tribble) {
+      r = R48List.parseR48Seq(textRhythm.getText()).asRhythm();
+    }
     
     int n = r.getN();
     
@@ -183,6 +187,9 @@ public class RhythmDiluter {
     }
     if(comboBox.getSelectedItem() == Rn.Octal) {
       textResult.setText(R12List.fromRhythm(o).toString());
+    }
+    if(comboBox.getSelectedItem() == Rn.Tribble) {
+      textResult.setText(R48List.fromRhythm(o).toString());
     }
   }
 }

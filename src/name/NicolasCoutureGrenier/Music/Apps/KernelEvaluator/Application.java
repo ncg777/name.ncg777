@@ -22,6 +22,8 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
+
 import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 import javax.swing.DefaultComboBoxModel;
@@ -124,6 +126,12 @@ public class Application {
           if(comboBox_1.getSelectedItem() == Rn.Octal) {
             result = engine.evaluate(
               R12List.parseR12Seq(rhythm.getText()).asRhythm(), 
+              params.getText(), 
+              getSelectedKernel());
+          }
+          if(comboBox_1.getSelectedItem() == Rn.Tribble) {
+            result = engine.evaluate(
+              R48List.parseR48Seq(rhythm.getText()).asRhythm(), 
               params.getText(), 
               getSelectedKernel());
           }
