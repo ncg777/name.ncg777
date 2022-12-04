@@ -2,9 +2,6 @@ package name.NicolasCoutureGrenier.Music.RhythmRelations;
 
 import java.util.BitSet;
 import java.util.TreeSet;
-
-import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 import name.NicolasCoutureGrenier.Music.Rhythm48;
