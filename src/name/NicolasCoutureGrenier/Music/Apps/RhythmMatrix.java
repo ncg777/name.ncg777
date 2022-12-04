@@ -225,7 +225,13 @@ public class RhythmMatrix {
               }
               Relation<Rhythm, Rhythm> relHoriz = new PredicatedJuxtaposition(pred);
               
-              Relation<Rhythm, Rhythm> relSimul = new name.NicolasCoutureGrenier.Music.RhythmRelations.Bypass();
+              Relation<Rhythm, Rhythm> relSimul = null;
+              if(comboBox.getSelectedItem().equals(Rn.Tribble)) {
+                relSimul = new name.NicolasCoutureGrenier.Music.RhythmRelations.CompatibleRhythms();
+              } else {
+                relSimul = new name.NicolasCoutureGrenier.Music.RhythmRelations.Bypass();
+              }
+              
               for(int i=0;i<diffModes.size();i++) {
                 int diffMode = diffModes.get(i);
                 Relation<Rhythm, Rhythm> relSimul0 = null;
