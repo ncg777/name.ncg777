@@ -108,7 +108,7 @@ public class Rhythm48 extends Rhythm implements Serializable {
 
 
   public static Rhythm48 getZeroRhythm() {
-    return parseRhythm48Tribbles("00 00");
+    return parseRhythm48Tribbles("000 000 000 000");
   }
   
   public static TreeSet<Rhythm> getValid4Beats() {
@@ -168,8 +168,9 @@ public class Rhythm48 extends Rhythm implements Serializable {
     return output;
   }
   private static TreeSet<Rhythm> valid3beats = Rhythm48.getValid3Beats();
-  
+  private static TreeSet<Rhythm> validBeats = Rhythm48.getValidBeats();
   private static TreeSet<Rhythm> getValidBeats() {
+    if(validBeats != null) return validBeats;
     TreeSet<Rhythm> output = new TreeSet<>();
 
     // 16th T
@@ -210,7 +211,7 @@ public class Rhythm48 extends Rhythm implements Serializable {
         output.add(T6th[e[0]].juxtapose(T6th[e[1]]).juxtapose(T6th[e[2]]));
       }
     }
-
+    validBeats = output;
     return output;
   }
 
