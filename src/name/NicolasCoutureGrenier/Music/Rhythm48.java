@@ -6,9 +6,12 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
+import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.Enumerations.MixedRadixEnumeration;
+import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 import static com.google.common.math.IntMath.checkedPow;
 
@@ -169,6 +172,11 @@ public class Rhythm48 extends Rhythm implements Serializable {
   }
   private static TreeSet<Rhythm> valid3beats = Rhythm48.getValid3Beats();
   private static TreeSet<Rhythm> validBeats = Rhythm48.getValidBeats();
+  
+  public static Rhythm48 getRandomRhythm48(Predicate<Rhythm> pred) {
+    return CollectionUtils.chooseAtRandom(getZeroRhythm().randomizeBeat(16, pred));
+  }
+  
   private static TreeSet<Rhythm> getValidBeats() {
     if(validBeats != null) return validBeats;
     TreeSet<Rhythm> output = new TreeSet<>();
@@ -280,4 +288,39 @@ public class Rhythm48 extends Rhythm implements Serializable {
   public static Rhythm48 identifyRhythm48(Combination input) {
     return new Rhythm48(input);
   }
+  
+  public List<Rhythm48> randomizeBeat(int n, Predicate<Rhythm> pred) {
+    ArrayList<Rhythm48> output = new ArrayList<Rhythm48>();
+    
+    for(int i=0;i<n;i++) {
+      while(true) {
+        int nbb = RandomNumberGenerator.nextInt(3)+1;
+        BitSet bs = new BitSet(48);
+        bs.or(this);
+        while(nbb-- > 0) {
+          int b = RandomNumberGenerator.nextInt(4);
+          
+          Rhythm newBeat = null;
+          
+          if(RandomNumberGenerator.nextDouble() > 0.5) {
+            newBeat = CollectionUtils.chooseAtRandom(valid3beats);
+          } else {
+            newBeat = CollectionUtils.chooseAtRandom(valid4beats);
+          }
+          
+          for(int j=0;j<12;j++) {
+            bs.set((b*12)+j, newBeat.get(j));
+          }
+        }
+        Rhythm r = Rhythm.buildRhythm(bs, 48);
+        
+        if(pred.test(r)) {
+          output.add(Rhythm48.fromRhythm(r));
+          break;
+        }
+      }
+    }
+    return output;
+  }
+  
 }

@@ -38,6 +38,7 @@ import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedJuxtaposition;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -63,7 +64,7 @@ public class RhythmMatrix {
   private JTextField textDiffFilterModes;
   private TreeSet<Rhythm16> r16set = Rhythm16.Generate();
   private TreeSet<Rhythm12> r12set = Rhythm12.Generate();
-  private TreeSet<Rhythm48> r48set = Rhythm48.Generate();
+  //private TreeSet<Rhythm48> r48set = Rhythm48.Generate();
   /**
    * Launch the application.
    */
@@ -215,9 +216,9 @@ public class RhythmMatrix {
               if(comboBox.getSelectedItem() == Rn.Octal) {
                 for(Rhythm12 r : r12set) t0.add(r.asRhythm());
               }
-              if(comboBox.getSelectedItem() == Rn.Tribble) {
-                for(Rhythm48 r : r48set) t0.add(r.asRhythm());
-              }
+//              if(comboBox.getSelectedItem() == Rn.Tribble) {
+//                for(Rhythm48 r : r48set) t0.add(r.asRhythm());
+//              }
               for(Rhythm r : t0){
                 if(pred.test(r)) {
                   t.add(r);
@@ -327,11 +328,15 @@ public class RhythmMatrix {
               m += fixedSize;
               Function<String, ArrayList<Rhythm>> possibles = (String str) -> {
                 Rhythm r = null;
-                
+                ArrayList<Rhythm> p = new ArrayList<>();
                 if(comboBox.getSelectedItem() == Rn.Hex) r = Rhythm16.parseRhythm16Hex(str).asRhythm();
                 if(comboBox.getSelectedItem() == Rn.Octal) r = Rhythm12.parseRhythm12Octal(str).asRhythm();
-                if(comboBox.getSelectedItem() == Rn.Tribble) r = Rhythm48.parseRhythm48Tribbles(str).asRhythm();
-                ArrayList<Rhythm> p = new ArrayList<>();
+                if(comboBox.getSelectedItem() == Rn.Tribble) {
+                  Rhythm48 r48 = Rhythm48.parseRhythm48Tribbles(str);
+                  List<Rhythm48> l = r48.randomizeBeat(256, Relation.bindFirst(r48, relHoriz));
+                  for(var rr : l) p.add(rr.asRhythm());
+                  return p;
+                }
                 
                 for(Rhythm s : t) {
                   if(relHoriz.apply(r, s)) { 
@@ -367,7 +372,7 @@ public class RhythmMatrix {
                         p = possibles.apply(Rhythm16.fromRhythm(output.get(i, j-1)).toString());
                       } else if(comboBox.getSelectedItem() == Rn.Octal) {
                         p = possibles.apply(Rhythm12.fromRhythm(output.get(i, j-1)).toString());
-                      } else if(comboBox.getSelectedItem() == Rn.Tribble) {
+                      } else if(comboBox.getSelectedItem() == Rn.Tribble) {                        
                         p = possibles.apply(Rhythm48.fromRhythm(output.get(i, j-1)).toString());
                       }
                       
@@ -379,7 +384,12 @@ public class RhythmMatrix {
                     if(j > 0) {
                       r = CollectionUtils.chooseAtRandomWithWeights(p, adjustWeights(output.getRow(i), p, j, calcWeights.apply(output.get(i, j-1), p)));  
                     } else {
-                      r = CollectionUtils.chooseAtRandom(t);
+                      if(comboBox.getSelectedItem() == Rn.Tribble) {
+                        r = Rhythm48.getRandomRhythm48(pred).asRhythm();
+                      } else {
+                        r = CollectionUtils.chooseAtRandom(t);  
+                      }
+                      
                     }
                     
                     output.set(i, j, r);
@@ -396,7 +406,7 @@ public class RhythmMatrix {
                         textArea.setText("i=" + i + ", j=" + j + " ...\n");
                       }
                       
-                      if(failures > maxFailures || t.size() == 0||(p!=null && p.size() == 0)) {
+                      if(failures > maxFailures || (t.size() == 0 && comboBox.getSelectedItem() != Rn.Tribble)||(p!=null && p.size() == 0)) {
                         failures = 0;
                         i = fixedSize;
                         j = 0;
