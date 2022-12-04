@@ -110,7 +110,63 @@ public class Rhythm48 extends Rhythm implements Serializable {
   public static Rhythm48 getZeroRhythm() {
     return parseRhythm48Tribbles("00 00");
   }
+  
+  public static TreeSet<Rhythm> getValid4Beats() {
+    if(valid4beats != null) return valid4beats;
+    TreeSet<Rhythm> output = new TreeSet<>();
 
+    // 16th T
+    Rhythm[] T16 = new Rhythm[3];
+    BitSet b1 = new BitSet(3);
+    T16[0] = new Rhythm(b1, 3);
+    b1.set(0);
+    T16[1] = new Rhythm(b1, 3);
+    b1.set(1);
+    b1.set(2);
+    T16[2] = new Rhythm(b1, 3);
+    {
+      List<Integer> base = new ArrayList<Integer>();
+      for (int i = 0; i < 4; i++)
+        base.add(3);
+      MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
+
+      while (mre.hasMoreElements()) {
+        var e = mre.nextElement();
+        output.add(T16[e[0]].juxtapose(T16[e[1]]).juxtapose(T16[e[2]]).juxtapose(T16[e[3]]));
+      }
+    }
+    valid4beats = output;
+    return output;
+  }
+  
+  private static TreeSet<Rhythm> valid4beats = Rhythm48.getValid4Beats();
+  
+  public static TreeSet<Rhythm> getValid3Beats() {
+    if(valid3beats != null) return valid3beats;
+    TreeSet<Rhythm> output = new TreeSet<>();
+
+    Rhythm[] T6th = new Rhythm[2];
+    BitSet b2 = new BitSet(4);
+    T6th[0] = new Rhythm(b2, 4);
+    b2.set(0);
+    T6th[1] = new Rhythm(b2, 4);
+    {
+      List<Integer> base = new ArrayList<Integer>();
+      for (int i = 0; i < 3; i++)
+        base.add(2);
+      MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
+
+      while (mre.hasMoreElements()) {
+        var e = mre.nextElement();
+        output.add(T6th[e[0]].juxtapose(T6th[e[1]]).juxtapose(T6th[e[2]]));
+      }
+    }
+    valid3beats = output;
+    
+    return output;
+  }
+  private static TreeSet<Rhythm> valid3beats = Rhythm48.getValid3Beats();
+  
   private static TreeSet<Rhythm> getValidBeats() {
     TreeSet<Rhythm> output = new TreeSet<>();
 

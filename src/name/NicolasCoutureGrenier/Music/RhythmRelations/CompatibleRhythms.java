@@ -1,11 +1,13 @@
 package name.NicolasCoutureGrenier.Music.RhythmRelations;
 
 import java.util.BitSet;
+import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.Rhythm;
+import name.NicolasCoutureGrenier.Music.Rhythm48;
 
 
 public class CompatibleRhythms implements 
@@ -26,18 +28,18 @@ Relation<Rhythm, Rhythm>   {
     }
     return true;
   }
+  private TreeSet<Rhythm> valid3 = Rhythm48.getValid3Beats();
+  private TreeSet<Rhythm> valid4 = Rhythm48.getValid4Beats();
   
   private boolean sub(Rhythm a, Rhythm b) {
-    BitSet bs = new BitSet(a.getN());
-    bs.or(a);
-    bs.or(b);
-    Sequence s = Rhythm.buildRhythm(bs, a.getN()).getComposition().asSequence();
-    Integer gcd = a.getN();
+    boolean a3 = valid3.contains(a);
+    boolean a4 = valid4.contains(a);
+    boolean b3 = valid3.contains(b);
+    boolean b4 = valid4.contains(b);
     
-    for(var i : s) {
-      gcd = Numbers.gcd(gcd, i);
-      if(gcd < 3) return false;
-    }
-    return true;
+    if(a3 && b3) return true;
+    if(a4 && b4) return true;
+    
+    return false;
   }
 }
