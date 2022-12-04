@@ -145,15 +145,17 @@ public class Rhythm48 extends Rhythm implements Serializable {
     if(valid3beats != null) return valid3beats;
     TreeSet<Rhythm> output = new TreeSet<>();
 
-    Rhythm[] T6th = new Rhythm[2];
+    Rhythm[] T6th = new Rhythm[3];
     BitSet b2 = new BitSet(4);
     T6th[0] = new Rhythm(b2, 4);
     b2.set(0);
     T6th[1] = new Rhythm(b2, 4);
+    b2.set(2);
+    T6th[2] = new Rhythm(b2, 4);
     {
       List<Integer> base = new ArrayList<Integer>();
       for (int i = 0; i < 3; i++)
-        base.add(2);
+        base.add(3);
       MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
 
       while (mre.hasMoreElements()) {
