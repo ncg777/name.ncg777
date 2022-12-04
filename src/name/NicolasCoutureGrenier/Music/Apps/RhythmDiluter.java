@@ -167,6 +167,12 @@ public class RhythmDiluter {
         return;
       }
     }
+    if(comboBox.getSelectedItem() == Rn.Tribble) {
+      if(((n/from)*to)%48 != 0) {
+        textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of 48");
+        return;
+      }
+    }
     if(offset < 0 || offset > (to-from)) {
       textResult.setText("Offset must be less than 'to' - 'from'");
       return;
