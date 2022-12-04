@@ -10,6 +10,8 @@ import javax.swing.SwingConstants;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
+import name.NicolasCoutureGrenier.Music.Rn;
 
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -19,6 +21,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import java.awt.Font;
+import javax.swing.JComboBox;
 
 public class RhythmMatrixSeq {
 
@@ -26,7 +29,7 @@ public class RhythmMatrixSeq {
   private JTextArea textR16List;
   private JTextField textSequence;
   private JTextArea textResult;
-
+  private JComboBox<Rn> comboBox = new JComboBox<Rn>(Rn.values());
   /**
    * Launch the application.
    */
@@ -74,30 +77,58 @@ public class RhythmMatrixSeq {
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        String[] r16str = textR16List.getText().split("\n+"); 
-        int m = r16str.length;
-        R16List[] r16s = new R16List[r16str.length];
-        for(int i=0;i<m;i++) {
-          r16s[i] = R16List.parseR16Seq(r16str[i]);
-        }
-        
-        Sequence s = Sequence.parse(textSequence.getText());
-        
-        try {
-          String o = "";
+        if(comboBox.getSelectedItem().equals(Rn.Hex) || comboBox.getSelectedItem().equals(Rn.Octal)) {
+          String[] rstr = textR16List.getText().split("\n+"); 
+          int m = rstr.length;
+          R16List[] r16s = new R16List[rstr.length];
           for(int i=0;i<m;i++) {
-            String line ="";
-            for(int j : s) {
-              line += r16s[i].get(j%r16s[i].size()).toString() + " ";
-            }
-            o+=line.trim();
-            if(i<m-1) {o+="\n";}
+            r16s[i] = R16List.parseR16Seq(rstr[i]);
           }
           
-          textResult.setText(o.trim());
-        } catch(Exception ex) {
-          textResult.setText("Index out of bounds");
+          Sequence s = Sequence.parse(textSequence.getText());
+          
+          try {
+            String o = "";
+            for(int i=0;i<m;i++) {
+              String line ="";
+              for(int j : s) {
+                line += r16s[i].get(j%r16s[i].size()).toString() + " ";
+              }
+              o+=line.trim();
+              if(i<m-1) {o+="\n";}
+            }
+            
+            textResult.setText(o.trim());
+          } catch(Exception ex) {
+            textResult.setText("Index out of bounds");
+          }
+        } else if(comboBox.getSelectedItem().equals(Rn.Tribble)) {
+          String[] rstr = textR16List.getText().split("\n+"); 
+          int m = rstr.length;
+          R48List[] r48s = new R48List[rstr.length];
+          for(int i=0;i<m;i++) {
+            r48s[i] = R48List.parseR48Seq(rstr[i]);
+          }
+          
+          Sequence s = Sequence.parse(textSequence.getText());
+          
+          try {
+            String o = "";
+            for(int i=0;i<m;i++) {
+              String line ="";
+              for(int j : s) {
+                line += r48s[i].get(j%r48s[i].size()).toString() + " ";
+              }
+              o+=line.trim();
+              if(i<m-1) {o+="\n";}
+            }
+            
+            textResult.setText(o.trim());
+          } catch(Exception ex) {
+            textResult.setText("Index out of bounds");
+          }
         }
+        
         
       }
     });
@@ -109,22 +140,26 @@ public class RhythmMatrixSeq {
     JScrollPane scrollPane = new JScrollPane();
     
     JScrollPane scrollPane_1 = new JScrollPane();
+    
+    
     GroupLayout groupLayout = new GroupLayout(frmRseq.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
           .addContainerGap()
-          .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-            .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-              .addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+              .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+                .addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+              .addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
+            .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
           .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-            .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-            .addComponent(scrollPane_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-            .addComponent(textSequence, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-            .addComponent(btnGenerate, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))
+            .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addComponent(scrollPane_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addComponent(textSequence, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addComponent(btnGenerate, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE))
           .addContainerGap())
     );
     groupLayout.setVerticalGroup(
@@ -133,7 +168,10 @@ public class RhythmMatrixSeq {
           .addContainerGap()
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
             .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
-            .addComponent(lblNewLabel))
+            .addGroup(groupLayout.createSequentialGroup()
+              .addComponent(lblNewLabel)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
           .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(lblNewLabel_1)
