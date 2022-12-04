@@ -108,7 +108,7 @@ public class Rhythm48 extends Rhythm implements Serializable {
 
 
   public static Rhythm48 getZeroRhythm() {
-    return parseRhythm48Tribbles("000 000 000 000");
+    return new Rhythm48(new TreeSet<Integer>());
   }
   
   public static TreeSet<Rhythm> getValid4Beats() {
