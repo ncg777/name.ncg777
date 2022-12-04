@@ -124,7 +124,7 @@ public class RhythmContours {
           textContourSeq.setText(contourseq.toString());
           lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
         }else if(comboBox.getSelectedItem() == Rn.Tribble) {
-          R12List r48 = R12List.parseR12Seq(textField.getText());
+          R48List r48 = R48List.parseR48Seq(textField.getText());
           
           txtContour.setText(r48.asRhythm().getContour().toString());
           txtShadowContour.setText(r48.asRhythm().getShadowContour().toString());

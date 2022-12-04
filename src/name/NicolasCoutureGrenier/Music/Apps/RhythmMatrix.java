@@ -98,6 +98,11 @@ public class RhythmMatrix {
     }
     return o;
   }
+  private void updateFixed() {
+    if(comboBox.getSelectedItem() == Rn.Hex) textArea_1.setText("80 80\r\n08 08");
+    if(comboBox.getSelectedItem() == Rn.Octal) textArea_1.setText("40 40\r\n04 04");
+    if(comboBox.getSelectedItem() == Rn.Tribble) textArea_1.setText("800 000 800 000\r\n000 800 000 800");
+  }
   /**
    * Initialize the contents of the frame.
    */
@@ -472,9 +477,7 @@ public class RhythmMatrix {
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        if(comboBox.getSelectedItem() == Rn.Hex) textArea_1.setText("80 80\r\n08 08");
-        if(comboBox.getSelectedItem() == Rn.Octal) textArea_1.setText("40 40\r\n04 04");
-        if(comboBox.getSelectedItem() == Rn.Tribble) textArea_1.setText("800 000 800 000\r\n000 800 000 800");
+        updateFixed();
       }
     });
     
@@ -558,7 +561,7 @@ public class RhythmMatrix {
           .addGap(9))
     );
     
-    textArea_1.setText("80 80\r\n08 08");
+    updateFixed();
     
     
     scrollPane_1.setViewportView(textArea_1);
