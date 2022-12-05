@@ -180,45 +180,8 @@ public class Rhythm48 extends Rhythm implements Serializable {
   private static TreeSet<Rhythm> getValidBeats() {
     if(validBeats != null) return validBeats;
     TreeSet<Rhythm> output = new TreeSet<>();
-
-    // 16th T
-    Rhythm[] T16 = new Rhythm[2];
-    BitSet b1 = new BitSet(3);
-    T16[0] = new Rhythm(b1, 3);
-    b1.set(0);
-    T16[1] = new Rhythm(b1, 3);
-    // b1.set(1);
-    // b1.set(2);
-    // T16[2] = new Rhythm(b1, 3);
-    {
-      List<Integer> base = new ArrayList<Integer>();
-      for (int i = 0; i < 4; i++)
-        base.add(2);
-      MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
-
-      while (mre.hasMoreElements()) {
-        var e = mre.nextElement();
-        output.add(T16[e[0]].juxtapose(T16[e[1]]).juxtapose(T16[e[2]]).juxtapose(T16[e[3]]));
-      }
-    }
-
-
-    Rhythm[] T6th = new Rhythm[2];
-    BitSet b2 = new BitSet(4);
-    T6th[0] = new Rhythm(b2, 4);
-    b2.set(0);
-    T6th[1] = new Rhythm(b2, 4);
-    {
-      List<Integer> base = new ArrayList<Integer>();
-      for (int i = 0; i < 3; i++)
-        base.add(2);
-      MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
-
-      while (mre.hasMoreElements()) {
-        var e = mre.nextElement();
-        output.add(T6th[e[0]].juxtapose(T6th[e[1]]).juxtapose(T6th[e[2]]));
-      }
-    }
+    output.addAll(getValid3Beats());
+    output.addAll(getValid4Beats());
     validBeats = output;
     return output;
   }
