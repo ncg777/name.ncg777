@@ -104,6 +104,7 @@ public class RhythmMatrix {
     if(comboBox.getSelectedItem() == Rn.Octal) textArea_1.setText("40 40\r\n04 04");
     if(comboBox.getSelectedItem() == Rn.Tribble) textArea_1.setText("800 000 800 000\r\n000 800 000 800");
   }
+  private boolean running = false;
   /**
    * Initialize the contents of the frame.
    */
@@ -132,12 +133,14 @@ public class RhythmMatrix {
     btnGenerate.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        if(running) {running = false; return;}
         new Thread(new Runnable() {
 
           @Override
           public void run() {
             try {
-              btnGenerate.setEnabled(false);
+              btnGenerate.setText("Cancel");
+              running = true;
               Sequence filterModes = Sequence.parse(textFilterModes.getText());
               Sequence diffModes = Sequence.parse(textDiffFilterModes.getText());
               
@@ -365,6 +368,9 @@ public class RhythmMatrix {
                 outside:
                 for(int j=0;j<n;j++) {
                   while(true) {
+                    if(!running) {
+                      break outside;
+                    }
                     failures++;
                     ArrayList<Rhythm> p = null;
                     if(j>0) {
@@ -423,47 +429,52 @@ public class RhythmMatrix {
                 }
               }
               
-              
-              if(comboBox.getSelectedItem() == Rn.Hex) {
-                
-                Matrix<Rhythm16> tmpMat = new Matrix<Rhythm16>(m,n);
-                Matrix<Rhythm16> tmpMatNot = new Matrix<Rhythm16>(m,n);
-                for(int i=0;i<m;i++) {
-                  for(int j=0;j<n;j++) {
-                    tmpMat.set(i, j, Rhythm16.fromRhythm(output.get(i, j)));
-                    tmpMatNot.set(i, j, Rhythm16.not(Rhythm16.fromRhythm(output.get(i, j))));
+              if(running) {
+                if(comboBox.getSelectedItem() == Rn.Hex) {
+                  
+                  Matrix<Rhythm16> tmpMat = new Matrix<Rhythm16>(m,n);
+                  Matrix<Rhythm16> tmpMatNot = new Matrix<Rhythm16>(m,n);
+                  for(int i=0;i<m;i++) {
+                    for(int j=0;j<n;j++) {
+                      tmpMat.set(i, j, Rhythm16.fromRhythm(output.get(i, j)));
+                      tmpMatNot.set(i, j, Rhythm16.not(Rhythm16.fromRhythm(output.get(i, j))));
+                    }
                   }
-                }
-                textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
-              } else if(comboBox.getSelectedItem() == Rn.Octal) {
-                
-                Matrix<Rhythm12> tmpMat = new Matrix<Rhythm12>(m,n);
-                Matrix<Rhythm12> tmpMatNot = new Matrix<Rhythm12>(m,n);
-                for(int i=0;i<m;i++) {
-                  for(int j=0;j<n;j++) {
-                    tmpMat.set(i, j, Rhythm12.fromRhythm(output.get(i, j)));
-                    tmpMatNot.set(i, j, Rhythm12.not(Rhythm12.fromRhythm(output.get(i, j))));
+                  textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
+                } else if(comboBox.getSelectedItem() == Rn.Octal) {
+                  
+                  Matrix<Rhythm12> tmpMat = new Matrix<Rhythm12>(m,n);
+                  Matrix<Rhythm12> tmpMatNot = new Matrix<Rhythm12>(m,n);
+                  for(int i=0;i<m;i++) {
+                    for(int j=0;j<n;j++) {
+                      tmpMat.set(i, j, Rhythm12.fromRhythm(output.get(i, j)));
+                      tmpMatNot.set(i, j, Rhythm12.not(Rhythm12.fromRhythm(output.get(i, j))));
+                    }
                   }
-                }
-                textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
-              } else if(comboBox.getSelectedItem() == Rn.Tribble) {
-                
-                Matrix<Rhythm48> tmpMat = new Matrix<Rhythm48>(m,n);
-                Matrix<Rhythm48> tmpMatNot = new Matrix<Rhythm48>(m,n);
-                for(int i=0;i<m;i++) {
-                  for(int j=0;j<n;j++) {
-                    tmpMat.set(i, j, Rhythm48.fromRhythm(output.get(i, j)));
-                    tmpMatNot.set(i, j, Rhythm48.not(Rhythm48.fromRhythm(output.get(i, j))));
+                  textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
+                } else if(comboBox.getSelectedItem() == Rn.Tribble) {
+                  
+                  Matrix<Rhythm48> tmpMat = new Matrix<Rhythm48>(m,n);
+                  Matrix<Rhythm48> tmpMatNot = new Matrix<Rhythm48>(m,n);
+                  for(int i=0;i<m;i++) {
+                    for(int j=0;j<n;j++) {
+                      tmpMat.set(i, j, Rhythm48.fromRhythm(output.get(i, j)));
+                      tmpMatNot.set(i, j, Rhythm48.not(Rhythm48.fromRhythm(output.get(i, j))));
+                    }
                   }
-                }
-                textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
+                  textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
+                } 
               }
-              
             } catch(Exception x) {
               textArea.setText("Error");
             }
-            btnGenerate.setEnabled(true);
+            if(!running) {
+              textArea.setText("");
+            }
+            btnGenerate.setText("Generate");
+            running = false;
           }}).start();
+        
         
         
         
