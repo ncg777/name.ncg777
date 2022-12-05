@@ -288,7 +288,7 @@ public class RhythmMatrix {
                   case 13:
                     if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new MaximumGap(4));
                     if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MaximumGap(3));
-                    if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MaximumGap(12));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new MaximumGap(12));
                     break;
                   case 14:
                     relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
