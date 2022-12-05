@@ -358,7 +358,7 @@ public class RhythmMatrix {
                   };
               
               
-              int maxFailures = n*m*500;
+              int maxFailures = n*m*1000;
               int failures = 0;
 
               for(int i=fixedSize;i<m;i++) {
