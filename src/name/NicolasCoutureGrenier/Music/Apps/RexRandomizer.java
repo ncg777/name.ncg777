@@ -3,6 +3,7 @@ package name.NicolasCoutureGrenier.Music.Apps;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -15,8 +16,11 @@ import javax.swing.SwingConstants;
 import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
+import name.NicolasCoutureGrenier.Music.R48List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
+import name.NicolasCoutureGrenier.Music.Rn;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -26,6 +30,7 @@ import java.util.TreeSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import java.awt.Font;
+import javax.swing.JComboBox;
 
 public class RexRandomizer {
 
@@ -33,7 +38,7 @@ public class RexRandomizer {
   private JTextField textRex;
   private JTextField textEQClasses;
   private JTextField textResynth;
-
+  private JComboBox<Rn> comboBox = new JComboBox<Rn>(new DefaultComboBoxModel<Rn>(Rn.values()));
   /**
    * Launch the application.
    */
@@ -94,11 +99,35 @@ public class RexRandomizer {
         int modulr = resynth.size();
         
         int nbBars = (int)spinner.getValue();
-        int len = nbBars*16;
+        int mult = -1;
+        switch((Rn)comboBox.getSelectedItem()) {
+          case Tribble:
+            mult = 48;
+            break;
+          case Hex:
+            mult = 16;
+            break;
+          case Octal:
+            mult = 12;
+            break;
+        }
+        int len = nbBars*mult;
         
-        R16List r = R16List.parseR16Seq(textRex.getText());
+        Rhythm r = null;
         
-        Sequence c = r.asRhythm().getComposition().asSequence();
+        switch((Rn)comboBox.getSelectedItem()) {
+          case Tribble:
+            r = R48List.parseR48Seq(textRex.getText()).asRhythm();
+            break;
+          case Hex:
+            r = R16List.parseR16Seq(textRex.getText()).asRhythm();
+            break;
+          case Octal:
+            r = R12List.parseR12Seq(textRex.getText()).asRhythm();
+            break;
+        }
+        
+        Sequence c = r.getComposition().asSequence();
         
         TreeMap<Integer, TreeSet<HomogeneousPair<Integer>>> posM = new TreeMap<>();
         
@@ -141,10 +170,22 @@ public class RexRandomizer {
           
         }
         
-        R16List nr = R16List.fromRhythm(Rhythm.buildRhythm(len, newRhythm));
+        String ns = "";
+        switch((Rn)comboBox.getSelectedItem()) {
+          case Tribble:
+            ns = R48List.fromRhythm(Rhythm.buildRhythm(len, newRhythm)).toString();
+            break;
+          case Hex:
+            ns = R16List.fromRhythm(Rhythm.buildRhythm(len, newRhythm)).toString();
+            break;
+          case Octal:
+            ns = R12List.fromRhythm(Rhythm.buildRhythm(len, newRhythm)).toString();
+            break;
+        }
+        
         String output = "";
         
-        output = nr.toString() + "\n" + pitchSeq.toString();
+        output = ns + "\n" + pitchSeq.toString();
         
         txtrResult.setText(output);
        
@@ -170,29 +211,28 @@ public class RexRandomizer {
     
     
     
+    
+    
     GroupLayout groupLayout = new GroupLayout(frmRexRandomizer.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
         .addGroup(groupLayout.createSequentialGroup()
           .addContainerGap()
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-            .addComponent(lblbars, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+            .addComponent(lblbars, GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
             .addComponent(lblRexRhythm, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lblEqClases, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-            .addComponent(lblResynth, GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
+            .addComponent(lblEqClases, GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+            .addComponent(lblResynth, GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+            .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
           .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-            .addGroup(groupLayout.createSequentialGroup()
-              .addComponent(textResynth, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-              .addGap(23))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                .addComponent(btnGenerate, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addComponent(textRex, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addComponent(spinner, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addComponent(textEQClasses, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
-              .addGap(23))))
+            .addComponent(textResynth, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+            .addComponent(btnGenerate, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+            .addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+            .addComponent(textRex, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+            .addComponent(spinner, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+            .addComponent(textEQClasses, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE))
+          .addGap(23))
     );
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
@@ -214,9 +254,11 @@ public class RexRandomizer {
             .addComponent(lblResynth, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
             .addComponent(textResynth, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
           .addGap(12)
-          .addComponent(btnGenerate)
+          .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+            .addComponent(btnGenerate)
+            .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
           .addGap(10))
     );
     
