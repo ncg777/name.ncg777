@@ -34,7 +34,9 @@ public class SequenceCalc {
     Reverse,
     Flip,
     AddToAll,
-    Multiply
+    Multiply,
+    ApplyMin,
+    ApplyMax
   }
   private JFrame frmSequenceCalc;
   private JTextField txtInput;
@@ -148,6 +150,14 @@ public class SequenceCalc {
           case Multiply:
             k = (Integer)spinner.getValue();
             output = input.multiply(k).toString();
+            break;
+          case ApplyMin:
+            k = (Integer)spinner.getValue();
+            output = input.applyMin(k).toString();
+            break;
+          case ApplyMax:
+            k = (Integer)spinner.getValue();
+            output = input.applyMin(k).toString();
             break;
         }
         txtOutput.setText(output.trim());

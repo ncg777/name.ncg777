@@ -314,6 +314,25 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return s;
   }
 
+  public Sequence applyMin(int k) {
+    Sequence s = new Sequence();
+
+    for (int i = 0; i < this.size(); i++) {
+      s.add(Math.min(this.get(i),k));
+    }
+
+    return s;
+  }
+  
+  public Sequence applyMax(int k) {
+    Sequence s = new Sequence();
+
+    for (int i = 0; i < this.size(); i++) {
+      s.add(Math.max(this.get(i),k));
+    }
+
+    return s;
+  }
   /**
    * Each row i of the output matrix correspond to a distinct value of the sequence. Each cell i,j
    * set to true means that the value at position j in the sequence is the i'th biggest.
