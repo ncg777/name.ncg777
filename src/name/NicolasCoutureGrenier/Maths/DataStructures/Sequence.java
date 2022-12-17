@@ -262,7 +262,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
     return o;
   }
-  
+
   public double entropy() {
     double o = 0.0;
     
@@ -333,6 +333,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
 
     return s;
   }
+
   /**
    * Each row i of the output matrix correspond to a distinct value of the sequence. Each cell i,j
    * set to true means that the value at position j in the sequence is the i'th biggest.
@@ -526,12 +527,13 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    */
   public double getStdDev() {
     double m = getMean();
-    double s = 0;
     Iterator<Integer> i = this.iterator();
+    double s = 0;
     while (i.hasNext()) {
-      s += Math.abs((double) i.next() - m);
+      double d = i.next() - m;
+      s += d * d;
     }
-    return s / (double) this.size();
+    return Math.sqrt(s / (double) this.size());
   }
 
   public Sequence difference() {
