@@ -336,7 +336,7 @@ public class RhythmMatrix {
                 if(comboBox.getSelectedItem() == Rn.Octal) r = Rhythm12.parseRhythm12Octal(str).asRhythm();
                 if(comboBox.getSelectedItem() == Rn.Tribble) {
                   Rhythm48 r48 = Rhythm48.parseRhythm48Tribbles(str);
-                  List<Rhythm48> l = r48.randomizeBeat(8, Relation.bindFirst(r48, relHoriz));
+                  List<Rhythm48> l = r48.randomizeBeat(64, Relation.bindFirst(r48, relHoriz));
                   for(var rr : l) p.add(rr.asRhythm());
                   return p;
                 }
