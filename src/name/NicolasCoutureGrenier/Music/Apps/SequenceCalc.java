@@ -157,7 +157,7 @@ public class SequenceCalc {
             break;
           case ApplyMax:
             k = (Integer)spinner.getValue();
-            output = input.applyMin(k).toString();
+            output = input.applyMax(k).toString();
             break;
         }
         txtOutput.setText(output.trim());
