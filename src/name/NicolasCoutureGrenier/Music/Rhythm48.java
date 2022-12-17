@@ -174,7 +174,9 @@ public class Rhythm48 extends Rhythm implements Serializable {
   private static TreeSet<Rhythm> validBeats = Rhythm48.getValidBeats();
   
   public static Rhythm48 getRandomRhythm48(Predicate<Rhythm> pred) {
-    return getZeroRhythm().randomizeBeat(1, pred).get(0);
+    return getZeroRhythm().randomizeBeat(1, pred).get(0)
+        .randomizeBeat(1, pred).get(0)
+        .randomizeBeat(1, pred).get(0);
   }
   
   private static TreeSet<Rhythm> getValidBeats() {
