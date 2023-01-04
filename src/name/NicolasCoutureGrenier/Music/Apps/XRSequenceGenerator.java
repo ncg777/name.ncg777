@@ -112,7 +112,19 @@ public class XRSequenceGenerator {
             possibles.add(half);
           }
           
-          for(int j=2;j<=n;j++) {
+          int maxPeriod = -1;
+          if(comboBox.getSelectedItem() == Rn.Hex) {
+            maxPeriod = 8;
+          }
+          if(comboBox.getSelectedItem() == Rn.Octal) {
+            maxPeriod = 6;
+          }
+          if(comboBox.getSelectedItem() == Rn.Tribble) {
+            maxPeriod = 24;
+          }
+          maxPeriod = Math.min(n, maxPeriod);
+          
+          for(int j=2;j<=maxPeriod;j++) {
             if(Numbers.lcm(n, j) == n) possibles.add(Integer.valueOf(j).doubleValue());
           }
           
@@ -132,8 +144,13 @@ public class XRSequenceGenerator {
             
             for(int j=0; j<possibles.size();j++){
               double p = it.next();
-              double d = Math.abs(p - output.get(i-1));
-              weights[j] = Math.sqrt(1.0-((d-mind)/(maxd-mind)));
+              if(p == 0.0) {
+                weights[j] = Math.sqrt(1.0-((-mind)/(maxd-mind)));
+              } else {
+                double d = Math.abs(p - output.get(i-1));
+                weights[j] = Math.sqrt(1.0-((d-mind)/(maxd-mind)));
+              }
+              
             }
           }
           
