@@ -32,6 +32,7 @@ import name.NicolasCoutureGrenier.Music.RhythmPredicates.Ordinal;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.SecondOrderDifferenceSum;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.SecondOrderDifferenceSum.Keep;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.ShadowContourIsomorphic;
+import name.NicolasCoutureGrenier.Music.RhythmRelations.Different;
 import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedDifferences;
 import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedJuxtaposition;
 
@@ -338,6 +339,7 @@ public class RhythmMatrix {
                   Rhythm48 r48 = Rhythm48.parseRhythm48Tribbles(str);
                   List<Rhythm48> l = r48.randomizeBeat(64, Relation.bindFirst(r48, relHoriz));
                   for(var rr : l) p.add(rr.asRhythm());
+                  p.add(r48.asRhythm());
                   return p;
                 }
                 
@@ -353,16 +355,17 @@ public class RhythmMatrix {
               BiFunction<Rhythm, ArrayList<Rhythm>, Double[]> calcWeights =
                   (Rhythm r, ArrayList<Rhythm> p) -> {
                     Double weights[] = new Double[p.size()];
-
+  
                     for (int i = 0; i < p.size(); i++) {
                       weights[i] = 1.0 - Math.sqrt(r.calcNormalizedDistanceWith(p.get(i)));
+                      if(r.equals(p.get(i))) weights[i]=weights[i]/2;
                     }
                     return weights;
                   };
               
               
-              int maxFailures = n*m*1000;
-              int failures = 0;
+              //int maxFailures = n*m*1000;
+              //int failures = 0;
 
               for(int i=fixedSize;i<m;i++) {
                 outside:
@@ -371,7 +374,7 @@ public class RhythmMatrix {
                     if(!running) {
                       break outside;
                     }
-                    failures++;
+                    //failures++;
                     ArrayList<Rhythm> p = null;
                     if(j>0) {
                       if(comboBox.getSelectedItem() == Rn.Hex) {
@@ -406,18 +409,18 @@ public class RhythmMatrix {
                       for(int k=i-1;k>=0;k--) {
                         if(!relSimul.apply(output.get(i, j), output.get(k, j))) {
                           failed = true;
-                          failures++;
+                          //failures++;
                           break;
                         }
                         textArea.setText("i=" + i + ", j=" + j + " ...\n");
                       }
                       
-                      if(failures > maxFailures || (t.size() == 0 && comboBox.getSelectedItem() != Rn.Tribble)||(p!=null && p.size() == 0)) {
-                        failures = 0;
-                        i = fixedSize;
-                        j = 0;
-                        break outside;
-                      }
+                      //if(failures > maxFailures || (t.size() == 0 && comboBox.getSelectedItem() != Rn.Tribble)||(p!=null && p.size() == 0)) {
+                      //  failures = 0;
+                      //  i = fixedSize;
+                      //  j = 0;
+                     //   break outside;
+                      //}
                       
                       if(failed) {
                         continue;
