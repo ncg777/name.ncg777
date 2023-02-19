@@ -149,7 +149,7 @@ public class SeqGenContourFollow {
               int _amp = (Integer)spinner_bounce_amp.getValue();
               
               Sequence o = s.cyclicalForwardAntidifference(0);
-              txtDelta.setText(s.toString());
+              txtDelta.setText(o.bounceseq(_min, _amp).cyclicalForwardDifference().toString());
               txtSequence.setText(o.bounceseq(_min, _amp).toString());
               
               break;
