@@ -121,8 +121,8 @@ public class ChordRotator {
           for(int j=0; j<k;j++) {
             si.add(chs.get((s.get(j)+i)%n));
           }
-          
-          sb.append(PCS12.identify(si).toString() + "\n");
+          PCS12 chx = PCS12.identify(si);
+          sb.append(chx.toString() + " (" + chx.toForteNumberString() + ")" + "\n");
         }
         textResult.setText(sb.toString());
       }
