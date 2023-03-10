@@ -19,6 +19,7 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class ChordRotator {
 
@@ -115,7 +116,7 @@ public class ChordRotator {
         Sequence s = Sequence.parse(textField.getText().trim());
         int k = s.size();
         StringBuilder sb = new StringBuilder();
-        
+        StringBuilder sb2 = new StringBuilder();
         for(int i=0;i<n;i++) {
           TreeSet<Integer> si = new TreeSet<>();
           for(int j=0; j<k;j++) {
@@ -123,8 +124,9 @@ public class ChordRotator {
           }
           PCS12 chx = PCS12.identify(si);
           sb.append(chx.toString() + " (" + chx.toForteNumberString() + ")" + "\n");
+          sb2.append(chx.toString() + " ");
         }
-        textResult.setText(sb.toString());
+        textResult.setText(sb.toString() + "\n\n" + sb2.toString().trim());
       }
     });
     btnNewButton.setBounds(10, 92, 290, 23);
@@ -144,10 +146,13 @@ public class ChordRotator {
     frmChordRotator.getContentPane().add(textPitches);
     textPitches.setColumns(10);
     
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setBounds(10, 126, 285, 234);
+    frmChordRotator.getContentPane().add(scrollPane);
+    scrollPane.setViewportView(textResult);
+    
     
     textResult.setEditable(false);
     textResult.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
-    textResult.setBounds(10, 126, 290, 233);
-    frmChordRotator.getContentPane().add(textResult);
   }
 }
