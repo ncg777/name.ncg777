@@ -34,7 +34,7 @@ public class R16List extends LinkedList<Rhythm16> implements Comparable<R16List>
       R16List rot = R16List.rotate(other, i*16);
       boolean eq = true;
       for(int j=0;j<rot.size();j++) {
-        if(this.get(j).toString() != rot.get(j).toString()) {
+        if(!this.get(j).toString().equals(rot.get(j).toString())) {
           eq=false;
           continue;
         }

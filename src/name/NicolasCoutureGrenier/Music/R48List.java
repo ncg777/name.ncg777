@@ -34,7 +34,7 @@ public class R48List extends LinkedList<Rhythm48> implements Comparable<R48List>
       R48List rot = R48List.rotate(other, i*48);
       boolean eq = true;
       for(int j=0;j<rot.size();j++) {
-        if(this.get(j).toString() != rot.get(j).toString()) {
+        if(!this.get(j).toString().equals(rot.get(j).toString())) {
           eq=false;
           continue;
         }

@@ -59,7 +59,7 @@ public class R12List extends LinkedList<Rhythm12>  implements Comparable<R12List
       R12List rot = R12List.rotate(other, i*12);
       boolean eq = true;
       for(int j=0;j<rot.size();j++) {
-        if(!this.get(j).equals(rot.get(j))) {
+        if(!this.get(j).toString().equals(rot.get(j).toString())) {
           eq=false;
           continue;
         }
