@@ -185,7 +185,29 @@ public class PCS12 extends Combination implements Serializable {
   public String getForteNumber() {return ForteNumbersDict.get(this);}
   public Integer getForteNumberRotation() {return ForteNumbersRotationDict.get(this);}
   public String toForteNumberString() {return getForteNumber() + "+" + getForteNumberRotation().toString();}
-  
+  private Sequence symmetries = null; 
+  public Sequence getSymmetries() {
+    if(symmetries != null) return symmetries;
+    
+    Sequence o = new Sequence();
+    
+    for(int i=0;i<12;i++) {
+      PCS12 rot = PCS12.identify(this.rotate(i));
+      boolean found = true;
+      for(int j=0;j<12;j++) {
+        if(this.get((12+(-j))%12) != rot.get(j)){
+          found=false;
+          break;
+        }
+      }
+      if(found) o.add(i);
+    }
+    
+    this.symmetries = o;
+    return o;
+    
+    
+  }
   private static void fillForteNumbersDict() throws IOException, CsvException {
     ForteNumbersDict = new TreeMap<PCS12, String>();
     ForteNumbersRotationDict = new TreeMap<PCS12,Integer>();
