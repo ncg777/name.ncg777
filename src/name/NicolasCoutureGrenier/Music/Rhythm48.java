@@ -194,14 +194,14 @@ public class Rhythm48 extends Rhythm implements Serializable {
       base.add(sz);
     Long szl = Long.valueOf(sz);
 
-    szl = szl * szl * szl * szl;
-    Long counter = 0l;
+    //szl = szl * szl * szl * szl;
+    //Long counter = 0l;
     MixedRadixEnumeration mre = new MixedRadixEnumeration(base);
     while (mre.hasMoreElements()) {
       var e = mre.nextElement();
       output.add(Rhythm48.fromRhythm(
           beats[e[0]].juxtapose(beats[e[1]]).juxtapose(beats[e[2]]).juxtapose(beats[e[3]])));
-      System.out.println(Long.toString(++counter) + "/" + Long.toString(szl));
+      //System.out.println(Long.toString(++counter) + "/" + Long.toString(szl));
     }
     return output;
   }
