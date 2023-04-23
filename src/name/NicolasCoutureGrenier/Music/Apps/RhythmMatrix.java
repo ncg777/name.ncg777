@@ -65,7 +65,7 @@ public class RhythmMatrix {
   private JTextField textDiffFilterModes;
   private TreeSet<Rhythm16> r16set = Rhythm16.Generate();
   private TreeSet<Rhythm12> r12set = Rhythm12.Generate();
-  //private TreeSet<Rhythm48> r48set = Rhythm48.Generate();
+  private TreeSet<Rhythm48> r48set = Rhythm48.Generate();
   /**
    * Launch the application.
    */
@@ -220,9 +220,10 @@ public class RhythmMatrix {
               if(comboBox.getSelectedItem() == Rn.Octal) {
                 for(Rhythm12 r : r12set) t0.add(r.asRhythm());
               }
-//              if(comboBox.getSelectedItem() == Rn.Tribble) {
-//                for(Rhythm48 r : r48set) t0.add(r.asRhythm());
-//              }
+              if(comboBox.getSelectedItem() == Rn.Tribble) {
+                for(Rhythm48 r : r48set) t0.add(r.asRhythm());
+              }
+              
               for(Rhythm r : t0){
                 if(pred.test(r)) {
                   t.add(r);
@@ -335,6 +336,8 @@ public class RhythmMatrix {
                 ArrayList<Rhythm> p = new ArrayList<>();
                 if(comboBox.getSelectedItem() == Rn.Hex) r = Rhythm16.parseRhythm16Hex(str).asRhythm();
                 if(comboBox.getSelectedItem() == Rn.Octal) r = Rhythm12.parseRhythm12Octal(str).asRhythm();
+                if(comboBox.getSelectedItem() == Rn.Tribble) r = Rhythm48.parseRhythm48Tribbles(str).asRhythm();
+                /*
                 if(comboBox.getSelectedItem() == Rn.Tribble) {
                   Rhythm48 r48 = Rhythm48.parseRhythm48Tribbles(str);
                   List<Rhythm48> l = r48.randomizeBeat(64, Relation.bindFirst(r48, relHoriz));
@@ -342,7 +345,7 @@ public class RhythmMatrix {
                   p.add(r48.asRhythm());
                   return p;
                 }
-                
+                */
                 for(Rhythm s : t) {
                   if(relHoriz.apply(r, s)) { 
                       p.add(s); 
