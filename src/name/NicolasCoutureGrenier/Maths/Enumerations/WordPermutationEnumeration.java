@@ -31,7 +31,7 @@ public class WordPermutationEnumeration implements Enumeration<Integer[]> {
     super();
 
     if (rk == null) {
-      throw new RuntimeException("MultiCombinationEnumeration, null array");
+      throw new RuntimeException("null array");
     }
 
     Integer k = rk.length;
@@ -42,7 +42,7 @@ public class WordPermutationEnumeration implements Enumeration<Integer[]> {
 
     for (Integer i = 0; i < k; i++) {
       if (rk[i] < 0) {
-        throw new RuntimeException("Sequence : multiCombinationGenerate, null or negative element");
+        throw new RuntimeException("null or negative element");
       }
       n += rk[i];
       if (rk[i] != 0) {
