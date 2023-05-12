@@ -46,7 +46,7 @@ import name.NicolasCoutureGrenier.Maths.Relations.Relation;
  */
 public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>{
+  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>, Relation<X,Y>{
   
   protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>(Ordering.natural().nullsFirst());
   protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
@@ -355,5 +355,10 @@ public class FiniteBinaryRelation<
   @Override
   public String toString() {
     return pairs.toString();
+  }
+  
+  @Override
+  public boolean apply(X a, Y b) {
+    return pairs.contains(HeterogeneousPair.makeHeterogeneousPair(a, b));
   }
 }
