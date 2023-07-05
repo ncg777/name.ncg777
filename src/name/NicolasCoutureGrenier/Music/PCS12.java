@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -185,29 +186,39 @@ public class PCS12 extends Combination implements Serializable {
   public String getForteNumber() {return ForteNumbersDict.get(this);}
   public Integer getForteNumberRotation() {return ForteNumbersRotationDict.get(this);}
   public String toForteNumberString() {return getForteNumber() + "+" + getForteNumberRotation().toString();}
-  private Sequence symmetries = null; 
-  public Sequence getSymmetries() {
+  private ArrayList<Double> symmetries = null; 
+  public ArrayList<Double> getSymmetries() {
     if(symmetries != null) return symmetries;
     
-    Sequence o = new Sequence();
+    ArrayList<Double> o = new ArrayList<Double>();
     
-    for(int i=0;i<12;i++) {
-      PCS12 rot = PCS12.identify(this.rotate(i));
+    for(int i=0;i<24;i++) {
+      int axis = i/2;
       boolean found = true;
-      for(int j=0;j<12;j++) {
-        if(this.get((12+(-j))%12) != rot.get(j)){
-          found=false;
-          break;
+      if(i%2 == 0) {
+        for(int j=0;j<7;j++) {
+          if(this.get((axis + j)%12) != this.get((12 + axis - j)%12)) {
+            found = false;
+            break;
+          }
+        }
+      } else {
+        for(int j=0;j<6;j++) {
+          if(this.get((axis + j+1)%12) != this.get((12 + axis - j)%12)) {
+            found = false;
+            break;
+          }
         }
       }
-      if(found) o.add(i);
+      if(found) {
+        o.add(Integer.valueOf(i).doubleValue()/2.0);
+      }
     }
     
     this.symmetries = o;
     return o;
-    
-    
   }
+  
   private static void fillForteNumbersDict() throws IOException, CsvException {
     ForteNumbersDict = new TreeMap<PCS12, String>();
     ForteNumbersRotationDict = new TreeMap<PCS12,Integer>();

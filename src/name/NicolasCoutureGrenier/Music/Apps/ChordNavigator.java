@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.TreeSet;
+
+import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
@@ -159,7 +161,7 @@ public class ChordNavigator {
       PCS12 scale = PCS12.parse(cboScale.getSelectedItem().toString());
       textComplement.setText(scale.minus(ch).toString());
       textForte.setText(ch.toForteNumberString());
-      textSymmetries.setText(ch.getSymmetries().toString());
+      textSymmetries.setText(Joiner.on(", ").join(ch.getSymmetries()));
       this.current = ch;
     }
     
