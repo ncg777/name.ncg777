@@ -51,7 +51,7 @@ public class NecklaceGenerator {
     frmNecklaceGenerator = new JFrame();
     frmNecklaceGenerator.setResizable(false);
     frmNecklaceGenerator.setTitle("Necklace generator");
-    frmNecklaceGenerator.setBounds(100, 100, 607, 839);
+    frmNecklaceGenerator.setBounds(100, 100, 607, 428);
     frmNecklaceGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmNecklaceGenerator.getContentPane().setLayout(null);
     
@@ -76,7 +76,7 @@ public class NecklaceGenerator {
     frmNecklaceGenerator.getContentPane().add(spinnerK);
     
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(10, 73, 572, 716);
+    scrollPane.setBounds(10, 73, 572, 298);
     frmNecklaceGenerator.getContentPane().add(scrollPane);
     
     JTextArea textArea = new JTextArea();
