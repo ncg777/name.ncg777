@@ -31,6 +31,8 @@ public class PCS12 extends Combination implements Serializable {
   static TreeMap<PCS12, String> ForteNumbersDict;
   static TreeMap<PCS12, Integer> ForteNumbersRotationDict;
   static TreeMap<String, PCS12> ForteNumbersToPCS12Dict;
+  static TreeMap<String, String> ForteNumbersCommonNames;
+  
   Integer m_Order;
   Integer m_Transpose;
 
@@ -182,7 +184,7 @@ public class PCS12 extends Combination implements Serializable {
   public PCS12 symmetricDifference(PCS12 y) {
     return PCS12.identify(super.symmetricDifference(y));
   }
-
+  public String getCommonName() {return ForteNumbersCommonNames.get(getForteNumber());}
   public String getForteNumber() {return ForteNumbersDict.get(this);}
   public Integer getForteNumberRotation() {return ForteNumbersRotationDict.get(this);}
   public String toForteNumberString() {return getForteNumber() + "+" + getForteNumberRotation().toString();}
@@ -238,6 +240,14 @@ public class PCS12 extends Combination implements Serializable {
         ForteNumbersToPCS12Dict.put(p.getFirst()+ "+" + Integer.toString(i), t);
       }
     }
+    is.close();
+    InputStream is2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers_CommonNames.csv");
+    FiniteBinaryRelation<String,String> r2 = FiniteBinaryRelation.readFromCSV(Parsers.stringParser, Parsers.stringParser, is2);
+    ForteNumbersCommonNames = new TreeMap<String, String>();
+    for(var p : r2) {
+      ForteNumbersCommonNames.put(p.getFirst(), p.getSecond());
+    }
+    is2.close();
   }
   
   private static void GenerateMaps() throws IOException, CsvException {
