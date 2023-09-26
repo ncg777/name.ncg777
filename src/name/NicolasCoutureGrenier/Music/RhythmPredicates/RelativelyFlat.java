@@ -18,16 +18,19 @@ public class RelativelyFlat implements StandardAndGuavaPredicate<Rhythm> {
     Sequence a = input.getIntervalVector();
 
     double s = 0;
-
+    int n = a.size();
+    
     for (int i = 0; i < a.size(); i++) {
       s += a.get(i);
+      if(a.get(i) == 0) n--;
     }
-    double m = s / (double) a.size();
+    double m = s / (double) n;
     s = 0;
     for (int i = 0; i < a.size(); i++) {
+      if(a.get(i)==0) continue;
       s += Math.abs(((double) a.get(i)) - m);
     }
-    double sd = s / (double) a.size();
+    double sd = s / (double) n;
 
     return (sd / m <= (((double) m_pc) / 100.0));
 
