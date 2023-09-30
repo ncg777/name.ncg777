@@ -251,7 +251,7 @@ public class Rhythm extends Combination implements Serializable {
     int newsz = max*r.size();
     BitSet b =new BitSet(newsz);
     
-    for(int i=0;i<newsz;i++) {b.set(i,r.get(i%r.size()).get(i/r.size()));}
+    for(int i=0;i<newsz;i++) {b.set(i,r.get(i%r.size()).get((i/r.size())%r.get(i%r.size()).getN()));}
     return new Rhythm(b, newsz);
   }
     
