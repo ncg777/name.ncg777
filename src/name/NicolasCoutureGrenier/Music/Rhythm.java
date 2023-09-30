@@ -5,6 +5,7 @@ import static name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils.ca
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -242,4 +243,16 @@ public class Rhythm extends Combination implements Serializable {
     }
 
   }
+  
+  public static Rhythm merge(List<Rhythm> r) {
+    Sequence sizes = new Sequence();
+    for(int i=0;i<r.size();i++) {sizes.add(r.get(i).getN());}
+    int max=sizes.getMax();
+    int newsz = max*r.size();
+    BitSet b =new BitSet(newsz);
+    
+    for(int i=0;i<newsz;i++) {b.set(i,r.get(i%r.size()).get(i/r.size()));}
+    return new Rhythm(b, newsz);
+  }
+    
 }
