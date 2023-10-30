@@ -368,7 +368,7 @@ public class RhythmMatrix {
   
                     for (int i = 0; i < p.size(); i++) {
                       weights[i] = 1.0 - Math.sqrt(r.calcNormalizedDistanceWith(p.get(i)));
-                      if(r.equals(p.get(i))) weights[i]=weights[i]/2;
+                      if(r.equals(p.get(i))) weights[i]=weights[i]/8;
                     }
                     return weights;
                   };
