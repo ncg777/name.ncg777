@@ -33,6 +33,7 @@ import name.NicolasCoutureGrenier.Music.RhythmPredicates.RelativelyFlat;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.SecondOrderDifferenceSum;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.SecondOrderDifferenceSum.Keep;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.ShadowContourIsomorphic;
+import name.NicolasCoutureGrenier.Music.RhythmPredicates.SpectrumRising;
 import name.NicolasCoutureGrenier.Music.RhythmRelations.Different;
 import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedDifferences;
 import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedJuxtaposition;
@@ -210,7 +211,10 @@ public class RhythmMatrix {
                     pred0 = new SecondOrderDifferenceSum(Keep.Zero);
                     break;
                   case 15:
-                    pred0 = new RelativelyFlat(65);
+                    pred0 = new RelativelyFlat(80);
+                    break;
+                  case 16:
+                    pred0 = new SpectrumRising();
                     break;
                 }
                 pred = pred.and(pred0);
@@ -303,7 +307,10 @@ public class RhythmMatrix {
                     relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
                     break;
                   case 15:
-                    relSimul0 = new PredicatedDifferences(new RelativelyFlat(65));
+                    relSimul0 = new PredicatedDifferences(new RelativelyFlat(80));
+                    break;
+                  case 16:
+                    relSimul0 = new PredicatedDifferences(new SpectrumRising());
                     break;
                 }
                 relSimul = Relation.and(relSimul, relSimul0);
@@ -508,11 +515,11 @@ public class RhythmMatrix {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li><li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li>\r\n<li>SecondOrderDifferenceSumZero</li>\r\n<li>RelativelyFlat(65%)</li></ol></html>");
+    lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li><li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li>\r\n<li>SecondOrderDifferenceSumZero</li>\r\n<li>RelativelyFlat</li><li>Spectrum rising</li></ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li>\r\n<li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li><li>SecondOrderDifferenceSumZero</li><li>RelativelyFlat(65%)</li></ol></html>");
+    lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li>\r\n<li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li><li>SecondOrderDifferenceSumZero</li><li>RelativelyFlat</li><li>Spectrum rising</li></ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {
