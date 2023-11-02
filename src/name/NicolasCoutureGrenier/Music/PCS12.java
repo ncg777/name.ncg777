@@ -44,6 +44,11 @@ public class PCS12 extends Combination implements Serializable {
       e.printStackTrace();
     }
   }
+  
+  public int rotatedCompareTo(PCS12 other, int rotate) {
+    return this.asBinarySequence().rotate(rotate).compareTo(other.asBinarySequence().rotate(rotate));
+  }
+  
   public int calcDistanceWith(PCS12 other) {
     int maxn = Math.max(this.getN(), other.getN());
     
