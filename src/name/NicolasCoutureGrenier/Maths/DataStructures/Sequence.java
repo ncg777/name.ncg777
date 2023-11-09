@@ -15,6 +15,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections4.bidimap.TreeBidiMap;
 
+import com.google.common.base.Equivalence;
 import com.google.common.base.Joiner;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
@@ -27,6 +28,19 @@ import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
  */
 public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>, Serializable {
   private static final long serialVersionUID = 7765339983542999624L;
+  
+  public static final Equivalence<Sequence> UnderRotationEquivalence = new Equivalence<Sequence>() {
+    @Override
+    protected boolean doEquivalent(Sequence a, Sequence b) {
+      return Sequence.equivalentUnderRotation(a, b);
+    }
+
+    @Override
+    protected int doHash(Sequence t) {
+      return t.getMininumRotation().hashCode();
+    }
+  };
+  
   public static enum ArpType
   {
     UP,
