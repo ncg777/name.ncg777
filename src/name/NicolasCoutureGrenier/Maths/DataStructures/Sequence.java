@@ -122,6 +122,15 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return o;
   }
   
+  public Sequence getMininumRotation() {
+    Sequence s = this;
+    for(int i=0;i<s.size();i++) {
+      var t = this.rotate(i);
+      if(t.compareTo(s) == -1) s = t;
+    }
+    return s;
+  }
+  
   public Sequence composeWith(Sequence s) {
     var rel = this.toRelation().compose(s.toRelation());
     
