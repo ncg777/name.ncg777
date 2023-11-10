@@ -6,10 +6,14 @@ import java.util.TreeSet;
 
 import com.google.common.base.Equivalence;
 
-
+/**
+ * Not really standard union set...
+ *
+ * @param <T>
+ */
 public class UnionSet<T> {
 
-  private ArrayList<T> representants = new ArrayList<>();
+  private TreeMap<Integer,T> representants = new TreeMap<>();
   private TreeMap<Integer,TreeSet<T>> instances = new TreeMap<>();
   private Equivalence<T> equivalence;
   
@@ -22,18 +26,15 @@ public class UnionSet<T> {
    * @param item
    */
   public void add(T item) {
-    boolean found = false;
-    for(T r : representants) {
-      if(this.equivalence.equivalent(r, item)) {
-        found=true;
-        instances.get(r.hashCode()).add(item);
-      }
-    }
-    if(!found) {
+    int h = equivalence.hash(item);
+    boolean found = instances.containsKey(h);
+    if(found) {
+      instances.get(h).add(item);
+    } else {
       TreeSet<T> inst = new TreeSet<>();
       inst.add(item);
-      instances.put(item.hashCode(),inst);
-      representants.add(item);
+      instances.put(h, inst);
+      representants.put(h, item);
     }
   }
   
@@ -44,12 +45,7 @@ public class UnionSet<T> {
    * @return The representant or null if there isn't any.
    */
   public T getRepresentant(T item) {
-    for(T r : representants) {
-      if(this.equivalence.equivalent(r, item)) {
-        return r;
-      }
-    }
-    return null;
+    return representants.get(equivalence.hash(item));
   }
   
   /**
@@ -59,27 +55,28 @@ public class UnionSet<T> {
    * @return True if item was found and deleted.
    */
   public boolean remove(T item) {
-    boolean found = false;
-    boolean removeRep = false;
-    T rep = null;
-    for(T r : representants) {
-      if(this.equivalence.equivalent(r, item)) {
-        found=true;
-        instances.get(r.hashCode()).remove(item);
-        
-        if(instances.get(r.hashCode()).size() == 0) {
-          instances.remove(r.hashCode());
-          removeRep = true;
-          rep = r;
+    var h = equivalence.hash(item);
+    var inst = instances.get(h);
+    if(inst == null) {
+      return false;
+    } else {
+      if(inst.remove(item)) {
+        if(inst.size() == 0) {
+          representants.remove(h);
+          instances.remove(h);
         }
-        break;
+        return true;
+      } else {
+        return false;
       }
     }
-    if(removeRep) representants.remove(rep);
-    return found;
   }
   
-  public ArrayList<T> getRepresentants(){return representants;}
+  public ArrayList<T> getRepresentants(){
+    ArrayList<T> o = new ArrayList<>();
+    o.addAll(representants.values());
+    return o;
+  }
   public ArrayList<TreeSet<T>> getTreeSets() {
     ArrayList<TreeSet<T>> o = new ArrayList<>();
     o.addAll(instances.values());
