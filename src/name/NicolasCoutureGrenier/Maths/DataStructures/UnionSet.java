@@ -14,7 +14,6 @@ import com.google.common.base.Equivalence;
  */
 public class UnionSet<T extends Comparable<? super T>> {
 
-  private ArrayList<T> representants = new ArrayList<>();
   private TreeMap<T,TreeSet<T>> instances = new TreeMap<>();
   private Equivalence<T> equivalence;
   
@@ -28,7 +27,7 @@ public class UnionSet<T extends Comparable<? super T>> {
    */
   public void add(T item) {
     boolean found = false;
-    for(T r : representants) {
+    for(T r : instances.keySet()) {
       if(this.equivalence.equivalent(r, item)) {
         found=true;
         instances.get(r).add(item);
@@ -38,7 +37,6 @@ public class UnionSet<T extends Comparable<? super T>> {
       TreeSet<T> inst = new TreeSet<>();
       inst.add(item);
       instances.put(item, inst);
-      representants.add(item);
     }
   }
   
@@ -49,7 +47,7 @@ public class UnionSet<T extends Comparable<? super T>> {
    * @return The representant or null if there isn't any.
    */
   public T getRepresentant(T item) {
-    for(T r : representants) {
+    for(T r : instances.keySet()) {
       if(this.equivalence.equivalent(r, item)) {
         return r;
       }
@@ -67,7 +65,7 @@ public class UnionSet<T extends Comparable<? super T>> {
     boolean found = false;
     boolean removeRep = false;
     T rep = null;
-    for(T r : representants) {
+    for(T r : instances.keySet()) {
       if(this.equivalence.equivalent(r, item)) {
         found=true;
         instances.get(r).remove(item);
@@ -80,13 +78,17 @@ public class UnionSet<T extends Comparable<? super T>> {
         break;
       }
     }
-    if(removeRep) representants.remove(rep);
+    if(removeRep) instances.remove(rep);
     return found;
   }
   
-  public ArrayList<T> getRepresentants(){return representants;}
+  public ArrayList<T> getRepresentants(){
+    var o = new ArrayList<T>();
+    o.addAll(instances.keySet());
+    return o;
+  }
   public ArrayList<TreeSet<T>> getTreeSets() {
-    ArrayList<TreeSet<T>> o = new ArrayList<>();
+    var o = new ArrayList<TreeSet<T>>();
     o.addAll(instances.values());
     return o;
   }
