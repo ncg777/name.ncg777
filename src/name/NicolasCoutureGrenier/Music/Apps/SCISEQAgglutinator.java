@@ -121,6 +121,7 @@ public class SCISEQAgglutinator {
         Sequence o = new Sequence();
         int i=0;
         do {
+          
           if(i==0) {
             o = CollectionUtils.chooseAtRandom(n==12 ? s12 : s16);
             i++;
@@ -135,7 +136,7 @@ public class SCISEQAgglutinator {
               while(true) {
                 var rotated_candidate = CollectionUtils.chooseAtRandom(candidates);
                 var j = o.juxtapose(rotated_candidate);
-                if(pred.apply(j) && !j.cyclicalForwardDifference().contains(0)) {
+                if(pred.apply(j)) {
                   found = true;
                   o = j;
                   break;
@@ -147,7 +148,6 @@ public class SCISEQAgglutinator {
             }
             i++;
           }
-          
         } while(i<k);
         result.setText(o.toString());
       }
