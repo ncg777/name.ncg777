@@ -135,7 +135,7 @@ public class SCISEQAgglutinator {
               while(true) {
                 var rotated_candidate = CollectionUtils.chooseAtRandom(candidates);
                 var j = o.juxtapose(rotated_candidate);
-                if(pred.apply(j)) {
+                if(pred.apply(j) && !j.cyclicalForwardDifference().contains(0)) {
                   found = true;
                   o = j;
                   break;
