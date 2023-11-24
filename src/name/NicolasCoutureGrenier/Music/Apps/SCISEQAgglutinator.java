@@ -95,7 +95,7 @@ public class SCISEQAgglutinator {
     frmSciSeqAgglutinator.getContentPane().setLayout(null);
     
     spinnerN = new JSpinner();
-    spinnerN.setModel(new SpinnerListModel(new String[] {"12", "16"}));
+    spinnerN.setModel(new SpinnerListModel(new String[] {"8", "12", "16"}));
     spinnerN.setBounds(67, 9, 46, 20);
     frmSciSeqAgglutinator.getContentPane().add(spinnerN);
     
@@ -117,25 +117,21 @@ public class SCISEQAgglutinator {
     JButton btnNewButton = new JButton("Agglutinate");
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        
-        var pred = new SeqAllRhythmsSCI();
         int k = ((int)spinnerK.getValue())/8;
         int n = (int)spinnerK.getValue();
         Sequence o = null;
-        do {
-          o = new Sequence();
+        o = new Sequence();
+        
+        for(int i=0;i<k;i++) {
+          var ar =  CollectionUtils.chooseAtRandom(s8);
           
-          for(int i=0;i<k;i++) {
-            var ar =  CollectionUtils.chooseAtRandom(s8);
-            
-            var sa = new ArrayList<Sequence>();
-            for(int j=0;j<5;j++) sa.add(CollectionUtils.chooseAtRandom(n==12 ? s12 : s16));
-            
-            for(int j=0;j<8;j++) {
-              o = o.juxtapose(sa.get(ar.get(j)));
-            }
+          var sa = new ArrayList<Sequence>();
+          for(int j=0;j<5;j++) sa.add(CollectionUtils.chooseAtRandom(n==8 ? s8 : n==12 ? s12 : s16));
+          
+          for(int j=0;j<8;j++) {
+            o = o.juxtapose(sa.get(ar.get(j)));
           }
-        } while(!pred.apply(o));
+        }
         result.setText(o.toString());
       }
     });
