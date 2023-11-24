@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.swing.JFrame;
@@ -42,14 +43,15 @@ public class SCISEQAgglutinator {
       }
     });
   }
-  
+  private TreeSet<Sequence> s8 = new TreeSet<Sequence>();
   private TreeSet<Sequence> s12 = new TreeSet<Sequence>();
   private TreeSet<Sequence> s16 = new TreeSet<Sequence>();
   private JSpinner spinnerN;
   private JSpinner spinnerK;
   private JTextField result;
   private void readSequences(int n) {
-    if(!(n==12 || n == 16)) throw new RuntimeException("invalid param");
+    if(!(n==8 || n==12 || n == 16)) throw new RuntimeException("invalid param");
+    if(n==8) s8 = new TreeSet<Sequence>();
     if(n==12) s12 = new TreeSet<Sequence>();
     if(n==16) s16 = new TreeSet<Sequence>();
     InputStream ist = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/necklaces-" + Integer.toString(n)+ "-5-SCI-norep.csv");
@@ -65,6 +67,7 @@ public class SCISEQAgglutinator {
         e.printStackTrace();
       }
       if(r==null || r.isEmpty()) break;
+      if(n==8) s8.add(Sequence.parse(r));
       if(n==12) s12.add(Sequence.parse(r));
       else if(n==16) s16.add(Sequence.parse(r));
     }
@@ -76,7 +79,7 @@ public class SCISEQAgglutinator {
   public SCISEQAgglutinator() {
     initialize();
     
-    
+    readSequences(8);
     readSequences(12);
     readSequences(16);
   }
@@ -107,7 +110,7 @@ public class SCISEQAgglutinator {
     frmSciSeqAgglutinator.getContentPane().add(lblK);
     
     spinnerK = new JSpinner();
-    spinnerK.setModel(new SpinnerNumberModel(Integer.valueOf(2), Integer.valueOf(2), null, Integer.valueOf(1)));
+    spinnerK.setModel(new SpinnerNumberModel(Integer.valueOf(8), Integer.valueOf(8), null, Integer.valueOf(8)));
     spinnerK.setBounds(179, 11, 46, 17);
     frmSciSeqAgglutinator.getContentPane().add(spinnerK);
     
@@ -116,39 +119,23 @@ public class SCISEQAgglutinator {
       public void actionPerformed(ActionEvent e) {
         
         var pred = new SeqAllRhythmsSCI();
-        int k = (int)spinnerK.getValue();
+        int k = ((int)spinnerK.getValue())/8;
         int n = (int)spinnerK.getValue();
-        Sequence o = new Sequence();
-        int i=0;
+        Sequence o = null;
         do {
+          o = new Sequence();
           
-          if(i==0) {
-            o = CollectionUtils.chooseAtRandom(n==12 ? s12 : s16);
-            i++;
-          } else {
-            boolean found = false;
-            while(!found) {
-              var candidate = CollectionUtils.chooseAtRandom(n==12 ? s12 : s16);
-              
-              TreeSet<Sequence> candidates = new TreeSet<Sequence>();
-              for(int j=0;j<n;j++) {candidates.add(candidate.rotate(j));}
-              
-              while(true) {
-                var rotated_candidate = CollectionUtils.chooseAtRandom(candidates);
-                var j = o.juxtapose(rotated_candidate);
-                if(pred.apply(j)) {
-                  found = true;
-                  o = j;
-                  break;
-                } else {
-                  candidates.remove(rotated_candidate);
-                  if(candidates.isEmpty()) break;
-                }
-              }
+          for(int i=0;i<k;i++) {
+            var ar =  CollectionUtils.chooseAtRandom(s8);
+            
+            var sa = new ArrayList<Sequence>();
+            for(int j=0;j<5;j++) sa.add(CollectionUtils.chooseAtRandom(n==12 ? s12 : s16));
+            
+            for(int j=0;j<8;j++) {
+              o = o.juxtapose(sa.get(ar.get(j)));
             }
-            i++;
           }
-        } while(i<k);
+        } while(!pred.apply(o));
         result.setText(o.toString());
       }
     });
