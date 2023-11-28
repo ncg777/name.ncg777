@@ -7,11 +7,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
 import javax.swing.JFrame;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Enumerations.PermutationEnumeration;
+import name.NicolasCoutureGrenier.Music.RhythmPredicates.ShadowContourIsomorphic;
+import name.NicolasCoutureGrenier.Music.RhythmPredicates.SpectrumRising;
+import name.NicolasCoutureGrenier.Music.SequencePredicates.PredicatedSeqRhythms;
 import name.NicolasCoutureGrenier.Music.SequencePredicates.SeqAllRhythmsSCI;
 
 import javax.swing.JSpinner;
@@ -49,6 +54,8 @@ public class SCISEQAgglutinator {
   private JSpinner spinnerN;
   private JSpinner spinnerK;
   private JTextField result;
+  private boolean isComputing = false;
+  
   private void readSequences(int n) {
     if(!(n==8 || n==12 || n == 16)) throw new RuntimeException("invalid param");
     if(n==8) s8 = new TreeSet<Sequence>();
@@ -69,7 +76,7 @@ public class SCISEQAgglutinator {
       if(r==null || r.isEmpty()) break;
       if(n==8) s8.add(Sequence.parse(r));
       if(n==12) s12.add(Sequence.parse(r));
-      else if(n==16) s16.add(Sequence.parse(r));
+      if(n==16) s16.add(Sequence.parse(r));
     }
     
   }
@@ -110,29 +117,103 @@ public class SCISEQAgglutinator {
     frmSciSeqAgglutinator.getContentPane().add(lblK);
     
     spinnerK = new JSpinner();
-    spinnerK.setModel(new SpinnerNumberModel(Integer.valueOf(8), Integer.valueOf(8), null, Integer.valueOf(8)));
+    spinnerK.setModel(new SpinnerNumberModel(Integer.valueOf(2), Integer.valueOf(2), null, Integer.valueOf(1)));
     spinnerK.setBounds(179, 11, 46, 17);
     frmSciSeqAgglutinator.getContentPane().add(spinnerK);
     
     JButton btnNewButton = new JButton("Agglutinate");
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        int k = ((int)spinnerK.getValue())/8;
-        int n = (int)spinnerK.getValue();
-        Sequence o = null;
-        o = new Sequence();
-        
-        for(int i=0;i<k;i++) {
-          var ar =  CollectionUtils.chooseAtRandom(s8);
+        if(isComputing) {
+          btnNewButton.setText("Agglutinate");
+          isComputing = false;
+          result.setText("");
+          return;
+        } else {
+          btnNewButton.setText("Cancel");
+          isComputing = true;
+          result.setText("searching...");
+          int k = ((int)spinnerK.getValue());
+          int n = Integer.parseInt(spinnerN.getValue().toString());
           
-          var sa = new ArrayList<Sequence>();
-          for(int j=0;j<5;j++) sa.add(CollectionUtils.chooseAtRandom(n==8 ? s8 : n==12 ? s12 : s16));
+          var th = new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+              var pred = new Predicate<Sequence>() {
+                private Predicate<Sequence> innerPr = new PredicatedSeqRhythms(new ShadowContourIsomorphic());
+                @Override
+                public boolean test(Sequence t) {
+                  int u = (t.size()/n);
+                  for(int i=0;i<u;i++) {
+                    var a = t.permutate(Sequence.stair(i*n, n, 1));
+                    var b = t.permutate(Sequence.stair(((i+1)%u)*n, n, 1));
+                  
+                    if(!innerPr.test(a.juxtapose(b)) || a.equals(b)) {
+                      return false;
+                    }
+                  }
+                  return true;
+                }
+                
+              };
+              
+              
+              Sequence o = new Sequence();
+              int i=0;
+              do {
+                
+                
+                if(i==0) {
+                  o = CollectionUtils.chooseAtRandom(n==8 ? s8 : n==12 ? s12 : s16);
+                  i++;
+                } else {
+                  boolean found = false;
+                  while(!found) {
+                    var candidate = CollectionUtils.chooseAtRandom(n==8 ? s8 : n==12 ? s12 : s16);
+                    
+                    TreeSet<Sequence> candidates = new TreeSet<Sequence>();
+                    for(int j=0;j<n;j++) {
+                      var r = candidate.rotate(j);
+                      candidates.add(r);
+
+                      var pe = new PermutationEnumeration(5);
+                      while(pe.hasMoreElements()) {
+                        candidates.add(r.map(new Sequence(pe.nextElement())));
+                      }
+                    }
+                    
+                    while(true) {
+                      var potential_candidate = CollectionUtils.chooseAtRandom(candidates);
+                      var j = o.juxtapose(potential_candidate);
+                      if(pred.test(j)) {
+                        found = true;
+                        o = j;
+                        break;
+                      } else {
+                        if(!isComputing) return;
+                        candidates.remove(potential_candidate);
+                        if(candidates.isEmpty()) break;
+                      }
+                    }
+                  }
+                  i++;
+                }
+              } while(i<k);
+                
+              isComputing = false;
+              btnNewButton.setText("Agglutinate");
+              
+              result.setText(o.toString());
+            }
+          });
           
-          for(int j=0;j<8;j++) {
-            o = o.juxtapose(sa.get(ar.get(j)));
-          }
+          th.start();
+          
         }
-        result.setText(o.toString());
+        
+        
+        
       }
     });
     btnNewButton.setBounds(10, 39, 215, 23);

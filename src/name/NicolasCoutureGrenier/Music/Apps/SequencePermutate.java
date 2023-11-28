@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SequenceCompose {
+public class SequencePermutate {
 
   private JFrame frmSequenceMap;
   private JTextField textA;
@@ -31,7 +31,7 @@ public class SequenceCompose {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SequenceCompose window = new SequenceCompose();
+          SequencePermutate window = new SequencePermutate();
           window.frmSequenceMap.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -43,7 +43,7 @@ public class SequenceCompose {
   /**
    * Create the application.
    */
-  public SequenceCompose() {
+  public SequencePermutate() {
     initialize();
   }
 
@@ -52,11 +52,11 @@ public class SequenceCompose {
    */
   private void initialize() {
     frmSequenceMap = new JFrame();
-    frmSequenceMap.setTitle("Sequence Composition");
+    frmSequenceMap.setTitle("Sequence Permutation");
     frmSequenceMap.setBounds(100, 100, 450, 219);
     frmSequenceMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblNewLabel = new JLabel("Sequence A :");
+    JLabel lblNewLabel = new JLabel("Sequence :");
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     
@@ -64,7 +64,7 @@ public class SequenceCompose {
     textA.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
     textA.setColumns(10);
     
-    JLabel lblNewLabel_1 = new JLabel("Sequence B :");
+    JLabel lblNewLabel_1 = new JLabel("Permutation :");
     lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel_1.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     
@@ -72,13 +72,13 @@ public class SequenceCompose {
     textB.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
     textB.setColumns(10);
     
-    JButton btnCompose = new JButton("Compose");
+    JButton btnCompose = new JButton("Permutate");
     btnCompose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
           Sequence a = Sequence.parse(textA.getText());
           Sequence b = Sequence.parse(textB.getText());       
-          Sequence result = a.composeWith(b);
+          Sequence result = a.permutate(b);
           textResult.setText(result.toString().replaceAll("[()]", ""));
         } catch(Exception ex) {
           textResult.setText(ex.getMessage());

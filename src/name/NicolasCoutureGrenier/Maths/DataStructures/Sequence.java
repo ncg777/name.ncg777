@@ -852,9 +852,9 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   }
 
   public Sequence permutate(Sequence s) {
-    if(s.distinct().size() != this.size() || s.getMin() != 0 || s.getMax() != this.size()-1) {
-      throw new RuntimeException("Invalid permutation");
-    }
+    //if(s.distinct().size() != this.size() || s.getMin() != 0 || s.getMax() != this.size()-1) {
+    //  throw new RuntimeException("Invalid permutation");
+    //}
     Sequence o = new Sequence();
     for(int i=0;i<s.size();i++) {
       o.add(this.get(s.get(i)));
