@@ -236,10 +236,10 @@ public class Rhythm extends Combination implements Serializable {
       }
 
       specMemo.put(r, q);
-      return q;
+      return q.copy();
     } else {
       specMemo.put(r, s.get(1));
-      return s.get(1);
+      return s.get(1).copy();
     }
 
   }
