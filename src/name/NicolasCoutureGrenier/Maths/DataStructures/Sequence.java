@@ -41,6 +41,35 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
   };
   
+  public ArrayList<Double> getSymmetries() {
+    ArrayList<Double> o = new ArrayList<Double>();
+    int n = this.size();
+    for(int i=0;i<n*2;i++) {
+      int axis = i/2;
+      boolean found = true;
+      if(i%2 == 0) {
+        for(int j=0;j<(1+(n/2));j++) {
+          if(this.get((axis + j)%n) != this.get((n + axis - j)%n)) {
+            found = false;
+            break;
+          }
+        }
+      } else {
+        for(int j=0;j<(n/2);j++) {
+          if(this.get((axis + j+1)%n) != this.get((n + axis - j)%n)) {
+            found = false;
+            break;
+          }
+        }
+      }
+      if(found) {
+        o.add(Integer.valueOf(i).doubleValue()/2.0);
+      }
+    }
+    
+    return o;
+  }
+  
   public static enum ArpType
   {
     UP,
