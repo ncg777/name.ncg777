@@ -55,7 +55,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
           }
         }
       } else {
-        for(int j=0;j<(n/2);j++) {
+        for(int j=0;j<(1+(n/2));j++) {
           if(this.get((axis + j+1)%n) != this.get((n + axis - j)%n)) {
             found = false;
             break;
