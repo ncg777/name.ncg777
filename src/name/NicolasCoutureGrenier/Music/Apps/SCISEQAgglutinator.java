@@ -74,11 +74,17 @@ public class SCISEQAgglutinator {
         e.printStackTrace();
       }
       if(r==null || r.isEmpty()) break;
-      if(n==8) s8.add(Sequence.parse(r));
-      if(n==12) s12.add(Sequence.parse(r));
-      if(n==16) s16.add(Sequence.parse(r));
+      var theset = n==8?s8:n==12?s12:s16;
+      
+      var s0 = Sequence.parse(r);
+      for(int i=0;i<s0.size();i++) {
+        var sr = s0.rotate(i);
+        var pe = new PermutationEnumeration(5);
+        while(pe.hasMoreElements()) {
+          theset.add(sr.map(new Sequence(pe.nextElement())));
+        }  
+      }
     }
-    
   }
   /**
    * Create the application.
@@ -145,7 +151,7 @@ public class SCISEQAgglutinator {
                 @Override
                 public boolean test(Sequence t) {
                   int u = (t.size()/n);
-                  for(int i=0;i<u;i++) {
+                  for(int i=0;i<u-1;i++) {
                     var a = t.permutate(Sequence.stair(i*n, n, 1));
                     var b = t.permutate(Sequence.stair(((i+1)%u)*n, n, 1));
                   
@@ -162,42 +168,32 @@ public class SCISEQAgglutinator {
               Sequence o = new Sequence();
               int i=0;
               do {
-                
+                var theset = new TreeSet<Sequence>();
+                theset.addAll(n==8 ? s8 : n==12 ? s12 : s16);
                 
                 if(i==0) {
-                  o = CollectionUtils.chooseAtRandom(n==8 ? s8 : n==12 ? s12 : s16);
+                  o = CollectionUtils.chooseAtRandom(theset);
                   i++;
                 } else {
                   boolean found = false;
                   while(!found) {
-                    var candidate = CollectionUtils.chooseAtRandom(n==8 ? s8 : n==12 ? s12 : s16);
+                    var candidate = CollectionUtils.chooseAtRandom(theset);
                     
-                    TreeSet<Sequence> candidates = new TreeSet<Sequence>();
-                    for(int j=0;j<n;j++) {
-                      var r = candidate.rotate(j);
-                      candidates.add(r);
-
-                      var pe = new PermutationEnumeration(5);
-                      while(pe.hasMoreElements()) {
-                        candidates.add(r.map(new Sequence(pe.nextElement())));
-                      }
-                    }
-                    
-                    while(true) {
-                      var potential_candidate = CollectionUtils.chooseAtRandom(candidates);
-                      var j = o.juxtapose(potential_candidate);
-                      if(pred.test(j)) {
-                        found = true;
-                        o = j;
+                    var j = o.juxtapose(candidate);
+                    if(pred.test(j)) {
+                      found = true;
+                      o = j;
+                      i++;
+                      break;
+                    } else { 
+                      theset.remove(candidate); 
+                      if(theset.isEmpty()) {
+                        i=0;
                         break;
-                      } else {
-                        if(!isComputing) return;
-                        candidates.remove(potential_candidate);
-                        if(candidates.isEmpty()) break;
                       }
                     }
+                    if(!isComputing) return;
                   }
-                  i++;
                 }
               } while(i<k);
                 
