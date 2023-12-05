@@ -27,6 +27,7 @@ import name.NicolasCoutureGrenier.Music.RhythmPredicates.EntropicDispersion;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.Even;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.LowEntropy;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.MaximumGap;
+import name.NicolasCoutureGrenier.Music.RhythmPredicates.MinimumGap;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.Oddity;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.Ordinal;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.RelativelyFlat;
@@ -208,12 +209,27 @@ public class RhythmMatrix {
                     if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new MaximumGap(12);
                     break;
                   case 14:
-                    pred0 = new SecondOrderDifferenceSum(Keep.Zero);
+                    if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new MinimumGap(16);
+                    if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new MinimumGap(12);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new MinimumGap(48);
                     break;
                   case 15:
-                    pred0 = new RelativelyFlat(80);
+                    if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new MinimumGap(8);
+                    if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new MinimumGap(6);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new MinimumGap(24);
                     break;
                   case 16:
+                    if(comboBox.getSelectedItem() == Rn.Hex) pred0 = new MinimumGap(4);
+                    if(comboBox.getSelectedItem() == Rn.Octal) pred0 = new MinimumGap(3);
+                    if(comboBox.getSelectedItem() == Rn.Tribble) pred0 = new MinimumGap(12);
+                    break;
+                  case 17:
+                    pred0 = new SecondOrderDifferenceSum(Keep.Zero);
+                    break;
+                  case 18:
+                    pred0 = new RelativelyFlat(80);
+                    break;
+                  case 19:
                     pred0 = new SpectrumRising();
                     break;
                 }
@@ -304,12 +320,27 @@ public class RhythmMatrix {
                     if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new MaximumGap(12));
                     break;
                   case 14:
-                    relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
+                    if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new MinimumGap(16));
+                    if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MinimumGap(12));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new MinimumGap(48));
                     break;
                   case 15:
-                    relSimul0 = new PredicatedDifferences(new RelativelyFlat(80));
+                    if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new MinimumGap(8));
+                    if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MinimumGap(6));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new MinimumGap(24));
                     break;
                   case 16:
+                    if(comboBox.getSelectedItem() == Rn.Hex) relSimul0 = new PredicatedDifferences(new MinimumGap(4));
+                    if(comboBox.getSelectedItem() == Rn.Octal) relSimul0 = new PredicatedDifferences(new MinimumGap(3));
+                    if(comboBox.getSelectedItem() == Rn.Tribble) relSimul0 = new PredicatedDifferences(new MinimumGap(12));
+                    break;
+                  case 17:
+                    relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
+                    break;
+                  case 18:
+                    relSimul0 = new PredicatedDifferences(new RelativelyFlat(80));
+                    break;
+                  case 19:
                     relSimul0 = new PredicatedDifferences(new SpectrumRising());
                     break;
                 }
@@ -515,11 +546,11 @@ public class RhythmMatrix {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li><li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li>\r\n<li>SecondOrderDifferenceSumZero</li>\r\n<li>RelativelyFlat</li><li>Spectrum rising</li></ol></html>");
+    lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li><li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li><li>MinimumGap(1/1)</li><li>MinimumGap(1/2)</li><li>MinimumGap(1/4)</li><li>SecondOrderDifferenceSumZero</li>\r\n<li>RelativelyFlat</li><li>Spectrum rising</li></ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li>\r\n<li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li><li>SecondOrderDifferenceSumZero</li><li>RelativelyFlat</li><li>Spectrum rising</li></ol></html>");
+    lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>Ordinal(1/1)</li>\r\n<li>Ordinal(1/2)</li>\r\n<li>Ordinal(1/4)</li><li>Ordinal(4:4=1/8, 4:3=1/6)</li>\r\n<li>MaximumGap(1/1)</li><li>MaximumGap(1/2)</li><li>MaximumGap(1/4)</li><li>MinimumGap(1/1)</li><li>MinimumGap(1/2)</li><li>MinimumGap(1/4)</li><li>SecondOrderDifferenceSumZero</li><li>RelativelyFlat</li><li>Spectrum rising</li></ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {
