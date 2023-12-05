@@ -80,7 +80,7 @@ public class MeasureGateSequence {
         Sequence s = Sequence.parse(textSeq.getText().trim());
         if(s.getMin() < 0) {textResult.setText("invalid input");}
         
-        int nRhythms = Double.valueOf(Math.ceil(Math.log10(s.getMax())/Math.log10(2.0))).intValue();
+        int nRhythms = Double.valueOf(Math.ceil(Math.log10(s.getMax()+1)/Math.log10(2.0))).intValue();
         
         int n = s.size();
         
