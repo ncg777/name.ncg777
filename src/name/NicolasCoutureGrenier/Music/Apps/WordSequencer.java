@@ -50,7 +50,7 @@ public class WordSequencer {
    */
   private void initialize() {
     frmWordSequencer = new JFrame();
-    frmWordSequencer.setTitle("Words Sequencer");
+    frmWordSequencer.setTitle("Word Sequencer");
     frmWordSequencer.setBounds(100, 100, 450, 170);
     frmWordSequencer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     SpringLayout springLayout = new SpringLayout();
