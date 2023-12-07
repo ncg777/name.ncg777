@@ -592,21 +592,15 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return Sequence.from(CollectionUtils.difference(this.toArray(new Integer[0])));
   }
 
-  public Sequence cyclicalForwardDifference() {
-    return Sequence.from(CollectionUtils.cyclicalForwardDifference(this.toArray(new Integer[0])));
-  }
-  public Sequence cyclicalBackwardDifference() {
-    return Sequence.from(CollectionUtils.cyclicalBackwardDifference(this.toArray(new Integer[0])));
+  public Sequence cyclicalDifference() {
+    return Sequence.from(CollectionUtils.cyclicalDifference(this.toArray(new Integer[0])));
   }
   
   public Sequence antidifference(int k) {
     return Sequence.from(CollectionUtils.antidifference(this.toArray(new Integer[0]), k));
   }
-  public Sequence cyclicalForwardAntidifference(int k) {
-    return Sequence.from(CollectionUtils.cyclicalForwardAntidifference(this.toArray(new Integer[0]), k));
-  }
-  public Sequence cyclicalBackwardAntidifference(int k) {
-    return Sequence.from(CollectionUtils.cyclicalBackwardAntidifference(this.toArray(new Integer[0]), k));
+  public Sequence cyclicalAntidifference(int k) {
+    return Sequence.from(CollectionUtils.cyclicalAntidifference(this.toArray(new Integer[0]), k));
   }
   /**
    * Construct a sequence from a list

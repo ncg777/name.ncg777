@@ -492,7 +492,7 @@ public class CollectionUtils {
     return output;
   }
 
-  public static Integer[] cyclicalForwardDifference(Integer[] p_arr) {
+  public static Integer[] cyclicalDifference(Integer[] p_arr) {
     Integer[] output = new Integer[p_arr.length];
 
     for (int i = 0; i < p_arr.length; i++) {
@@ -501,17 +501,7 @@ public class CollectionUtils {
     return output;
   }
   
-  public static Integer[] cyclicalBackwardDifference(Integer[] p_arr) {
-    Integer[] output = new Integer[p_arr.length];
-
-    for (int i = 0; i < p_arr.length; i++) {
-      output[(p_arr.length - i - 1) % p_arr.length] = p_arr[(p_arr.length - i - 1) % p_arr.length] - p_arr[(p_arr.length-i) % p_arr.length];
-    }
-    
-    return reverse(output);
-  }
-  
-  public static Integer[] cyclicalForwardAntidifference(Integer[] p_arr, int k) {
+  public static Integer[] cyclicalAntidifference(Integer[] p_arr, int k) {
     Integer[] output = new Integer[p_arr.length];
     
     output[p_arr.length-1] = k;
@@ -523,17 +513,6 @@ public class CollectionUtils {
     return output;
   }
   
-  public static Integer[] cyclicalBackwardAntidifference(Integer[] p_arr, int k) {
-    Integer[] output = new Integer[p_arr.length];
-    
-    output[0] = k;
-    
-    for (int i = 0; i < p_arr.length; i++) {
-      output[(p_arr.length - i - 1) % p_arr.length] = output[(p_arr.length-i) % p_arr.length] + p_arr[(p_arr.length-i) % p_arr.length];
-    }
-    
-    return reverse(output);
-  }
   public static Integer[] reverse(Integer[] p_arr) {
     Integer[] output = new Integer[p_arr.length];
    

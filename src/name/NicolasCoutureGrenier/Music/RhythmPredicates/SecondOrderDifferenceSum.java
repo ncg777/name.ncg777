@@ -17,7 +17,7 @@ public class SecondOrderDifferenceSum implements StandardAndGuavaPredicate<Rhyth
 
   @Override
   public boolean apply(Rhythm input) {
-    int sum = input.getComposition().asSequence().cyclicalForwardDifference().cyclicalForwardDifference().sum();    
+    int sum = input.getComposition().asSequence().cyclicalDifference().cyclicalDifference().sum();    
     
     switch(keep) {
       case Zero: return sum == 0;

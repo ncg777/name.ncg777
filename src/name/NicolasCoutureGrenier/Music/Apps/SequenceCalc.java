@@ -22,11 +22,9 @@ import java.awt.event.ActionEvent;
 public class SequenceCalc {
   private enum Calctype {
     Difference, 
-    CyclicalForwardDifference, 
-    CyclicalBackwardDifference, 
+    CyclicalDifference, 
     Antidifference, 
-    CyclicalForwardAntidifference, 
-    CyclicalBackwardAntidifference,
+    CyclicalAntidifference, 
     AsOrdinalsBipolar,
     AsOrdinalsUnipolar,
     MapWithNextPermutation,
@@ -106,23 +104,16 @@ public class SequenceCalc {
           case Difference:
             output = input.difference().toString();
             break;
-          case CyclicalForwardDifference:
-            output = input.cyclicalForwardDifference().toString();
-            break;
-          case CyclicalBackwardDifference:
-            output = input.cyclicalBackwardDifference().toString();
+          case CyclicalDifference:
+            output = input.cyclicalDifference().toString();
             break;
           case Antidifference:
             k = (Integer)spinner.getValue();
             output = input.antidifference(k).toString();
             break;
-          case CyclicalForwardAntidifference:
+          case CyclicalAntidifference:
             k = (Integer)spinner.getValue();
-            output = input.cyclicalForwardAntidifference(k).toString();
-            break;
-          case CyclicalBackwardAntidifference:
-            k = (Integer)spinner.getValue();
-            output = input.cyclicalBackwardAntidifference(k).toString();
+            output = input.cyclicalAntidifference(k).toString();
             break;
           case AsOrdinalsBipolar:
             output = input.asOrdinalsBipolar().toString();

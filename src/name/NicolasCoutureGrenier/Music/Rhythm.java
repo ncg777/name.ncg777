@@ -128,7 +128,7 @@ public class Rhythm extends Combination implements Serializable {
   public Sequence getContour() {
     if(getK() == 0) return new Sequence();
 
-    return getComposition().asSequence().cyclicalForwardDifference().signs();
+    return getComposition().asSequence().cyclicalDifference().signs();
   }
   
   public Sequence getShadowContour() {
@@ -140,7 +140,7 @@ public class Rhythm extends Combination implements Serializable {
       mid.add(a.get(i-1) + a.get(i%a.size()));
     }
     
-    return mid.cyclicalForwardDifference().signs();
+    return mid.cyclicalDifference().signs();
   }
   @Override
   public boolean equals(Object obj) {

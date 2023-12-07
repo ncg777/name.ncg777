@@ -115,7 +115,7 @@ public class RandomWalker1 {
                    if(pred.apply(rnd) || n < 3) break;
                 }
                 txtSeq.setText(rnd.toString());
-                txtDelta.setText(rnd.cyclicalForwardDifference().toString());
+                txtDelta.setText(rnd.cyclicalDifference().toString());
                 int xs = (int)spinner.getValue();
                             
                 txtXsmod.setText(rnd.bounceseq(0, xs).toString());

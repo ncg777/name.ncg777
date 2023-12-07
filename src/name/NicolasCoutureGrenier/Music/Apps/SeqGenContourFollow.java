@@ -117,7 +117,7 @@ public class SeqGenContourFollow {
                 R48List r = R48List.parseR48Seq(str_R);
                 C = r.asRhythm().getComposition().asSequence();
               }
-              Sequence s = C.cyclicalForwardDifference().signs().circularHoldNonZero();
+              Sequence s = C.cyclicalDifference().signs().circularHoldNonZero();
               
               int k=0;
               for(int i=0;i<s.size();i++) {
@@ -136,7 +136,7 @@ public class SeqGenContourFollow {
                 (int)spinner_amp.getValue(), 
                 sum, 
                 maxamp, 
-                chckbxExclude.isSelected()).cyclicalForwardDifference();
+                chckbxExclude.isSelected()).cyclicalDifference();
 
               for(int i=0;i<s.size();i++) {
                 int index = s.get(i);
@@ -148,8 +148,8 @@ public class SeqGenContourFollow {
               int _min = (Integer)spinner_bounce_min.getValue();
               int _amp = (Integer)spinner_bounce_amp.getValue();
               
-              Sequence o = s.cyclicalForwardAntidifference(0);
-              txtDelta.setText(o.bounceseq(_min, _amp).cyclicalForwardDifference().toString());
+              Sequence o = s.cyclicalAntidifference(0);
+              txtDelta.setText(o.bounceseq(_min, _amp).cyclicalDifference().toString());
               txtSequence.setText(o.bounceseq(_min, _amp).toString());
               
               break;
