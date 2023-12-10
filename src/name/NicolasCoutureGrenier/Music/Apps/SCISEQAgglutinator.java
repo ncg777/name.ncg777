@@ -14,10 +14,12 @@ import javax.swing.JFrame;
 import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Enumerations.PermutationEnumeration;
+import name.NicolasCoutureGrenier.Maths.Graphs.DiGraph;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.ShadowContourIsomorphic;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.SpectrumRising;
 import name.NicolasCoutureGrenier.Music.SequencePredicates.PredicatedSeqRhythms;
 import name.NicolasCoutureGrenier.Music.SequencePredicates.SeqAllRhythmsSCI;
+import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 import javax.swing.JSpinner;
 import javax.swing.SpinnerListModel;
@@ -48,22 +50,27 @@ public class SCISEQAgglutinator {
       }
     });
   }
+  private TreeSet<Sequence> s4 = new TreeSet<Sequence>();
   private TreeSet<Sequence> s8 = new TreeSet<Sequence>();
-  private TreeSet<Sequence> s12 = new TreeSet<Sequence>();
-  private TreeSet<Sequence> s16 = new TreeSet<Sequence>();
+  
+  private DiGraph<Sequence> d4 = null;
+  private DiGraph<Sequence> d8 = null;
+  
   private JSpinner spinnerN;
   private JSpinner spinnerK;
   private JTextField result;
   private boolean isComputing = false;
   
   private void readSequences(int n) {
-    if(!(n==8 || n==12 || n == 16)) throw new RuntimeException("invalid param");
+    
+    if(!(n==4 || n==8)) throw new RuntimeException("invalid param");
+    if(n==4) s4 = new TreeSet<Sequence>();
     if(n==8) s8 = new TreeSet<Sequence>();
-    if(n==12) s12 = new TreeSet<Sequence>();
-    if(n==16) s16 = new TreeSet<Sequence>();
-    InputStream ist = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/necklaces-" + Integer.toString(n)+ "-5-SCI-norep.csv");
+    
+    InputStream ist = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/necklaces-N" + Integer.toString(n)+ "-K8-SCI-norep.csv");
     var isr = new InputStreamReader(ist);
     BufferedReader br = new BufferedReader(isr);
+    var theset = n==4?s4:s8;
     
     while(true) {
       String r = null;
@@ -74,16 +81,24 @@ public class SCISEQAgglutinator {
         e.printStackTrace();
       }
       if(r==null || r.isEmpty()) break;
-      var theset = n==8?s8:n==12?s12:s16;
       
       var s0 = Sequence.parse(r);
       for(int i=0;i<s0.size();i++) {
         var sr = s0.rotate(i);
-        var pe = new PermutationEnumeration(5);
-        while(pe.hasMoreElements()) {
-          theset.add(sr.map(new Sequence(pe.nextElement())));
-        }  
+        theset.add(sr);
       }
+    }
+    
+    var pred = new PredicatedSeqRhythms(new ShadowContourIsomorphic());
+    
+    if(n == 4) {
+      d4 = new DiGraph<Sequence>(theset, (Sequence a,Sequence b) -> pred.test(a.juxtapose(b)));
+    }
+    if(n == 8) {
+      TreeSet<Sequence> theset2 = new TreeSet<Sequence>();
+      for(var s : theset) if(RandomNumberGenerator.nextDouble() < 0.005) theset2.add(s);
+      s8 = theset2;
+      d8 = new DiGraph<Sequence>(theset2, (Sequence a,Sequence b) -> pred.test(a.juxtapose(b)));
     }
   }
   /**
@@ -91,10 +106,8 @@ public class SCISEQAgglutinator {
    */
   public SCISEQAgglutinator() {
     initialize();
-    
+    readSequences(4);
     readSequences(8);
-    readSequences(12);
-    readSequences(16);
   }
 
   /**
@@ -108,7 +121,7 @@ public class SCISEQAgglutinator {
     frmSciSeqAgglutinator.getContentPane().setLayout(null);
     
     spinnerN = new JSpinner();
-    spinnerN.setModel(new SpinnerListModel(new String[] {"8", "12", "16"}));
+    spinnerN.setModel(new SpinnerListModel(new String[] {"4","8"}));
     spinnerN.setBounds(67, 9, 46, 20);
     frmSciSeqAgglutinator.getContentPane().add(spinnerN);
     
@@ -146,60 +159,37 @@ public class SCISEQAgglutinator {
             
             @Override
             public void run() {
-              var pred = new Predicate<Sequence>() {
-                private Predicate<Sequence> innerPr = new PredicatedSeqRhythms(new ShadowContourIsomorphic());
-                @Override
-                public boolean test(Sequence t) {
-                  int u = (t.size()/n);
-                  for(int i=0;i<u-1;i++) {
-                    var a = t.permutate(Sequence.stair(i*n, n, 1));
-                    var b = t.permutate(Sequence.stair(((i+1)%u)*n, n, 1));
-                  
-                    if(!innerPr.test(a.juxtapose(b)) || a.equals(b)) {
-                      return false;
-                    }
-                  }
-                  return true;
-                }
-                
-              };
+              var thegraph = n==4 ? d4:d8;
               
-              
-              Sequence o = new Sequence();
+              ArrayList<Sequence> a = new ArrayList<Sequence>();
               int i=0;
               do {
+                
+                
                 var theset = new TreeSet<Sequence>();
-                theset.addAll(n==8 ? s8 : n==12 ? s12 : s16);
+                theset.addAll(n==4 ? s4 : s8);
+                
                 
                 if(i==0) {
-                  o = CollectionUtils.chooseAtRandom(theset);
+                  a.clear();
+                  a.add(CollectionUtils.chooseAtRandom(theset));
                   i++;
                 } else {
-                  boolean found = false;
-                  while(!found) {
-                    var candidate = CollectionUtils.chooseAtRandom(theset);
-                    
-                    var j = o.juxtapose(candidate);
-                    if(pred.test(j)) {
-                      found = true;
-                      o = j;
-                      i++;
-                      break;
-                    } else { 
-                      theset.remove(candidate); 
-                      if(theset.isEmpty()) {
-                        i=0;
-                        break;
-                      }
-                    }
-                    if(!isComputing) return;
+                  if(thegraph.getNeighborCount(a.get(i-1)) == 0) {
+                    i=0;
+                    break;
                   }
+                  
+                  a.add(CollectionUtils.chooseAtRandom(thegraph.getNeighbors(a.get(i-1))));
+                  i++;
+                  if(!isComputing) return;
                 }
               } while(i<k);
                 
               isComputing = false;
               btnNewButton.setText("Agglutinate");
-              
+              Sequence o = new Sequence();
+              for(var s : a) o.addAll(s);
               result.setText(o.toString());
             }
           });
