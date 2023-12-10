@@ -197,11 +197,11 @@ public class RexRandomizer {
     lblEqClases.setFont(new Font("Dialog", Font.PLAIN, 11));
     
     textEQClasses = new JTextField();
-    textEQClasses.setText("0 1 2 3 4 3 2 1");
+    textEQClasses.setText("0 1 2 3 4 5 6 7");
     textEQClasses.setColumns(10);
     
     textResynth = new JTextField();
-    textResynth.setText("0 1 2 3 4 3 2 1");
+    textResynth.setText("0 1 2 3 4 5 6 7");
     textResynth.setColumns(10);
     
     JLabel lblResynth = new JLabel("Reseq :");

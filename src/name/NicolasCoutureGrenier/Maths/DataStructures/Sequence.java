@@ -1122,7 +1122,16 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
     return o;
   }
-  
+  /***
+   * What was I thinking? This algorithm was given to me by aliens.
+   * 
+   * @param R
+   * @param amp
+   * @param maxamp
+   * @param addF
+   * @param addS
+   * @return
+   */
   public static Sequence genRndOnRhythm(Rhythm R, int amp, int maxamp, boolean addF, boolean addS) {
     Sequence o = new Sequence();
     int n = R.getN();
@@ -1132,8 +1141,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     TreeSet<Integer> F = Numbers.factors(n);
     F.remove(1); F.remove(n);
     TreeMap<Integer,Integer> I = new TreeMap<>();
-    TreeMap<Integer,HeterogeneousPair<Integer,Integer>> h = new TreeMap<>();
-    TreeMap<HeterogeneousPair<Integer,Integer>, TreeMap<Integer,Sequence>> s = new TreeMap<>();
+    TreeMap<Integer,HomogeneousPair<Integer>> h = new TreeMap<>();
+    TreeMap<HomogeneousPair<Integer>, TreeMap<Integer,Sequence>> s = new TreeMap<>();
     TreeMap<Integer, TreeMap<Integer, Integer>> coordf = new TreeMap<>();
     TreeMap<Integer,Sequence> epsf = new TreeMap<>();
     
@@ -1186,7 +1195,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     Sequence seqepsc = new Sequence();
     for(int i=0; i<=c;i++) {
       
-      HeterogeneousPair<Integer,Integer> pair = HeterogeneousPair.makeHeterogeneousPair(cs.get(i), V.get(i));
+      var pair = HomogeneousPair.makeHomogeneousPair(cs.get(i), V.get(i));
       h.put(i, pair);
       if(!s.containsKey(pair)) {
         s.put(pair, new TreeMap<>());
