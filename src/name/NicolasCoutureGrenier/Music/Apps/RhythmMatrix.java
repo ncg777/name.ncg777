@@ -57,6 +57,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.NicolasCoutureGrenier.Music.Rn;
 import javax.swing.JTextField;
+import java.awt.TextArea;
 
 public class RhythmMatrix {
 
@@ -116,7 +117,7 @@ public class RhythmMatrix {
     frmRhythmMatrix = new JFrame();
     frmRhythmMatrix.setResizable(false);
     frmRhythmMatrix.setTitle("Rhythm Matrix");
-    frmRhythmMatrix.setBounds(100, 100, 670, 541);
+    frmRhythmMatrix.setBounds(100, 100, 711, 541);
     frmRhythmMatrix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JSpinner spinner = new JSpinner();
@@ -569,51 +570,47 @@ public class RhythmMatrix {
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
         .addGroup(groupLayout.createSequentialGroup()
-          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(groupLayout.createSequentialGroup()
+          .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
               .addContainerGap()
-              .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 644, Short.MAX_VALUE))
-            .addGroup(groupLayout.createSequentialGroup()
-              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                .addGroup(groupLayout.createSequentialGroup()
-                  .addContainerGap()
-                  .addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGroup(groupLayout.createSequentialGroup()
-                  .addContainerGap()
-                  .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE))
-                .addGroup(groupLayout.createSequentialGroup()
-                  .addContainerGap()
-                  .addComponent(btnGenerate, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE))
-                .addGroup(groupLayout.createSequentialGroup()
-                  .addGap(13)
-                  .addComponent(lblRows)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(spinner, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(lblColumns)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(lblMode, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(textFilterModes, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(lblDiffs, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(textDiffFilterModes, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-                  .addPreferredGap(ComponentPlacement.UNRELATED)
-                  .addComponent(comboBox, 0, 129, Short.MAX_VALUE)))
-              .addGap(4))
-            .addGroup(groupLayout.createSequentialGroup()
+              .addComponent(scrollPane))
+            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
               .addContainerGap()
-              .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
-              .addGap(4)))
-          .addContainerGap())
+              .addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+              .addContainerGap()
+              .addComponent(scrollPane_1))
+            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+              .addContainerGap()
+              .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+              .addContainerGap()
+              .addComponent(btnGenerate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+              .addGap(13)
+              .addComponent(lblRows)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(spinner, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(lblColumns)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, 51, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(lblMode, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(textFilterModes, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(lblDiffs, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(textDiffFilterModes, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.UNRELATED)
+              .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)))
+          .addGap(149))
     );
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
-          .addContainerGap(13, Short.MAX_VALUE)
+          .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
             .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
               .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -635,7 +632,7 @@ public class RhythmMatrix {
           .addPreferredGap(ComponentPlacement.UNRELATED)
           .addComponent(lblNewLabel_1)
           .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+          .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
           .addGap(9))
     );
     
