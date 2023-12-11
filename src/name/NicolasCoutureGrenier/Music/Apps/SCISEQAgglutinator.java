@@ -11,6 +11,7 @@ import java.util.function.Predicate;
 
 import javax.swing.JFrame;
 
+import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Enumerations.PermutationEnumeration;
@@ -72,6 +73,7 @@ public class SCISEQAgglutinator {
     BufferedReader br = new BufferedReader(isr);
     var theset = n==4?s4:s8;
     
+    double prob = (1024.0/Numbers.factorial(8));
     while(true) {
       String r = null;
       try {
@@ -83,22 +85,27 @@ public class SCISEQAgglutinator {
       if(r==null || r.isEmpty()) break;
       
       var s0 = Sequence.parse(r);
+      if(n == 8 && RandomNumberGenerator.nextDouble() > 0.00005) continue;
       for(int i=0;i<s0.size();i++) {
         var sr = s0.rotate(i);
-        theset.add(sr);
+        
+        var pe = new PermutationEnumeration(8);
+        
+        while(pe.hasMore()) {
+          var p = new Sequence(pe.nextElement());
+          if(RandomNumberGenerator.nextDouble() < prob) theset.add(sr.map(p));
+        }
+        
       }
     }
-    
     var pred = new PredicatedSeqRhythms(new ShadowContourIsomorphic());
     
+    while(theset.size() > 3000) {theset.remove(CollectionUtils.chooseAtRandom(theset));}
     if(n == 4) {
       d4 = new DiGraph<Sequence>(theset, (Sequence a,Sequence b) -> pred.test(a.juxtapose(b)));
     }
     if(n == 8) {
-      TreeSet<Sequence> theset2 = new TreeSet<Sequence>();
-      for(var s : theset) if(RandomNumberGenerator.nextDouble() < 0.005) theset2.add(s);
-      s8 = theset2;
-      d8 = new DiGraph<Sequence>(theset2, (Sequence a,Sequence b) -> pred.test(a.juxtapose(b)));
+      d8 = new DiGraph<Sequence>(theset, (Sequence a,Sequence b) -> pred.test(a.juxtapose(b)));
     }
   }
   /**
@@ -106,10 +113,20 @@ public class SCISEQAgglutinator {
    */
   public SCISEQAgglutinator() {
     initialize();
-    readSequences(4);
-    readSequences(8);
-  }
+    new Thread(new Runnable() {
+      
+      @Override
+      public void run() {
 
+      readSequences(4);
+      readSequences(8); 
+      btnNewButton.setText("Agglutinate");
+      btnNewButton.setEnabled(true);
+    }
+    }).start();
+  }
+  
+  private JButton btnNewButton = new JButton("Loading");
   /**
    * Initialize the contents of the frame.
    */
@@ -119,7 +136,7 @@ public class SCISEQAgglutinator {
     frmSciSeqAgglutinator.setBounds(100, 100, 271, 150);
     frmSciSeqAgglutinator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmSciSeqAgglutinator.getContentPane().setLayout(null);
-    
+    btnNewButton.setEnabled(false);
     spinnerN = new JSpinner();
     spinnerN.setModel(new SpinnerListModel(new String[] {"4","8"}));
     spinnerN.setBounds(67, 9, 46, 20);
@@ -140,7 +157,7 @@ public class SCISEQAgglutinator {
     spinnerK.setBounds(179, 11, 46, 17);
     frmSciSeqAgglutinator.getContentPane().add(spinnerK);
     
-    JButton btnNewButton = new JButton("Agglutinate");
+    
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         if(isComputing) {
