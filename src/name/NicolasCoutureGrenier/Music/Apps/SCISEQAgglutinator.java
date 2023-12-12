@@ -102,10 +102,10 @@ public class SCISEQAgglutinator {
     
     while(theset.size() > 3000) {theset.remove(CollectionUtils.chooseAtRandom(theset));}
     if(n == 4) {
-      d4 = new DiGraph<Sequence>(theset, (Sequence a,Sequence b) -> pred.test(a.juxtapose(b)));
+      d4 = new DiGraph<Sequence>(theset, (Sequence a,Sequence b) -> !a.equals(b) && pred.test(a.juxtapose(b)));
     }
     if(n == 8) {
-      d8 = new DiGraph<Sequence>(theset, (Sequence a,Sequence b) -> pred.test(a.juxtapose(b)));
+      d8 = new DiGraph<Sequence>(theset, (Sequence a,Sequence b) -> !a.equals(b) && pred.test(a.juxtapose(b)));
     }
   }
   /**
@@ -194,7 +194,7 @@ public class SCISEQAgglutinator {
                 } else {
                   if(thegraph.getNeighborCount(a.get(i-1)) == 0) {
                     i=0;
-                    break;
+                    continue;
                   }
                   
                   a.add(CollectionUtils.chooseAtRandom(thegraph.getNeighbors(a.get(i-1))));
