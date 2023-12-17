@@ -1135,27 +1135,28 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   public static Sequence genRndOnRhythm(Rhythm R, int amp, int maxamp, boolean addF, boolean addS) {
     Sequence o = new Sequence();
     int n = R.getN();
-    Sequence CR = R.getComposition().asSequence();
+    Sequence rhythmCompositionSequence = R.getComposition().asSequence();
     TreeMap<Integer, Integer> seg = new TreeMap<>();
-    //TreeSet<HeterogeneousPair<Integer,Integer>> P = new TreeSet<>();
     TreeSet<Integer> F = Numbers.factors(n);
     F.remove(1); F.remove(n);
+    
     TreeMap<Integer,Integer> I = new TreeMap<>();
     TreeMap<Integer,HomogeneousPair<Integer>> h = new TreeMap<>();
     TreeMap<HomogeneousPair<Integer>, TreeMap<Integer,Sequence>> s = new TreeMap<>();
     TreeMap<Integer, TreeMap<Integer, Integer>> coordf = new TreeMap<>();
     TreeMap<Integer,Sequence> epsf = new TreeMap<>();
     
-    int k = CR.size();
-    int d=0;
-    int c=0;
-    int acc=0;
+    int rhythmCompositionSequenceSize = rhythmCompositionSequence.size();
+    
     TreeMap<Integer, Integer> cs = new TreeMap<>();
     TreeMap<Integer, Integer> V = new TreeMap<>();
-    int nbf = RandomNumberGenerator.nextInt(F.size()%2 == 0 ? F.size()/2 : (F.size()+1)/2);
+    
+    
+    //Generating the factor sequence
+    int nbFactors = 1+RandomNumberGenerator.nextInt((F.size()%2 == 0 ? F.size()/2 : (F.size()+1)/2)-1);
     Sequence F2 = new Sequence();
     
-    for(int i=0; i<nbf;i++) {
+    for(int i=0; i<nbFactors;i++) {
       double[] weights = new double[F.size()];
       int j = 0;
       for(int _f : F) { weights[j++] = Math.exp(-Math.abs(Math.sqrt(n) - (double) _f)); }
@@ -1167,29 +1168,38 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       int _sum = RandomNumberGenerator.nextInt(maxamp);
       epsf.put(f, Sequence.genRnd(kp, amp, _sum, maxamp, true));
     }
-    cs.put(0,0);
-    V.put(0, CR.get(0));
-    for(int i=0; i<k; i++) {
-      if(i != 0 && CR.get(i) != CR.get(i-1)) {
-        c++; 
-        cs.put(c, 0);
-        V.put(c, CR.get(i));
-        d=0;
-      }
-      seg.put(i, c);
-      cs.put(c, cs.get(c)+1);
-      I.put(i, d++);
-      acc += CR.get(i);
-    }
+    
+    int d=0;
+    int c=0;
+    int acc=0;
     
     for(int i=0; i<F2.size();i++) {
       int f = F2.get(i);
       coordf.put(f, new TreeMap<>());
       acc = 0;
-      for(int j=0; j<k;j++) {
+      for(int j=0; j<rhythmCompositionSequenceSize;j++) {
         coordf.get(f).put(j, (int)Math.floor((double) acc / (double)f));
-        acc += CR.get(j);
+        acc += rhythmCompositionSequence.get(j);
       }
+    }
+    
+    
+    // Generating the sequences
+    acc = 0;
+    
+    cs.put(0,0);
+    V.put(0, rhythmCompositionSequence.get(0));
+    for(int i=0; i<rhythmCompositionSequenceSize; i++) {
+      if(i != 0 && rhythmCompositionSequence.get(i) != rhythmCompositionSequence.get(i-1)) {
+        c++; 
+        cs.put(c, 0);
+        V.put(c, rhythmCompositionSequence.get(i));
+        d=0;
+      }
+      seg.put(i, c);
+      cs.put(c, cs.get(c)+1);
+      I.put(i, d++);
+      acc += rhythmCompositionSequence.get(i);
     }
     
     Sequence seqepsc = new Sequence();
@@ -1208,7 +1218,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     int szs = s.size();
     int __i=0;
     Sequence seqs = szs <= 1 ? _s0 : Sequence.genRnd(szs, amp, 0, maxamp, true);
-    for(HeterogeneousPair<Integer,Integer> pair : s.keySet()) {
+    for(HomogeneousPair<Integer> pair : s.keySet()) {
       
       Sequence sequence0 = new Sequence();
       sequence0.add(seqs.get(__i));
@@ -1238,13 +1248,13 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       seqepsc.add(RandomNumberGenerator.nextInt(s.get(h.get(i)).size()));
     }
     
-    for(int i=0;i<k;i++) {
+    for(int i=0;i<rhythmCompositionSequenceSize;i++) {
       int v = 0;
       int _c = seg.get(i);
       if(addS) v += s.get(h.get(_c)).get(seqepsc.get(_c)).get(I.get(i));
       
       if(addF) {
-        for(int j=0; j<nbf;j++) {
+        for(int j=0; j<nbFactors;j++) {
           int _f = F2.get(j);
           v += epsf.get(_f).get(coordf.get(_f).get(i));
         }
