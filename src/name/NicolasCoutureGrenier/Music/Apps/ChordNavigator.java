@@ -170,7 +170,7 @@ public class ChordNavigator {
       if(commonName == null) commonName = "";
       textCommonName.setText(commonName);
       textIntervals.setText(ch.transpose(-ch.getTranspose()).getComposition().asSequence().toString());
-      textTonicDistance.setText(Double.toString(ch.deviationFromCenter((int)spinnerCenter.getValue())));
+      textTonicDistance.setText(Double.toString(ch.calcCenterTuning((int)spinnerCenter.getValue())));
       this.current = ch;
     }
     
@@ -643,7 +643,7 @@ public class ChordNavigator {
     textIntervals.setBounds(195, 249, 132, 23);
     frmChordNavigator.getContentPane().add(textIntervals);
     
-    JLabel lblNewLabel_6_4_1 = new JLabel("Center deviation");
+    JLabel lblNewLabel_6_4_1 = new JLabel("Center tuning");
     lblNewLabel_6_4_1.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_6_4_1.setFont(new Font("Dialog", Font.PLAIN, 11));
     lblNewLabel_6_4_1.setBounds(194, 546, 132, 23);

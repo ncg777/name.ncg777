@@ -228,12 +228,13 @@ public class PCS12 extends Combination implements Serializable {
     return o;
   }
   
-  public double deviationFromCenter(int center) {
+  
+  public double calcCenterTuning(int center) {
     double o = 0.0;
     var s = this.asSequence();
-    TreeMap<Integer,Integer> m = new TreeMap<Integer,Integer>();
-    for(int i=0;i<=6;i++) m.put((center+i+12)%12,i%12);
-    for(int i=-1;i>-6;i--) m.put((center+i+12)%12,i%12);
+    TreeMap<Integer,Double> m = new TreeMap<Integer,Double>();
+    for(int i=0;i<=6;i++) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/6.0));
+    for(int i=-1;i>-6;i--) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/6.0));
     for(var t : s) {
       o += (double)m.get(t);
     }
