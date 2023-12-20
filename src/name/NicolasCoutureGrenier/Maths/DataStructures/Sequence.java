@@ -1123,7 +1123,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return o;
   }
   /***
-   * What was I thinking? This algorithm was given to me by aliens.
+   * 
    * 
    * @param R
    * @param amp
@@ -1248,6 +1248,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       seqepsc.add(RandomNumberGenerator.nextInt(s.get(h.get(i)).size()));
     }
     
+    // Adding it up
     for(int i=0;i<rhythmCompositionSequenceSize;i++) {
       int v = 0;
       int _c = seg.get(i);

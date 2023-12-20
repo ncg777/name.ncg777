@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import com.opencsv.exceptions.CsvException;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
+import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.DataStructures.FiniteBinaryRelation;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
@@ -224,6 +226,18 @@ public class PCS12 extends Combination implements Serializable {
     
     this.symmetries = o;
     return o;
+  }
+  
+  public double deviationFromCenter(int center) {
+    double o = 0.0;
+    var s = this.asSequence();
+    TreeMap<Integer,Integer> m = new TreeMap<Integer,Integer>();
+    for(int i=0;i<=6;i++) m.put((center+i+12)%12,i%12);
+    for(int i=-1;i>-6;i--) m.put((center+i+12)%12,i%12);
+    for(var t : s) {
+      o += (double)m.get(t);
+    }
+    return o/(double)s.size();
   }
   
   private static void fillForteNumbersDict() throws IOException, CsvException {
