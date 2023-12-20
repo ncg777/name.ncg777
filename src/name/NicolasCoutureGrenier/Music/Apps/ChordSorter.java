@@ -94,18 +94,15 @@ public class ChordSorter {
         var chlist = new ArrayList<PCS12>();
         boolean rev = chckbxReverse.isSelected();
         for(int i = 0;i<chstr.length;i++) {chlist.add(PCS12.parse(chstr[i]));}
-        
+        int r = (Integer)spinnerRotation.getValue();
         chlist.sort(new Comparator<PCS12>() {
 
           @Override
           public int compare(PCS12 a, PCS12 b) {
-            int r = (Integer)spinnerRotation.getValue();
-            
             double va = a.calcCenterTuning(r);
             double vb = b.calcCenterTuning(r);
             return (rev ? -1 : 1) * Double.compare(va, vb);
           }});
-        
         textResult.setText(Joiner.on(" ").join(chlist));
       }
     });
