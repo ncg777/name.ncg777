@@ -229,6 +229,12 @@ public class PCS12 extends Combination implements Serializable {
   }
   
   
+  /**
+   * Experimental measure.
+   * 
+   * @param center
+   * @return
+   */
   public double calcCenterTuning(int center) {
     double o = 0.0;
     var s = this.asSequence();

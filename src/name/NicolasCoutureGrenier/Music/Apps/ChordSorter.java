@@ -99,7 +99,9 @@ public class ChordSorter {
 
           @Override
           public int compare(PCS12 a, PCS12 b) {
-            return (rev ? -1 : 1) * a.rotatedCompareTo(b, r);
+            double va = a.calcCenterTuning(r);
+            double vb = b.calcCenterTuning(r);
+            return (rev ? -1 : 1) * Double.compare(va, vb);
           }});
         textResult.setText(Joiner.on(" ").join(chlist));
       }
