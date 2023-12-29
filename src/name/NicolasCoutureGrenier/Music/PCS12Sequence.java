@@ -2,6 +2,10 @@ package name.NicolasCoutureGrenier.Music;
 
 import java.util.ArrayList;
 
+import com.google.common.base.Joiner;
+
+import name.NicolasCoutureGrenier.Maths.Numbers;
+
 public class PCS12Sequence extends ArrayList<PCS12> {
 
   private static final long serialVersionUID = 1L;
@@ -13,5 +17,34 @@ public class PCS12Sequence extends ArrayList<PCS12> {
     }
     return o;
   }
+  
+  public static PCS12Sequence parse(String s) {
+    var ss = s.split("\\s+");
+    PCS12Sequence o = new PCS12Sequence();
+    for(String _s : ss) {
+      o.add(PCS12.parse(_s));
+    }
+    return o;
+  }
+  
+  @Override
+  public String toString() {
+    return Joiner.on(" ").join(this);
+  }
 
+  public static PCS12Sequence merge(ArrayList<PCS12Sequence> s) {
+    int n = 1;
+    
+    for(var _s:s) {n = Numbers.lcm(n,_s.size());}
+    PCS12Sequence o = new PCS12Sequence();
+    for(int i=0;i<n;i++) {
+      PCS12 m = PCS12.empty();
+      for(int j=0;j<s.size();j++) {
+        m = m.combineWith(s.get(j).get(i%s.get(j).size()));
+      }
+      o.add(m);
+    }
+    return o;
+    
+  }
 }
