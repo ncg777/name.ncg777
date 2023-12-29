@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
 
+import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
@@ -126,7 +127,7 @@ public class ChordRotator {
         for(int i=0;i<n;i++) {
           TreeSet<Integer> si = new TreeSet<>();
           for(int j=0; j<k;j++) {
-            si.add(chs.get((s.get(j)+(i*inc))%n));
+            si.add(chs.get(Numbers.correctMod((s.get(j)+(i*inc)),n)));
           }
           PCS12 chx = PCS12.identify(si);
           if(chords.contains(chx)) {break;}

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 import org.apache.commons.collections4.bidimap.TreeBidiMap;
 
@@ -386,6 +387,13 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return s;
   }
 
+  public Sequence apply(Function<Integer,Integer> f) {
+    Sequence o = new Sequence();
+    for(int i=0;i<this.size();i++) {
+      o.add(f.apply(this.get(i)));
+    }
+    return o;
+  }
   /**
    * Each row i of the output matrix correspond to a distinct value of the sequence. Each cell i,j
    * set to true means that the value at position j in the sequence is the i'th biggest.
