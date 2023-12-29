@@ -12,6 +12,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
 
@@ -20,6 +21,8 @@ import name.NicolasCoutureGrenier.Music.PCS12;
 
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class ChordRotator {
 
@@ -63,6 +66,7 @@ public class ChordRotator {
   private JTextField textField;
   private JTextField textPitches;
   private JTextArea textResult = new JTextArea();
+  private JSpinner spinnerInc;
   
   private void initialize() {
     frmChordRotator = new JFrame();
@@ -113,23 +117,27 @@ public class ChordRotator {
         Sequence chs = ch.asSequence();
 
         int n = ch.getK();
+        int inc = ((int)spinnerInc.getValue())%n;
         Sequence s = Sequence.parse(textField.getText().trim());
         int k = s.size();
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
+        ArrayList<PCS12> chords = new ArrayList<>();
         for(int i=0;i<n;i++) {
           TreeSet<Integer> si = new TreeSet<>();
           for(int j=0; j<k;j++) {
-            si.add(chs.get((s.get(j)+i)%n));
+            si.add(chs.get((s.get(j)+(i*inc))%n));
           }
           PCS12 chx = PCS12.identify(si);
+          if(chords.contains(chx)) {break;}
+          chords.add(chx);
           sb.append(chx.toString() + " (" + chx.toForteNumberString() + ")" + "\n");
           sb2.append(chx.toString() + " ");
         }
         textResult.setText(sb.toString() + "\n\n" + sb2.toString().trim());
       }
     });
-    btnNewButton.setBounds(10, 92, 290, 23);
+    btnNewButton.setBounds(10, 121, 290, 23);
     frmChordRotator.getContentPane().add(btnNewButton);
     
     JLabel lblPitches = new JLabel("Pitches:");
@@ -147,12 +155,23 @@ public class ChordRotator {
     textPitches.setColumns(10);
     
     JScrollPane scrollPane = new JScrollPane();
-    scrollPane.setBounds(10, 126, 285, 234);
+    scrollPane.setBounds(10, 148, 285, 212);
     frmChordRotator.getContentPane().add(scrollPane);
     scrollPane.setViewportView(textResult);
     
     
     textResult.setEditable(false);
     textResult.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
+    
+    spinnerInc = new JSpinner();
+    spinnerInc.setModel(new SpinnerNumberModel(Integer.valueOf(1), null, null, Integer.valueOf(1)));
+    spinnerInc.setBounds(134, 90, 47, 20);
+    frmChordRotator.getContentPane().add(spinnerInc);
+    
+    JLabel lblNewLabel_6_1_1 = new JLabel("Increment:");
+    lblNewLabel_6_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+    lblNewLabel_6_1_1.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    lblNewLabel_6_1_1.setBounds(10, 90, 116, 23);
+    frmChordRotator.getContentPane().add(lblNewLabel_6_1_1);
   }
 }
