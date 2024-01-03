@@ -1246,6 +1246,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
           for(int u=_f;u<pk;u+=_f) {
             s.get(pair).put(j++, plainSeq.rotate(u));
             s.get(pair).put(j++, plainSeq.rotate(u).reverse());
+            s.get(pair).put(j++, plainSeq.rotate(u).flip());
+            s.get(pair).put(j++, plainSeq.rotate(u).reverse().flip());
           }
         }
       }
