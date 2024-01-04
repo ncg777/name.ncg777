@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.SpinnerNumberModel;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
@@ -26,6 +27,7 @@ import name.NicolasCoutureGrenier.Music.PCS12Relations.CommonNotesAtLeast;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.Different;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.IVEQRotOrRev;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.PredicatedDifferences;
+import name.NicolasCoutureGrenier.Music.PCS12Relations.PredicatedUnion;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -67,27 +69,13 @@ public class ChordMatrix {
     initialize();
    
   }
-  private static final double[] calcWeights(List<PCS12> possibles, ArrayList<PCS12> line, int j) {
-    PCS12 previous = line.get(j-1);
-    double[] weights = new double[possibles.size()];
-    
-    for(int k=0;k<possibles.size();k++) {
-      int count = 0;
-      PCS12 c = possibles.get(k);
-      for(int i=0;i<j;i++) {
-        if(line.get(i) == c) count++;
-      }
-      weights[k] = 1.0/(double)((1+count)*Numbers.factorial(c.calcDistanceWith(previous)));
-    }
-    
-    return weights;
-  }
   
   JComboBox<String> comboFilter = new JComboBox<String>();
   JTextArea textArea; 
   JSpinner spinner_k = new JSpinner(new SpinnerNumberModel(4, 2, 11, 1));
   JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
+  private boolean running = false;
   private void initialize() {
     frmChordMatrix = new JFrame();
     frmChordMatrix.setTitle("PCS12 Matrix");
@@ -103,16 +91,19 @@ public class ChordMatrix {
     btnGenerate.addActionListener(new ActionListener() {
       
       public void actionPerformed(ActionEvent e) {
+        if(running) {running = false; return;}
         new Thread(new Runnable() {
 
           @Override
           public void run() {
             try {
-              btnGenerate.setEnabled(false);
+              btnGenerate.setText("Cancel");
+              textArea.setText("Searching...");
+              running = true;
               TreeSet<PCS12> t0 = PCS12.getChords();
               TreeSet<PCS12> t = new TreeSet<PCS12>();
               PCS12 scale = PCS12.parse(comboFilter.getSelectedItem().toString());
-              Predicate<PCS12> pred = new SubsetOf(scale);
+              Predicate<PCS12> pred = Predicates.and(new SubsetOf(scale),new Consonant());
               
               for(PCS12 r : t0){
                 if(pred.apply(r) && r.getK() == (int)spinner_k.getValue()) {
@@ -125,8 +116,8 @@ public class ChordMatrix {
 
               Matrix<PCS12> output = new Matrix<>(m,n);
              
-              Relation<PCS12, PCS12> rel_horiz = Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1)));
-              Relation<PCS12, PCS12> rel_vert = new PredicatedDifferences(new Consonant());
+              Relation<PCS12, PCS12> rel_horiz = Relation.and(new Different(), Relation.and(new CloseIVs(), new CommonNotesAtLeast(1)));
+              Relation<PCS12, PCS12> rel_vert = new PredicatedUnion(new Consonant());
               DiGraph<PCS12> d = new DiGraph<>(t, rel_horiz);
               
               Function<PCS12, List<PCS12>> possibles = new Function<PCS12, List<PCS12>>() {
@@ -144,6 +135,7 @@ public class ChordMatrix {
                 for(int i=0;i<m;i++) {
                   for(int j=0;j<n;j++) {
                     while(true) {
+                      if(!running) {btnGenerate.setText("Generate"); textArea.setText(""); return;}
                       if(j==0) {
                         output.set(i, j, CollectionUtils.chooseAtRandom(t));
                       } else {
@@ -155,7 +147,7 @@ public class ChordMatrix {
                             j=0;
                             break outside;
                         }
-                        output.set(i, j, CollectionUtils.chooseAtRandomWithWeights(p, ChordMatrix.calcWeights(p, output.getRow(i), j)));
+                        output.set(i, j, CollectionUtils.chooseAtRandom(p));
                       }
                       
                       if(j > 0) {
@@ -211,7 +203,8 @@ public class ChordMatrix {
               
               
             } catch(Exception ex) {textArea.setText(ex.getMessage());}
-            btnGenerate.setEnabled(true);
+            running = false;
+            btnGenerate.setText("Generate");
           }}).start();
         
         
