@@ -15,7 +15,7 @@ public class MinDistConsonant  implements Relation<PCS12, PCS12> {
   public boolean apply(PCS12 a, PCS12 b) {
     if(a.getK() != b.getK()) return false;
     Sequence s = minDistSeq(a.asSequence(), b.asSequence());
-    return ((!s.contains(1) || !s.contains(2)) && !s.contains(6));
+    return !s.contains(1);
     
   }
   
