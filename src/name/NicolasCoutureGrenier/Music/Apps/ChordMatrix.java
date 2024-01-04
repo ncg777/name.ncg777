@@ -72,7 +72,7 @@ public class ChordMatrix {
   
   JComboBox<String> comboFilter = new JComboBox<String>();
   JTextArea textArea; 
-  JSpinner spinner_k = new JSpinner(new SpinnerNumberModel(4, 2, 11, 1));
+  JSpinner spinner_k = new JSpinner(new SpinnerNumberModel(3, 2, 11, 1));
   JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   JSpinner spinner = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   private boolean running = false;
