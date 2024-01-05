@@ -1,5 +1,7 @@
 package name.NicolasCoutureGrenier.Maths.Graphs;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -157,5 +159,16 @@ public class GraphUtils {
     }
     return output;
 
+  }
+  
+  public static <T extends Comparable<? super T>> void writeToCsv(DiGraph<T> g, String path) throws FileNotFoundException {
+    PrintWriter pw = new PrintWriter(path);
+    
+    for(var x : g.getVertices()) {
+      for(var y:g.getSuccessors(x)) {
+        pw.println("\"" + x.toString()+ "\",\"" + y.toString() + "\"");
+      }
+    }
+    pw.close();
   }
 }

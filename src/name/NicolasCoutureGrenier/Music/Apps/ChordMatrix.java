@@ -116,7 +116,7 @@ public class ChordMatrix {
 
               Matrix<PCS12> output = new Matrix<>(m,n);
              
-              Relation<PCS12, PCS12> rel_horiz = Relation.and(new Different(), Relation.and(new CloseIVs(), new CommonNotesAtLeast(1)));
+              Relation<PCS12, PCS12> rel_horiz = Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1)));
               Relation<PCS12, PCS12> rel_vert = new PredicatedUnion(new Consonant());
               DiGraph<PCS12> d = new DiGraph<>(t, rel_horiz);
               
