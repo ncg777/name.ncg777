@@ -30,6 +30,7 @@ import name.NicolasCoutureGrenier.Music.PCS12Predicates.SubsetOf;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.CloseIVs;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.CommonNotesAtLeast;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.Different;
+import name.NicolasCoutureGrenier.Music.PCS12Relations.IVEQRotOrRev;
 
 import javax.swing.SpinnerNumberModel;
 import com.google.common.base.Predicate;
@@ -89,7 +90,7 @@ public class ChordGraphExplorer {
     t.addAll(PCS12.getChords());
     CollectionUtils.filter(t, new SizeIs((int) spinner_1.getValue()));
     CollectionUtils.filter(t, new SubsetOf(PCS12.parse(cbxScale.getSelectedItem().toString())));
-    d = new DiGraph<PCS12>(t, Relation.and(new Different(), Relation.and(new CloseIVs(), new CommonNotesAtLeast(1))));
+    d = new DiGraph<PCS12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
     CollectionUtils.filter(t, new Predicate<PCS12> () {
 
       @Override
