@@ -25,6 +25,7 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Graphs.DiGraph;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.PCS12;
+import name.NicolasCoutureGrenier.Music.PCS12Predicates.Consonant;
 import name.NicolasCoutureGrenier.Music.PCS12Predicates.SizeIs;
 import name.NicolasCoutureGrenier.Music.PCS12Predicates.SubsetOf;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.CloseIVs;
@@ -34,6 +35,7 @@ import name.NicolasCoutureGrenier.Music.PCS12Relations.IVEQRotOrRev;
 
 import javax.swing.SpinnerNumberModel;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -89,7 +91,7 @@ public class ChordGraphExplorer {
     TreeSet<PCS12> t = new TreeSet<PCS12>();
     t.addAll(PCS12.getChords());
     CollectionUtils.filter(t, new SizeIs((int) spinner_1.getValue()));
-    CollectionUtils.filter(t, new SubsetOf(PCS12.parse(cbxScale.getSelectedItem().toString())));
+    CollectionUtils.filter(t, Predicates.and(new SubsetOf(PCS12.parse(cbxScale.getSelectedItem().toString())), new Consonant()));
     d = new DiGraph<PCS12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
     CollectionUtils.filter(t, new Predicate<PCS12> () {
 
