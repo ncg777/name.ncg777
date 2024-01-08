@@ -5,17 +5,18 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import com.google.common.base.Function;
+import java.util.function.Consumer;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
 
-public class CircuitFinder<T extends Comparable<? super T>, PrintFunctor extends Function<List<T>, Void>> {
+public class CircuitFinder<T extends Comparable<? super T>> {
   private HashMap<T, HashSet<T>> B;
   private DiGraph<T> c;
   private LinkedList<T> stack;
   private T s;
-  private PrintFunctor p;
+  private Consumer<List<T>> p;
   private Integer maxsize;
 
   {
@@ -47,7 +48,7 @@ public class CircuitFinder<T extends Comparable<? super T>, PrintFunctor extends
     return c;
   }
 
-  public CircuitFinder(DiGraph<T> p_c, PrintFunctor p_p) {
+  public CircuitFinder(DiGraph<T> p_c, Consumer<List<T>> p_p) {
     c = p_c;
     p = p_p;
   }
@@ -84,7 +85,7 @@ public class CircuitFinder<T extends Comparable<? super T>, PrintFunctor extends
     while (wi.hasNext()) {
       T w = wi.next();
       if (w.equals(s) && ((maxsize != null) ? (stack.size() <= maxsize) : true)) {
-        p.apply(Lists.reverse(stack));  
+        p.accept(Lists.reverse(stack));  
         
         f = true;
       } else if (!c.isVertexMarked(w)) {
