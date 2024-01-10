@@ -147,7 +147,15 @@ public class ChordMatrix {
                             j=0;
                             break outside;
                         }
-                        output.set(i, j, CollectionUtils.chooseAtRandom(p));
+                        
+                        double[] w = new double[p.size()];
+                        int ii=0;
+                        for(var c : p) {
+                          w[ii++]=1.0/(output.get(i, j-1).intersect(c).size()+1);
+                        }
+                        
+                        
+                        output.set(i, j, CollectionUtils.chooseAtRandomWithWeights(p,w));
                       }
                       
                       if(j > 0) {
