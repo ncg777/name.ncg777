@@ -8,6 +8,7 @@ import javax.swing.SwingConstants;
 
 import com.google.common.base.Joiner;
 
+import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.PCS12;
 import name.NicolasCoutureGrenier.Music.PCS12Sequence;
 
@@ -28,6 +29,7 @@ public class ChordSorter {
   private JTextField textResult;
   private JSpinner spinnerRotation;
   private JCheckBox chckbxReverse;
+  private JTextField textPermutation;
 
   /**
    * Launch the application.
@@ -58,7 +60,7 @@ public class ChordSorter {
   private void initialize() {
     frmChordSorter = new JFrame();
     frmChordSorter.setTitle("Chord sorter");
-    frmChordSorter.setBounds(100, 100, 450, 169);
+    frmChordSorter.setBounds(100, 100, 450, 204);
     frmChordSorter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmChordSorter.getContentPane().setLayout(null);
     
@@ -84,7 +86,7 @@ public class ChordSorter {
     
     JLabel lblNewLabel_2 = new JLabel("Result:");
     lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblNewLabel_2.setBounds(10, 98, 46, 14);
+    lblNewLabel_2.setBounds(10, 98, 56, 14);
     frmChordSorter.getContentPane().add(lblNewLabel_2);
     
     JButton btnSort = new JButton("Sort");
@@ -94,6 +96,9 @@ public class ChordSorter {
         var chlist = new ArrayList<PCS12>();
         boolean rev = chckbxReverse.isSelected();
         for(int i = 0;i<chstr.length;i++) {chlist.add(PCS12.parse(chstr[i]));}
+        
+        ArrayList<PCS12> orig = new ArrayList<PCS12>();
+        for(var c : chlist) orig.add(c);
         int r = (Integer)spinnerRotation.getValue();
         chlist.sort(new Comparator<PCS12>() {
 
@@ -103,19 +108,38 @@ public class ChordSorter {
             double vb = b.calcCenterTuning(r);
             return (rev ? -1 : 1) * Double.compare(va, vb);
           }});
+        
+        Sequence permu = new Sequence();
+        for(int i=0;i<chlist.size();i++) {
+          int x = 0;
+          while(!orig.get(x).equals(chlist.get(i))) x++;
+          permu.add(x);
+        }
+        
         textResult.setText(Joiner.on(" ").join(chlist));
+        textPermutation.setText(permu.toString());
       }
     });
     btnSort.setBounds(10, 66, 414, 23);
     frmChordSorter.getContentPane().add(btnSort);
     
     textResult = new JTextField();
-    textResult.setBounds(66, 97, 358, 17);
+    textResult.setBounds(76, 97, 348, 17);
     frmChordSorter.getContentPane().add(textResult);
     textResult.setColumns(10);
     
     chckbxReverse = new JCheckBox("Reverse");
     chckbxReverse.setBounds(10, 32, 97, 23);
     frmChordSorter.getContentPane().add(chckbxReverse);
+    
+    JLabel lblNewLabel_2_1 = new JLabel("Permutation:");
+    lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.RIGHT);
+    lblNewLabel_2_1.setBounds(10, 123, 62, 14);
+    frmChordSorter.getContentPane().add(lblNewLabel_2_1);
+    
+    textPermutation = new JTextField();
+    textPermutation.setColumns(10);
+    textPermutation.setBounds(76, 120, 348, 17);
+    frmChordSorter.getContentPane().add(textPermutation);
   }
 }
