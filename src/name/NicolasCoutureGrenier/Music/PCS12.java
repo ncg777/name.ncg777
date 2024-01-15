@@ -236,15 +236,15 @@ public class PCS12 extends Combination implements Serializable {
    * @return
    */
   public double calcCenterTuning(int center) {
-    double o = 0.0;
+    double o = 1.0;
     var s = this.asSequence();
     TreeMap<Integer,Double> m = new TreeMap<Integer,Double>();
-    for(int i=0;i<=6;i++) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/6.0));
-    for(int i=-1;i>-6;i--) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/6.0));
+    for(int i=0;i<=6;i++) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/12.0));
+    for(int i=-1;i>-6;i--) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/12.0));
     for(var t : s) {
-      o += (double)m.get(t);
+      o *= (double)m.get(t);
     }
-    return o/(double)s.size();
+    return Math.pow(o,1.0/(double)s.size());
   }
   
   private static void fillForteNumbersDict() throws IOException, CsvException {
