@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 
 import java.awt.Font;
@@ -34,7 +35,8 @@ public class SequenceCalc {
     AddToAll,
     Multiply,
     ApplyMin,
-    ApplyMax
+    ApplyMax,
+    ApplyModulo
   }
   private JFrame frmSequenceCalc;
   private JTextField txtInput;
@@ -149,6 +151,9 @@ public class SequenceCalc {
           case ApplyMax:
             k = (Integer)spinner.getValue();
             output = input.applyMax(k).toString();
+            break;
+          case ApplyModulo:
+            output = input.apply((i) -> Numbers.correctMod(i, (Integer)spinner.getValue())).toString();
             break;
         }
         txtOutput.setText(output.trim());
