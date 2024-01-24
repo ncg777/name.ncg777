@@ -31,7 +31,7 @@ public class RelativelyFlat implements StandardAndGuavaPredicate<Rhythm> {
       s += Math.abs(((double) a.get(i)) - m);
     }
     double sd = s / (double) n;
-
+    // I can't remember the point of this formula...
     return (sd / m <= (((double) m_pc) / 100.0));
 
   }
