@@ -445,33 +445,6 @@ public class CollectionUtils {
 
   }
 
-  /**
-   * a "modulates" b, that is for each element b_i of b at position i, a*b_i is added at position i
-   * to the resulting array.
-   * 
-   * @param a
-   * @param b
-   * @return
-   */
-  public static Integer[] modulate(Integer[] a, Integer[] b) {
-
-    Integer[] o = new Integer[a.length + b.length - 1];
-
-    for (int i = 0; i < o.length; i++) {
-      o[i] = 0;
-    }
-
-    for (int i = 0; i < b.length; i++) {
-      for (int j = 0; j < a.length; j++) {
-        o[i + j] = o[i + j] + (b[i] * a[j]);
-      }
-
-    }
-
-    return o;
-
-  }
-
   public static Integer[] antidifference(Integer[] p_arr, int k) {
     Integer[] output = new Integer[p_arr.length + 1];
 
