@@ -228,7 +228,7 @@ public class RhythmMatrix {
                     pred0 = new SecondOrderDifferenceSum(Keep.Zero);
                     break;
                   case 18:
-                    pred0 = new RelativelyFlat(80);
+                    pred0 = new RelativelyFlat();
                     break;
                   case 19:
                     pred0 = new SpectrumRising();
@@ -339,7 +339,7 @@ public class RhythmMatrix {
                     relSimul0 = new PredicatedDifferences(new SecondOrderDifferenceSum(Keep.Zero));
                     break;
                   case 18:
-                    relSimul0 = new PredicatedDifferences(new RelativelyFlat(80));
+                    relSimul0 = new PredicatedDifferences(new RelativelyFlat());
                     break;
                   case 19:
                     relSimul0 = new PredicatedDifferences(new SpectrumRising());
