@@ -79,7 +79,8 @@ public class ChordID {
     btnId.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
         TreeSet<Integer> p = new TreeSet<Integer>();
-        for(String s : Splitter.on(" ").split(textField.getText())){
+        
+        for(String s : textField.getText().trim().split("\\s+")){
           p.add(Integer.parseInt(s));
           
         }
