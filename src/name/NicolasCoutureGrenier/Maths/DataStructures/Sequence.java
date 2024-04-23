@@ -786,7 +786,6 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    */
   public TreeBidiMap<Integer, Integer> mapOrdinalsUnipolar() {
     TreeBidiMap<Integer, Integer> o = new TreeBidiMap<Integer, Integer>();
-    o.put(0, 0);
     TreeSet<Integer> d =  this.distinct();
     
     int k = 0;
