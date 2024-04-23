@@ -100,7 +100,7 @@ public class RhythmContours {
           }
           textAreaPartitions.setText(o);
           
-          Sequence contourseq = r16.asRhythm().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar();
+          Sequence contourseq = r16.asRhythm().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar().addToAll(-1);
 
           textContourSeq.setText(contourseq.toString());
           lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
@@ -120,7 +120,7 @@ public class RhythmContours {
           }
           textAreaPartitions.setText(o);
           Sequence contourseq = r12.asRhythm().getContour().circularHoldNonZero()
-              .cyclicalAntidifference(0).asOrdinalsUnipolar();
+              .cyclicalAntidifference(0).asOrdinalsUnipolar().addToAll(-1);
           textContourSeq.setText(contourseq.toString());
           lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
         }else if(comboBox.getSelectedItem() == Rn.Tribble) {
@@ -139,7 +139,7 @@ public class RhythmContours {
           }
           textAreaPartitions.setText(o);
           Sequence contourseq = r48.asRhythm().getContour().circularHoldNonZero()
-              .cyclicalAntidifference(0).asOrdinalsUnipolar();
+              .cyclicalAntidifference(0).asOrdinalsUnipolar().addToAll(-1);
           textContourSeq.setText(contourseq.toString());
           lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
         }

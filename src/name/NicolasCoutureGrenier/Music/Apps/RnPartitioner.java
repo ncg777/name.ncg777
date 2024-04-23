@@ -98,7 +98,7 @@ public class RnPartitioner {
           R16List r = R16List.parseR16Seq(txtR.getText().trim());
           Rhythm r1 = r.asRhythm();
           Sequence p0 = Sequence.parse(txtPartition.getText());
-          Sequence p = p0.asOrdinalsUnipolar();
+          Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
           int k = p.size();
           int pdistinct = p.distinct().size();
           int n= r1.getN();
@@ -118,7 +118,7 @@ public class RnPartitioner {
           R12List r = R12List.parseR12Seq(txtR.getText().trim());
           Rhythm r1 = r.asRhythm();
           Sequence p0 = Sequence.parse(txtPartition.getText());
-          Sequence p = p0.asOrdinalsUnipolar();
+          Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
           int k = p.size();
           int pdistinct = p.distinct().size();
           int n= r1.getN();
@@ -138,7 +138,7 @@ public class RnPartitioner {
           R48List r = R48List.parseR48Seq(txtR.getText().trim());
           Rhythm r1 = r.asRhythm();
           Sequence p0 = Sequence.parse(txtPartition.getText());
-          Sequence p = p0.asOrdinalsUnipolar();
+          Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
           int k = p.size();
           int pdistinct = p.distinct().size();
           int n= r1.getN();

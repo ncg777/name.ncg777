@@ -125,7 +125,7 @@ public class SeqGenContourFollow {
                 s.set(i, k-1);
               }
               
-              int n = s.asOrdinalsUnipolar().getMax()+1;
+              int n = s.asOrdinalsUnipolar().getMax();
               if(n < 2) {
                 throw new RuntimeException("rhythm is empty or too small");
               }

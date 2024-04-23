@@ -788,7 +788,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     TreeBidiMap<Integer, Integer> o = new TreeBidiMap<Integer, Integer>();
     TreeSet<Integer> d =  this.distinct();
     
-    int k = 0;
+    int k = 1;
     for(Integer i : d) {
       o.put(i, k);
       k++;
