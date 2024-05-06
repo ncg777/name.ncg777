@@ -7,12 +7,16 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import org.apache.lucene.util.automaton.RegExp;
 
 import com.opencsv.exceptions.CsvException;
 
@@ -22,7 +26,8 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.DataStructures.FiniteBinaryRelation;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 
 public class PCS12 extends Combination implements Serializable {
 
@@ -37,7 +42,25 @@ public class PCS12 extends Combination implements Serializable {
   
   Integer m_Order;
   Integer m_Transpose;
-
+  public static Comparator<String> ForteStringComparator = new Comparator<String>() {
+    @Override
+    public int compare(String o1, String o2) {
+      var p1 = parseForte(o1);
+      var p2 = parseForte(o2);
+      
+      return ComparisonChain.start()
+        .compare(p1.getK(), p2.getK(), Ordering.natural())
+        .compare(
+          p1.getForteNumberOrder(), 
+          p2.getForteNumberOrder(),
+          Ordering.natural())
+        .compare(p1.getForteAB(), p2.getForteAB(), Ordering.natural().nullsFirst())
+        .compare(p1.getForteNumberRotation(), p2.getForteNumberRotation())
+        .result();
+      
+    }
+  };
+  
   static {
     try {
       GenerateMaps();
@@ -47,6 +70,10 @@ public class PCS12 extends Combination implements Serializable {
     }
   }
   
+  public String getForteAB() {
+    var f = getForteNumber();
+    return f.contains("A") ? "A" : f.contains("B") ? "B" : "";
+  }
   public int rotatedCompareTo(PCS12 other, int rotate) {
     return this.asBinarySequence().rotate(rotate).compareTo(other.asBinarySequence().rotate(rotate));
   }
@@ -77,7 +104,9 @@ public class PCS12 extends Combination implements Serializable {
   public static TreeMap<String, PCS12> getChordDict() {
     return ChordDict;
   }
-
+  public static TreeMap<String, PCS12> getForteChordDict() {
+    return ForteNumbersToPCS12Dict;
+  }
   public static TreeSet<PCS12> getChords() {
     TreeSet<PCS12> output = new TreeSet<PCS12>();
     output.addAll(ChordDict.values());
@@ -87,7 +116,9 @@ public class PCS12 extends Combination implements Serializable {
   public static PCS12 parse(String input) {
     return ChordDict.get(input);
   }
-
+  public static PCS12 parseForte(String input) {
+    return ForteNumbersToPCS12Dict.get(input);
+  }
   private PCS12(Set<Integer> p_s, Integer p_Order, Integer p_Transpose) {
     super(12, p_s);
     m_Order = p_Order;
@@ -193,8 +224,17 @@ public class PCS12 extends Combination implements Serializable {
   }
   public String getCommonName() {return ForteNumbersCommonNames.get(getForteNumber());}
   public String getForteNumber() {return ForteNumbersDict.get(this);}
+  public Integer getForteNumberOrder() {
+    var str = getForteNumber();
+    str = str.replace("z", "");
+    str = str.replace("A", "");
+    str = str.replace("B", "");
+    str = str.substring(str.indexOf("-")+1);
+    return Integer.parseInt(str);
+  }
+  
   public Integer getForteNumberRotation() {return ForteNumbersRotationDict.get(this);}
-  public String toForteNumberString() {return getForteNumber() + "+" + getForteNumberRotation().toString();}
+  public String toForteNumberString() {return getForteNumber() + "." + String.format("%02d",getForteNumberRotation());}
   private ArrayList<Double> symmetries = null; 
   public ArrayList<Double> getSymmetries() {
     if(symmetries != null) return symmetries;
@@ -262,8 +302,9 @@ public class PCS12 extends Combination implements Serializable {
         if(!ForteNumbersDict.containsKey(t)) {
           ForteNumbersDict.put(t, p.getFirst());
           ForteNumbersRotationDict.put(t, i);
+          ForteNumbersToPCS12Dict.put(p.getFirst()+ "." + String.format("%02d", i), t);
         }
-        ForteNumbersToPCS12Dict.put(p.getFirst()+ "+" + Integer.toString(i), t);
+        
       }
     }
     is.close();
