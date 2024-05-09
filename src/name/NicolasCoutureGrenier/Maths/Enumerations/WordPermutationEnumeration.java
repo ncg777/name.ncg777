@@ -89,7 +89,7 @@ public class WordPermutationEnumeration implements Enumeration<Integer[]> {
       for (Integer j = p.getN() - 1; j >= 0; j--) {
         if (p.get(j)) {
           x[pos.get(j)] = nonzeroindices.get(i);
-          pos.remove(j);
+          pos.remove((int)j);
         }
       }
 
