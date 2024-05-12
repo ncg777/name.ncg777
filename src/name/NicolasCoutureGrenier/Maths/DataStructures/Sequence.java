@@ -625,7 +625,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    * @param p_arr
    */
   public Sequence(Integer[] p_arr) {
-    this(Arrays.asList(p_arr));
+    super();
+    for(int i=0;i<p_arr.length;i++) add(p_arr[i]);
   }
 
   public Sequence(int[] p_arr) {

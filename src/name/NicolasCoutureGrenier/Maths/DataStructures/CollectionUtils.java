@@ -12,7 +12,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.Function;
 
+import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 import com.google.common.base.Equivalence;
@@ -20,6 +22,68 @@ import com.google.common.base.Predicate;
 
 public class CollectionUtils {
 
+  public static <A extends List<Integer>> Integer[] getPermutationFromDisjointCycles(TreeSet<A> cs) {
+    TreeSet<Integer> t = new TreeSet<>();
+    int sz = 0;
+    
+    for(var c : cs) {
+      sz += c.size();
+      t.addAll(c);
+    }
+    
+    if(sz != t.size() || t.first() != 0 || t.last() != sz-1) {
+      throw new RuntimeException("CollectionUtils::getPermutationFromDisjointCycles - invalid argument.");
+    }
+    
+    Integer[] o = new Integer[sz];
+    
+    for(var c: cs) {
+      for(int i=0; i<c.size();i++) {
+        o[c.get(i)] = c.get((i+1)%c.size());
+      }
+    }
+    return o;
+  }
+  
+  public static Function<Integer,Integer> getPermutationFunction(Integer[] permutation) {
+    return (i) -> permutation[i];
+  }
+  
+  public static int getPermutationOrder(Integer[] permutation) {
+    TreeSet<Sequence> cs = getPermutationAsDisjointCycles(permutation);
+    
+    Integer o = null;
+    
+    for(var s: cs) {
+      if(o == null) {o = s.size();}
+      else { o = Numbers.lcm(o, s.size());}
+    }
+    return o;
+  }
+  
+  public static TreeSet<Sequence> getPermutationAsDisjointCycles(Integer[] permutation) {
+    TreeSet<Sequence> o = new TreeSet<>();
+    Sequence s = new Sequence(permutation);
+    
+    var f = getPermutationFunction(permutation);
+    
+    while(!s.isEmpty()) {
+      Sequence c = new Sequence();
+      
+      var initial = s.get(0);
+      
+      var current = initial;
+      
+      do {
+        c.add(current);
+        current = f.apply(current);
+      } while(current != initial);
+      s.removeAll(c);
+      o.add(c);
+    }
+    return o;
+  }
+  
   public static <
   A extends Comparable<? super A>,
   B extends Comparable<? super B>> 
