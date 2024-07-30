@@ -135,6 +135,10 @@ public class Numbers {
     return (a * b) / gcd(a, b);
   }
 
+  public static int catalan(int n) {
+    return binomial(2*n, n) - binomial(2*n,n+1);
+  }
+  
   public static int binomial(int n, int k) {
     long num = n;
     long den = 1;
