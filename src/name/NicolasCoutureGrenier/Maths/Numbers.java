@@ -136,6 +136,7 @@ public class Numbers {
   }
 
   public static int catalan(int n) {
+    if(n==0) return 1;
     return binomial(2*n, n) - binomial(2*n,n+1);
   }
   
