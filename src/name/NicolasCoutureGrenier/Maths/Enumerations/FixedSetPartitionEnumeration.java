@@ -2,6 +2,7 @@ package name.NicolasCoutureGrenier.Maths.Enumerations;
 
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 /**
  * Efficient Generation of Set Partitions Michael Orlov orlovm@cs.bgu.ac.il March 26, 2002
@@ -36,10 +37,11 @@ public class FixedSetPartitionEnumeration implements Enumeration<Integer[]> {
 
   @Override
   public Integer[] nextElement() {
-    Integer[] o = Arrays.copyOf(kappa, kappa.length);
     if (!hasNext) {
-      return o;
+      throw new NoSuchElementException();
     }
+    Integer[] o = Arrays.copyOf(kappa, kappa.length);
+    
     hasNext = false;
 
     for (int i = n - 1; i > 0; --i) {
