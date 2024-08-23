@@ -3,6 +3,9 @@ package name.NicolasCoutureGrenier.Maths.Enumerations;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
+/**
+ * https://www.researchgate.net/publication/228566729_Efficient_generation_of_set_partitions
+ */
 public class SetPartitionEnumeration implements Enumeration<int[]> {
     private final int n;
     private int[] k;
