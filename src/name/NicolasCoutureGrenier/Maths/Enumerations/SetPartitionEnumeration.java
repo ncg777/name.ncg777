@@ -1,53 +1,62 @@
 package name.NicolasCoutureGrenier.Maths.Enumerations;
 
-import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
-/**
- * Efficient Generation of Set Partitions Michael Orlov orlovm@cs.bgu.ac.il March 26, 2002
- * 
- */
-public class SetPartitionEnumeration implements Enumeration<Integer[]> {
-  private Integer[] kappa;
-  private Integer[] M;
-  private Integer n;
-  private boolean hasNext = true;
+public class SetPartitionEnumeration implements Enumeration<int[]> {
+    private final int n;
+    private int[] k;
+    private int[] m;
+    private boolean hasMore;
 
-  public SetPartitionEnumeration(Integer n) {
-    this.n = n;
-    this.kappa = new Integer[n];
-    Arrays.fill(kappa, 0);
-    this.M = new Integer[n];
-    Arrays.fill(M, 0);
-  }
+    public SetPartitionEnumeration(int n) {
+        this.n = n;
+        this.k = new int[n];
+        this.m = new int[n];
+        this.hasMore = true;
 
-  @Override
-  public Integer[] nextElement() {
-    Integer[] o = Arrays.copyOf(kappa, kappa.length);
-    if (!hasNext) {
-      return o;
+        initializeFirstPartition();
     }
-    hasNext = false;
-    for (Integer i = n - 1; i > 0; --i) {
-      if (kappa[i] <= M[i - 1]) {
-        kappa[i] = kappa[i] + 1;
 
-        Integer new_max = Math.max(M[i], kappa[i]);
-        M[i] = new_max;
-        for (Integer j = i + 1; j < n; ++j) {
-          kappa[j] = 0;
-          M[j] = new_max;
+    private void initializeFirstPartition() {
+        for (int i = 0; i < n; i++) {
+            k[i] = 0;
+            m[i] = 0;
+        }
+    }
+
+    private boolean nextPartition() {
+        for (int i = n - 1; i > 0; i--) {
+            if (k[i] <= m[i - 1]) {
+                k[i]++;
+                m[i] = Math.max(m[i], k[i]);
+
+                for (int j = i + 1; j < n; j++) {
+                    k[j] = 0;
+                    m[j] = m[i];
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasMoreElements() {
+        return hasMore;
+    }
+
+    @Override
+    public int[] nextElement() {
+        if (!hasMore) {
+            throw new NoSuchElementException();
         }
 
-        hasNext = true;
-      }
-    }
-    return o;
-  }
+        int[] currentPartition = k.clone();
+        if(n==0) {this.hasMore=false;return new int[0];}
+        else {hasMore = nextPartition();}
 
-  @Override
-  public boolean hasMoreElements() {
-    return hasNext;
-  }
+        return currentPartition;
+    }
 
 }

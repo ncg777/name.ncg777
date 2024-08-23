@@ -140,6 +140,27 @@ public class Numbers {
     return binomial(2*n, n) - binomial(2*n,n+1);
   }
   
+  public static int bell(int n) {
+    int[][] bellTriangle = new int[n + 1][n + 1];
+
+    // Initialize the first row
+    bellTriangle[0][0] = 1;
+
+    // Build the Bell triangle
+    for (int i = 1; i <= n; i++) {
+        // Start the row with the rightmost element from the previous row
+        bellTriangle[i][0] = bellTriangle[i - 1][i - 1];
+
+        // Calculate the rest of the row
+        for (int j = 1; j <= i; j++) {
+            bellTriangle[i][j] = bellTriangle[i][j - 1] + bellTriangle[i - 1][j - 1];
+        }
+    }
+
+    // The Bell number is the leftmost element of the last row
+    return bellTriangle[n][0];
+  }
+  
   public static int binomial(int n, int k) {
     long num = n;
     long den = 1;
