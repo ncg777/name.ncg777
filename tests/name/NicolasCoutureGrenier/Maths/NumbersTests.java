@@ -4,7 +4,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.Assert;
 import junit.framework.TestCase;
 
 public class NumbersTests extends TestCase {

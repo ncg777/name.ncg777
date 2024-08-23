@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 
 public class SetPartitionEnumerationTest extends TestCase {
 
@@ -29,8 +28,7 @@ public class SetPartitionEnumerationTest extends TestCase {
       int c = 0;
       var e = new SetPartitionEnumeration(i);
       while(e.hasMoreElements()) {
-        var x = e.nextElement(); 
-        //System.out.println(new Sequence(x).toString());
+        e.nextElement(); 
         c++;
         
       }

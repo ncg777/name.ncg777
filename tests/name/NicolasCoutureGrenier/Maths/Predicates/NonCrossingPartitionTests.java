@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.Enumerations.NonCrossingPartitionEnumeration;
+import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Enumerations.SetPartitionEnumeration;
 
 public class NonCrossingPartitionTests extends TestCase  {
@@ -19,21 +19,21 @@ public class NonCrossingPartitionTests extends TestCase  {
 
   @Test
   public final void testCatalanBell() {
-    int[] n = {4,5,6,7};
     NonCrossingPartition pred = new NonCrossingPartition();
-    for(int i=0;i<n.length;i++) {
-      int nc = Numbers.catalan(n[i]);
-      int c = Numbers.bell(n[i])-nc;
+    for(int i=0;i<9;i++) {
+      int nc = Numbers.catalan(i);
+      int c = Numbers.bell(i)-nc;
       
       int cntnc = 0;
       int cntc = 0;
       
-      SetPartitionEnumeration e = new SetPartitionEnumeration(n[i]);
+      SetPartitionEnumeration e = new SetPartitionEnumeration(i);
       
       while(e.hasMoreElements()) {
         var el = e.nextElement();
         int[] el1 = new int[el.length];
-        for(int j=0;j<el.length;j++) el1[i] = el[i];
+        for(int j=0;j<el.length;j++) el1[j] = el[j];
+        System.out.println(new Sequence(el));
         if(pred.test(el1)) {
           cntnc++;
         } else {
