@@ -12,16 +12,18 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
  * @author Nicolas Couture-Grenier
  * 
  */
-public class WeakOrdersEnumeration implements Enumeration<Integer[]> {
+public class WeakOrderEnumeration implements Enumeration<Integer[]> {
   private CompositionEnumeration ce;
   private WordPermutationEnumeration me;
   private Integer[] current_base;
-
-  public WeakOrdersEnumeration(Integer n) {
+  private Integer[] zerocase = {};
+  public WeakOrderEnumeration(Integer n) {
     super();
-    ce = new CompositionEnumeration(n);
-    nextBase();
-    me = new WordPermutationEnumeration(current_base);
+    if(n>0) {
+      ce = new CompositionEnumeration(n);
+      nextBase();
+      me = new WordPermutationEnumeration(current_base);
+    }
   }
 
   private void nextBase() {
@@ -35,11 +37,19 @@ public class WeakOrdersEnumeration implements Enumeration<Integer[]> {
 
   @Override
   public boolean hasMoreElements() {
+    if(ce == null) {
+      return zerocase!=null;
+    }
     return ce.hasMoreElements() || me.hasMoreElements();
   }
 
   @Override
   public Integer[] nextElement() {
+    if(ce == null) {
+      if(zerocase == null) throw new RuntimeException("No such element.");
+      zerocase=null;
+      return new Integer[0];
+    }
     if (!me.hasMoreElements()) {
       nextBase();
       me = new WordPermutationEnumeration(current_base);
