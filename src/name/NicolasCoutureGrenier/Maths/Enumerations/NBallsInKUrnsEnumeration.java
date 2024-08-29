@@ -9,7 +9,7 @@ public class NBallsInKUrnsEnumeration implements Enumeration<Integer[]>  {
   private CombinationEnumeration ce = null;
   
   public NBallsInKUrnsEnumeration(int n, int k) {
-    ce = new CombinationEnumeration(n+k-1, k-1);
+    this.ce = new CombinationEnumeration(n+k-1, k-1);
   }
   
   @Override
@@ -23,15 +23,19 @@ public class NBallsInKUrnsEnumeration implements Enumeration<Integer[]>  {
   }
   
   private Integer[] convertCombination(Combination c) {
-    var s = c.asSequence();
-    s.add(0, -1);
-    s.add(c.getN()+c.getK()-2);
-    
     Integer[] o = new Integer[c.getK()+1];
-    
-    for(int i=1;i<s.size();i++) {
-      o[i-1] = s.get(i)-s.get(i-1)-1;
+    int i = 0;
+    int cnt = 0;
+    for(int j=0;j<c.getN();j++) {
+      if(c.get(j)) { // is a bar
+        o[i++] = cnt;
+        cnt=0;
+      } else { // is a star
+        cnt++;
+      }
     }
+    o[i]=cnt;
+    
     return o;
   }
 }

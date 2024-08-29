@@ -14,6 +14,7 @@ public class CombinationEnumeration implements Enumeration<Combination> {
 
   private static Combination first(int n, int k) {
     Combination o = new Combination(n);
+    
     for (int i = 0; i < k; i++) {
       o.set(i, true);
     }
