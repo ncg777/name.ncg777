@@ -13,6 +13,7 @@ public class CombinationEnumeration implements Enumeration<Combination> {
   }
 
   private static Combination first(int n, int k) {
+    if(k>n || n<0 || k<0){return null;}
     Combination o = new Combination(n);
     
     for (int i = 0; i < k; i++) {

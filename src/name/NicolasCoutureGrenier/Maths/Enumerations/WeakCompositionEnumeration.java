@@ -4,11 +4,11 @@ import java.util.Enumeration;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 
-public class NBallsInKUrnsEnumeration implements Enumeration<Integer[]>  {
+public class WeakCompositionEnumeration implements Enumeration<Integer[]>  {
 
   private CombinationEnumeration ce = null;
   
-  public NBallsInKUrnsEnumeration(int n, int k) {
+  public WeakCompositionEnumeration(int n, int k) {
     this.ce = new CombinationEnumeration(n+k-1, k-1);
   }
   
