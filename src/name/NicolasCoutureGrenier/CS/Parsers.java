@@ -32,4 +32,8 @@ public class Parsers {
   public static <X> Function<String,X> base64Decorator(Function<String,X> parser) {
     return (String s) -> parser.apply(new String(Base64.getDecoder().decode(s.getBytes())));
   }
+  
+  public static <X> Function<String,X> nullDecorator(Function<String,X> parser) {
+    return (s) -> s.equals("null") ? null : parser.apply(s);
+  }
 }

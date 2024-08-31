@@ -26,4 +26,8 @@ public class Printers {
   public static <X> Function<X,String> base64Decorator(Function<X,String> printer) {
     return (X x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));
   }
+  
+  public static <X> Function<X,String> nullDecorator(Function<X,String> printer) {
+    return (x) -> x == null ? "null" : printer.apply(x);
+  }
  }

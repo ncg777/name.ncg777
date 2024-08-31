@@ -189,54 +189,42 @@ public class FiniteBinaryRelationTests extends TestCase {
   
   
   public void testWriteToCSVAndReadFromCSV() throws IOException, CsvException {
-      FiniteBinaryRelation<Integer, Integer> relation = new FiniteBinaryRelation<>();
-      IntStream.range(0, 10).forEach(i -> {
-          relation.add(i, i * 2);
-      });
-
       File tempFile = File.createTempFile("finite-binary-relation-test", ".csv");
 
-      relation.writeToCSV(Printers.integerPrinter, Printers.integerPrinter, tempFile.getPath());
+      r.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
       
-      FiniteBinaryRelation<Integer, Integer> readRelation = 
+      var readRelation = 
           FiniteBinaryRelation.readFromCSV(
-              Parsers.integerParser, 
-              Parsers.integerParser, 
+              (s) -> s, 
+              (s) -> s, 
               tempFile.getPath());
       tempFile.delete();
-      assertEquals(relation, readRelation);
+      assertEquals(r, readRelation);
   }
 
   
   public void testWriteToCSVAndReadFromCSVBase64() throws IOException, CsvException {
-      FiniteBinaryRelation<Integer, Integer> relation = new FiniteBinaryRelation<>();
-      IntStream.range(0, 10).forEach(i -> {
-          relation.add(i, i * 2);
-      });
-
       File tempFile = File.createTempFile("finite-binary-relation-test", ".csv");
 
-      relation.writeToCSV(Printers.integerPrinter, Printers.integerPrinter, tempFile.getPath(), true);
+      r.writeToCSV((s) -> s, (s) -> s, tempFile.getPath(), true);
       
-      FiniteBinaryRelation<Integer, Integer> readRelation = 
+      var readRelation = 
           FiniteBinaryRelation.readFromCSV(
-              Parsers.integerParser,
-              Parsers.integerParser, 
+              (s) -> s,
+              (s) -> s, 
               tempFile.getPath(), true);
       tempFile.delete();
-      assertEquals(relation, readRelation);
+      assertEquals(r, readRelation);
   }
 
   public void testReadWriteEmptyCSV() throws IOException, CsvException {
-      FiniteBinaryRelation<Integer, Integer> relation = new FiniteBinaryRelation<>();
-
       File tempFile = File.createTempFile("finite-binary-relation-test", ".csv");
 
-      relation.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
+      r.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
 
-      FiniteBinaryRelation<Integer, Integer> readRelation = FiniteBinaryRelation.readFromCSV(Integer::parseInt, Integer::parseInt, new FileReader(tempFile));
+      var readRelation = FiniteBinaryRelation.readFromCSV((s) -> s, (s) -> s, new FileReader(tempFile));
       tempFile.delete();
-      assertEquals(relation, readRelation);
+      assertEquals(r, readRelation);
   }
 }
   
