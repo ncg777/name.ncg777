@@ -30,6 +30,8 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
 import name.NicolasCoutureGrenier.CS.Functional;
+import name.NicolasCoutureGrenier.CS.Parsers;
+import name.NicolasCoutureGrenier.CS.Printers;
 import name.NicolasCoutureGrenier.Maths.Enumerations.HeterogeneousPairEnumeration;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 
@@ -49,7 +51,7 @@ import name.NicolasCoutureGrenier.Maths.Relations.Relation;
  */
 public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>, Relation<X,Y> {
+  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>, Relation<X,Y>, Comparable<FiniteBinaryRelation<X,Y>> {
   
   protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>(Ordering.natural().nullsFirst());
   protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
@@ -78,6 +80,17 @@ public class FiniteBinaryRelation<
     for(var x : domain) {
       add(x, f.apply(x));
     }
+  }
+  @Override
+  public boolean equals(Object other) {
+    if(!(other instanceof FiniteBinaryRelation)){ return false;}
+    @SuppressWarnings("unchecked")
+    FiniteBinaryRelation<X,Y> t = (FiniteBinaryRelation<X,Y>)other;
+    return this.size() == t.size() && t.pairs.stream().allMatch((p) -> this.contains(p));
+  }
+  
+  public boolean equals(FiniteBinaryRelation<X,Y> other) {
+    return this.size() == other.size() && other.pairs.stream().allMatch((p) -> this.contains(p));
   }
   
   public static <
@@ -322,14 +335,20 @@ public class FiniteBinaryRelation<
   public boolean isOneToMany() { return isLeftUnique() && !isRightUnique(); }
   public boolean isOneToOne() { return isLeftUnique() && isRightUnique(); }
   
-  public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path) throws IOException {
+  public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path, boolean useBase64) throws IOException {
     PrintWriter p = new PrintWriter(path);
     CSVWriter w = new CSVWriter(p,',', '"','\\', "\n");
+    if(useBase64) { 
+      xToString = Printers.base64Decorator(xToString);
+      yToString = Printers.base64Decorator(yToString);
+    }
+    final var fxp = xToString;
+    final var fyp = yToString;
     
     w.writeAll(this.pairs.stream().map((t) -> {
       String[] arr = new String[2];
-      arr[0] = xToString.apply(t.getFirst());
-      arr[1] = yToString.apply(t.getSecond());
+      arr[0] = fxp.apply(t.getFirst());
+      arr[1] = fyp.apply(t.getSecond());
       return arr;
     }).collect(Collectors.toList()));
     
@@ -337,13 +356,24 @@ public class FiniteBinaryRelation<
     p.close();
   }
   
+  public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path) throws IOException {
+    writeToCSV(xToString,yToString,path,false);
+  }
+  
   public static <
   X extends Comparable<? super X>,
   Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
-    Function<String,Y> yParser, InputStream is)  throws IOException, CsvException {
+    Function<String,Y> yParser, InputStream is) throws IOException, CsvException {
+    return readFromCSV(xParser,yParser,is,false);
+  }
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+    Function<String, X> xParser, 
+    Function<String,Y> yParser, InputStream is, boolean useBase64) throws IOException, CsvException {
     var st = new InputStreamReader(is);
-    var o = readFromCSV(xParser, yParser, new BufferedReader(st));
+    var o = readFromCSV(xParser, yParser, new BufferedReader(st), useBase64);
     st.close();
     return o;
   }
@@ -352,21 +382,41 @@ public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
   Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
-    Function<String,Y> yParser, Reader reader)  throws IOException, CsvException {
+    Function<String,Y> yParser, Reader reader) throws IOException, CsvException {
+    return readFromCSV(xParser,yParser,reader,false);
+  }
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+    Function<String, X> xParser, 
+    Function<String,Y> yParser, Reader reader, boolean useBase64) throws IOException, CsvException {
     CSVParserBuilder b = new CSVParserBuilder();
     
     CSVParser p = b.withSeparator(',').withQuoteChar('"').withEscapeChar('\\').build();
     CSVReaderBuilder rb = new CSVReaderBuilder(reader);
     CSVReader r = rb.withCSVParser(p).build();
     var o = new FiniteBinaryRelation<X,Y>();
-    
+    if(useBase64) { 
+      xParser = Parsers.base64Decorator(xParser);
+      yParser = Parsers.base64Decorator(yParser);
+    }
+    final var fxp = xParser;
+    final var fyp = yParser;
     r.readAll().stream()
       .forEach((s) -> {
-        o.add(xParser.apply(s[0]), yParser.apply(s[1]));
+        o.add(fxp.apply(s[0]), fyp.apply(s[1]));
       });
     r.close();
     reader.close();
     return o;
+  }
+  
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+    Function<String, X> xParser, 
+    Function<String,Y> yParser, String path, boolean useBase64)  throws IOException, CsvException {
+    return readFromCSV(xParser, yParser, new FileReader(path), useBase64);
   }
   
   public static <
@@ -390,5 +440,11 @@ public class FiniteBinaryRelation<
   @Override
   public boolean apply(X a, Y b) {
     return pairs.contains(HeterogeneousPair.makeHeterogeneousPair(a, b));
+  }
+  @Override
+  public int compareTo(FiniteBinaryRelation<X, Y> o) {
+    var it = new IterableComparator<HeterogeneousPair<X,Y>>();
+    
+    return it.compare(this, o);
   }
 }

@@ -1,5 +1,6 @@
 package name.NicolasCoutureGrenier.CS;
 
+import java.util.Base64;
 import java.util.function.Function;
 
 import com.google.common.base.Joiner;
@@ -21,4 +22,8 @@ public class Printers {
     ss.add(p.getSecond());
     return ss.toString();
   };
+  
+  public static <X> Function<X,String> base64Decorator(Function<X,String> printer) {
+    return (X x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));
+  }
  }

@@ -1,5 +1,6 @@
 package name.NicolasCoutureGrenier.CS;
 
+import java.util.Base64;
 import java.util.function.Function;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
@@ -27,4 +28,8 @@ public class Parsers {
     Sequence ss = Sequence.parse(s);
     return HomogeneousPair.makeHomogeneousPair(ss.get(0), ss.get(1));
   };
+  
+  public static <X> Function<String,X> base64Decorator(Function<String,X> parser) {
+    return (String s) -> parser.apply(new String(Base64.getDecoder().decode(s.getBytes())));
+  }
 }

@@ -1,10 +1,17 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Predicate;
+import java.util.stream.IntStream;
+import java.io.FileReader;
+import com.opencsv.exceptions.CsvException;
 
 import junit.framework.TestCase;
+import name.NicolasCoutureGrenier.CS.Parsers;
+import name.NicolasCoutureGrenier.CS.Printers;
 
 public class FiniteBinaryRelationTests extends TestCase {
   FiniteBinaryRelation<String,String> r;
@@ -179,4 +186,57 @@ public class FiniteBinaryRelationTests extends TestCase {
       z.add("c", "d");
       assertTrue(z.isOneToOne());
   }
+  
+  
+  public void testWriteToCSVAndReadFromCSV() throws IOException, CsvException {
+      FiniteBinaryRelation<Integer, Integer> relation = new FiniteBinaryRelation<>();
+      IntStream.range(0, 10).forEach(i -> {
+          relation.add(i, i * 2);
+      });
+
+      File tempFile = File.createTempFile("finite-binary-relation-test", ".csv");
+
+      relation.writeToCSV(Printers.integerPrinter, Printers.integerPrinter, tempFile.getPath());
+      
+      FiniteBinaryRelation<Integer, Integer> readRelation = 
+          FiniteBinaryRelation.readFromCSV(
+              Parsers.integerParser, 
+              Parsers.integerParser, 
+              tempFile.getPath());
+      tempFile.delete();
+      assertEquals(relation, readRelation);
+  }
+
+  
+  public void testWriteToCSVAndReadFromCSVBase64() throws IOException, CsvException {
+      FiniteBinaryRelation<Integer, Integer> relation = new FiniteBinaryRelation<>();
+      IntStream.range(0, 10).forEach(i -> {
+          relation.add(i, i * 2);
+      });
+
+      File tempFile = File.createTempFile("finite-binary-relation-test", ".csv");
+
+      relation.writeToCSV(Printers.integerPrinter, Printers.integerPrinter, tempFile.getPath(), true);
+      
+      FiniteBinaryRelation<Integer, Integer> readRelation = 
+          FiniteBinaryRelation.readFromCSV(
+              Parsers.integerParser,
+              Parsers.integerParser, 
+              tempFile.getPath(), true);
+      tempFile.delete();
+      assertEquals(relation, readRelation);
+  }
+
+  public void testReadWriteEmptyCSV() throws IOException, CsvException {
+      FiniteBinaryRelation<Integer, Integer> relation = new FiniteBinaryRelation<>();
+
+      File tempFile = File.createTempFile("finite-binary-relation-test", ".csv");
+
+      relation.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
+
+      FiniteBinaryRelation<Integer, Integer> readRelation = FiniteBinaryRelation.readFromCSV(Integer::parseInt, Integer::parseInt, new FileReader(tempFile));
+      tempFile.delete();
+      assertEquals(relation, readRelation);
+  }
 }
+  
