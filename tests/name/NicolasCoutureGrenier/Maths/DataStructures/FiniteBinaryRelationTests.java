@@ -5,13 +5,9 @@ import java.io.IOException;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Predicate;
-import java.util.stream.IntStream;
-import java.io.FileReader;
 import com.opencsv.exceptions.CsvException;
 
 import junit.framework.TestCase;
-import name.NicolasCoutureGrenier.CS.Parsers;
-import name.NicolasCoutureGrenier.CS.Printers;
 
 public class FiniteBinaryRelationTests extends TestCase {
   FiniteBinaryRelation<String,String> r;
