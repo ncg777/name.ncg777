@@ -222,7 +222,7 @@ public class FiniteBinaryRelationTests extends TestCase {
 
       r.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
 
-      var readRelation = FiniteBinaryRelation.readFromCSV((s) -> s, (s) -> s, new FileReader(tempFile));
+      var readRelation = FiniteBinaryRelation.readFromCSV((s) -> s, (s) -> s, tempFile.getPath());
       tempFile.delete();
       assertEquals(r, readRelation);
   }
