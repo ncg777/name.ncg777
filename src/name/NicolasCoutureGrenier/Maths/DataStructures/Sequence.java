@@ -159,8 +159,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return stair(o,l,a).juxtapose(stair(o+l*a,l,-a));
   }
   
-  public HomogeneousFiniteBinaryRelation<Integer> toRelation() {
-    var o = new HomogeneousFiniteBinaryRelation<Integer>();
+  public FiniteBinaryHomogeneousRelation<Integer> toRelation() {
+    var o = new FiniteBinaryHomogeneousRelation<Integer>();
     int i=0;
     for(var e : this) o.add(i++, e);
     return o;

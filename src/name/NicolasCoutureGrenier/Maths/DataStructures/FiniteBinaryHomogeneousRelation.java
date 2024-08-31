@@ -9,62 +9,62 @@ import com.opencsv.exceptions.CsvException;
 
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 
-public class HomogeneousFiniteBinaryRelation<L extends Comparable<? super L>>
+public class FiniteBinaryHomogeneousRelation<L extends Comparable<? super L>>
 extends FiniteBinaryRelation<L, L> { 
   
-  public HomogeneousFiniteBinaryRelation() {
+  public FiniteBinaryHomogeneousRelation() {
     super();
   }
-  public HomogeneousFiniteBinaryRelation(FiniteBinaryRelation<L,L> rel) {
+  public FiniteBinaryHomogeneousRelation(FiniteBinaryRelation<L,L> rel) {
     super(rel);
   }
-  public HomogeneousFiniteBinaryRelation(Map<L,L> map) {
+  public FiniteBinaryHomogeneousRelation(Map<L,L> map) {
     super(map);
   }
-  public HomogeneousFiniteBinaryRelation(Iterable<L> domain, BiPredicate<L,L> rel) {
+  public FiniteBinaryHomogeneousRelation(Iterable<L> domain, BiPredicate<L,L> rel) {
     super(domain, domain,Relation.fromBiPredicate(rel));
   }
   
-  public HomogeneousFiniteBinaryRelation(Iterable<L> domain, Relation<L,L> rel) {
+  public FiniteBinaryHomogeneousRelation(Iterable<L> domain, Relation<L,L> rel) {
     super(domain, domain,rel);
   }
-  public HomogeneousFiniteBinaryRelation(Iterable<L> domain, Function<L,L> f) {
+  public FiniteBinaryHomogeneousRelation(Iterable<L> domain, Function<L,L> f) {
     super(domain, f);
   }
-  public static <L extends Comparable<? super L>> HomogeneousFiniteBinaryRelation<L> identity(Iterable<L> domain) {
-    return new HomogeneousFiniteBinaryRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> a.equals(b)));
+  public static <L extends Comparable<? super L>> FiniteBinaryHomogeneousRelation<L> identity(Iterable<L> domain) {
+    return new FiniteBinaryHomogeneousRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> a.equals(b)));
   }
-  public static <L extends Comparable<? super L>> HomogeneousFiniteBinaryRelation<L> universal(Iterable<L> domain) {
-    return new HomogeneousFiniteBinaryRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> true));
+  public static <L extends Comparable<? super L>> FiniteBinaryHomogeneousRelation<L> universal(Iterable<L> domain) {
+    return new FiniteBinaryHomogeneousRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> true));
   }
     
-  public <V extends Comparable<? super V>> HomogeneousFiniteBinaryRelation<L> compose(
-      HomogeneousFiniteBinaryRelation<L> e) {
-    return new HomogeneousFiniteBinaryRelation<L>(super.compose(e));
+  public <V extends Comparable<? super V>> FiniteBinaryHomogeneousRelation<L> compose(
+      FiniteBinaryHomogeneousRelation<L> e) {
+    return new FiniteBinaryHomogeneousRelation<L>(super.compose(e));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> converse() {
-    return new HomogeneousFiniteBinaryRelation<L>(super.converse());
+  public FiniteBinaryHomogeneousRelation<L> converse() {
+    return new FiniteBinaryHomogeneousRelation<L>(super.converse());
   }
   
-  public HomogeneousFiniteBinaryRelation<L> intersect(HomogeneousFiniteBinaryRelation<L> e) {
-    return new HomogeneousFiniteBinaryRelation<L>(super.intersect(e));
+  public FiniteBinaryHomogeneousRelation<L> intersect(FiniteBinaryHomogeneousRelation<L> e) {
+    return new FiniteBinaryHomogeneousRelation<L>(super.intersect(e));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> union(HomogeneousFiniteBinaryRelation<L> e) {
-    return new HomogeneousFiniteBinaryRelation<L>(super.union(e));
+  public FiniteBinaryHomogeneousRelation<L> union(FiniteBinaryHomogeneousRelation<L> e) {
+    return new FiniteBinaryHomogeneousRelation<L>(super.union(e));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> minus(HomogeneousFiniteBinaryRelation<L> e) {
-    return new HomogeneousFiniteBinaryRelation<L>(super.minus(e));
+  public FiniteBinaryHomogeneousRelation<L> minus(FiniteBinaryHomogeneousRelation<L> e) {
+    return new FiniteBinaryHomogeneousRelation<L>(super.minus(e));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> complement(Iterable<L> domain) {
-    return new HomogeneousFiniteBinaryRelation<>(super.complement(domain, domain));
+  public FiniteBinaryHomogeneousRelation<L> complement(Iterable<L> domain) {
+    return new FiniteBinaryHomogeneousRelation<>(super.complement(domain, domain));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> complement() {
-    return new HomogeneousFiniteBinaryRelation<>(super.complement());
+  public FiniteBinaryHomogeneousRelation<L> complement() {
+    return new FiniteBinaryHomogeneousRelation<>(super.complement());
   }
   
   /**
@@ -79,9 +79,9 @@ extends FiniteBinaryRelation<L, L> {
    * @param S
    * @return
    */
-  public HomogeneousFiniteBinaryRelation<L> rightResidual(
-      HomogeneousFiniteBinaryRelation<L> S) {
-    return new HomogeneousFiniteBinaryRelation<L>(super.rightResidual(S));
+  public FiniteBinaryHomogeneousRelation<L> rightResidual(
+      FiniteBinaryHomogeneousRelation<L> S) {
+    return new FiniteBinaryHomogeneousRelation<L>(super.rightResidual(S));
   }
   
   /**
@@ -96,13 +96,13 @@ extends FiniteBinaryRelation<L, L> {
    * @param R
    * @return
    */
-  public HomogeneousFiniteBinaryRelation<L> leftResidual(
-      HomogeneousFiniteBinaryRelation<L> R) {
-    return new HomogeneousFiniteBinaryRelation<L>(super.leftResidual(R));
+  public FiniteBinaryHomogeneousRelation<L> leftResidual(
+      FiniteBinaryHomogeneousRelation<L> R) {
+    return new FiniteBinaryHomogeneousRelation<L>(super.leftResidual(R));
   }
   
-  public HomogeneousFiniteBinaryRelation<L> transitiveClosure() {
-    HomogeneousFiniteBinaryRelation<L> o = new HomogeneousFiniteBinaryRelation<L>(this);
+  public FiniteBinaryHomogeneousRelation<L> transitiveClosure() {
+    FiniteBinaryHomogeneousRelation<L> o = new FiniteBinaryHomogeneousRelation<L>(this);
     int n = o.size();
     while(true){
       o = o.union(o.compose(o));
@@ -115,7 +115,7 @@ extends FiniteBinaryRelation<L, L> {
   public boolean isTransitive() { return this.containsAll(this.compose(this));}
   public boolean isSymmetric() { return this.equals(this.converse()); }
   public boolean isAsymmetric() { return this.intersect(this.converse()).isEmpty(); }
-  public boolean isAntisymmetric(Iterable<L> domain) {return HomogeneousFiniteBinaryRelation
+  public boolean isAntisymmetric(Iterable<L> domain) {return FiniteBinaryHomogeneousRelation
       .identity(domain).containsAll(this.intersect(this.converse()));}
   public boolean isAntisymmetric() {return isAntisymmetric(domain());}
   public boolean isIdempotent() { return this.compose(this).equals(this); }
@@ -123,18 +123,18 @@ extends FiniteBinaryRelation<L, L> {
   public boolean isReflexive() { return isReflexive(domain());}
   public boolean isCoreflexive(Iterable<L> domain) { return identity(domain).containsAll(this);}
   public boolean isCoreflexive() { return isCoreflexive(domain());}
-  public boolean isIrreflexive(Iterable<L> domain) { return HomogeneousFiniteBinaryRelation.identity(domain).intersect(this).isEmpty();}
+  public boolean isIrreflexive(Iterable<L> domain) { return FiniteBinaryHomogeneousRelation.identity(domain).intersect(this).isEmpty();}
   public boolean isIrreflexive() { return isReflexive(domain());}
   public boolean isEquivalence() { return isPreorder() && isSymmetric();}
-  public boolean isConnected(Iterable<L> domain) { return HomogeneousFiniteBinaryRelation
+  public boolean isConnected(Iterable<L> domain) { return FiniteBinaryHomogeneousRelation
       .universal(domain)
       .equals(
-          HomogeneousFiniteBinaryRelation.identity(domain)
+          FiniteBinaryHomogeneousRelation.identity(domain)
           .union(this)
           .union(this.converse()));}
   public boolean isConnected() { return isConnected(domain());}
   public boolean isStronglyConnected(Iterable<L> domain) { 
-    return this.union(this.converse()).equals(HomogeneousFiniteBinaryRelation.universal(domain));
+    return this.union(this.converse()).equals(FiniteBinaryHomogeneousRelation.universal(domain));
   }
   public boolean isStronglyConnected() { return isStronglyConnected(domain());}
   public boolean isPreorder(Iterable<L> domain) { return isTransitive() && isReflexive(domain); }
@@ -170,13 +170,13 @@ extends FiniteBinaryRelation<L, L> {
     super.writeToCSV(lToString, lToString, path, false);
   }
   public static <L extends Comparable<? super L>> 
-  HomogeneousFiniteBinaryRelation<L> 
+  FiniteBinaryHomogeneousRelation<L> 
   readFromCSV (Function<String,L> lParser, String path) throws IOException, CsvException {
     return readFromCSV(lParser,path,false);
   }
   public static <L extends Comparable<? super L>> 
-    HomogeneousFiniteBinaryRelation<L> 
+    FiniteBinaryHomogeneousRelation<L> 
     readFromCSV (Function<String,L> lParser, String path,boolean useBase64) throws IOException, CsvException {
-    return new HomogeneousFiniteBinaryRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path, useBase64));
+    return new FiniteBinaryHomogeneousRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path, useBase64));
   }
 }
