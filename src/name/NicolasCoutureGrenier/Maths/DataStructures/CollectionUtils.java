@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -87,8 +88,8 @@ public class CollectionUtils {
   public static <
   A extends Comparable<? super A>,
   B extends Comparable<? super B>> 
-  TreeSet<HeterogeneousPair<A,B>> cartesianProduct(
-  TreeSet<A> a, TreeSet<B> b){
+  SortedSet<HeterogeneousPair<A,B>> cartesianProduct(
+  SortedSet<A> a, SortedSet<B> b){
     TreeSet<HeterogeneousPair<A,B>> o = 
         new TreeSet<HeterogeneousPair<A,B>>();
     for(A x : a){

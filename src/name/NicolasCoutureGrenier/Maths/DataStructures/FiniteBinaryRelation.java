@@ -11,11 +11,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import org.apache.commons.collections4.set.UnmodifiableSortedSet;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Ordering;
@@ -50,6 +53,9 @@ public class FiniteBinaryRelation<
   
   protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>(Ordering.natural().nullsFirst());
   protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
+  protected TreeSet<X> domain = new TreeSet<X>(Ordering.natural().nullsFirst());
+  protected TreeSet<Y> codomain = new TreeSet<Y>(Ordering.natural().nullsFirst());
+  
   public FiniteBinaryRelation() {
   }
   public FiniteBinaryRelation(Map<X,Y> map) {
@@ -93,9 +99,17 @@ public class FiniteBinaryRelation<
   public boolean isEmpty() { return pairs.isEmpty(); }
   public boolean contains(HeterogeneousPair<X,Y> p) { return this.pairs.contains(p); }
   public boolean add(X a, Y b) {
-    var p = HeterogeneousPair.makeHeterogeneousPair(a,b);
+    var f_a = this.pairs.ceiling(HeterogeneousPair.makeHeterogeneousPair(a, null));
+    var a0=a==null?null:(f_a != null && f_a.getFirst().equals(a) ? f_a.getFirst() : a);
+    
+    var f_b = this.pairsReversed.ceiling(HeterogeneousPair.makeHeterogeneousPair(b, null));
+    var b0=b==null?null:(f_b!=null && f_b.getFirst().equals(b) ? f_b.getFirst() : b);
+    
+    var p = HeterogeneousPair.makeHeterogeneousPair(a0,b0);
     boolean o = pairs.add(p);
     if(o) pairsReversed.add(p.converse());
+    this.domain.add(a0);
+    this.codomain.add(b0);
     return o;
   }
   
@@ -103,6 +117,10 @@ public class FiniteBinaryRelation<
     var p = HeterogeneousPair.makeHeterogeneousPair(a,b);
     boolean o = pairs.remove(p);
     if(o) pairsReversed.remove(p.converse());
+    var f_a = this.pairs.ceiling(HeterogeneousPair.makeHeterogeneousPair(a, null));
+    if(a==null||f_a==null || !f_a.getFirst().equals(a)) this.domain.remove(a); 
+    var f_b = this.pairsReversed.ceiling(HeterogeneousPair.makeHeterogeneousPair(b, null));
+    if(b==null||f_b==null||!f_b.getFirst().equals(b)) this.codomain.remove(b);
     return o;
   }
   
@@ -110,26 +128,23 @@ public class FiniteBinaryRelation<
   
   public FiniteBinaryRelation<X,Y> intersect(FiniteBinaryRelation<X,Y> S){
     FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
-    o.pairs.addAll(this.pairs);
-    o.pairsReversed.addAll(this.pairsReversed);
-    o.pairs.retainAll(S.pairs);
-    o.pairsReversed.retainAll(S.pairsReversed);
+    for(var p : this) {
+      if(S.apply(p.getFirst(), p.getSecond())) o.add(p.getFirst(), p.getSecond());
+    }
     return o;
   }
   
   public FiniteBinaryRelation<X,Y> union(FiniteBinaryRelation<X,Y> S){
     FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
-    o.pairs.addAll(this.pairs);
-    o.pairsReversed.addAll(this.pairsReversed);
-    o.pairs.addAll(S.pairs);
-    o.pairsReversed.addAll(S.pairsReversed);
+    for(var p : this) o.add(p.getFirst(), p.getSecond());
+    for(var p : S) o.add(p.getFirst(), p.getSecond());
     return o;
   }
   
   public FiniteBinaryRelation<X,Y> minus(FiniteBinaryRelation<X,Y> e) {
     var o = new FiniteBinaryRelation<X,Y>(this);
-    o.pairs.removeAll(e.pairs);
-    o.pairsReversed.removeAll(e.pairsReversed);
+    for(var p : this) o.add(p.getFirst(), p.getSecond());
+    for(var p : e) o.remove(p.getFirst(), p.getSecond());
     return o;
   }
   /***
@@ -158,8 +173,7 @@ public class FiniteBinaryRelation<
    */
   public FiniteBinaryRelation<Y,X> converse(){
     var o = new FiniteBinaryRelation<Y,X>();
-    o.pairs.addAll(pairsReversed);
-    o.pairsReversed.addAll(pairs);
+    for(var p : this) o.add(p.getSecond(), p.getFirst());
     return o;
     }
 
@@ -212,22 +226,18 @@ public class FiniteBinaryRelation<
     return o;
   }
   
-  public TreeSet<X> domain(){
-    TreeSet<X> o = new TreeSet<X>(Ordering.natural().nullsFirst());
-    for(var p : pairs) o.add(p.getFirst());
-    return o;
+  public SortedSet<X> domain(){
+    return UnmodifiableSortedSet.unmodifiableSortedSet(this.domain);
   }
   public boolean domainCovers(Collection<X> s) {
-    return domain().containsAll(s);
+    return this.domain.containsAll(s);
   }
   
-  public TreeSet<Y> codomain(){
-    TreeSet<Y> o = new TreeSet<Y>(Ordering.natural().nullsFirst());
-    for(var p : pairs) o.add(p.getSecond());
-    return o;
+  public SortedSet<Y> codomain(){
+    return UnmodifiableSortedSet.unmodifiableSortedSet(this.codomain);
   }
   public boolean codomainCovers(Collection<Y> s) {
-    return codomain().containsAll(s);
+    return this.codomain.containsAll(s);
   }
   public BiPredicate<X,Y> related(){
     return (t,u) -> pairs.contains(HeterogeneousPair.makeHeterogeneousPair(t, u));

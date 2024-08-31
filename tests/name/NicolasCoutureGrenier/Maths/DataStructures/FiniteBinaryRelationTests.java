@@ -1,5 +1,6 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import junit.framework.TestCase;
@@ -84,7 +85,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testDomain() {
-    TreeSet<String> d = r.domain();
+    SortedSet<String> d = r.domain();
     assertTrue(d.size()==4);
     d.contains(null);
     d.contains("a");
@@ -93,7 +94,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testCodomain() {
-    TreeSet<String> c = r.codomain();
+    SortedSet<String> c = r.codomain();
     assertTrue(c.size()==5);
     c.contains(null);
     c.contains("b");
