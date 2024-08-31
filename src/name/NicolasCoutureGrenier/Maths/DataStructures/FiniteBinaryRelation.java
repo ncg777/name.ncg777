@@ -276,7 +276,8 @@ public class FiniteBinaryRelation<
   }
   
   public boolean isLeftUnique() {
-    return HomogeneousFiniteBinaryRelation.identity(domain()).containsAll(this.compose(this.converse()));
+    return !this.codomain.stream().anyMatch((y) -> this.leftRelata(y).size() > 1);
+    //return HomogeneousFiniteBinaryRelation.identity(domain()).containsAll(this.compose(this.converse()));
   }
   /***
    * Alias for isLeftUnique
@@ -285,7 +286,8 @@ public class FiniteBinaryRelation<
   public boolean isInjective() { return isLeftUnique();}
   public boolean isLeftTotal(Iterable<X> domain) { return converse().isSurjective(domain); }
   public boolean isRightUnique() {
-    return HomogeneousFiniteBinaryRelation.identity(codomain()).containsAll(this.converse().compose(this));
+    return !this.domain.stream().anyMatch((x) -> this.rightRelata(x).size() > 1);
+    //return HomogeneousFiniteBinaryRelation.identity(codomain()).containsAll(this.converse().compose(this));
   }
   /***
    * Alias for isRightUnique
@@ -293,14 +295,15 @@ public class FiniteBinaryRelation<
    */
   public boolean isFunctional() {return isRightUnique();}
   public boolean isSurjective(Iterable<Y> codomain) {
-    return this.converse().compose(this).containsAll(HomogeneousFiniteBinaryRelation.identity(codomain));
+    for(var y : codomain) if(this.leftRelata(y).size() == 0) return false;
+    return true;
   }
   public boolean isFunction(Iterable<X> domain) {return isRightUnique() && isLeftTotal(domain);}
   
   public boolean isManyToMany() {return !isLeftUnique() && !isRightUnique(); }
   public boolean isManyToOne() { return !isLeftUnique() && isRightUnique();}
   public boolean isOneToMany() { return isLeftUnique() && !isRightUnique(); }
-  public boolean isOneToOne() { return isLeftUnique() && !isRightUnique(); }
+  public boolean isOneToOne() { return isLeftUnique() && isRightUnique(); }
   
   public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path) throws IOException {
     PrintWriter p = new PrintWriter(path);

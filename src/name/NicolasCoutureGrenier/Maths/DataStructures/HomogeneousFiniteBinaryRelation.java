@@ -2,7 +2,6 @@ package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
@@ -38,18 +37,7 @@ extends FiniteBinaryRelation<L, L> {
   public static <L extends Comparable<? super L>> HomogeneousFiniteBinaryRelation<L> universal(Iterable<L> domain) {
     return new HomogeneousFiniteBinaryRelation<L>(domain, Relation.fromBiPredicate((L a,L b) -> true));
   }
-  @Override
-  public TreeSet<L> domain(){
-    TreeSet<L> o = new TreeSet<L>();
-    o.addAll(super.domain());
-    o.addAll(super.codomain());
-    return o;
-  }
-  
-  public TreeSet<L> codomain(){
-    return this.domain();
-  }
-  
+    
   public <V extends Comparable<? super V>> HomogeneousFiniteBinaryRelation<L> compose(
       HomogeneousFiniteBinaryRelation<L> e) {
     return new HomogeneousFiniteBinaryRelation<L>(super.compose(e));
