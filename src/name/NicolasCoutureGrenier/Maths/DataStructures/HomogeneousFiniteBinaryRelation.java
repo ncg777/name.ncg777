@@ -163,12 +163,20 @@ extends FiniteBinaryRelation<L, L> {
   
   public boolean isDense() { return isDense(domain()); }
   
+  public void writeToCSV(Function<L,String> lToString, String path, boolean useBase64) throws IOException {
+    super.writeToCSV(lToString, lToString, path, useBase64);
+  }
   public void writeToCSV(Function<L,String> lToString, String path) throws IOException {
-    super.writeToCSV(lToString, lToString, path);
+    super.writeToCSV(lToString, lToString, path, false);
+  }
+  public static <L extends Comparable<? super L>> 
+  HomogeneousFiniteBinaryRelation<L> 
+  readFromCSV (Function<String,L> lParser, String path) throws IOException, CsvException {
+    return readFromCSV(lParser,path,false);
   }
   public static <L extends Comparable<? super L>> 
     HomogeneousFiniteBinaryRelation<L> 
-    readFromCSV (Function<String,L> lParser, String path) throws IOException, CsvException {
-    return new HomogeneousFiniteBinaryRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path));
+    readFromCSV (Function<String,L> lParser, String path,boolean useBase64) throws IOException, CsvException {
+    return new HomogeneousFiniteBinaryRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path, useBase64));
   }
 }
