@@ -28,7 +28,10 @@ public class ComparableList<T extends Comparable<? super T>> extends ArrayList<T
 
   @Override
   public boolean equals(Object obj) {
-    return super.equals(obj);
+    if(!(obj instanceof ComparableList)) return false;
+    @SuppressWarnings("unchecked")
+    ComparableList<T> x = (ComparableList<T>)obj;
+    return compareTo(x) == 0;
   }
 
   @Override

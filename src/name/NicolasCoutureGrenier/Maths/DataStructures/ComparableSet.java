@@ -32,7 +32,10 @@ public class ComparableSet<T> extends TreeSet<T> implements Comparable<Comparabl
 
   @Override
   public boolean equals(Object obj) {
-    return super.equals(obj);
+    if(!(obj instanceof ComparableSet)) return false;
+    @SuppressWarnings("unchecked")
+    ComparableSet<T> x = (ComparableSet<T>)obj;
+    return compareTo(x) == 0;
   }
 
   @Override

@@ -36,7 +36,10 @@ public class ComparableMap<T, U> extends TreeMap<T, U> implements Comparable<Com
 
   @Override
   public boolean equals(Object obj) {
-    return super.equals(obj);
+    if(!(obj instanceof ComparableMap)) return false;
+    @SuppressWarnings("unchecked")
+    ComparableMap<T,U> x = (ComparableMap<T,U>)obj;
+    return compareTo(x) == 0;
   }
 
   @Override
