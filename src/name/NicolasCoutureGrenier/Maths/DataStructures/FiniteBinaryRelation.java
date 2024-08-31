@@ -49,7 +49,7 @@ import name.NicolasCoutureGrenier.Maths.Relations.Relation;
  */
 public class FiniteBinaryRelation<
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>, Relation<X,Y>{
+  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>, Relation<X,Y> {
   
   protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>(Ordering.natural().nullsFirst());
   protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
@@ -79,6 +79,7 @@ public class FiniteBinaryRelation<
       add(x, f.apply(x));
     }
   }
+  
   public static <
   X extends Comparable<? super X>,
   Y extends Comparable<? super Y>>  FiniteBinaryRelation<X,Y> universal(Iterable<X> domain,Iterable<Y> codomain) {
@@ -124,6 +125,19 @@ public class FiniteBinaryRelation<
     return o;
   }
   
+  public void spawnRight(Function<X,Iterable<Y>> multiplier, SortedSet<X> domain) {
+    for(var x : domain) {
+      for(var s : multiplier.apply(x)) add(x,s);
+    }
+  }
+  public void spawnRight(Function<X,Iterable<Y>> multiplier) { spawnRight(multiplier,domain());  }
+  
+  public void spawnLeft(Function<Y,Iterable<X>> multiplier, SortedSet<Y> codomain) {
+    for(var y : codomain) {
+      for(var s : multiplier.apply(y)) add(s,y);
+    }
+  }
+  public void spawnLeft(Function<Y,Iterable<X>> multiplier) { spawnLeft(multiplier,codomain());  }
   public boolean containsAll(FiniteBinaryRelation<X,Y> r) { return pairs.containsAll(r.pairs); }
   
   public FiniteBinaryRelation<X,Y> intersect(FiniteBinaryRelation<X,Y> S){
@@ -275,28 +289,33 @@ public class FiniteBinaryRelation<
     return o;
   }
   
-  public boolean isLeftUnique() {
+  public boolean isLeftUnique(Iterable<Y> codomain) {
     return !this.codomain.stream().anyMatch((y) -> this.leftRelata(y).size() > 1);
   }
+  public boolean isLeftUnique() {return isLeftUnique(codomain());}
   /***
    * Alias for isLeftUnique
    * @return
    */
   public boolean isInjective() { return isLeftUnique();}
-  public boolean isLeftTotal(Iterable<X> domain) { return converse().isSurjective(domain); }
-  public boolean isRightUnique() {
+  public boolean isLeftTotal(Iterable<X> domain) { 
+    for(var x : domain) if(this.rightRelata(x).size() == 0) return false;
+    return true;
+  }
+  public boolean isRightUnique(Iterable<X> domain) {
     return !this.domain.stream().anyMatch((x) -> this.rightRelata(x).size() > 1);
   }
+  public boolean isRightUnique() {return isRightUnique(domain());}
   /***
    * Alias for isRightUnique
    * @return
    */
-  public boolean isFunctional() {return isRightUnique();}
+  public boolean isFunctional() {return isRightUnique(domain());}
   public boolean isSurjective(Iterable<Y> codomain) {
     for(var y : codomain) if(this.leftRelata(y).size() == 0) return false;
     return true;
   }
-  public boolean isFunction(Iterable<X> domain) {return isRightUnique() && isLeftTotal(domain);}
+  public boolean isFunctional(Iterable<X> domain) {return isRightUnique(domain) && isLeftTotal(domain);}
   
   public boolean isManyToMany() {return !isLeftUnique() && !isRightUnique(); }
   public boolean isManyToOne() { return !isLeftUnique() && isRightUnique();}

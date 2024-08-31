@@ -1,6 +1,7 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 
 import junit.framework.TestCase;
@@ -142,7 +143,10 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testIsLeftTotal() {
+      var t = new TreeSet<String>();
+      t.add("not there");
       assertTrue(r.isLeftTotal(r.domain()));
+      assertFalse(r.isLeftTotal(t));
   }
 
   public final void testIsSurjective() {
