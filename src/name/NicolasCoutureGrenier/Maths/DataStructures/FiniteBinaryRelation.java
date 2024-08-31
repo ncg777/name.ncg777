@@ -277,7 +277,6 @@ public class FiniteBinaryRelation<
   
   public boolean isLeftUnique() {
     return !this.codomain.stream().anyMatch((y) -> this.leftRelata(y).size() > 1);
-    //return HomogeneousFiniteBinaryRelation.identity(domain()).containsAll(this.compose(this.converse()));
   }
   /***
    * Alias for isLeftUnique
@@ -287,7 +286,6 @@ public class FiniteBinaryRelation<
   public boolean isLeftTotal(Iterable<X> domain) { return converse().isSurjective(domain); }
   public boolean isRightUnique() {
     return !this.domain.stream().anyMatch((x) -> this.rightRelata(x).size() > 1);
-    //return HomogeneousFiniteBinaryRelation.identity(codomain()).containsAll(this.converse().compose(this));
   }
   /***
    * Alias for isRightUnique
