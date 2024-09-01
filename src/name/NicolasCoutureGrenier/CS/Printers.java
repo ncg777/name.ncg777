@@ -3,8 +3,13 @@ package name.NicolasCoutureGrenier.CS;
 import java.util.Base64;
 import java.util.function.Function;
 
+import com.google.common.base.Joiner;
+
+import java.util.List;
+
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.DataStructures.TreeNode;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Printers {
@@ -19,12 +24,21 @@ public class Printers {
     ss.add(p.getSecond());
     return ss.toString();
   };
-  
+
+  public static <T> Function<List<T>,String> listPrinter(Function<T,String> printer) {
+    return (l) -> Joiner.on(" ").join(l.stream().map(printer).toList());
+  }
   public static <T extends Comparable<? super T>> Function<T,String> base64Decorator(Function<T,String> printer) {
     return (var x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));
   }
   
   public static <T extends Comparable<? super T>> Function<T,String> nullDecorator(Function<T,String> printer) {
     return (x) -> x == null ? "null" : printer.apply(x);
+  }
+  
+  public static <T extends Comparable<? super T>> Function<TreeNode<T>,String> treeNodeDecorator(Function<T,String> printer) {
+    return (TreeNode<T> x) -> {
+      return x.toArrayString(printer);
+    };
   }
  }

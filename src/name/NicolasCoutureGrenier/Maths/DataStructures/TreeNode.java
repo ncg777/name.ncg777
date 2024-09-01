@@ -70,15 +70,13 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
   
   private void toJSONArrayString(Function<T,String> printer, TreeNode<T> root, JsonGenerator gen) {
     try {
-      if(root.content != null) { gen.writeString(printer.apply(this.content));}
+      if(root.content != null) { gen.writeRaw(printer.apply(this.content));}
       for(int i=0;i<this.size();i++) {
         toJSONArrayString(printer, root.get(i), gen);
       }  
     } catch(IOException e) {
       e.printStackTrace();
     }
-    
-    //return toString(0,"",0,",","[","]", printer);
   }
   public static <T> TreeNode<T> parseJSONArray(String str, Function<String,T> parser) {
     return TreeNode.parseArray(str,parser,new TreeNode<T>());
@@ -89,11 +87,14 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
       var p = b.createParser(str).readValueAsTree();
       
       for(int i=0;i<p.size();i++) {
+        
         var t = p.get(i);
         if(!t.isArray()) {
           root.add(new TreeNode<T>(parser.apply(t.toString()), root));
         } else { 
-          root.add(parseArray(t.toString(), parser,root));
+          var n = parseArray(t.toString(), parser, root);
+          
+          root.add(n);
         } 
       }
       
@@ -108,7 +109,9 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return null;
     
   }
-  
+  public String toArrayString(Function<T,String> printer) { 
+    return toString(0,"",0,",","[","]", printer);
+  }
   public String toString(
       final int level, 
       final String indentationStr, 
