@@ -23,8 +23,6 @@ public class Parsers {
   };
   public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);
   public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);
-  public static Function<String,Tuple<Integer>> integerTupleParser = tupleDecorator(integerParser);
-  public static Function<String,Tuple<Double>> doubleTupleParser = tupleDecorator(doubleParser);
   public static Function<String, HomogeneousPair<Integer>> intPairParser = (s) -> {
     Sequence ss = Sequence.parse(s);
     return HomogeneousPair.makeHomogeneousPair(ss.get(0), ss.get(1));
@@ -37,6 +35,7 @@ public class Parsers {
   public static <X> Function<String,X> nullDecorator(Function<String,X> parser) {
     return (s) -> s.equals("null") ? null : parser.apply(s);
   }
+
   public static <T extends Comparable<? super T>> 
     Function<String,Tuple<T>> tupleDecorator(Function<String,T> parser) {
       return (s) -> Tuple.fromString(s,parser);

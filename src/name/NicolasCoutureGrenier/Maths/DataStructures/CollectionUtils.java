@@ -50,6 +50,7 @@ public class CollectionUtils {
     return (i) -> permutation[i];
   }
   
+  @SuppressWarnings("null")
   public static int getPermutationOrder(Integer[] permutation) {
     TreeSet<Sequence> cs = getPermutationAsDisjointCycles(permutation);
     

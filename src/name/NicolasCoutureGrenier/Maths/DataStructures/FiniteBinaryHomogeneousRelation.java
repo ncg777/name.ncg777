@@ -1,12 +1,17 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import com.opencsv.exceptions.CsvException;
 
+import name.NicolasCoutureGrenier.CS.Printers;
+import name.NicolasCoutureGrenier.Maths.Enumerations.HeterogeneousPairEnumeration;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 
 public class FiniteBinaryHomogeneousRelation<L extends Comparable<? super L>>
@@ -178,5 +183,92 @@ extends FiniteBinaryRelation<L, L> {
     FiniteBinaryHomogeneousRelation<L> 
     readFromCSV (Function<String,L> lParser, String path,boolean useBase64) throws IOException, CsvException {
     return new FiniteBinaryHomogeneousRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path, useBase64));
+  }
+  
+  private static class ArrayRelation <
+    X extends Comparable<? super X>
+  > extends FiniteBinaryHomogeneousRelation<Tuple<X>> {
+    @SuppressWarnings({"unused"})
+    public boolean add(X[] a, X[] b) {
+      return super.add(Tuple.create(a), Tuple.create(b));
+    }
+    @SuppressWarnings("unused")
+    public boolean remove(X[] a, X[] b) {
+      return super.remove(Tuple.create(a), Tuple.create(b));
+    }
+    @SuppressWarnings("unused")
+    public Predicate<X[]> rightRelated(X[] e) {
+      return (t) -> super.rightRelated(Tuple.create(e)).test(Tuple.create(t));
+    }
+    
+    @SuppressWarnings({"unchecked", "unused"})
+    public TreeSet<X[]> rightRelata(X[] e) {
+      var o = new TreeSet<X[]>();
+      for(var t : super.rightRelata(Tuple.create(e))) {
+        o.add((X[])t.toArray());
+      }
+      
+      return o;
+    }
+    
+    @SuppressWarnings("unused")
+    public void writeArraysToCSV(
+        Function<X, String> xToString,
+        String path, boolean useBase64) throws IOException {
+      super.writeToCSV(Printers.tupleDecorator(xToString), path, useBase64);
+    }
+    
+    @SuppressWarnings("unused")
+    public boolean apply(X[] a, X[] b) {
+      return super.apply(Tuple.create(a), Tuple.create(b));
+    }
+  }
+  
+  public static <
+    X extends Comparable<? super X>
+  > ArrayRelation<X> arrayRelation() {
+    return new ArrayRelation<X>();
+  }
+  public static <
+    X extends Comparable<? super X>
+  > ArrayRelation<X> arrayRelation(Map<X[],X[]> map) {
+    ArrayRelation<X> r = arrayRelation();
+    
+    for(var e : map.entrySet()) {
+      r.add(e.getKey(),e.getValue());
+    }
+    return r;
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static <
+    X extends Comparable<? super X>
+  >  ArrayRelation<X> arrayRelation(Iterable<X[]> domain, Iterable<X[]> codomain, BiPredicate<X[],X[]> rel) {
+    ArrayRelation<X> r = arrayRelation();
+    TreeSet<Tuple<X>> d = new TreeSet<Tuple<X>>();
+    for(var x : domain) d.add(Tuple.create(x));
+    TreeSet<Tuple<X>> c = new TreeSet<Tuple<X>>();
+    for(var y : codomain) c.add(Tuple.create(y));
+    
+    for(var p : Collections.list(new HeterogeneousPairEnumeration<Tuple<X>,Tuple<X>>(d,c))) {
+      var xa = (X[]) p.getFirst().toArray();
+      var xb = (X[]) p.getSecond().toArray();
+      if(rel.test(xa, xb)) {
+        r.add(xa, xb);
+      }
+    }
+    
+    return r;
+  }
+  
+  public static <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>
+  > ArrayRelation<X> arrayRelation(Iterable<X[]> domain, Function<X[],X[]> f) {
+    var r = new ArrayRelation<X>();
+    for(var x : domain) {
+      r.add(x, f.apply(x));
+    }
+    return r;
   }
 }
