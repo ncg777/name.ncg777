@@ -2,11 +2,11 @@ package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.function.Function;
 
 import com.google.common.base.Joiner;
 
 public class TreeNode<T> extends ArrayList<TreeNode<T>> {
-  private static final int tabSpaces = 1;
   private static final long serialVersionUID = 1L;
 
   T content;
@@ -40,12 +40,22 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     }
     return current;
   }
+  
   public String toString() {
-    return this.directDescendantsString(0); 
+    return this.toString(0, " ", 1,"\n","[", "]", (s) -> s.toString()); 
   }
-  public String directDescendantsString(int level) {
+  
+  public String toString(
+      final int level, 
+      final String indentationStr, 
+      final int indentationCount,
+      final String nodeSeparator,
+      final String leftEnclose, 
+      final String rightEnclose, 
+      final Function<T,String> printer
+      ) {
     String indent = "";
-    for(int x=0;x<tabSpaces;x++) indent+="\t";
+    for(int x=0;x<(indentationCount*level);x++) indent+=indentationStr;
     final String indent1 = indent;
     
     StringBuilder b = new StringBuilder();
@@ -53,9 +63,28 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     while (i.hasNext()) {
       var t = i.next();
       
-      b.append(Joiner.on(",\n").join(t.stream().map((q) -> indent1 + q.directDescendantsString(level+1)).toList()));
+      b.append(
+          indent1 +
+          leftEnclose +
+          printer.apply(t.getNode()) + 
+          rightEnclose +
+          nodeSeparator + 
+          Joiner.on(nodeSeparator).join(
+          t.stream().<String>map(
+              (q) -> { 
+                return 
+                  ( q.toString(
+                      level+1, 
+                      indentationStr, 
+                      indentationCount, 
+                      nodeSeparator, 
+                      leftEnclose, 
+                      rightEnclose,
+                      printer));
+                }
+              ).toList()
+       ) + nodeSeparator);
     }
-    b.append("\n");
     return b.toString();
   }
 }
