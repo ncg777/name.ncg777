@@ -29,13 +29,9 @@ public class Printers {
     return (x) -> x == null ? "null" : printer.apply(x);
   }
   
-  @SuppressWarnings({"unchecked", "rawtypes"})
   public static <
-    T extends Comparable<? super T>,
-    R extends Comparable<? super R>
-  > Function<R, String> tupleDecorator(Function<T, String> xToString) {
-    return (t) -> (t instanceof R) ? 
-        ((Tuple)t).toString((Function<R,String>)tupleDecorator(xToString)) :
-        xToString.apply((T)t);
+    T extends Comparable<? super T>
+    > Function<Tuple<T>,String> tupleDecorator(Function<T, String> xToString) {
+    return (Tuple<T> t) -> t.toString(xToString);
   }
  }

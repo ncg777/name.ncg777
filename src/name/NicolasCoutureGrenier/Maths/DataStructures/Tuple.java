@@ -48,10 +48,17 @@ public class Tuple<T extends Comparable<? super T>> extends ComparableList<T> {
           "["+
             Joiner.on(",").join(
                 this.stream().<String>map(
-                    (t) -> 
-                        (t instanceof Tuple) ? 
-                            ((Tuple) t).toString(printer) : 
-                            printer.apply(t)
+                    (t) -> {
+                      if(t instanceof Tuple) { 
+                         return ((Tuple) t).toString(printer);
+                      } else if(t instanceof List) {
+                        return (Tuple.create((List)t)).toString(printer);
+                      } else if(t.getClass().isArray()) {
+                        return (Tuple.create(t)).toString(printer);
+                      } else {
+                        return printer.apply(t);
+                      }
+                    } 
                 ).toList()
               ) +
           "]";
