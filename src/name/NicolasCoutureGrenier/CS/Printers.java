@@ -21,16 +21,21 @@ public class Printers {
     return ss.toString();
   };
   
-  public static <X> Function<X,String> base64Decorator(Function<X,String> printer) {
-    return (X x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));
+  public static <T extends Comparable<? super T>> Function<T,String> base64Decorator(Function<T,String> printer) {
+    return (var x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));
   }
   
-  public static <X> Function<X,String> nullDecorator(Function<X,String> printer) {
+  public static <T extends Comparable<? super T>> Function<T,String> nullDecorator(Function<T,String> printer) {
     return (x) -> x == null ? "null" : printer.apply(x);
   }
   
-  public static <X extends Comparable<? super X>> 
-    Function<Tuple<X>, String> tupleDecorator(Function<X,String> printer) {
-      return (t) -> t.toString(printer);
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public static <
+    T extends Comparable<? super T>,
+    R extends Comparable<? super R>
+  > Function<R, String> tupleDecorator(Function<T, String> xToString) {
+    return (t) -> (t instanceof R) ? 
+        ((Tuple)t).toString((Function<R,String>)tupleDecorator(xToString)) :
+        xToString.apply((T)t);
   }
  }

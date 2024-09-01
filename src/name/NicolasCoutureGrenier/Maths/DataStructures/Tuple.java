@@ -9,43 +9,58 @@ import org.apache.commons.collections4.list.UnmodifiableList;
 
 import com.google.common.base.Joiner;
 
+
 public class Tuple<T extends Comparable<? super T>> extends ComparableList<T> {
-  
-  /**
-   * 
-   */
   private static final long serialVersionUID = 1L;
-  public static <T extends Comparable<? super T>> Tuple<T> create(List<T> arr) {
-    return new Tuple<T>(
-        UnmodifiableList.<T>unmodifiableList(
-            new ComparableList<T>(arr)));
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public static <S> Tuple create(List<S> arr) {
+    return new Tuple(
+        UnmodifiableList.<S>unmodifiableList(
+            new ComparableList(arr)));
   }
-  @SuppressWarnings("unchecked")
-  public static <T extends Comparable<? super T>> Tuple<T> create(T[] arr) {
-    var arrClass = arr.getClass();
+  
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public static <S> Tuple create(S obj) {
+    if(obj instanceof List) return create((List)obj);
+    
+    var arrClass = obj.getClass();
     var arrayType = arrClass.arrayType();
     if(arrayType.isArray()) {
-      List<Tuple<T>> o = new ArrayList<>();
-      for(var e : arr) {
-         o.add(create(Arrays.asList(e)));    
+      List<Tuple> o = new ArrayList<>();
+      for(var e : (Object[])obj) {
+         o.add(create(e));    
       }
-      return (Tuple<T>)Tuple.create(o);
+      return (Tuple)Tuple.create(o);
     }
-    return new Tuple<T>(
-        UnmodifiableList.<T>unmodifiableList(
-            new ComparableList<T>(Arrays.asList(arr))));
+    return new Tuple(
+        UnmodifiableList.unmodifiableList(
+            new ComparableList(Arrays.asList(obj))));
   }
+  
   private Tuple(List<T> l) {
     super(l);
   }
   
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public String 
     toString(Function<T,String> printer) {
-      return "["+Joiner.on(",").join(this.stream().map(printer).toList())+"]";
+      return 
+          "["+
+            Joiner.on(",").join(
+                this.stream().<String>map(
+                    (t) -> 
+                        (t instanceof Tuple) ? 
+                            ((Tuple) t).toString(printer) : 
+                            printer.apply(t)
+                ).toList()
+              ) +
+          "]";
   }
   
-  public static <X extends Comparable<? super X>> Tuple<X> 
-    fromString(String s, Function<String, X> parser) {
+  
+  @SuppressWarnings("rawtypes")
+  public static <S> Tuple 
+    fromString(String s, Function<String, S> parser) {
       return Tuple.create(Arrays.asList(s.substring(1, s.length()-1).split(",")).stream().map(parser).toList());
   }
 }

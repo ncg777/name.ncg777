@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -338,20 +339,23 @@ public class FiniteBinaryRelation<
   public static <
     X extends Comparable<? super X>,
     Y extends Comparable<? super Y>> void writeToCSV(
-        FiniteBinaryRelation<X,Y> rel,
-        Function<X,String> xToString, 
-        Function<Y,String> yToString, 
+        FiniteBinaryRelation<X, Y> finiteBinaryRelation,
+        Function<X, String> xToString, 
+        Function<Y, String> yToString, 
         String path, boolean useBase64) throws IOException {
     PrintWriter p = new PrintWriter(path);
     CSVWriter w = new CSVWriter(p,',', '"','\\', "\n");
-    if(useBase64) { 
-      xToString = Printers.base64Decorator(xToString);
-      yToString = Printers.base64Decorator(yToString);
-    }
-    final var fxp = Printers.nullDecorator(xToString);
-    final var fyp = Printers.nullDecorator(yToString);
+    Function<X,String> xp = (x) -> xToString.apply((X)x);
+    Function<Y,String> yp = (y) -> yToString.apply((Y)y);
     
-    w.writeAll(rel.pairs.stream().map((t) -> {
+    if(useBase64) { 
+      xp = Printers.base64Decorator(xp);
+      yp = Printers.base64Decorator(yp);
+    }
+    final var fxp = Printers.nullDecorator(xp);
+    final var fyp = Printers.nullDecorator(yp);
+    
+    w.writeAll(finiteBinaryRelation.pairs.stream().map((t) -> {
       String[] arr = new String[2];
       arr[0] = fxp.apply(t.getFirst());
       arr[1] = fyp.apply(t.getSecond());
@@ -361,8 +365,8 @@ public class FiniteBinaryRelation<
     w.close();
     p.close();
   }
-  public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path, boolean useBase64) throws IOException {
-    writeToCSV(this,xToString,yToString,path,useBase64);
+  public void writeToCSV(Function<X, String> xFunction, Function<Y,String> yToString, String path, boolean useBase64) throws IOException {
+    writeToCSV(this,xFunction,yToString,path,useBase64);
   }
   public void writeToCSV(Function<X,String> xToString, Function<Y,String> yToString, String path) throws IOException {
     writeToCSV(this,xToString,yToString,path,false);
@@ -456,208 +460,216 @@ public class FiniteBinaryRelation<
     
     return it.compare(this, o);
   }
- 
+  
+  @SuppressWarnings({"unchecked"})
   public static class ArrayRelationX <
     X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > extends FiniteBinaryRelation<Tuple<X>,Y> {
-    public boolean add(X[] x, Y y) {
-      return super.add(Tuple.create(x), y);
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>
+  > extends FiniteBinaryRelation<R,Y> {
+    public ArrayRelationX() {
+      super();
+    }
+    public boolean add(R x, Y y) {
+      return super.add(x, y);
     }
     
-    public boolean remove(X[] a, Y b) {
-      return super.remove(Tuple.create(a), b);
+    public boolean remove(R a, Y b) {
+      return super.remove(a, b);
     }
     
-    public Predicate<Y> rightRelated(X[] e) {
-      return super.rightRelated(Tuple.create(e));
+    public Predicate<Y> rightRelated(R e) {
+      return super.rightRelated(e);
     }
     
-    public TreeSet<Y> rightRelata(X[] e) {
-      return super.rightRelata(Tuple.create(e));
+    public TreeSet<Y> rightRelata(R e) {
+      return super.rightRelata(e);
     }
     
     public static <
-      R extends Comparable<? super R>,
-      S extends Comparable<? super S>
-    > void writeToCSV(ArrayRelationX<R,S> rel,
-        Function<R, String> xToString,
-        Function<S, String> yToString,
-        String path, boolean useBase64) throws IOException {
-      rel.writeToCSV(Printers.tupleDecorator(xToString), yToString, path, useBase64);
+      X extends Comparable<? super X>,
+      Y extends Comparable<? super Y>,
+      R extends Comparable<? super R>
+    > void writeToCSV(ArrayRelationX<X,Y,R> rel,
+      Function<R, String> rToString,
+      Function<Y, String> yToString,
+      String path, boolean useBase64) throws IOException {
+      rel.writeToCSV(rToString, yToString, path, useBase64);
     }
     
-    public boolean apply(X[] a, Y b) {
-      return super.apply(Tuple.create(a), b);
+    public boolean apply(R a, Y b) {
+      return super.apply((R)Tuple.create(a), b);
     }
   }
 
   public static <
     X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > ArrayRelationX<X,Y> arrayRelationX() {
-    return new ArrayRelationX<X,Y>();
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>
+  > ArrayRelationX<X,Y,R> arrayRelationX() {
+    return new ArrayRelationX<X,Y,R>();
   }
   
   public static <
     X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > ArrayRelationX<X,Y> arrayRelationX(Map<X[],Y> map) {
-    ArrayRelationX<X,Y> r = arrayRelationX();
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>
+  > ArrayRelationX<X,Y,R> arrayRelationX(Map<R,Y> map) {
+    ArrayRelationX<X,Y,R> r = arrayRelationX();
     
     for(var e : map.entrySet()) {
       r.add(e.getKey(),e.getValue());
     }
     return r;
   }
-  
   public static <
     X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  >  ArrayRelationX<X,Y> arrayRelationX(Iterable<X[]> domain, Iterable<Y> codomain, BiPredicate<X[],Y> rel) {
-    ArrayRelationX<X,Y> r = arrayRelationX();
-    TreeSet<Tuple<X>> d = new TreeSet<Tuple<X>>();
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>
+  > ArrayRelationX<X,Y,R> arrayRelationX(R domain, Y codomain, BiPredicate<R,Y> rel) {
+    Iterable<R> d = Arrays.asList(domain);
+    Iterable<Y> c = Arrays.asList(codomain);
+    return ArrayRelationX.arrayRelationX(d,c,rel);
+  }
+  
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public static <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>
+  >  ArrayRelationX<X,Y,R> arrayRelationX(Iterable<R> domain, Iterable<Y> codomain, BiPredicate<R,Y> rel) {
+    ArrayRelationX<X,Y,R> r = arrayRelationX();
+    var d = new TreeSet<Tuple>();
     for(var x : domain) d.add(Tuple.create(x));
-    TreeSet<Y> c = new TreeSet<Y>();
+    var c = new TreeSet<Y>();
     for(var y : codomain) c.add(y);
     
-    for(var p : Collections.list(new HeterogeneousPairEnumeration<Tuple<X>,Y>(d,c))) {
-      @SuppressWarnings("unchecked")
-      var t = (X[])p.getFirst().toArray();
-      if(rel.test(t, p.getSecond())) {
-        r.add(p.getFirst(),p.getSecond());
+    for(var p : CollectionUtils.cartesianProduct(d,c)) {
+      var ta = ((R)(((HeterogeneousPair)p).getFirst()));
+      var tb = (Y)(((HeterogeneousPair)p).getSecond());
+      if(((BiPredicate)rel).test((Object)ta, (Object)tb)) {
+        r.add(ta, tb);
       }
     }
     
-    return r;
-  }
-  
-  public static <
-    X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > ArrayRelationX<X,Y> arrayRelationX(Iterable<X[]> domain, Function<X[],Y> f) {
-    var r = new ArrayRelationX<X,Y>();
-    for(var x : domain) {
-      r.add(x, f.apply(x));
-    }
-    return r;
-  }
-  
-  public static class ArrayRelationY <
-    X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > extends ArrayRelationX<Y,X> {
-    public boolean add(Y[] t, X x) {
-      return super.add(t, x);
-    }
-    
-    public boolean remove(Y[] a, X b) {
-      return super.remove(Tuple.create(a), b);
-    }
-
-    public Predicate<X> rightRelated(Y[] e) {
-      return super.rightRelated(Tuple.create(e));
-    }
-
-    public TreeSet<X> rightRelata(Y[] e) {
-      return super.rightRelata(Tuple.create(e));
-    }
-    
-    public static <
-      R extends Comparable<? super R>,
-      S extends Comparable<? super S>
-    > void writeToCSV(ArrayRelationY<R,S> rel,
-        Function<R, String> xToString,
-        Function<S, String> yToString,
-        String path, boolean useBase64) throws IOException {
-      ArrayRelationX.writeToCSV(rel,yToString, xToString, path, useBase64);
-    }
-    
-    public boolean apply(Y[] a, X b) {
-      return super.apply(Tuple.create(a), b);
-    }
-  }
-
-  public static <
-    X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > FiniteBinaryRelation<X,Tuple<Y>> arrayRelationY() {
-    return FiniteBinaryRelation.<Y,X>arrayRelationX().converse();
-  }
-  
-  public static class ArrayRelationXY <
-    X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > extends FiniteBinaryRelation<Tuple<X>,Tuple<Y>> {
-    public boolean add(X[] a, Y[] b) {
-      return super.add(Tuple.create(a), Tuple.create(b));
-    }
-    public boolean remove(X[] a, Y[] b) {
-      return super.remove(Tuple.create(a), Tuple.create(b));
-    }
-    public Predicate<Y[]> rightRelated(X[] e) {
-      return (t) -> super.rightRelated(Tuple.create(e)).test(Tuple.create(t));
-    }
-    
-    @SuppressWarnings("unchecked")
-    public TreeSet<Y[]> rightRelata(X[] e) {
-      var o = new TreeSet<Y[]>();
-      for(var t : super.rightRelata(Tuple.create(e))) {
-        o.add((Y[])t.toArray());
-      }
-      return o;
-    }
-    
-    public static <
-      R extends Comparable<? super R>,
-      S extends Comparable<? super S>
-    > void writeToCSV(ArrayRelationXY<R,S> rel,
-        Function<R, String> xToString,
-        Function<S, String> yToString,
-        String path, boolean useBase64) throws IOException {
-      rel.writeToCSV(Printers.tupleDecorator(xToString), Printers.tupleDecorator(yToString), path, useBase64);
-    }
-    
-    @SuppressWarnings("unused")
-    public boolean apply(X[] a, Y[] b) {
-      return super.apply(Tuple.create(a), Tuple.create(b));
-    }
-  }
-  
-  public static <
-    X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > ArrayRelationXY<X,Y> arrayRelationXY() {
-    return new ArrayRelationXY<X,Y>();
-  }
-  public static <
-    X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > ArrayRelationXY<X,Y> arrayRelationXY(Map<X[],Y[]> map) {
-    ArrayRelationXY<X,Y> r = arrayRelationXY();
-    
-    for(var e : map.entrySet()) {
-      r.add(e.getKey(),e.getValue());
-    }
     return r;
   }
   
   @SuppressWarnings("unchecked")
   public static <
     X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  >  ArrayRelationXY<X,Y> arrayRelationXY(Iterable<X[]> domain, Iterable<Y[]> codomain, BiPredicate<X[],Y[]> rel) {
-    ArrayRelationXY<X,Y> r = arrayRelationXY();
-    TreeSet<Tuple<X>> d = new TreeSet<Tuple<X>>();
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>
+  > ArrayRelationX<X,Y,R> arrayRelationX(Iterable<R> domain, Function<R,Y> f) {
+    ArrayRelationX<X,Y,R> r = arrayRelationX();
+    for(R x : domain) {
+      r.add((R)Tuple.create(x), (Y)f.apply(x));
+    }
+    return r;
+  }
+  
+  public static class ArrayRelationY <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>
+  > extends ArrayRelationX<Y,X,R> {
+    
+  }
+
+  @SuppressWarnings({"unchecked"})
+  public static class ArrayRelationXY <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>,
+    S extends Comparable<? super S>
+  >
+  extends FiniteBinaryRelation<R,S> {
+    public boolean add(R a, S b) {
+      return super.add((R)Tuple.create(a), (S)Tuple.create(b));
+    }
+    public boolean remove(R a, S b) {
+      return super.remove((R)Tuple.create(a), (S)Tuple.create(b));
+    }
+    public Predicate<S> rightRelated(R e) {
+      return (Predicate<S>) (b) -> 
+      {
+        return super.rightRelated((R)Tuple.create(e)).test((S)Tuple.create((Object)b));
+      };
+    }
+    
+    public TreeSet<S> rightRelata(R e) {
+      var o = new TreeSet<S>();
+      for(var t : super.rightRelata((R)Tuple.create(e))) {
+        o.add((S)t);
+      }
+      return o;
+    }
+    
+    public static <
+      X extends Comparable<? super X>,
+      Y extends Comparable<? super Y>,
+      R extends Comparable<? super R>,
+      S extends Comparable<? super S>
+    > void writeToCSV(ArrayRelationXY<X,Y,R,S> rel,
+        Function<X, String> xToString,
+        Function<Y, String> yToString,
+        String path, boolean useBase64) throws IOException {
+      rel.writeToCSV((Function<R,String>)Printers.tupleDecorator(xToString), (Function<S,String>)Printers.tupleDecorator(yToString), path, useBase64);
+    }
+  }
+  
+  public static <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>,
+    S extends Comparable<? super S>
+  > ArrayRelationXY<X,Y,R,S> arrayRelationXY() {
+    return new ArrayRelationXY<X,Y,R,S>();
+  }
+  public static <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>,
+    S extends Comparable<? super S>
+  > ArrayRelationXY<X,Y,R,S> arrayRelationXY(Map<R,S> map) {
+    ArrayRelationXY<X,Y,R,S> r = arrayRelationXY();
+    
+    for(var e : map.entrySet()) {
+      r.add(e.getKey(),e.getValue());
+    }
+    return r;
+  }
+  
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public static <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>,
+    S extends Comparable<? super S>
+  >  ArrayRelationXY<X,Y,R,S> arrayRelationXY(Iterable<R> domain, Iterable<S> codomain, BiPredicate<R,S> rel) {
+    ArrayRelationXY<X,Y,R,S> r = new ArrayRelationXY<X,Y,R,S>();
+    var d = new TreeSet<Tuple>();
     for(var x : domain) d.add(Tuple.create(x));
-    TreeSet<Tuple<Y>> c = new TreeSet<Tuple<Y>>();
+    var c = new TreeSet<Tuple>();
     for(var y : codomain) c.add(Tuple.create(y));
     
-    for(var p : Collections.list(new HeterogeneousPairEnumeration<Tuple<X>,Tuple<Y>>(d,c))) {
-      var xa = (X[]) p.getFirst().toArray();
-      var xb = (Y[]) p.getSecond().toArray();
-      if(rel.test(xa, xb)) {
-        r.add(xa, xb);
+    for(var p : CollectionUtils.cartesianProduct(d,c)) {
+      R ta = ((R)(((HeterogeneousPair)p).getFirst()));
+      S tb = ((S)(((HeterogeneousPair)p).getSecond()));
+      if(((BiPredicate)rel).test((Object)ta, (Object)tb)) {
+        if(ta instanceof Tuple) {
+          if(tb instanceof Tuple) {
+            r.add(ta,tb);
+          } else {
+            r.add(ta, (S)Tuple.create(tb));
+          }
+        } else {
+          if(tb instanceof Tuple) {
+            r.add((R)Tuple.create(ta),tb);
+          } else {
+            r.add((R)Tuple.create(ta),(S)Tuple.create(tb));
+          }
+        }
       }
     }
     
@@ -666,9 +678,20 @@ public class FiniteBinaryRelation<
   
   public static <
     X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > ArrayRelationXY<X,Y> arrayRelationXY(Iterable<X[]> domain, Function<X[],Y[]> f) {
-    var r = new ArrayRelationXY<X,Y>();
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>,
+    S extends Comparable<? super S>
+  > ArrayRelationXY<X,Y,R,S> arrayRelationXY(R[] domain, S[] codomain, BiPredicate<R,S> rel) {
+    return arrayRelationXY((Iterable<R>)Arrays.asList(domain),(Iterable<S>)Arrays.asList(codomain),(BiPredicate<R,S>)rel);
+  }
+  
+  public static <
+    X extends Comparable<? super X>,
+    Y extends Comparable<? super Y>,
+    R extends Comparable<? super R>,
+    S extends Comparable<? super S>
+  > ArrayRelationXY<X,Y,R,S> arrayRelationXY(Iterable<R> domain, Function<R,S> f) {
+    ArrayRelationXY<X,Y,R,S> r = new ArrayRelationXY<X,Y,R,S>();
     for(var x : domain) {
       r.add(x, f.apply(x));
     }

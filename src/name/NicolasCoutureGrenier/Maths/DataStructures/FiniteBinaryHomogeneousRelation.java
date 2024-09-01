@@ -1,7 +1,7 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 import com.opencsv.exceptions.CsvException;
 
 import name.NicolasCoutureGrenier.CS.Printers;
-import name.NicolasCoutureGrenier.Maths.Enumerations.HeterogeneousPairEnumeration;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 
 public class FiniteBinaryHomogeneousRelation<L extends Comparable<? super L>>
@@ -184,55 +183,59 @@ extends FiniteBinaryRelation<L, L> {
     readFromCSV (Function<String,L> lParser, String path,boolean useBase64) throws IOException, CsvException {
     return new FiniteBinaryHomogeneousRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path, useBase64));
   }
-  
-  private static class ArrayRelation <
-    X extends Comparable<? super X>
-  > extends FiniteBinaryHomogeneousRelation<Tuple<X>> {
-    @SuppressWarnings({"unused"})
-    public boolean add(X[] a, X[] b) {
-      return super.add(Tuple.create(a), Tuple.create(b));
-    }
-    @SuppressWarnings("unused")
-    public boolean remove(X[] a, X[] b) {
-      return super.remove(Tuple.create(a), Tuple.create(b));
-    }
-    @SuppressWarnings("unused")
-    public Predicate<X[]> rightRelated(X[] e) {
-      return (t) -> super.rightRelated(Tuple.create(e)).test(Tuple.create(t));
+  @SuppressWarnings("unchecked")
+  public static class ArrayRelation <
+    X extends Comparable<? super X>,
+    R extends Comparable<? super R>
+  > extends FiniteBinaryHomogeneousRelation<R> {
+    
+    public boolean add(R a, R b) {
+      return super.add((R)Tuple.create(a), (R)Tuple.create(b));
     }
     
-    @SuppressWarnings({"unchecked", "unused"})
-    public TreeSet<X[]> rightRelata(X[] e) {
-      var o = new TreeSet<X[]>();
-      for(var t : super.rightRelata(Tuple.create(e))) {
-        o.add((X[])t.toArray());
+    public boolean remove(R a, R b) {
+      return super.remove((R)Tuple.create(a), (R)Tuple.create(b));
+    }
+    
+    public Predicate<R> rightRelated(R e) {
+      return (t) -> super.rightRelated((R)Tuple.create(e)).test((R)Tuple.create(t));
+    }
+    
+    public TreeSet<R> rightRelata(R e) {
+      var o = new TreeSet<R>();
+      for(var t : super.rightRelata((R)Tuple.create(e))) {
+        o.add(t);
       }
-      
       return o;
     }
     
-    @SuppressWarnings("unused")
-    public void writeArraysToCSV(
-        Function<X, String> xToString,
-        String path, boolean useBase64) throws IOException {
-      super.writeToCSV(Printers.tupleDecorator(xToString), path, useBase64);
-    }
+    public static <
+      X extends Comparable<? super X>,
+      Y extends Comparable<? super Y>,
+      R extends Comparable<? super R>,
+      S extends Comparable<? super S>
+    > void writeToCSV(ArrayRelation<X,R> rel,
+      Function<X, String> xToString,
+      String path, boolean useBase64) throws IOException {
+    rel.writeToCSV((Function<R,String>)Printers.tupleDecorator(xToString), path, useBase64);
+  }
     
-    @SuppressWarnings("unused")
-    public boolean apply(X[] a, X[] b) {
-      return super.apply(Tuple.create(a), Tuple.create(b));
+    public boolean apply(R a, R b) {
+      return super.apply(a, b);
     }
   }
   
   public static <
-    X extends Comparable<? super X>
-  > ArrayRelation<X> arrayRelation() {
-    return new ArrayRelation<X>();
+    X extends Comparable<? super X>,
+    R extends Comparable<? super R>
+  > ArrayRelation<X,R> arrayRelation() {
+    return new ArrayRelation<X,R>();
   }
   public static <
-    X extends Comparable<? super X>
-  > ArrayRelation<X> arrayRelation(Map<X[],X[]> map) {
-    ArrayRelation<X> r = arrayRelation();
+    X extends Comparable<? super X>,
+    R extends Comparable<? super R>
+  > ArrayRelation<X,R> arrayRelation(Map<R,R> map) {
+    ArrayRelation<X,R> r = arrayRelation();
     
     for(var e : map.entrySet()) {
       r.add(e.getKey(),e.getValue());
@@ -240,32 +243,51 @@ extends FiniteBinaryRelation<L, L> {
     return r;
   }
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public static <
-    X extends Comparable<? super X>
-  >  ArrayRelation<X> arrayRelation(Iterable<X[]> domain, Iterable<X[]> codomain, BiPredicate<X[],X[]> rel) {
-    ArrayRelation<X> r = arrayRelation();
-    TreeSet<Tuple<X>> d = new TreeSet<Tuple<X>>();
+    X extends Comparable<? super X>,
+    R extends Comparable<? super R>
+  >  ArrayRelation<X,R> arrayRelation(Iterable<R> domain, BiPredicate<R,R> rel) {
+    ArrayRelation<X,R> r = new ArrayRelation<X,R>();
+    var d = new TreeSet<Tuple>();
     for(var x : domain) d.add(Tuple.create(x));
-    TreeSet<Tuple<X>> c = new TreeSet<Tuple<X>>();
-    for(var y : codomain) c.add(Tuple.create(y));
     
-    for(var p : Collections.list(new HeterogeneousPairEnumeration<Tuple<X>,Tuple<X>>(d,c))) {
-      var xa = (X[]) p.getFirst().toArray();
-      var xb = (X[]) p.getSecond().toArray();
-      if(rel.test(xa, xb)) {
-        r.add(xa, xb);
+    for(var p : CollectionUtils.cartesianProduct(d,d)) {
+      R ta = ((R)(((HeterogeneousPair)p).getFirst()));
+      R tb = ((R)(((HeterogeneousPair)p).getSecond()));
+      if(((BiPredicate)rel).test((Object)ta, (Object)tb)) {
+        if(ta instanceof Tuple) {
+          if(tb instanceof Tuple) {
+            r.add(ta,tb);
+          } else {
+            r.add(ta, (R)Tuple.create(tb));
+          }
+        } else {
+          if(tb instanceof Tuple) {
+            r.add((R)Tuple.create(ta),tb);
+          } else {
+            r.add((R)Tuple.create(ta),(R)Tuple.create(tb));
+          }
+        }
       }
     }
     
     return r;
   }
   
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public static <
     X extends Comparable<? super X>,
-    Y extends Comparable<? super Y>
-  > ArrayRelation<X> arrayRelation(Iterable<X[]> domain, Function<X[],X[]> f) {
-    var r = new ArrayRelation<X>();
+    R extends Comparable<? super R>
+  > ArrayRelation arrayRelation(R[] domain, R[] codomain, BiPredicate<R,R> rel) {
+    return arrayRelation((Iterable<R>)Arrays.asList(domain),(BiPredicate)rel);
+  }
+  
+  public static <
+    X extends Comparable<? super X>,
+    R extends Comparable<? super R>
+  > ArrayRelation<X,R> arrayRelation(Iterable<R> domain, Function<R,R> f) {
+    ArrayRelation<X,R> r = new ArrayRelation<X,R>();
     for(var x : domain) {
       r.add(x, f.apply(x));
     }

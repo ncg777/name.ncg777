@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import com.opencsv.exceptions.CsvException;
 
@@ -222,5 +223,42 @@ public class FiniteBinaryRelationTests extends TestCase {
       tempFile.delete();
       assertEquals(r, readRelation);
   }
+  
+  public void testArrayRelationXY() {
+    Integer[][][][] arr1 = 
+      {
+       {
+         {
+           {1,2,3},
+           {1,2},
+           {}
+         },
+         {
+           {4,5,6},
+           {7,8},
+           {}
+         }
+        }
+      };
+    String[][][][] arr2 = 
+      {
+        {
+          {
+            {"9","10","11"},
+            {"12","13"},
+            {}
+          },
+          {
+            {"14","15","16"},
+            {"17","18"},
+            {}
+          }
+         }
+      };
+    
+    // var rel = FiniteBinaryRelation.<Integer,String>arrayRelationXY(arr1,arr2,(a,b)->true);
+    
+  }
+  
 }
   
