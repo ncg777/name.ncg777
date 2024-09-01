@@ -256,7 +256,7 @@ public class FiniteBinaryRelationTests extends TestCase {
          }
       };
     
-    // var rel = FiniteBinaryRelation.<Integer,String>arrayRelationXY(arr1,arr2,(a,b)->true);
+    //var rel = FiniteBinaryRelation.arrayRelationXY(arr1,arr2,(a,b)->true);
     
   }
   

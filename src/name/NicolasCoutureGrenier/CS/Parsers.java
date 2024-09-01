@@ -35,9 +35,4 @@ public class Parsers {
   public static <X> Function<String,X> nullDecorator(Function<String,X> parser) {
     return (s) -> s.equals("null") ? null : parser.apply(s);
   }
-
-  public static <T extends Comparable<? super T>> 
-    Function<String,Tuple<T>> tupleDecorator(Function<String,T> parser) {
-      return (s) -> Tuple.fromString(s,parser);
-  }
 }

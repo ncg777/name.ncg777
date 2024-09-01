@@ -100,7 +100,20 @@ public class CollectionUtils {
     }
     return o;
   }
-  
+  public static <
+  A extends Comparable<? super A>,
+  B extends Comparable<? super B>> 
+  List<HeterogeneousPair<A,B>> cartesianProduct(
+  Iterable<A> a, Iterable<B> b){
+    List<HeterogeneousPair<A,B>> o = 
+        new ArrayList<HeterogeneousPair<A,B>>();
+    for(A x : a){
+      for(B y : b){
+        o.add(HeterogeneousPair.makeHeterogeneousPair(x, y));
+      }
+    }
+    return o;
+  }
   /**
    * Enumerates all range^n tuples of length n with values in [0 ... range-1] in the rows of a
    * matrix.

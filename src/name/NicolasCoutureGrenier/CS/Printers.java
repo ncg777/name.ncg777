@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Tuple;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Printers {
@@ -27,11 +26,5 @@ public class Printers {
   
   public static <T extends Comparable<? super T>> Function<T,String> nullDecorator(Function<T,String> printer) {
     return (x) -> x == null ? "null" : printer.apply(x);
-  }
-  
-  public static <
-    T extends Comparable<? super T>
-    > Function<Tuple<T>,String> tupleDecorator(Function<T, String> xToString) {
-    return (Tuple<T> t) -> t.toString(xToString);
   }
  }
