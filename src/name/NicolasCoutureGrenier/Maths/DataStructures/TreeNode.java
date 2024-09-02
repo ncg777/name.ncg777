@@ -104,45 +104,43 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return null;
     
   }
-  public String toArrayString(Function<T,String> printer) { 
-    return toString(0, "",",","\n","[","]", printer);
-  }
   public String toString() {
-    return this.toString(0, "  ",",","\n","[", "]", (s) -> s.toString()); 
+    return this.toString(0, "  ","\n","[", "]", (s) -> s.toString()); 
   }
   public String toString(
       final int level,
       final String indentationStr,
-      final String itemSeparator,
       final String nodeSeparator,
       final String leftEnclose, 
       final String rightEnclose, 
       final Function<T,String> printer
       ) {
-    String indent = indentationStr;
+    String indent = "";
     for(int i=0;i<level;i++) indent += indentationStr;
     final String indent1 = indent;
-    
-    StringBuilder b = new StringBuilder(leftEnclose);
-    if(this.content!=null) {
-      b.append(printer.apply(this.content)+rightEnclose+itemSeparator+nodeSeparator);
-    }
     var subItems = this.stream().<String>map(
         (q) -> { 
           return  
             (q.toString(
                 level+1,
                 indentationStr,
-                itemSeparator,
                 nodeSeparator, 
                 leftEnclose, 
                 rightEnclose,
                 printer));
           }
         ).toList();
+    
+    StringBuilder b = new StringBuilder();
+    
+    b.append(indent1+leftEnclose+printer.apply(this.content)+rightEnclose);  
+    
+    
     if(subItems.size() > 0) {
-      b.append(indent1+Joiner.on(indent1).join(subItems));
+      b.append(nodeSeparator+Joiner.on(nodeSeparator).join(subItems));  
     }
+    
     return b.toString();
   }
+
 }

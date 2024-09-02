@@ -41,7 +41,7 @@ public class Printers {
   
   public static <T extends Comparable<? super T>> Function<TreeNode<T>,String> treeNodeDecorator(Function<T,String> printer) {
     return (TreeNode<T> x) -> {
-      return x.toArrayString(printer);
+      return x.toJSONArrayString(printer);
     };
   }
  }
