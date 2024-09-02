@@ -26,7 +26,10 @@ public class Printers {
   };
 
   public static <T> Function<List<T>,String> listPrinter(Function<T,String> printer) {
-    return (l) -> Joiner.on(" ").join(l.stream().map(printer).toList());
+    return listPrinter(printer, " ");
+  }
+  public static <T> Function<List<T>,String> listPrinter(Function<T,String> printer, String separator) {
+    return (l) -> Joiner.on(separator).join(l.stream().map(printer).toList());
   }
   public static <T extends Comparable<? super T>> Function<T,String> base64Decorator(Function<T,String> printer) {
     return (var x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));

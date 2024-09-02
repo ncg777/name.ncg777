@@ -50,11 +50,6 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return current;
   }
   
-  public String toString() {
-    return this.toString(0, " ", 1,"\n","[", "]", (s) -> s.toString()); 
-  }
-  
-  
   public String toJSONArrayString(Function<T,String> printer) {
     try {
       StringWriter sw = new StringWriter();
@@ -110,47 +105,43 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     
   }
   public String toArrayString(Function<T,String> printer) { 
-    return toString(0,"",0,",","[","]", printer);
+    return toString(0, "",",","\n","[","]", printer);
+  }
+  public String toString() {
+    return this.toString(0, "  ",",","\n","[", "]", (s) -> s.toString()); 
   }
   public String toString(
-      final int level, 
-      final String indentationStr, 
-      final int indentationCount,
+      final int level,
+      final String indentationStr,
+      final String itemSeparator,
       final String nodeSeparator,
       final String leftEnclose, 
       final String rightEnclose, 
       final Function<T,String> printer
       ) {
-    String indent = "";
-    for(int x=0;x<(indentationCount*level);x++) indent+=indentationStr;
+    String indent = indentationStr;
+    for(int i=0;i<level;i++) indent += indentationStr;
     final String indent1 = indent;
     
-    StringBuilder b = new StringBuilder();
-    Iterator<TreeNode<T>> i = this.iterator();
-    while (i.hasNext()) {
-      var t = i.next();
-      
-      b.append(
-          indent1 +
-          leftEnclose +
-          printer.apply(t.getNode()) + 
-          rightEnclose +
-          nodeSeparator + 
-          Joiner.on(nodeSeparator).join(
-          t.stream().<String>map(
-              (q) -> { 
-                return 
-                  ( q.toString(
-                      level+1, 
-                      indentationStr, 
-                      indentationCount, 
-                      nodeSeparator, 
-                      leftEnclose, 
-                      rightEnclose,
-                      printer));
-                }
-              ).toList()
-       ) + nodeSeparator);
+    StringBuilder b = new StringBuilder(leftEnclose);
+    if(this.content!=null) {
+      b.append(printer.apply(this.content)+rightEnclose+itemSeparator+nodeSeparator);
+    }
+    var subItems = this.stream().<String>map(
+        (q) -> { 
+          return  
+            (q.toString(
+                level+1,
+                indentationStr,
+                itemSeparator,
+                nodeSeparator, 
+                leftEnclose, 
+                rightEnclose,
+                printer));
+          }
+        ).toList();
+    if(subItems.size() > 0) {
+      b.append(indent1+Joiner.on(indent1).join(subItems));
     }
     return b.toString();
   }
