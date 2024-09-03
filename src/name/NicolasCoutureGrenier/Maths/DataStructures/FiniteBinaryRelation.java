@@ -501,9 +501,9 @@ public class FiniteBinaryRelation<
   toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, FiniteBinaryRelation<T,U> rel, JsonGenerator gen) throws IOException {
     gen.writeStartArray();
     for(var v : rel.pairs) {
-      gen.writeStartArray();
+      
       HeterogeneousPair.toJSONObjectString(printer1, printer2, v, gen);
-      gen.writeEndArray();
+      
     }
     gen.writeEndArray();
   }
