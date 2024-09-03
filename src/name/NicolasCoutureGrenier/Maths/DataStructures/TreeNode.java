@@ -3,7 +3,10 @@ package name.NicolasCoutureGrenier.Maths.DataStructures;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -31,7 +34,12 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     this.parent = parent;
     content = t;
   }
-
+  public Map<T,TreeNode<T>> toMap(){
+    HashMap<T, TreeNode<T>> h = new HashMap<>();
+    for(var i: this) h.put(i.content, i);
+    h.put(this.content,this);
+    return h;
+  }
   public void setContent(T t) {
     content = t;
   }
@@ -50,12 +58,13 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return current;
   }
   
-  public String toJSONArrayString(Function<T,String> printer) {
+  public String toJSONObjectString(Function<T,String> printer) {
     try {
       StringWriter sw = new StringWriter();
       var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
-      toJSONArrayString(printer, this, gen);
-      return sw.toString();  
+      toJSONObjectString(printer, this, gen);
+      gen.flush();
+      return sw.getBuffer().toString();  
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -63,12 +72,18 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return null;
   }
   
-  private void toJSONArrayString(Function<T,String> printer, TreeNode<T> root, JsonGenerator gen) {
+  private void toJSONObjectString(Function<T,String> printer, TreeNode<T> root, JsonGenerator gen) {
     try {
-      if(root.content != null) { gen.writeRaw(printer.apply(this.content));}
-      for(int i=0;i<this.size();i++) {
-        toJSONArrayString(printer, root.get(i), gen);
-      }  
+      String fieldName= printer.apply(root.content);
+      
+      
+      String[] arr = new String[root.size()];
+      for(int i=0;i<root.size();i++) arr[i]=root.get(i).toString(printer);
+      gen.writeStartObject();
+      gen.writeArrayFieldStart(fieldName);
+      gen.writeArray(arr, 0, arr.length);
+      gen.writeEndArray();
+      gen.writeEndObject();
     } catch(IOException e) {
       e.printStackTrace();
     }
@@ -104,10 +119,17 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return null;
     
   }
+  
+  @Override
   public String toString() {
-    return this.toString(0, "  ","\n","[", "]", (s) -> s.toString()); 
+    return this.toString((e) -> e.toString());
   }
-  public String toString(
+  
+  public String toString(Function<T,String> printer) {
+    if(this.size()==0) return printer.apply(content);
+    else return this.toJSONObjectString(printer); 
+  }
+  public String toIndentedString(
       final int level,
       final String indentationStr,
       final String nodeSeparator,
@@ -121,7 +143,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     var subItems = this.stream().<String>map(
         (q) -> { 
           return  
-            (q.toString(
+            (q.toIndentedString(
                 level+1,
                 indentationStr,
                 nodeSeparator, 
@@ -141,6 +163,24 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     }
     
     return b.toString();
+  }
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + Objects.hash(content, parent);
+    return result;
+  }
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (!super.equals(obj)) return false;
+    if (getClass() != obj.getClass()) return false;
+    @SuppressWarnings("unchecked")
+    TreeNode other = (TreeNode) obj;
+    if(this.size()!=other.size()) return false;
+    if(!this.content.equals(other.content)) return false;
+    return this.containsAll(other);
   }
 
 }
