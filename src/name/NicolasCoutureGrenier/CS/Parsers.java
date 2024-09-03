@@ -3,6 +3,7 @@ package name.NicolasCoutureGrenier.CS;
 import java.util.Base64;
 import java.util.function.Function;
 
+import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.DataStructures.TreeNode;
@@ -41,5 +42,19 @@ public class Parsers {
     return (str) -> {
       return TreeNode.<X>parseJSONObject(str,parser);
     };
+  }
+  
+  public static <
+    T extends Comparable<? super T>, 
+    U extends Comparable<? super U>> 
+      Function<String, HeterogeneousPair<T,U>>
+      heteroGeneousPairDecorator(Function<String,T> parser1, Function<String,U> parser2) {
+      return (s) -> HeterogeneousPair.parseJSONObject(s, parser1, parser2);
+  }
+  public static <
+  T extends Comparable<? super T>> 
+    Function<String, HomogeneousPair<T>>
+    homoGeneousPairDecorator(Function<String,T> parser) {
+    return (s) -> HomogeneousPair.fromHeterogeneousPair(HeterogeneousPair.parseJSONObject(s, parser, parser));
   }
 }

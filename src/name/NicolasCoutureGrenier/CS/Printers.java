@@ -7,6 +7,7 @@ import com.google.common.base.Joiner;
 
 import java.util.List;
 
+import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.DataStructures.TreeNode;
@@ -44,4 +45,14 @@ public class Printers {
       return x.toJSONObjectString(printer);
     };
   }
+  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> 
+    Function<HeterogeneousPair<T,U>, String>
+      heterogeneousPairDecorator(Function<T,String> printer1, Function<U,String> printer2) {
+    return (p) -> p.toString(printer1, printer2);
+  }
+  public static <T extends Comparable<? super T>> 
+  Function<HomogeneousPair<T>, String>
+    homogeneousPairDecorator(Function<T,String> printer) {
+  return (p) -> p.toString(printer, printer);
+}
  }

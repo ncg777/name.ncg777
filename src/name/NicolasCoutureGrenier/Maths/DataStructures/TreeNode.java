@@ -1,12 +1,15 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+import java.io.FileNotFoundException;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonFactoryBuilder;
@@ -58,18 +61,28 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return current;
   }
   
-  public String toJSONObjectString(Function<T,String> printer) {
+
+  public void printToJSON(Function<T,String> printer, String path) throws FileNotFoundException {
+    PrintWriter pw = new PrintWriter(path);
+    printToJSON(printer,pw);
+    pw.flush();
+    pw.close();
+  }
+  public void printToJSON(Function<T,String> printer, Writer sw) {
     try {
-      StringWriter sw = new StringWriter();
       var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
       toJSONObjectString(printer, this, gen);
-      gen.flush();
-      return sw.getBuffer().toString();  
+      gen.flush();  
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    return null;
+  }
+  
+  public String toJSONObjectString(Function<T,String> printer) {
+    StringWriter sw = new StringWriter();
+    this.printToJSON(printer,sw);
+    return sw.getBuffer().toString();
   }
   
   private static <T> void toJSONObjectString(Function<T,String> printer, TreeNode<T> root, JsonGenerator gen) {
@@ -81,7 +94,6 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
       
       gen.writeArrayFieldStart(fieldName);
       for(int i=0;i<root.size();i++) {
-        
         toJSONObjectString(printer, root.get(i), gen);
       }
       gen.writeEndArray();
