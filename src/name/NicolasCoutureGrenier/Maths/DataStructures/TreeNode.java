@@ -36,6 +36,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     super();
     this.parent = parent;
     content = t;
+    this.parent.add(this);
   }
   public Map<T,TreeNode<T>> toMap(){
     HashMap<T, TreeNode<T>> h = new HashMap<>();
@@ -140,7 +141,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
   
   @Override
   public String toString() {
-    return this.toString((e) -> e.toString());
+    return this.toString((e) -> e == null? "null" : e.toString());
   }
   
   public String toString(Function<T,String> printer) {
@@ -180,6 +181,24 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     }
     
     return b.toString();
+  }
+  
+  public static <T> TreeNode<T> fromArray(Object object) {
+    TreeNode<T> o = new TreeNode<T>();
+    fromArray(object,o);
+    return o;
+  }
+  @SuppressWarnings("unchecked")
+  private static <T> void fromArray(Object object, TreeNode<T> parent) {  
+    if(object.getClass().isArray()) {   
+      for(var obj : (Object[])object) {
+        fromArray(obj, parent);
+      }
+      
+    } else {
+      var t = new TreeNode<>((T)object,parent);
+      //parent.add(t);
+    }
   }
   @Override
   public int hashCode() {

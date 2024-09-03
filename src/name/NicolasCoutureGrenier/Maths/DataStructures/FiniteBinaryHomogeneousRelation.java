@@ -204,8 +204,6 @@ extends FiniteBinaryRelation<L, L> {
     return this.toJSONObjectString(printer,printer);
   }
   
-  
-  
   public static <L extends Comparable<? super L>>  
       FiniteBinaryHomogeneousRelation<L> parseJSONObject(
           String str, 
