@@ -39,7 +39,7 @@ public class Parsers {
   public static <X> Function<String,TreeNode<X>> 
     treeNodeDecorator(Function<String,X> parser) {
     return (str) -> {
-      return TreeNode.<X>parseJSONArray(str,parser);
+      return TreeNode.<X>parseJSONObject(str,parser);
     };
   }
 }
