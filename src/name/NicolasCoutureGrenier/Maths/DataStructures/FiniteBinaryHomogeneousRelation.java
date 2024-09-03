@@ -233,4 +233,15 @@ extends FiniteBinaryRelation<L, L> {
    }
    return o;
   }
+  
+  public TreeNode<L> toTreeNode() {
+    var o = new TreeNode<L>();
+    
+    for(var p : this) {
+      var n = new TreeNode<L>(null,o);
+      var l = new TreeNode<L>(p.getFirst(),n);
+      var r = new TreeNode<L>(p.getSecond(),n);
+    }
+    return o;
+  }
 }

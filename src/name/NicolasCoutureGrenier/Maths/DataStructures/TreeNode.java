@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -125,8 +128,6 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
         root.add(t);
       }
       
-    
-      
       return root;  
     } catch (JsonParseException e) {
       // TODO Auto-generated catch block
@@ -188,6 +189,90 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     fromArray(object,o);
     return o;
   }
+  
+  @SuppressWarnings("unchecked")
+  public Class<T> getContentClass() {
+    if(this.content != null) {
+      return (Class<T>)this.content.getClass();
+    } else {
+      for(var n : this) {
+        var c = n.getContentClass();
+        if(c!= null) return c;
+      } 
+    }
+  
+    return null;
+  }
+  
+  public int[] getDimensions() {
+    {
+      int[] o = new int[getDepth()];
+      int max = this.size();
+      for(var n : this) {
+        int[] d = n.getDimensions();
+        for(int i=0;i<d.length;i++) {
+          o[i+1] = d[i];
+        }
+      }
+      if(max > 0) {
+        o[0]=max;
+      }
+      return o;  
+    }
+      
+  }
+  
+  public int getDepth() {
+    if(this.size() == 0) return 0;
+    
+    int max = -1;
+    for(TreeNode<T> i : this) {
+      int x = i.getDepth();
+      if(x > max) max = x;
+    }
+    return max+1;
+  }
+  
+  
+  public Object toJaggedArray() {   
+    if(this.getDepth() == 0) {
+      if(this.content == null) {
+        Object[] o = new Object[0];
+        return o;
+      }
+      Class<T> c = this.getContentClass();
+      var o = Array.newInstance(c, 1);
+      Array.set(o, 0, this.content);
+      return o;
+    } else if(this.getDepth() == 1) {
+      Class<T> c = this.getContentClass();
+      var o = Array.newInstance(c, this.size(),1);
+      for(int i=0;i<this.size();i++) {
+        Array.set(o, i, this.get(i).toJaggedArray());  
+      }
+      
+      return o;
+    } else {
+      Class<T> c = this.getContentClass();
+      
+      if(c==null) return null;
+      System.out.println(Arrays.toString(this.getDimensions()));
+      List<Object> l = new ArrayList<Object>();
+      for(int i=0;i<this.size();i++) {
+        var arr = this.get(i).toJaggedArray();
+        l.add(arr);
+      }
+      Object o = Array.newInstance(Object.class, l.size(),1);
+      
+      for(int i=0;i<l.size();i++) {
+        Array.set(o,i,l.get(i));
+      }
+      
+      return o;
+    }
+  }
+
+  
   @SuppressWarnings("unchecked")
   private static <T> void fromArray(Object object, TreeNode<T> parent) {  
     if(object.getClass().isArray()) {   
@@ -197,7 +282,6 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
       
     } else {
       var t = new TreeNode<>((T)object,parent);
-      //parent.add(t);
     }
   }
   @Override
