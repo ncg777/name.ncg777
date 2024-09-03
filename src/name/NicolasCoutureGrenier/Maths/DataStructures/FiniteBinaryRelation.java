@@ -538,22 +538,22 @@ public class FiniteBinaryRelation<
         String path, 
         Function<String,T> parser1,
         Function<String,U> parser2) {
-  try {
-    FiniteBinaryRelation<T,U> o = new FiniteBinaryRelation<>();
-    var b = new JsonFactoryBuilder().build();
-    File f = new File(path);
-    var p = b.setCodec(new ObjectMapper()).createParser(f).readValueAsTree();
-    if(!p.isArray()) {
-      throw new RuntimeException("invalid");
+    try {
+      FiniteBinaryRelation<T,U> o = new FiniteBinaryRelation<>();
+      var b = new JsonFactoryBuilder().build();
+      File f = new File(path);
+      var p = b.setCodec(new ObjectMapper()).createParser(f).readValueAsTree();
+      if(!p.isArray()) {
+        throw new RuntimeException("invalid");
+      }
+      for(int i=0;i<p.size();i++) {
+        var pair =  HeterogeneousPair.parseJSONObject(p.get(i), parser1, parser2);
+        o.add(pair.getFirst(), pair.getSecond());
+      }
+      return o;   
+    } catch (IOException e) {
+      throw new RuntimeException("invalid input");
     }
-    for(int i=0;i<p.size();i++) {
-      var pair =  HeterogeneousPair.parseJSONObject(p.get(i), parser1, parser2);
-      o.add(pair.getFirst(), pair.getSecond());
-    }
-    return o;   
-  } catch (IOException e) {
-    throw new RuntimeException("invalid input");
-  }
   
-}
+  }
 }

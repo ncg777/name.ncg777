@@ -3,6 +3,7 @@ package name.NicolasCoutureGrenier.Maths.DataStructures;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -217,5 +218,19 @@ extends FiniteBinaryRelation<L, L> {
         Function<String,L> parser) {
     return new FiniteBinaryHomogeneousRelation<L>(parseJSONFile(path,parser,parser));
   }
- 
+  
+  @SuppressWarnings("unchecked")
+  public L[][] toArray() {
+   if(this.size()==0) return null;
+   var c = this.pairs.first().getFirst().getClass();
+   
+   L[][] o = (L[][]) Array.newInstance(c, this.pairs.size(),2);
+   int i=0;
+   for(var p : this) {
+     o[i][0] = p.getFirst();
+     o[i][1] = p.getSecond();
+     i++;
+   }
+   return o;
+  }
 }
