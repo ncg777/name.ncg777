@@ -543,12 +543,13 @@ public class FiniteBinaryRelation<
   try {
     FiniteBinaryRelation<T,U> o = new FiniteBinaryRelation<>();
     var b = new JsonFactoryBuilder().build();
-    var p = b.setCodec(new ObjectMapper()).createParser(new File(path)).readValueAsTree();
+    File f = new File(path);
+    var p = b.setCodec(new ObjectMapper()).createParser(f).readValueAsTree();
     if(!p.isArray()) {
       throw new RuntimeException("invalid");
     }
     for(int i=0;i<p.size();i++) {
-      var pair =  HeterogeneousPair.parseJSONObject(p.get(i).toString(), parser1, parser2);
+      var pair =  HeterogeneousPair.parseJSONObject(p.get(i), parser1, parser2);
       o.add(pair.getFirst(), pair.getSecond());
     }
     return o;   

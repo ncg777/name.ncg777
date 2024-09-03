@@ -1,6 +1,8 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
@@ -179,4 +181,43 @@ extends FiniteBinaryRelation<L, L> {
     readFromCSV (Function<String,L> lParser, String path,boolean useBase64) throws IOException, CsvException {
     return new FiniteBinaryHomogeneousRelation<L>(FiniteBinaryRelation.readFromCSV(lParser, lParser, path, useBase64));
   }
+  
+
+
+  @Override
+  public String toString() {
+    return toString((t) -> t.toString());
+  }
+  
+  public String toString(Function<L,String> printer1) {
+    return this.toJSONObjectString(printer1, printer1);
+  }
+  
+  public void printToJSON(Function<L,String> printer, String path) throws FileNotFoundException {
+    printToJSON(printer,printer,path);
+  }
+  public void printToJSON(Function<L,String> printer, Writer sw) {
+    printToJSON(printer,printer,sw);
+  }
+  
+  public String toJSONObjectString(Function<L,String> printer) {
+    return this.toJSONObjectString(printer,printer);
+  }
+  
+  
+  
+  public static <L extends Comparable<? super L>>  
+      FiniteBinaryHomogeneousRelation<L> parseJSONObject(
+          String str, 
+          Function<String,L> parser) {
+    return new FiniteBinaryHomogeneousRelation<L>(parseJSONObject(str, parser, parser));
+    
+  }
+  public static <L extends Comparable<? super L>> 
+    FiniteBinaryHomogeneousRelation<L> parseJSONFile(
+        String path, 
+        Function<String,L> parser) {
+    return new FiniteBinaryHomogeneousRelation<L>(parseJSONFile(path,parser,parser));
+  }
+ 
 }

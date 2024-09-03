@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.function.Function;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -157,6 +156,21 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
     }
     
   }
+  public static <
+  T extends Comparable<? super T>, 
+  U extends Comparable<? super U>> 
+    HeterogeneousPair<T,U> parseJSONObject(
+        com.fasterxml.jackson.core.TreeNode node, 
+        Function<String,T> parser1,
+        Function<String,U> parser2) {
+  
+    if(!node.isArray() || node.size()!=2) {
+      throw new RuntimeException("invalid");
+    }
     
+    return makeHeterogeneousPair(parser1.apply(node.get(0).toString()),parser2.apply(node.get(1).toString()));  
+  
+  
+  }  
 
 }
