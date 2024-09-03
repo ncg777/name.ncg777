@@ -1,12 +1,16 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -20,6 +24,10 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.set.UnmodifiableSortedSet;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonFactoryBuilder;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Ordering;
 import com.opencsv.CSVParser;
@@ -444,9 +452,14 @@ public class FiniteBinaryRelation<
     return Iterators.unmodifiableIterator(this.pairs.iterator());
   }
   
+
   @Override
   public String toString() {
-    return pairs.toString();
+    return toString((t) -> t.toString(), (u) -> u.toString());
+  }
+  
+  public String toString(Function<X,String> printer1, Function<Y,String> printer2) {
+    return this.toJSONObjectString(printer1, printer2);
   }
   
   @Override
@@ -458,5 +471,90 @@ public class FiniteBinaryRelation<
     var it = new IterableComparator<HeterogeneousPair<X,Y>>();
     
     return it.compare(this, o);
-  } 
+  }
+  
+
+  public void printToJSON(Function<X,String> printer1, Function<Y,String> printer2, String path) throws FileNotFoundException {
+    PrintWriter pw = new PrintWriter(path);
+    printToJSON(printer1,printer2,pw);
+    pw.flush();
+    pw.close();
+  }
+  public void printToJSON(Function<X,String> printer1, Function<Y,String> printer2, Writer sw) {
+    try {
+      var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
+      toJSONObjectString(printer1,printer2, this, gen);
+      gen.flush();  
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+  
+  public String toJSONObjectString(Function<X,String> printer1, Function<Y,String> printer2) {
+    StringWriter sw = new StringWriter();
+    this.printToJSON(printer1,printer2,sw);
+    return sw.getBuffer().toString();
+  }
+  
+  private static <T extends Comparable<? super T>, U extends Comparable<? super U>> void 
+  toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, FiniteBinaryRelation<T,U> rel, JsonGenerator gen) throws IOException {
+    gen.writeStartArray();
+    for(var v : rel.pairs) {
+      gen.writeStartArray();
+      HeterogeneousPair.toJSONObjectString(printer1, printer2, v, gen);
+      gen.writeEndArray();
+    }
+    gen.writeEndArray();
+  }
+  
+  
+  public static <
+    T extends Comparable<? super T>, 
+    U extends Comparable<? super U>> 
+      FiniteBinaryRelation<T,U> parseJSONObject(
+          String str, 
+          Function<String,T> parser1,
+          Function<String,U> parser2) {
+    try {
+      FiniteBinaryRelation<T,U> o = new FiniteBinaryRelation<>();
+      var b = new JsonFactoryBuilder().build();
+      var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
+      if(!p.isArray()) {
+        throw new RuntimeException("invalid");
+      }
+      for(int i=0;i<p.size();i++) {
+        var pair =  HeterogeneousPair.parseJSONObject(p.get(i).toString(), parser1, parser2);
+        o.add(pair.getFirst(), pair.getSecond());
+      }
+      return o;   
+    } catch (IOException e) {
+      throw new RuntimeException("invalid input");
+    }
+    
+  }
+  public static <
+  T extends Comparable<? super T>, 
+  U extends Comparable<? super U>> 
+    FiniteBinaryRelation<T,U> parseJSONFile(
+        String path, 
+        Function<String,T> parser1,
+        Function<String,U> parser2) {
+  try {
+    FiniteBinaryRelation<T,U> o = new FiniteBinaryRelation<>();
+    var b = new JsonFactoryBuilder().build();
+    var p = b.setCodec(new ObjectMapper()).createParser(new File(path)).readValueAsTree();
+    if(!p.isArray()) {
+      throw new RuntimeException("invalid");
+    }
+    for(int i=0;i<p.size();i++) {
+      var pair =  HeterogeneousPair.parseJSONObject(p.get(i).toString(), parser1, parser2);
+      o.add(pair.getFirst(), pair.getSecond());
+    }
+    return o;   
+  } catch (IOException e) {
+    throw new RuntimeException("invalid input");
+  }
+  
+}
 }

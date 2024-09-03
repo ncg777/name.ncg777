@@ -14,7 +14,6 @@ import java.util.function.Function;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
@@ -126,7 +125,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
     return sw.getBuffer().toString();
   }
   
-  private static <T extends Comparable<? super T>, U extends Comparable<? super U>> void toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, HeterogeneousPair<T,U> pair, JsonGenerator gen) throws IOException {
+  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> void toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, HeterogeneousPair<T,U> pair, JsonGenerator gen) throws IOException {
     gen.writeStartArray();
     String[] arr = new String[2];
     
