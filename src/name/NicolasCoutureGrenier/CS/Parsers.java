@@ -27,7 +27,7 @@ public class Parsers {
   };
   
   public static <T> Function<String,Object[]> arrayDecorator(Function<String,T> parser) {
-    return (s) -> (Object[])Tree.parseJSONObject(s, parser).toArray();
+    return (s) -> (Object[])Tree.parseJSONArray(s, parser).toArray();
   }
   public static <T> Function<String, T> quoteRemoverDecorator(Function<String, T> parser) {
     return (s) -> parser.apply(s.substring(1,s.length()-1));
@@ -50,7 +50,7 @@ public class Parsers {
   public static <X> Function<String,Tree<X>> 
     treeNodeDecorator(Function<String,X> parser) {
     return (str) -> {
-      return Tree.<X>parseJSONObject(str,parser);
+      return Tree.<X>parseJSONArray(str,parser);
     };
   }
   

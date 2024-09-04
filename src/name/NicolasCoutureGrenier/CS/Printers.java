@@ -29,7 +29,7 @@ public class Printers {
   };
 
   public static<T> Function<Object[],String> arrayDecorator(Function<T,String> printer){
-    return (arr) -> Tree.<T>fromArray(arr).toJSONObjectString(printer);
+    return (arr) -> Tree.<T>fromArray(arr).toJSONArrayString(printer);
   }
   public static <T> Function<List<T>,String> listPrinter(Function<T,String> printer) {
     return listPrinter(printer, " ");
@@ -47,7 +47,7 @@ public class Printers {
   
   public static <T extends Comparable<? super T>> Function<Tree<T>,String> treeNodeDecorator(Function<T,String> printer) {
     return (Tree<T> x) -> {
-      return x.toJSONObjectString(printer);
+      return x.toJSONArrayString(printer);
     };
   }
   public static <T extends Comparable<? super T>, U extends Comparable<? super U>> 

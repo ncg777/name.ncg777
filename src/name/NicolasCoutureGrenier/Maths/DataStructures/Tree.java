@@ -39,12 +39,17 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   }
   
   public boolean add(Tree<T> t) {
-    t.parent = this;
+    if(t == null) throw new RuntimeException("nulls not allowed.");
+    if(t != null && t.parent != null) {
+      t.parent = this;
+    }
+    
     return super.add(t);
   }
 
   public Tree(T t, Tree<T> parent) {
     this(t);
+    if(parent == null) throw new RuntimeException("parent is null.");
     parent.add(this);
   }
   public Map<T,Tree<T>> toMap(){
@@ -81,7 +86,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   public void printToJSON(Function<T,String> printer, Writer sw) {
     try {
       var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
-      toJSONObjectString(printer, this, gen);
+      toJSONArrayString(printer, this, gen);
       gen.flush();  
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -89,38 +94,33 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     }
   }
   
-  public String toJSONObjectString(Function<T,String> printer) {
+  public String toJSONArrayString(Function<T,String> printer) {
     StringWriter sw = new StringWriter();
     this.printToJSON(Printers.nullDecorator(printer),sw);
     return sw.getBuffer().toString();
   }
   
-  private static <T> void toJSONObjectString(Function<T,String> printer, Tree<T> root, JsonGenerator gen) {
+  private static <T> void toJSONArrayString(Function<T,String> printer, Tree<T> root, JsonGenerator gen) {
     try {
-      if(root.size()<1) {
-        if(root.getContent() != null) {
-          gen.writeString(printer.apply(root.getContent()));
-        } else {
-          gen.writeStartArray();
-          gen.writeEndArray();    
-        }
-      } else if(root.size()==1 && root.getContent()==null) {
-        toJSONObjectString(printer, root.get(0), gen); 
-      } else {
+      if(root.isRoot() && root.size() == 1) {
+        toJSONArrayString(printer,root,gen);
+      } else if((root != null && root.size()==0)) {
         gen.writeStartArray();
         for(int i=0;i<root.size();i++) {
-          toJSONObjectString(printer, root.get(i), gen); 
+          toJSONArrayString(printer, root.get(i), gen); 
         }
         gen.writeEndArray();
-      }
+      } else {
+        gen.writeString(printer.apply(root.getContent()));
+      } 
     } catch(IOException e) {
       e.printStackTrace();
     }
   }
-  public static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser) {
-    return Tree.parseJSONObject(str,Parsers.quoteRemoverDecorator(Parsers.nullDecorator(parser)),new Tree<T>());
+  public static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser) {
+    return Tree.parseJSONArray(str,Parsers.quoteRemoverDecorator(Parsers.nullDecorator(parser)),new Tree<T>());
   }
-  private static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser, Tree<T> root) {
+  private static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser, Tree<T> root) {
     try {      
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
@@ -128,7 +128,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
       if(p.isArray()) {
         Tree<T> arr = new Tree<T>(null, root);
         for(int i=0;i<p.size();i++) {
-          parseJSONObject(p.get(i).toString(), parser, arr);
+          parseJSONArray(p.get(i).toString(), parser, arr);
         }
         return arr;
       } else {
@@ -151,7 +151,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   }
   
   public String toString(Function<T,String> printer) {
-    return this.toJSONObjectString(Printers.nullDecorator(printer)); 
+    return this.toJSONArrayString(Printers.nullDecorator(printer)); 
   }
   public String toIndentedString(
       final int level,
@@ -190,21 +190,25 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   }
 
   
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked"})
   private static <T> Tree<T> fromArray(Object object, Tree<T> parent) {  
     if(object != null && object.getClass().isArray()) {
       int l = Array.getLength(object);
-      Tree<T> x = new Tree<T>();
+      
+      Tree<T> x = new Tree<T>(null,parent);
       
       for(int i=0;i<l;i++) {
         var o = Array.get(object, i);
-        fromArray(o,x);
+        if(o==null) {
+          // skipping nulls and empty arrays
+        } else if(o.getClass().isArray()) {
+          fromArray(o,x);  
+        } else {
+          fromArray(o,x);
+        }
       }
-      parent.add(x);
       return parent;
-    
     } else {
-      if(object == null) return new Tree<T>(null,parent);
       return new Tree<T>((T)object,parent);
     }
   }
@@ -212,12 +216,39 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     return fromArray(object,new Tree<T>());
   }
   
+  private Class<T> getContentClass() {
+    var up = getContentClassUp();
+    if(up != null) return up;
+    var down = getContentClassDown();
+    
+    return down;
+  }
+  
   @SuppressWarnings("unchecked")
-  public Class<T> getContentClass() {
+  private Class<T> getContentClassUp() {
+    if(this.content != null) {
+      return (Class<T>)this.content.getClass();
+    } else {
+      var current = this.getParent();
+      while(current != null) {
+        if(current.getContent()!=null) {
+          return (Class<T>) current.content.getClass();
+        } else {
+          current = current.getParent();
+        }  
+      }
+      
+    }
+  
+    return null;
+  }
+  @SuppressWarnings("unchecked")
+  private Class<T> getContentClassDown() {
     if(this.content != null) {
       return (Class<T>)this.content.getClass();
     } else {
       for(var n : this) {
+        if(n == null) continue;
         var c = n.getContentClass();
         if(c!= null) return c;
       } 
@@ -231,8 +262,10 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     
     int max = -1;
     for(Tree<T> i : this) {
-      int x = i.getDepth();
-      if(x > max) max = x;
+      if(i != null) {
+        int x = i.getDepth();
+        if(x > max) max = x;  
+      }
     }
     return max+1;
   }
@@ -247,22 +280,15 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   }
   
   private Object toJaggedArray() {   
-    if(this.getDepth() == 0) {
-      if(this.content == null) {
-        Object[] o = new Object[0];
-        return o;
+    if(this.getDepth() < 1) {
+      if(this.size() == 0) {
+        return this.getContent();
       }
       Class<T> c = this.getContentClass();
-      var o = Array.newInstance(c, 1);
-      Array.set(o, 0, this.content);
-      return o;
-    } else if(this.getDepth() == 1) {
-      Class<T> c = this.getContentClass();
-      var o = Array.newInstance(c, this.size(),1);
+      var o = Array.newInstance(c, this.size());
       for(int i=0;i<this.size();i++) {
-        Array.set(o, i, this.get(i).toJaggedArray());  
+        Array.set(o, i, this.get(i) == null ? null : this.get(i).getContent());
       }
-      
       return o;
     } else {
       Class<T> c = this.getContentClass();
@@ -270,10 +296,13 @@ public class Tree<T> extends ArrayList<Tree<T>> {
       if(c==null) return null;
       List<Object> l = new ArrayList<Object>();
       for(int i=0;i<this.size();i++) {
-        var arr = this.get(i).toJaggedArray();
-        l.add(arr);
+        if(this.get(i) == null) { l.add(null);}
+        else {
+          var arr = this.get(i).toJaggedArray();
+          l.add(arr);  
+        }
       }
-      Object o = Array.newInstance(Object.class, l.size(),1);
+      Object o = Array.newInstance(Object.class, l.size());
       
       for(int i=0;i<l.size();i++) {
         Array.set(o,i,l.get(i));
