@@ -29,7 +29,9 @@ public class Parsers {
   public static <T> Function<String,Object[]> arrayDecorator(Function<String,T> parser) {
     return (s) -> (Object[])Tree.parseJSONObject(s, parser).toArray();
   }
-  
+  public static <T> Function<String, T> quoteRemoverDecorator(Function<String, T> parser) {
+    return (s) -> parser.apply(s.substring(1,s.length()-1));
+  }
   public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);
   public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);
   public static Function<String, HomogeneousPair<Integer>> intPairParser = (s) -> {

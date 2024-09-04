@@ -17,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
+import name.NicolasCoutureGrenier.CS.Parsers;
+
 /**
  * This class represents an ordered pair of objects of 2 different types. It overrides hashCode and
  * equals and the pairs can be compared. The generic types must be comparable. Values stored in the
@@ -149,11 +151,9 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
       }
       
       String l = p.get(0).toString();
-      l=l.substring(1,l.length()-1);
       String r = p.get(1).toString();
-      r=r.substring(1,r.length()-1);
       
-      return makeHeterogeneousPair(parser1.apply(l),parser2.apply(r));  
+      return makeHeterogeneousPair(Parsers.quoteRemoverDecorator(parser1).apply(l),Parsers.quoteRemoverDecorator(parser2).apply(r));  
     } catch (IOException e) {
       throw new RuntimeException("invalid input");
     }
@@ -171,7 +171,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
       throw new RuntimeException("invalid");
     }
     
-    return makeHeterogeneousPair(parser1.apply(node.get(0).toString()),parser2.apply(node.get(1).toString()));  
+    return makeHeterogeneousPair(Parsers.quoteRemoverDecorator(parser1).apply(node.get(0).toString()),Parsers.quoteRemoverDecorator(parser2).apply(node.get(1).toString()));  
   
   
   }  

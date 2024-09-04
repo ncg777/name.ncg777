@@ -118,7 +118,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     }
   }
   public static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser) {
-    return Tree.parseJSONObject(str,Parsers.nullDecorator(parser),new Tree<T>());
+    return Tree.parseJSONObject(str,Parsers.quoteRemoverDecorator(Parsers.nullDecorator(parser)),new Tree<T>());
   }
   private static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser, Tree<T> root) {
     try {      
@@ -132,7 +132,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
         }
         return arr;
       } else {
-        return new Tree<T>(parser.apply(str.substring(1,str.length()-1)),root);
+        return new Tree<T>(parser.apply(str),root);
       }  
     } catch (JsonParseException e) {
       // TODO Auto-generated catch block
