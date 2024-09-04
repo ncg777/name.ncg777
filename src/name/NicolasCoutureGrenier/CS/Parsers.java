@@ -6,7 +6,7 @@ import java.util.function.Function;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.TreeNode;
+import name.NicolasCoutureGrenier.Maths.DataStructures.Tree;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Parsers {
@@ -37,10 +37,10 @@ public class Parsers {
     return (s) -> s.equals("null") ? null : parser.apply(s);
   }
   
-  public static <X> Function<String,TreeNode<X>> 
+  public static <X> Function<String,Tree<X>> 
     treeNodeDecorator(Function<String,X> parser) {
     return (str) -> {
-      return TreeNode.<X>parseJSONObject(str,parser);
+      return Tree.<X>parseJSONObject(str,parser);
     };
   }
   

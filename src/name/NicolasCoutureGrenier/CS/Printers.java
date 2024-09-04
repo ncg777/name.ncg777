@@ -10,7 +10,7 @@ import java.util.List;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.TreeNode;
+import name.NicolasCoutureGrenier.Maths.DataStructures.Tree;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Printers {
@@ -40,8 +40,8 @@ public class Printers {
     return (x) -> x == null ? "null" : printer.apply(x);
   }
   
-  public static <T extends Comparable<? super T>> Function<TreeNode<T>,String> treeNodeDecorator(Function<T,String> printer) {
-    return (TreeNode<T> x) -> {
+  public static <T extends Comparable<? super T>> Function<Tree<T>,String> treeNodeDecorator(Function<T,String> printer) {
+    return (Tree<T> x) -> {
       return x.toJSONObjectString(printer);
     };
   }

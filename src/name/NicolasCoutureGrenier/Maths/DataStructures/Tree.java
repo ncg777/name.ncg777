@@ -20,28 +20,28 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 
-public class TreeNode<T> extends ArrayList<TreeNode<T>> {
+public class Tree<T> extends ArrayList<Tree<T>> {
   private static final long serialVersionUID = 1L;
 
   T content = null;
-  TreeNode<T> parent = null;
+  Tree<T> parent = null;
 
-  public TreeNode() {
+  public Tree() {
     super();
   }
-  public TreeNode(T t) {
+  public Tree(T t) {
     super();
     content = t;
   }
 
-  public TreeNode(T t, TreeNode<T> parent) {
+  public Tree(T t, Tree<T> parent) {
     super();
     this.parent = parent;
     content = t;
-    this.parent.add(this);
+    if(!this.parent.contains(this)) parent.add(this);
   }
-  public Map<T,TreeNode<T>> toMap(){
-    HashMap<T, TreeNode<T>> h = new HashMap<>();
+  public Map<T,Tree<T>> toMap(){
+    HashMap<T, Tree<T>> h = new HashMap<>();
     for(var i: this) h.put(i.content, i);
     h.put(this.content,this);
     return h;
@@ -50,13 +50,13 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     content = t;
   }
 
-  public T getNode() {
+  public T getContent() {
     return content;
   }
   public boolean isRoot() { return this.parent == null; }
-  public TreeNode<T> getParent() {return this.parent;}
-  public TreeNode<T> getRoot(){ 
-    TreeNode<T> current = this;
+  public Tree<T> getParent() {return this.parent;}
+  public Tree<T> getRoot(){ 
+    Tree<T> current = this;
     
     while(!current.isRoot()) { 
       current = current.getParent();
@@ -88,7 +88,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return sw.getBuffer().toString();
   }
   
-  private static <T> void toJSONObjectString(Function<T,String> printer, TreeNode<T> root, JsonGenerator gen) {
+  private static <T> void toJSONObjectString(Function<T,String> printer, Tree<T> root, JsonGenerator gen) {
     try {
       String fieldName= printer.apply(root.content);
       
@@ -105,10 +105,10 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
       e.printStackTrace();
     }
   }
-  public static <T> TreeNode<T> parseJSONObject(String str, Function<String,T> parser) {
-    return TreeNode.parseJSONObject(str,parser,new TreeNode<T>());
+  public static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser) {
+    return Tree.parseJSONObject(str,parser,new Tree<T>());
   }
-  public static <T> TreeNode<T> parseJSONObject(String str, Function<String,T> parser, TreeNode<T> root) {
+  public static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser, Tree<T> root) {
     try {
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
@@ -123,7 +123,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
       if(!arr.isArray()) throw new RuntimeException("invalid");
      
       for(int i=0;i<arr.size();i++) {
-        var t = TreeNode.parseJSONObject(arr.get(i).toString(), parser);
+        var t = Tree.parseJSONObject(arr.get(i).toString(), parser);
         root.add(t);
       }
       
@@ -185,10 +185,10 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
 
   
   @SuppressWarnings("unchecked")
-  private static <T> TreeNode<T> fromArray(Object object, TreeNode<T> parent) {  
+  private static <T> Tree<T> fromArray(Object object, Tree<T> parent) {  
     if(object != null && object.getClass().isArray()) {
       int l = Array.getLength(object);
-      TreeNode<T> x = new TreeNode<T>();
+      Tree<T> x = new Tree<T>();
       for(int i=0;i<l;i++) {
         fromArray(Array.get(object, i),x);
         
@@ -197,12 +197,12 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
       return parent;
     
     } else {
-      if(object == null) return new TreeNode<T>(null,parent);
-      return new TreeNode<T>((T)object,parent);
+      if(object == null) return new Tree<T>(null,parent);
+      return new Tree<T>((T)object,parent);
     }
   }
-  public static <T> TreeNode<T> fromArray(Object object) {
-    TreeNode<T> o = new TreeNode<T>();
+  public static <T> Tree<T> fromArray(Object object) {
+    Tree<T> o = new Tree<T>();
     fromArray(object,o);
     return o;
   }
@@ -221,29 +221,11 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return null;
   }
   
-  public int[] getDimensions() {
-    {
-      int[] o = new int[getDepth()];
-      int max = this.size();
-      for(var n : this) {
-        int[] d = n.getDimensions();
-        for(int i=0;i<d.length;i++) {
-          o[i+1] = d[i];
-        }
-      }
-      if(max > 0) {
-        o[0]=max;
-      }
-      return o;  
-    }
-      
-  }
-  
   public int getDepth() {
     if(this.size() == 0) return 0;
     
     int max = -1;
-    for(TreeNode<T> i : this) {
+    for(Tree<T> i : this) {
       int x = i.getDepth();
       if(x > max) max = x;
     }
@@ -257,7 +239,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return null;
   }
   
-  public Object toJaggedArray() {   
+  private Object toJaggedArray() {   
     if(this.getDepth() == 0) {
       if(this.content == null) {
         Object[] o = new Object[0];
@@ -307,7 +289,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     if (this == obj) return true;
     if (!super.equals(obj)) return false;
     if (getClass() != obj.getClass()) return false;
-    TreeNode other = (TreeNode) obj;
+    Tree other = (Tree) obj;
     if(this.size()!=other.size()) return false;
     if(!this.content.equals(other.content)) return false;
     return this.containsAll(other);

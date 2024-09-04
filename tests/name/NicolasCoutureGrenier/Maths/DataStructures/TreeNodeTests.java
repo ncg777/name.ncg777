@@ -7,7 +7,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 public class TreeNodeTests extends TestCase {
-  private TreeNode<Integer> tn;
+  private Tree<Integer> tn;
   
   public TreeNodeTests(String name) {
     super();

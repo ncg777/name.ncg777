@@ -6,22 +6,22 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.TreeNode;
+import name.NicolasCoutureGrenier.Maths.DataStructures.Tree;
 import name.NicolasCoutureGrenier.Maths.Predicates.BoundRelationFirst;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.NNotesDifference;
 
 public class PCS12Utils {
 
-  public static TreeNode<PCS12> randomChordTree(TreeSet<PCS12> t, Integer[] n, int nb) {
+  public static Tree<PCS12> randomChordTree(TreeSet<PCS12> t, Integer[] n, int nb) {
     PCS12 i = CollectionUtils.chooseAtRandom(t);
     Predicate<PCS12> p = new BoundRelationFirst<PCS12, PCS12>(i, new NNotesDifference(1));
     return randomChordTreeSub(null, i, n, t, p, nb);
 
   }
 
-  private static TreeNode<PCS12> randomChordTreeSub(TreeNode<PCS12> parent, PCS12 z, Integer[] n,
+  private static Tree<PCS12> randomChordTreeSub(Tree<PCS12> parent, PCS12 z, Integer[] n,
       TreeSet<PCS12> t0, Predicate<PCS12> p, int nb) {
-    TreeNode<PCS12> o = new TreeNode<PCS12>(z, parent);
+    Tree<PCS12> o = new Tree<PCS12>(z, parent);
 
     int x = 0;
     Integer[] n2 = new Integer[0];
