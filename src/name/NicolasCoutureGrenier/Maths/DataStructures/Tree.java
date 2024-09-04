@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.Printers;
@@ -40,7 +42,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   
   public boolean add(Tree<T> t) {
     if(t == null) throw new RuntimeException("nulls not allowed.");
-    if(t != null && t.parent != null) {
+    if(t.parent != null) {
       t.parent = this;
     }
     
@@ -115,8 +117,15 @@ public class Tree<T> extends ArrayList<Tree<T>> {
       e.printStackTrace();
     }
   }
+  private static <T> Function<String,T> nullExceptionThrower(Function<String,T> parser) {
+    return (s) -> {
+      T o = parser.apply(s);
+      if(o == null) throw new RuntimeException("nulls not allowerd");
+      return o;
+    };
+  }
   public static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser) {
-    return Tree.parseJSONArray(str,Parsers.quoteRemoverDecorator(Parsers.nullDecorator(parser)),new Tree<T>());
+    return Tree.parseJSONArray(str,Tree.nullExceptionThrower(nullExceptionThrower(Parsers.nullDecorator(parser))),new Tree<T>());
   }
   private static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser, Tree<T> root) {
     try {      
@@ -198,7 +207,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
       for(int i=0;i<l;i++) {
         var o = Array.get(object, i);
         if(o==null) {
-          // skipping nulls and empty arrays
+          throw new RuntimeException("nulls not supported");
         } else {
           fromArray(o,t);
         }
