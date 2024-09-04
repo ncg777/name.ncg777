@@ -301,6 +301,9 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     Tree other = (Tree) obj;
     if(this.size()!=other.size()) return false;
     if(!this.content.equals(other.content)) return false;
-    return this.containsAll(other);
+    for(int i=0;i<this.size();i++) {
+      if(!this.get(i).equals(other.get(i))) return false;
+    }
+    return true;
   }
 }
