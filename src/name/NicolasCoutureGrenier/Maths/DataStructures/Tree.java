@@ -65,7 +65,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   public T getContent() {
     return content;
   }
-  public boolean isRoot() { return this.parent == null; }
+  public boolean isRoot() { return this.getRoot().equals(this); }
   public Tree<T> getParent() {return this.parent;}
   public Tree<T> getRoot(){ 
     Tree<T> current = this;
@@ -102,17 +102,15 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   
   private static <T> void toJSONArrayString(Function<T,String> printer, Tree<T> root, JsonGenerator gen) {
     try {
-      if(root.isRoot() && root.size() == 1) {
-        toJSONArrayString(printer,root,gen);
-      } else if((root != null && root.size()==0)) {
+      if(root.getDepth() == 0) {
+        gen.writeString(printer.apply(root.getContent()));
+      } else if((root != null)) {
         gen.writeStartArray();
         for(int i=0;i<root.size();i++) {
           toJSONArrayString(printer, root.get(i), gen); 
         }
         gen.writeEndArray();
-      } else {
-        gen.writeString(printer.apply(root.getContent()));
-      } 
+      }
     } catch(IOException e) {
       e.printStackTrace();
     }
@@ -192,19 +190,17 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   
   @SuppressWarnings({"unchecked"})
   private static <T> Tree<T> fromArray(Object object, Tree<T> parent) {  
-    if(object != null && object.getClass().isArray()) {
+    if(object == null) return null;
+    
+    if(object.getClass().isArray() && Array.getLength(object) > 0) {
       int l = Array.getLength(object);
-      
-      Tree<T> x = new Tree<T>(null,parent);
-      
+      Tree<T> t = new Tree<T>(null, parent);
       for(int i=0;i<l;i++) {
         var o = Array.get(object, i);
         if(o==null) {
           // skipping nulls and empty arrays
-        } else if(o.getClass().isArray()) {
-          fromArray(o,x);  
         } else {
-          fromArray(o,x);
+          fromArray(o,t);
         }
       }
       return parent;
