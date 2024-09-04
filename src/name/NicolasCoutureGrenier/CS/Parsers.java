@@ -13,8 +13,8 @@ public class Parsers {
   public static Function<String, String> stringParser = (s) -> s;
   public static Function<String, Integer> integerParser = (s) -> Integer.parseInt(s.trim());
   public static Function<String, Double> doubleParser = (s) -> Double.parseDouble(s.trim());
-  public static Function<String, Double[]> doubleArrayParser = arrayDecorator(doubleParser);
-  public static Function<String, Integer[]> integerArrayParser = arrayDecorator(integerParser);
+  public static Function<String, Object[]> doubleArrayParser = arrayDecorator(doubleParser);
+  public static Function<String, Object[]> integerArrayParser = arrayDecorator(integerParser);
   
   public static Function<String, Integer[]> intArrayParser  = (s) -> {
     String[] a = s.trim().split("\\s+");
@@ -26,9 +26,8 @@ public class Parsers {
     return o;
   };
   
-  @SuppressWarnings("unchecked")
-  public static <T> Function<String,T[]> arrayDecorator(Function<String,T> parser) {
-    return (s) -> (T[])Tree.parseJSONObject(s, parser).toArray();
+  public static <T> Function<String,Object[]> arrayDecorator(Function<String,T> parser) {
+    return (s) -> (Object[])Tree.parseJSONObject(s, parser).toArray();
   }
   
   public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);

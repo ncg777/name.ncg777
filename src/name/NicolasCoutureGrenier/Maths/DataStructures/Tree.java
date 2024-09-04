@@ -20,6 +20,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 
+import name.NicolasCoutureGrenier.CS.Parsers;
+import name.NicolasCoutureGrenier.CS.Printers;
+
 public class Tree<T> extends ArrayList<Tree<T>> {
   private static final long serialVersionUID = 1L;
 
@@ -87,7 +90,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   
   public String toJSONObjectString(Function<T,String> printer) {
     StringWriter sw = new StringWriter();
-    this.printToJSON(printer,sw);
+    this.printToJSON(Printers.nullDecorator(printer),sw);
     return sw.getBuffer().toString();
   }
   
@@ -109,10 +112,11 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     }
   }
   public static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser) {
-    return Tree.parseJSONObject(str,parser,new Tree<T>());
+    return Tree.parseJSONObject(str,Parsers.nullDecorator(parser),new Tree<T>());
   }
-  public static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser, Tree<T> root) {
+  private static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser, Tree<T> root) {
     try {
+      
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
       if(!p.isObject()) {
@@ -144,11 +148,11 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   
   @Override
   public String toString() {
-    return this.toString((e) -> e == null? "null" : e.toString());
+    return this.toString((s) -> s.toString());
   }
   
   public String toString(Function<T,String> printer) {
-    return this.toJSONObjectString(printer); 
+    return this.toJSONObjectString(Printers.nullDecorator(printer)); 
   }
   public String toIndentedString(
       final int level,
