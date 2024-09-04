@@ -80,7 +80,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   public void printToJSON(Function<T,String> printer, Writer sw) {
     try {
       var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
-      toJSONObjectString(printer, this.get(0), gen);
+      toJSONObjectString(printer, this, gen);
       gen.flush();  
     } catch (IOException e) {
       // TODO Auto-generated catch block
@@ -96,17 +96,22 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   
   private static <T> void toJSONObjectString(Function<T,String> printer, Tree<T> root, JsonGenerator gen) {
     try {
-      String fieldName= printer.apply(root.content);
-      
-      gen.writeStartObject();
-      
-      
-      gen.writeArrayFieldStart(fieldName);
-      for(int i=0;i<root.size();i++) {
-        toJSONObjectString(printer, root.get(i), gen);
+      if(root.size()<1) {
+        if(root.getContent() != null) {
+          gen.writeString(printer.apply(root.getContent()));
+        } else {
+          gen.writeStartArray();
+          gen.writeEndArray();    
+        }
+      } else if(root.size()==1 && root.getContent()==null) {
+        toJSONObjectString(printer, root.get(0), gen); 
+      } else {
+        gen.writeStartArray();
+        for(int i=0;i<root.size();i++) {
+          toJSONObjectString(printer, root.get(i), gen); 
+        }
+        gen.writeEndArray();
       }
-      gen.writeEndArray();
-      gen.writeEndObject();
     } catch(IOException e) {
       e.printStackTrace();
     }
@@ -115,26 +120,19 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     return Tree.parseJSONObject(str,Parsers.nullDecorator(parser),new Tree<T>());
   }
   private static <T> Tree<T> parseJSONObject(String str, Function<String,T> parser, Tree<T> root) {
-    try {
-      
+    try {      
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
-      if(!p.isObject()) {
-        throw new RuntimeException("invalid");
-      }
-      
-      String fieldname = p.fieldNames().next();
-      root.content = parser.apply(fieldname);
-      
-      var arr = p.get(fieldname);
-      if(!arr.isArray()) throw new RuntimeException("invalid");
-     
-      for(int i=0;i<arr.size();i++) {
-        var t = Tree.parseJSONObject(arr.get(i).toString(), parser);
-        root.add(t);
-      }
-      
-      return root;  
+      if(p == null) return root;
+      if(p.isArray()) {
+        Tree<T> arr = new Tree<T>(null, root);
+        for(int i=0;i<p.size();i++) {
+          parseJSONObject(p.get(i).toString(), parser, arr);
+        }
+        return arr;
+      } else {
+        return new Tree<T>(parser.apply(str.substring(1,str.length()-1)),root);
+      }  
     } catch (JsonParseException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -196,9 +194,10 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     if(object != null && object.getClass().isArray()) {
       int l = Array.getLength(object);
       Tree<T> x = new Tree<T>();
+      
       for(int i=0;i<l;i++) {
-        fromArray(Array.get(object, i),x);
-        
+        var o = Array.get(object, i);
+        fromArray(o,x);
       }
       parent.add(x);
       return parent;
@@ -209,9 +208,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     }
   }
   public static <T> Tree<T> fromArray(Object object) {
-    Tree<T> o = new Tree<T>();
-    fromArray(object,o);
-    return o;
+    return fromArray(object,new Tree<T>());
   }
   
   @SuppressWarnings("unchecked")
