@@ -6,7 +6,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -251,6 +250,12 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     return max+1;
   }
   
+  @Override
+  public Object[] toArray() {
+    var o = toJaggedArray();
+    if(o != null && o.getClass().isArray()) return (Object[]) o;
+    return null;
+  }
   
   public Object toJaggedArray() {   
     if(this.getDepth() == 0) {
@@ -274,7 +279,6 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
       Class<T> c = this.getContentClass();
       
       if(c==null) return null;
-      System.out.println(Arrays.toString(this.getDimensions()));
       List<Object> l = new ArrayList<Object>();
       for(int i=0;i<this.size();i++) {
         var arr = this.get(i).toJaggedArray();
@@ -290,7 +294,6 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     }
   }
 
- 
   @Override
   public int hashCode() {
     final int prime = 31;
