@@ -232,11 +232,13 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     return max+1;
   }
   
+  /**
+   * @return A jagged array representing this tree
+   */
   @Override
   public Object[] toArray() {
     var o = toJaggedArray();
-    if(o != null && o.getClass().isArray()) return (Object[]) o;
-    return null;
+    return (Object[])o;
   }
   
   private Object toJaggedArray() {   
