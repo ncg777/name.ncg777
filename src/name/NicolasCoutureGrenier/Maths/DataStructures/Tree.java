@@ -80,7 +80,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   public void printToJSON(Function<T,String> printer, Writer sw) {
     try {
       var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
-      toJSONObjectString(printer, this, gen);
+      toJSONObjectString(printer, this.get(0), gen);
       gen.flush();  
     } catch (IOException e) {
       // TODO Auto-generated catch block
