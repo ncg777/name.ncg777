@@ -183,7 +183,25 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     
     return b.toString();
   }
+
   
+  @SuppressWarnings("unchecked")
+  private static <T> TreeNode<T> fromArray(Object object, TreeNode<T> parent) {  
+    if(object != null && object.getClass().isArray()) {
+      int l = Array.getLength(object);
+      TreeNode<T> x = new TreeNode<T>();
+      for(int i=0;i<l;i++) {
+        fromArray(Array.get(object, i),x);
+        
+      }
+      parent.add(x);
+      return parent;
+    
+    } else {
+      if(object == null) return new TreeNode<T>(null,parent);
+      return new TreeNode<T>((T)object,parent);
+    }
+  }
   public static <T> TreeNode<T> fromArray(Object object) {
     TreeNode<T> o = new TreeNode<T>();
     fromArray(object,o);
@@ -272,18 +290,7 @@ public class TreeNode<T> extends ArrayList<TreeNode<T>> {
     }
   }
 
-  
-  @SuppressWarnings("unchecked")
-  private static <T> void fromArray(Object object, TreeNode<T> parent) {  
-    if(object.getClass().isArray()) {   
-      for(var obj : (Object[])object) {
-        fromArray(obj, parent);
-      }
-      
-    } else {
-      var t = new TreeNode<>((T)object,parent);
-    }
-  }
+ 
   @Override
   public int hashCode() {
     final int prime = 31;
