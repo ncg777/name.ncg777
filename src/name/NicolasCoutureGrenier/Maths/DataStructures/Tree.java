@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -302,5 +303,15 @@ public class Tree<T> extends ArrayList<Tree<T>> {
       if(!this.get(i).equals(other.get(i))) return false;
     }
     return true;
+  }
+  
+  public int compareTo(Tree<T> other, Comparator<T> comp) {
+    if(this.size()<other.size()) return -1;
+    if(this.size()>other.size()) return 1;
+    for(int i=0;i<this.size();i++) {
+      int res = this.compareTo(other, comp);
+      if(res != 0) return res;
+    }
+    return 0;
   }
 }
