@@ -33,12 +33,15 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     super();
     content = t;
   }
+  
+  public boolean add(Tree<T> t) {
+    t.parent = this;
+    return super.add(t);
+  }
 
   public Tree(T t, Tree<T> parent) {
-    super();
-    this.parent = parent;
-    content = t;
-    if(!this.parent.contains(this)) parent.add(this);
+    this(t);
+    parent.add(this);
   }
   public Map<T,Tree<T>> toMap(){
     HashMap<T, Tree<T>> h = new HashMap<>();
@@ -296,5 +299,4 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     if(!this.content.equals(other.content)) return false;
     return this.containsAll(other);
   }
-
 }
