@@ -102,7 +102,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   
   private static <T> void toJSONArrayString(Function<T,String> printer, Tree<T> root, JsonGenerator gen) {
     try {
-      if(root.getDepth() == 0) {
+      if(root.getDepth() == 0 && root.getContent()!=null) {
         gen.writeString(printer.apply(root.getContent()));
       } else if((root != null)) {
         gen.writeStartArray();
@@ -192,9 +192,9 @@ public class Tree<T> extends ArrayList<Tree<T>> {
   private static <T> Tree<T> fromArray(Object object, Tree<T> parent) {  
     if(object == null) return null;
     
-    if(object.getClass().isArray() && Array.getLength(object) > 0) {
+    if(object.getClass().isArray()) {
       int l = Array.getLength(object);
-      Tree<T> t = new Tree<T>(null, parent);
+      Tree<T> t = new Tree<T>(null, parent);  
       for(int i=0;i<l;i++) {
         var o = Array.get(object, i);
         if(o==null) {
