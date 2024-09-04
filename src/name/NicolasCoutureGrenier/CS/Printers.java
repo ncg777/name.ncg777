@@ -17,6 +17,8 @@ public class Printers {
   public static Function<String, String> stringPrinter = (s) -> s;
   public static Function<Integer, String> integerPrinter = (i) -> Integer.toString(i);
   public static Function<Double, String> doublePrinter = (d) -> Double.toString(d);
+  public static Function<Double[],String> doubleArrayPrinter = arrayDecorator(doublePrinter);
+  public static Function<Integer[],String> integerArrayPrinter = arrayDecorator(integerPrinter);
   public static Function<Sequence, String> sequencePrinter = (s) -> s.toString();
   public static Function<PCS12, String> PCS12Printer = (pcs) -> pcs.toString();
   public static Function<HomogeneousPair<Integer>, String> intPairPrinter = (p) -> {
@@ -26,6 +28,9 @@ public class Printers {
     return ss.toString();
   };
 
+  public static<T> Function<T[],String> arrayDecorator(Function<T,String> printer){
+    return (arr) -> Tree.<T>fromArray(arr).toString(printer);
+  }
   public static <T> Function<List<T>,String> listPrinter(Function<T,String> printer) {
     return listPrinter(printer, " ");
   }
