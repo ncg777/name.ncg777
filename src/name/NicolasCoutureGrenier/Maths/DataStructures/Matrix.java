@@ -8,11 +8,8 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.TreeMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TreeSet;
 
 import com.google.common.base.Joiner;
 
@@ -27,35 +24,13 @@ import com.google.common.base.Joiner;
  * @param <T>
  */
 public class Matrix<T> {
-  protected TreeMap<Integer, TreeMap<Integer, T>> mat;
-  /** lock holds the flag specifying if the matrix is read-only or not. */
-  protected boolean lock = false;
+  protected TreeMap<HomogeneousPair<Integer>, T> mat;
   /** Number of rows */
   protected int m;
   /** Number of columns */
   protected int n;
   private T defaultValue = null;
 
-  /**
-   * Checks whether the matrix is locked and throws a runtime exception if it is. It must be called
-   * by all methods that may change the values of the matrix.
-   */
-  protected void checkLock() {
-    if (lock) {
-      throw new IllegalArgumentException(
-          "Matrix This operation is not allowed because the matrix is locked.");
-    }
-  }
-
-  /** Locks the matrix; makes it read-only. Public. */
-  public void lock() {
-    lock = true;
-  }
-
-  /** Unlocks the matrix. Protected. */
-  protected void unlock() {
-    lock = false;
-  }
 
   /** @return Gets number of columns */
   public int columnCount() {
@@ -113,7 +88,7 @@ public class Matrix<T> {
   public Matrix() {
     this.m = 0;
     this.n = 0;
-    mat = new TreeMap<Integer, TreeMap<Integer, T>>();
+    mat = new TreeMap<>();
   }
 
   /**
@@ -154,8 +129,7 @@ public class Matrix<T> {
    * @param defaultValue
    */
   protected void init(int p_m, int p_n, T defaultValue) {
-    checkLock();
-    mat = new TreeMap<Integer, TreeMap<Integer, T>>();
+    mat = new TreeMap<>();
     this.defaultValue = defaultValue;
 
     this.m = p_m;
@@ -186,10 +160,11 @@ public class Matrix<T> {
    * @return
    */
   public T get(int i, int j) {
-    if (!mat.containsKey(i) || (mat.containsKey(i) && !mat.get(i).containsKey(j))) {
+    var p = HomogeneousPair.makeHomogeneousPair(i, j);
+    if (!mat.containsKey(p)) {
       return defaultValue;
     }
-    return mat.get(i).get(j);
+    return mat.get(p);
   }
 
   /**
@@ -199,16 +174,13 @@ public class Matrix<T> {
    * @param j
    * @return The previous value of the element at this position
    */
-  public T set(int i, int j, T val) {
-    checkLock();
-    if (!mat.containsKey(i)) {
-      mat.put(i, new TreeMap<Integer, T>());
-    }
-    return mat.get(i).put(j, val);
+  public void set(int i, int j, T val) {
+    var p = HomogeneousPair.makeHomogeneousPair(i, j);
+    if(val == defaultValue) {mat.remove(p);}
+    else  mat.put(p, val);
   }
 
   public void clear() {
-    checkLock();
     mat.clear();
   }
 
@@ -309,7 +281,7 @@ public class Matrix<T> {
     if (from < 0 || to < 0 || from >= n || to >= n) {
       throw new IllegalArgumentException();
     }
-    ArrayList<T> c = getColumn(from);
+    List<T> c = getColumn(from);
     removeColumn(from);
     insertColumn(to, c);
   }
@@ -323,7 +295,7 @@ public class Matrix<T> {
    * @param j0
    */
   public void setBlock(Matrix<T> p_mat, int i0, int j0) {
-    checkLock();
+    
     int mm = p_mat.rowCount();
     int mn = p_mat.columnCount();
 
@@ -344,38 +316,25 @@ public class Matrix<T> {
 
   private void shiftColumnsRight(int j) {
     n++;
-    for (Integer i : mat.keySet()) {
-      TreeSet<Integer> incr = new TreeSet<Integer>();
-
-      for (Integer k : mat.get(i).keySet()) {
-        if (k >= j) {
-          incr.add(k);
-        }
-      }
-
-      Iterator<Integer> it = incr.descendingIterator();
-
-      while (it.hasNext()) {
-        Integer k = it.next();
-        mat.get(i).put(k + 1, mat.get(i).remove(k));
+    for(var e : mat.descendingMap().entrySet()) {
+      if(e.getKey().getSecond() >= j) {
+        mat.put(
+              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst(),e.getKey().getSecond()+1), 
+              mat.remove(e.getKey())
+            );
       }
     }
   }
 
   private void shiftRowsDown(int i) {
     m++;
-    TreeSet<Integer> incr = new TreeSet<Integer>();
-    for (Integer k : mat.keySet()) {
-      if (k >= i) {
-        incr.add(k);
+    for(var e : mat.descendingMap().entrySet()) {
+      if(e.getKey().getFirst() >= i) {
+        mat.put(
+              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst()+1,e.getKey().getSecond()), 
+              mat.remove(e.getKey())
+            );
       }
-    }
-
-    Iterator<Integer> it = incr.descendingIterator();
-
-    while (it.hasNext()) {
-      Integer k = it.next();
-      mat.put(k + 1, mat.remove(k));
     }
   }
 
@@ -386,8 +345,7 @@ public class Matrix<T> {
    * @param j
    * @param c
    */
-  public void insertColumn(int j, List<T> c) {
-    checkLock();
+  public void insertColumn(int j, List<T> c) { 
     if (c.size() != m && n != 0) {
       throw new IllegalArgumentException("Matrix::insertColumn list size don't match matrix.");
     }
@@ -408,8 +366,6 @@ public class Matrix<T> {
    * @param v
    */
   public void insertColumn(int j, T v) {
-    checkLock();
-
     shiftColumnsRight(j);
     for (int i = 0; i < m; i++) {
       set(i, j, v);
@@ -424,7 +380,6 @@ public class Matrix<T> {
    * @param j
    */
   public void insertColumn(int j) {
-    checkLock();
     shiftColumnsRight(j);
   }
 
@@ -436,7 +391,6 @@ public class Matrix<T> {
    * @param l
    */
   public void insertRow(int i, List<T> r) {
-    checkLock();
     if (r.size() != n && m != 0) {
       throw new IllegalArgumentException("Matrix::insertRow list size don't match matrix.");
     }
@@ -455,7 +409,6 @@ public class Matrix<T> {
    * @param v
    */
   public void insertRow(int i, T v) {
-    checkLock();
     shiftRowsDown(i);
     for (int j = 0; j < n; j++) {
       set(i, j, v);
@@ -471,7 +424,6 @@ public class Matrix<T> {
    * @param i
    */
   public void insertRow(int i) {
-    checkLock();
     shiftRowsDown(i);
   }
 
@@ -481,27 +433,17 @@ public class Matrix<T> {
    * @param j
    */
   public void removeColumn(int j) {
-    checkLock();
     n--;
-    for (Integer i : mat.keySet()) {
-      mat.get(i).remove(j);
-
-      TreeSet<Integer> decr = new TreeSet<Integer>();
-
-      for (Integer k : mat.get(i).keySet()) {
-        if (k > j) {
-          decr.add(k);
-        }
-      }
-
-      Iterator<Integer> it = decr.iterator();
-
-      while (it.hasNext()) {
-        Integer k = it.next();
-        mat.get(i).put(k - 1, mat.get(i).remove(k));
+    
+    for(var e : mat.descendingMap().entrySet()) {
+      if(e.getKey().getSecond() == j) mat.remove(e.getKey());
+      if(e.getKey().getSecond() > j) {
+        mat.put(
+              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst(),e.getKey().getSecond()-1), 
+              mat.remove(e.getKey())
+            );
       }
     }
-
   }
 
   /**
@@ -510,22 +452,16 @@ public class Matrix<T> {
    * @param i
    */
   public void removeRow(int i) {
-    checkLock();
-    mat.remove(i);
     m--;
-
-    TreeSet<Integer> decr = new TreeSet<Integer>();
-    for (Integer k : mat.keySet()) {
-      if (k > i) {
-        decr.add(k);
+    
+    for(var e : mat.descendingMap().entrySet()) {
+      if(e.getKey().getFirst() == i) mat.remove(e.getKey());
+      if(e.getKey().getFirst() > i) {
+        mat.put(
+              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst()-1,e.getKey().getSecond()), 
+              mat.remove(e.getKey())
+            );
       }
-    }
-
-    Iterator<Integer> it = decr.iterator();
-
-    while (it.hasNext()) {
-      Integer k = it.next();
-      mat.put(k - 1, mat.remove(k));
     }
   }
 
@@ -535,8 +471,7 @@ public class Matrix<T> {
    * @param j
    * @param c
    */
-  public void setColumn(int j, List<T> c) {
-    checkLock();
+  public void setColumn(int j, List<T> c) {  
     if (c.size() != m) {
       throw new IllegalArgumentException("Matrix::setColumn list size don't match matrix.");
     }
@@ -553,7 +488,6 @@ public class Matrix<T> {
    * @param c
    */
   public void setColumn(int j, T c) {
-    checkLock();
     for (int i = 0; i < m; i++) {
       set(i, j, c);
     }
@@ -566,7 +500,6 @@ public class Matrix<T> {
    * @param l
    */
   public void setRow(int i, List<T> r) {
-    checkLock();
     if (r.size() != n) {
       throw new IllegalArgumentException("Matrix::setRow list size don't match matrix.");
     }
@@ -583,7 +516,6 @@ public class Matrix<T> {
    * @param r
    */
   public void setRow(int i, T r) {
-    checkLock();
     for (int j = 0; j < n; j++) {
       set(i, j, r);
     }
@@ -595,7 +527,7 @@ public class Matrix<T> {
    * @param j >=0
    * @return
    */
-  public ArrayList<T> getColumn(int j) {
+  public List<T> getColumn(int j) {
     ArrayList<T> o = new ArrayList<T>();
     for (int i = 0; i < m; i++) {
       o.add(get(i, j));
@@ -623,161 +555,20 @@ public class Matrix<T> {
    * @return
    */
   public Matrix<T> getTranspose() {
-    Matrix<T> o = new Matrix<T>(n, m);
-    for (Map.Entry<Integer, TreeMap<Integer, T>> e : mat.entrySet()) {
-      for (Map.Entry<Integer, T> f : e.getValue().entrySet()) {
-        o.set(f.getKey(), e.getKey(), f.getValue());
-      }
-    }
+    Matrix<T> o = new Matrix<T>(n, m, defaultValue);
+    for(var e : mat.entrySet()) o.set(e.getKey().getFirst(),e.getKey().getSecond(), e.getValue());
     return o;
-
   }
 
   public boolean contains(T el) {
-    for (Integer i : mat.keySet()) {
-      if (mat.get(i).containsValue(el)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  
-
-  private class RowIterator implements Iterator<T>{
-
-    private int row=0;
-    int j = 0;
-    public RowIterator(int row0){
-      this.row = row0;
-      
-    }
-    @Override
-    public boolean hasNext() {
-      return j < n;
-    }
-
-    @Override
-    public T next() {
-      return get(row,j++);
-    }
-
-    @Override
-    public void remove() {
-      mat.get(row).remove(j-1);
-    }
-    
+    if(el == defaultValue && m>0 && n>0) return true;
+    return mat.values().contains(el);
   }
   
-
-  public void distinctRowsSorted() {
-    sortRows();
-    TreeMap<Integer,TreeMap<Integer,T>> t = 
-        new TreeMap<Integer,TreeMap<Integer,T>>(); 
-    
-    int last = -1;
-    
-    int k = 0;
-    
-    for(int i=0;i<m;i++){
-      if (last == -1 || 
-          IterableComparator.compare(
-              new RowIterator(i), new RowIterator(last)) != 0) {
-        TreeMap<Integer,T> x = mat.get(i);
-        if(x != null){
-          t.put(k, x);
-        }
-        k++;
-        last = i;
-      }
-    }
-    mat = t;
-    m = k;
-
-  }
-
-  private void swapRows(int a, int b){
-    checkLock();
-    TreeMap<Integer,T> tmp = null;
-    if(mat.containsKey(a)){
-      tmp = mat.get(a);  
-    }
-    
-    if(mat.containsKey(b)){
-      mat.put(a,mat.get(b));
-    } else{
-      mat.remove(a);
-    }
-    if(tmp != null){
-      mat.put(b,tmp);
-    } else{
-      mat.remove(b);
-    }
-    
-  }
-  
-  private int partition(int left, int right, int pivotIndex){
-    checkLock();
-    swapRows(pivotIndex,right);
-    
-    int storeIndex = left;
-    
-    for(int i=left;i<right;i++){
-      int c = IterableComparator.compare(
-          new RowIterator(i), new RowIterator(right));
-      if(c < 1){
-        swapRows(i,storeIndex);
-        storeIndex++;
-      }
-      
-    }
-    swapRows(storeIndex,right);
-
-    return storeIndex;
-            
-  }
-    
-  
-     
-  public void sortRows(){
-    quicksort(0,m-1);
-  }
-  
-  private void quicksort(int left, int right){
-    if(left < right){
-      int pivotIndex = findMedianOf3(left,right);
-
-      int pivotNewIndex = partition(left, right, pivotIndex);
-
-      quicksort(left, pivotNewIndex - 1);
-
-      quicksort(pivotNewIndex + 1, right);
-    }
-  }
-   
-  private int findMedianOf3(int left, int right){
-    int middle = (left + right)/2;
-    Matrix<T> tmp = new Matrix<T>();
-    tmp.n = n;
-    tmp.m = 3;
-    if(mat.containsKey(left)){tmp.mat.put(0,mat.get(left));}
-    if(mat.containsKey(middle)){tmp.mat.put(1,mat.get(middle));}
-    if(mat.containsKey(right)){tmp.mat.put(2,mat.get(right));}
-    int o = 2 - tmp.partition(0,2,0);
-    switch(o){
-      case 0: return left;
-      case 1: return middle;
-      case 2: return right;
-      default: throw new RuntimeException();
-    }
-    
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (lock ? 1231 : 1237);
     result = prime * result + m;
     result = prime * result + ((mat == null) ? 0 : mat.hashCode());
     result = prime * result + n;
@@ -791,7 +582,6 @@ public class Matrix<T> {
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     Matrix other = (Matrix) obj;
-    if (lock != other.lock) return false;
     if (n != other.n) return false;
     if (m != other.m) return false;
     if (mat == null) {
@@ -811,5 +601,4 @@ public class Matrix<T> {
 
     return true;
   }
-
 }
