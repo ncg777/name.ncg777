@@ -6,7 +6,7 @@ import java.util.function.Function;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Tree;
+import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedArrayList;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Parsers {
@@ -27,7 +27,7 @@ public class Parsers {
   };
   
   public static <T> Function<String,Object[]> arrayDecorator(Function<String,T> parser) {
-    return (s) -> (Object[])Tree.parseJSONArray(s, parser).toArray();
+    return (s) -> (Object[])JaggedArrayList.parseJSONArray(s, parser).toArray();
   }
   public static <T> Function<String, T> quoteRemoverDecorator(Function<String, T> parser) {
     return (s) -> {
@@ -53,10 +53,10 @@ public class Parsers {
     return (s) -> s.equals("null") ? null : parser.apply(s);
   }
   
-  public static <X> Function<String,Tree<X>> 
+  public static <X> Function<String,JaggedArrayList<X>> 
     treeNodeDecorator(Function<String,X> parser) {
     return (str) -> {
-      return Tree.<X>parseJSONArray(str,parser);
+      return JaggedArrayList.<X>parseJSONArray(str,parser);
     };
   }
   

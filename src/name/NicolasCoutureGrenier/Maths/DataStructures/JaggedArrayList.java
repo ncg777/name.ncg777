@@ -26,21 +26,21 @@ import com.google.common.collect.Ordering;
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.Printers;
 
-public class Tree<T> extends ArrayList<Tree<T>> {
+public class JaggedArrayList<T> extends ArrayList<JaggedArrayList<T>> {
   private static final long serialVersionUID = 1L;
 
   T content = null;
-  Tree<T> parent = null;
+  JaggedArrayList<T> parent = null;
 
-  public Tree() {
+  public JaggedArrayList() {
     super();
   }
-  public Tree(T t) {
+  public JaggedArrayList(T t) {
     super();
     content = t;
   }
   
-  public boolean add(Tree<T> t) {
+  public boolean add(JaggedArrayList<T> t) {
     if(t == null) throw new RuntimeException("nulls not allowed.");
     if(t.parent != null) {
       t.parent = this;
@@ -49,13 +49,13 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     return super.add(t);
   }
 
-  public Tree(T t, Tree<T> parent) {
+  public JaggedArrayList(T t, JaggedArrayList<T> parent) {
     this(t);
     if(parent == null) throw new RuntimeException("parent is null.");
     parent.add(this);
   }
-  public Map<T,Tree<T>> toMap(){
-    HashMap<T, Tree<T>> h = new HashMap<>();
+  public Map<T,JaggedArrayList<T>> toMap(){
+    HashMap<T, JaggedArrayList<T>> h = new HashMap<>();
     for(var i: this) h.put(i.content, i);
     h.put(this.content,this);
     return h;
@@ -68,9 +68,9 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     return content;
   }
   public boolean isRoot() { return this.getRoot().equals(this); }
-  public Tree<T> getParent() {return this.parent;}
-  public Tree<T> getRoot(){ 
-    Tree<T> current = this;
+  public JaggedArrayList<T> getParent() {return this.parent;}
+  public JaggedArrayList<T> getRoot(){ 
+    JaggedArrayList<T> current = this;
     
     while(!current.isRoot()) { 
       current = current.getParent();
@@ -102,7 +102,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     return sw.getBuffer().toString();
   }
   
-  private static <T> void toJSONArrayString(Function<T,String> printer, Tree<T> root, JsonGenerator gen) {
+  private static <T> void toJSONArrayString(Function<T,String> printer, JaggedArrayList<T> root, JsonGenerator gen) {
     try {
       if(root.getDepth() == 0 && root.getContent()!=null) {
         gen.writeString(printer.apply(root.getContent()));
@@ -124,22 +124,22 @@ public class Tree<T> extends ArrayList<Tree<T>> {
       return o;
     };
   }
-  public static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser) {
-    return Tree.parseJSONArray(str,Tree.nullExceptionThrower(Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser))),new Tree<T>());
+  public static <T> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser) {
+    return JaggedArrayList.parseJSONArray(str,JaggedArrayList.nullExceptionThrower(Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser))),new JaggedArrayList<T>());
   }
-  private static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser, Tree<T> root) {
+  private static <T> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser, JaggedArrayList<T> root) {
     try {      
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
       if(p == null) return root;
       if(p.isArray()) {
-        Tree<T> arr = new Tree<T>(null, root);
+        JaggedArrayList<T> arr = new JaggedArrayList<T>(null, root);
         for(int i=0;i<p.size();i++) {
           parseJSONArray(p.get(i).toString(), parser, arr);
         }
         return arr;
       } else {
-        return new Tree<T>(parser.apply(str),root);
+        return new JaggedArrayList<T>(parser.apply(str),root);
       }  
     } catch (JsonParseException e) {
       // TODO Auto-generated catch block
@@ -198,12 +198,12 @@ public class Tree<T> extends ArrayList<Tree<T>> {
 
   
   @SuppressWarnings({"unchecked"})
-  private static <T> Tree<T> fromArray(Object object, Tree<T> parent) {  
+  private static <T> JaggedArrayList<T> fromArray(Object object, JaggedArrayList<T> parent) {  
     if(object == null) return null;
     
     if(object.getClass().isArray()) {
       int l = Array.getLength(object);
-      Tree<T> t = new Tree<T>(null, parent);  
+      JaggedArrayList<T> t = new JaggedArrayList<T>(null, parent);  
       for(int i=0;i<l;i++) {
         var o = Array.get(object, i);
         if(o==null) {
@@ -214,11 +214,11 @@ public class Tree<T> extends ArrayList<Tree<T>> {
       }
       return parent;
     } else {
-      return new Tree<T>((T)object,parent);
+      return new JaggedArrayList<T>((T)object,parent);
     }
   }
-  public static <T> Tree<T> fromArray(Object object) {
-    return fromArray(object,new Tree<T>());
+  public static <T> JaggedArrayList<T> fromArray(Object object) {
+    return fromArray(object,new JaggedArrayList<T>());
   }
   
   private Class<T> getContentClass() {
@@ -266,7 +266,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     if(this.size() == 0) return 0;
     
     int max = -1;
-    for(Tree<T> i : this) {
+    for(JaggedArrayList<T> i : this) {
       if(i != null) {
         int x = i.getDepth();
         if(x > max) max = x;  
@@ -330,7 +330,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     if (this == obj) return true;
     if (!super.equals(obj)) return false;
     if (getClass() != obj.getClass()) return false;
-    Tree other = (Tree) obj;
+    JaggedArrayList other = (JaggedArrayList) obj;
     if(this.size()!=other.size()) return false;
     if(!this.content.equals(other.content)) return false;
     for(int i=0;i<this.size();i++) {
@@ -339,7 +339,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     return true;
   }
   
-  public int compareTo(Tree<T> other, Comparator<T> comp) {
+  public int compareTo(JaggedArrayList<T> other, Comparator<T> comp) {
     if(this.size()<other.size()) return -1;
     if(this.size()>other.size()) return 1;
     for(int i=0;i<this.size();i++) {

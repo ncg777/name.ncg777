@@ -7,7 +7,7 @@ import org.junit.Test;
 import junit.framework.TestCase;
 
 public class TreeNodeTests extends TestCase {
-  private Tree<Integer> tn;
+  private JaggedArrayList<Integer> tn;
   
   public TreeNodeTests(String name) {
     super();

@@ -10,7 +10,7 @@ import java.util.List;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Tree;
+import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedArrayList;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Printers {
@@ -29,7 +29,7 @@ public class Printers {
   };
 
   public static<T> Function<Object[],String> arrayDecorator(Function<T,String> printer){
-    return (arr) -> Tree.<T>fromArray(arr).toJSONArrayString(printer);
+    return (arr) -> JaggedArrayList.<T>fromArray(arr).toJSONArrayString(printer);
   }
   public static <T> Function<List<T>,String> listPrinter(Function<T,String> printer) {
     return listPrinter(printer, " ");
@@ -45,8 +45,8 @@ public class Printers {
     return (x) -> x == null ? "null" : printer.apply(x);
   }
   
-  public static <T extends Comparable<? super T>> Function<Tree<T>,String> treeNodeDecorator(Function<T,String> printer) {
-    return (Tree<T> x) -> {
+  public static <T extends Comparable<? super T>> Function<JaggedArrayList<T>,String> treeNodeDecorator(Function<T,String> printer) {
+    return (JaggedArrayList<T> x) -> {
       return x.toJSONArrayString(printer);
     };
   }
