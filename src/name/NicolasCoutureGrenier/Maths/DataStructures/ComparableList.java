@@ -9,7 +9,6 @@ public class ComparableList<T extends Comparable<? super T>> extends ArrayList<T
 
   private static final long serialVersionUID = 3544674044705816624L;
 
-  @Override
   public int compareTo(ArrayList<T> o) {
     return IterableComparator.compare(this.iterator(), o.iterator());
   }

@@ -19,11 +19,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Ordering;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.Printers;
 
-public class JaggedArrayList<T extends Comparable<? super T>> extends ComparableList<JaggedArrayList<T>> {
+public class JaggedArrayList<T extends Comparable<? super T>> extends ArrayList<JaggedArrayList<T>> implements Comparable<JaggedArrayList<T>>{
   private static final long serialVersionUID = 1L;
 
   T content = null;
@@ -292,7 +293,14 @@ public class JaggedArrayList<T extends Comparable<? super T>> extends Comparable
       return o;
     }
   }
-
+  
+  private Ordering<T> ordering = Ordering.natural().nullsFirst();
+  
+  public int compareTo(JaggedArrayList<T> other) {
+    var o = ordering.compare(this.content, other.content);
+    return o == 0 ? IterableComparator.compare(this.iterator(), other.iterator()) : o;
+  }
+  
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -300,18 +308,15 @@ public class JaggedArrayList<T extends Comparable<? super T>> extends Comparable
     result = prime * result + Objects.hash(content, parent);
     return result;
   }
-  @SuppressWarnings("rawtypes")
+  
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (!super.equals(obj)) return false;
     if (getClass() != obj.getClass()) return false;
-    JaggedArrayList other = (JaggedArrayList) obj;
-    if(this.size()!=other.size()) return false;
-    if(!this.content.equals(other.content)) return false;
-    for(int i=0;i<this.size();i++) {
-      if(!this.get(i).equals(other.get(i))) return false;
-    }
-    return true;
+    
+    @SuppressWarnings("unchecked")
+    JaggedArrayList<T> other = (JaggedArrayList<T>) obj;
+    return this.compareTo(other) == 0;
   }
 }
