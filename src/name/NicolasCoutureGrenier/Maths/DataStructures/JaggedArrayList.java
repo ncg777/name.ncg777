@@ -24,7 +24,9 @@ import com.google.common.collect.Ordering;
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.Printers;
 
-public class JaggedArrayList<T extends Comparable<? super T>> extends ArrayList<JaggedArrayList<T>> implements Comparable<JaggedArrayList<T>>{
+public class JaggedArrayList<T extends Comparable<? super T>> 
+  extends ArrayList<JaggedArrayList<T>> 
+  implements Comparable<JaggedArrayList<T>> {
   private static final long serialVersionUID = 1L;
 
   T content = null;

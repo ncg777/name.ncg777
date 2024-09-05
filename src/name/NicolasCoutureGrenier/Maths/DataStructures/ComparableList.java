@@ -5,11 +5,11 @@ import java.util.Collection;
 
 public class ComparableList<T extends Comparable<? super T>> extends ArrayList<T>
     implements
-      Comparable<ArrayList<T>> {
+      Comparable<ComparableList<T>> {
 
   private static final long serialVersionUID = 3544674044705816624L;
 
-  public int compareTo(ArrayList<T> o) {
+  public int compareTo(ComparableList<T> o) {
     return IterableComparator.compare(this.iterator(), o.iterator());
   }
 
