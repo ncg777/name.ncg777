@@ -50,7 +50,7 @@ public class Parsers {
   }
   
   public static <X> Function<String,X> nullDecorator(Function<String,X> parser) {
-    return (s) -> s == null || s.equals("null") ? null : parser.apply(s);
+    return (s) -> s.equals("null") ? null : parser.apply(s);
   }
   
   public static <X extends Comparable<? super X>> Function<String,JaggedList<X>> 

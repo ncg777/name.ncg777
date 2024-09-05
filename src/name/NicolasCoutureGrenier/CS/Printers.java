@@ -41,10 +41,6 @@ public class Printers {
     return (var x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));
   }
   
-  public static <T> Function<T,String> nullDecorator(Function<T,String> printer) {
-    return (x) -> x == null ? "null" : printer.apply(x);
-  }
-  
   public static <T extends Comparable<? super T>> Function<JaggedList<T>,String> treeNodeDecorator(Function<T,String> printer) {
     return (JaggedList<T> x) -> {
       return x.toJSONArrayString(printer);

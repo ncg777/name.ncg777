@@ -127,12 +127,19 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
   }
   
   public static <T extends Comparable<? super T>, U extends Comparable<? super U>> void toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, HeterogeneousPair<T,U> pair, JsonGenerator gen) throws IOException {
-    String[] arr = new String[2];
+    gen.writeStartArray();
     
-    arr[0] = printer1.apply(pair.getFirst());
-    arr[1] = printer2.apply(pair.getSecond());
-    
-    gen.writeArray(arr, 0, 2);
+    if(pair.getFirst() == null) {
+      gen.writeNull();
+    } else {
+      gen.writeString(printer1.apply(pair.getFirst()));
+    }
+    if(pair.getSecond() == null) {
+      gen.writeNull();
+    } else {
+      gen.writeString(printer2.apply(pair.getSecond()));
+    }
+    gen.writeEndArray();
   }
   
   
@@ -153,11 +160,14 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
       String l = p.get(0).toString();
       String r = p.get(1).toString();
       
-      return makeHeterogeneousPair(Parsers.quoteRemoverDecorator(parser1).apply(l),Parsers.quoteRemoverDecorator(parser2).apply(r));  
+      return makeHeterogeneousPair(
+          Parsers.quoteRemoverDecorator(
+              Parsers.nullDecorator(parser1)).apply(l),
+          Parsers.quoteRemoverDecorator(
+              Parsers.nullDecorator(parser2)).apply(r));  
     } catch (IOException e) {
       throw new RuntimeException("invalid input");
-    }
-    
+    }    
   }
   public static <
   T extends Comparable<? super T>, 
@@ -171,9 +181,11 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
       throw new RuntimeException("invalid");
     }
     
-    return makeHeterogeneousPair(Parsers.quoteRemoverDecorator(parser1).apply(node.get(0).toString()),Parsers.quoteRemoverDecorator(parser2).apply(node.get(1).toString()));  
-  
-  
+    return makeHeterogeneousPair(
+        Parsers.quoteRemoverDecorator(
+            Parsers.nullDecorator(parser1)).apply(node.get(0).toString()),
+        Parsers.quoteRemoverDecorator(
+            Parsers.nullDecorator(parser2)).apply(node.get(1).toString()));
   }  
 
 }

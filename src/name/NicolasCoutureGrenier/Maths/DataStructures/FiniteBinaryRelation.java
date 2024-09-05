@@ -359,8 +359,8 @@ public class FiniteBinaryRelation<
       xp = Printers.base64Decorator(xp);
       yp = Printers.base64Decorator(yp);
     }
-    final var fxp = Printers.nullDecorator(xp);
-    final var fyp = Printers.nullDecorator(yp);
+    final var fxp = xp;
+    final var fyp = yp;
     
     w.writeAll(finiteBinaryRelation.pairs.stream().map((t) -> {
       String[] arr = new String[2];

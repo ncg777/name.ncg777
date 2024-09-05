@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Ordering;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
-import name.NicolasCoutureGrenier.CS.Printers;
 
 public class JaggedList<T extends Comparable<? super T>>  
   implements Comparable<JaggedList<T>> {
@@ -138,7 +137,7 @@ public class JaggedList<T extends Comparable<? super T>>
   
   public String toJSONArrayString(Function<T,String> printer) {
     StringWriter sw = new StringWriter();
-    this.printToJSON(Printers.nullDecorator(printer),sw);
+    this.printToJSON(printer,sw);
     return sw.getBuffer().toString();
   }
   
@@ -198,7 +197,7 @@ public class JaggedList<T extends Comparable<? super T>>
   }
   
   public String toString(Function<T,String> printer) {
-    return this.toJSONArrayString(Printers.nullDecorator(printer)); 
+    return this.toJSONArrayString(printer); 
   }
   
   @SuppressWarnings({"unchecked"})
