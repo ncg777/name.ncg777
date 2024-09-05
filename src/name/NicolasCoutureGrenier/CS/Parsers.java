@@ -30,7 +30,13 @@ public class Parsers {
     return (s) -> (Object[])Tree.parseJSONArray(s, parser).toArray();
   }
   public static <T> Function<String, T> quoteRemoverDecorator(Function<String, T> parser) {
-    return (s) -> parser.apply(s.substring(1,s.length()-1));
+    return (s) -> {
+      String u = s;
+      if(u.startsWith("\"")) u = u.substring(1);
+      if(u.endsWith("\"")) u = u.substring(0, u.length()-1);
+      
+      return parser.apply(u);
+    };
   }
   public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);
   public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);

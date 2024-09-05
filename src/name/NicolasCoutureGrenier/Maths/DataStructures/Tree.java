@@ -125,7 +125,7 @@ public class Tree<T> extends ArrayList<Tree<T>> {
     };
   }
   public static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser) {
-    return Tree.parseJSONArray(str,Tree.nullExceptionThrower(nullExceptionThrower(Parsers.nullDecorator(parser))),new Tree<T>());
+    return Tree.parseJSONArray(str,Tree.nullExceptionThrower(Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser))),new Tree<T>());
   }
   private static <T> Tree<T> parseJSONArray(String str, Function<String,T> parser, Tree<T> root) {
     try {      
