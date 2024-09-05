@@ -211,7 +211,7 @@ public class JaggedList<T extends Comparable<? super T>>
         var o = Array.get(object, i);
         fromArray(o,t);
       }
-      return parent;
+      return t;
     } else {
       return new JaggedList<T>((T)object,parent);
     }
