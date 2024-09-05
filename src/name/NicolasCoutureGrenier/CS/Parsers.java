@@ -6,7 +6,7 @@ import java.util.function.Function;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedArray;
+import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Parsers {
@@ -27,7 +27,7 @@ public class Parsers {
   };
   
   public static <T extends Comparable<? super T>> Function<String,Object[]> arrayDecorator(Function<String,T> parser) {
-    return (s) -> (Object[])JaggedArray.parseJSONArray(s, parser).toArray();
+    return (s) -> (Object[])JaggedList.parseJSONArray(s, parser).toArray();
   }
   public static <T> Function<String, T> quoteRemoverDecorator(Function<String, T> parser) {
     return (s) -> {
@@ -53,10 +53,10 @@ public class Parsers {
     return (s) -> s == null || s.equals("null") ? null : parser.apply(s);
   }
   
-  public static <X extends Comparable<? super X>> Function<String,JaggedArray<X>> 
+  public static <X extends Comparable<? super X>> Function<String,JaggedList<X>> 
     treeNodeDecorator(Function<String,X> parser) {
     return (str) -> {
-      return JaggedArray.<X>parseJSONArray(str,parser);
+      return JaggedList.<X>parseJSONArray(str,parser);
     };
   }
   
