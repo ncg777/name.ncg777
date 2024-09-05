@@ -6,7 +6,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +19,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.Printers;
 
-public class JaggedArrayList<T> extends ArrayList<JaggedArrayList<T>> {
+public class JaggedArrayList<T extends Comparable<? super T>> extends ComparableList<JaggedArrayList<T>> {
   private static final long serialVersionUID = 1L;
 
   T content = null;
@@ -102,7 +99,7 @@ public class JaggedArrayList<T> extends ArrayList<JaggedArrayList<T>> {
     return sw.getBuffer().toString();
   }
   
-  private static <T> void toJSONArrayString(Function<T,String> printer, JaggedArrayList<T> root, JsonGenerator gen) {
+  private static <T extends Comparable<? super T>> void toJSONArrayString(Function<T,String> printer, JaggedArrayList<T> root, JsonGenerator gen) {
     try {
       if(root.getDepth() == 0 && root.getContent()!=null) {
         gen.writeString(printer.apply(root.getContent()));
@@ -117,17 +114,17 @@ public class JaggedArrayList<T> extends ArrayList<JaggedArrayList<T>> {
       e.printStackTrace();
     }
   }
-  private static <T> Function<String,T> nullExceptionThrower(Function<String,T> parser) {
+  private static <T extends Comparable<? super T>> Function<String,T> nullExceptionThrower(Function<String,T> parser) {
     return (s) -> {
       T o = parser.apply(s);
       if(o == null) throw new RuntimeException("nulls not allowerd");
       return o;
     };
   }
-  public static <T> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser) {
+  public static <T extends Comparable<? super T>> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser) {
     return JaggedArrayList.parseJSONArray(str,JaggedArrayList.nullExceptionThrower(Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser))),new JaggedArrayList<T>());
   }
-  private static <T> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser, JaggedArrayList<T> root) {
+  private static <T extends Comparable<? super T>> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser, JaggedArrayList<T> root) {
     try {      
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
@@ -198,7 +195,7 @@ public class JaggedArrayList<T> extends ArrayList<JaggedArrayList<T>> {
 
   
   @SuppressWarnings({"unchecked"})
-  private static <T> JaggedArrayList<T> fromArray(Object object, JaggedArrayList<T> parent) {  
+  private static <T extends Comparable<? super T>> JaggedArrayList<T> fromArray(Object object, JaggedArrayList<T> parent) {  
     if(object == null) return null;
     
     if(object.getClass().isArray()) {
@@ -217,49 +214,28 @@ public class JaggedArrayList<T> extends ArrayList<JaggedArrayList<T>> {
       return new JaggedArrayList<T>((T)object,parent);
     }
   }
-  public static <T> JaggedArrayList<T> fromArray(Object object) {
+  public static <T extends Comparable<? super T>> JaggedArrayList<T> fromArray(Object object) {
     return fromArray(object,new JaggedArrayList<T>());
   }
   
   private Class<T> getContentClass() {
-    var up = getContentClassUp();
-    if(up != null) return up;
-    var down = getContentClassDown();
-    
-    return down;
+    @SuppressWarnings("unchecked")
+    Function<T,Class<T>> f = (c) -> c == null ? null : (Class<T>) c.getClass();
+    var o = search(f);
+    return o == null ? getRoot().search(f) : o;
   }
-  
-  @SuppressWarnings("unchecked")
-  private Class<T> getContentClassUp() {
-    if(this.content != null) {
-      return (Class<T>)this.content.getClass();
-    } else {
-      var current = this.getParent();
-      while(current != null) {
-        if(current.getContent()!=null) {
-          return (Class<T>) current.content.getClass();
-        } else {
-          current = current.getParent();
-        }  
-      }
-      
-    }
-  
-    return null;
-  }
-  @SuppressWarnings("unchecked")
-  private Class<T> getContentClassDown() {
-    if(this.content != null) {
-      return (Class<T>)this.content.getClass();
+ 
+  public <U> U search(Function<T,U> f) {
+    U o = f.apply(this.content);
+    if(o != null) {
+      return o;
     } else {
       for(var n : this) {
-        if(n == null) continue;
-        var c = n.getContentClass();
-        if(c!= null) return c;
+        o = n.search(f);
+        if(o!= null) return o;
       } 
     }
-  
-    return null;
+    return o;
   }
   
   public int getDepth() {
@@ -337,15 +313,5 @@ public class JaggedArrayList<T> extends ArrayList<JaggedArrayList<T>> {
       if(!this.get(i).equals(other.get(i))) return false;
     }
     return true;
-  }
-  
-  public int compareTo(JaggedArrayList<T> other, Comparator<T> comp) {
-    if(this.size()<other.size()) return -1;
-    if(this.size()>other.size()) return 1;
-    for(int i=0;i<this.size();i++) {
-      int res = this.compareTo(other, comp);
-      if(res != 0) return res;
-    }
-    return 0;
   }
 }

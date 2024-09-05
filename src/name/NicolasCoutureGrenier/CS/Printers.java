@@ -28,7 +28,7 @@ public class Printers {
     return ss.toString();
   };
 
-  public static<T> Function<Object[],String> arrayDecorator(Function<T,String> printer){
+  public static<T extends Comparable<? super T>> Function<Object[],String> arrayDecorator(Function<T,String> printer){
     return (arr) -> JaggedArrayList.<T>fromArray(arr).toJSONArrayString(printer);
   }
   public static <T> Function<List<T>,String> listPrinter(Function<T,String> printer) {

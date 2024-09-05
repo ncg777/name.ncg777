@@ -26,7 +26,7 @@ public class Parsers {
     return o;
   };
   
-  public static <T> Function<String,Object[]> arrayDecorator(Function<String,T> parser) {
+  public static <T extends Comparable<? super T>> Function<String,Object[]> arrayDecorator(Function<String,T> parser) {
     return (s) -> (Object[])JaggedArrayList.parseJSONArray(s, parser).toArray();
   }
   public static <T> Function<String, T> quoteRemoverDecorator(Function<String, T> parser) {
@@ -53,7 +53,7 @@ public class Parsers {
     return (s) -> s.equals("null") ? null : parser.apply(s);
   }
   
-  public static <X> Function<String,JaggedArrayList<X>> 
+  public static <X extends Comparable<? super X>> Function<String,JaggedArrayList<X>> 
     treeNodeDecorator(Function<String,X> parser) {
     return (str) -> {
       return JaggedArrayList.<X>parseJSONArray(str,parser);
