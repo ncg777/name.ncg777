@@ -14,7 +14,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
@@ -129,10 +129,10 @@ public class RexRandomizer {
         
         Sequence c = r.getComposition().asSequence();
         
-        TreeMap<Integer, TreeSet<HomogeneousPair<Integer>>> posM = new TreeMap<>();
+        TreeMap<Integer, TreeSet<HomoPair<Integer>>> posM = new TreeMap<>();
         
         for(int i=0;i<map.distinct().size();i++) {
-          posM.put(i, new TreeSet<HomogeneousPair<Integer>>());
+          posM.put(i, new TreeSet<HomoPair<Integer>>());
         }
         
         int pos = 0;
@@ -141,7 +141,7 @@ public class RexRandomizer {
         for(int i=0;i<c.size();i++) {
           int dur = c.get(i);
           int pm = pos % modul;
-          HomogeneousPair<Integer> p = HomogeneousPair.makeHomogeneousPair(pitch, dur);
+          HomoPair<Integer> p = HomoPair.makeHomoPair(pitch, dur);
           posM.get(map.get(pm)).add(p);
           pos += dur;
           pitch++;
@@ -159,7 +159,7 @@ public class RexRandomizer {
             continue;
           } 
           
-          HomogeneousPair<Integer> p = CollectionUtils.chooseAtRandom(posM.get(pm));
+          HomoPair<Integer> p = CollectionUtils.chooseAtRandom(posM.get(pm));
           
           int pch = p.getFirst();
           int dur = p.getSecond();

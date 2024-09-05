@@ -3,10 +3,10 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
 
 public class  HomogeneousPairEnumeration<
-  T extends Comparable<? super T>> implements Enumeration<HomogeneousPair<T>> {
+  T extends Comparable<? super T>> implements Enumeration<HomoPair<T>> {
   
   private Iterator<T> T1Iterator;
   private T T1Current;
@@ -28,15 +28,15 @@ public class  HomogeneousPairEnumeration<
   }
 
   @Override
-  public HomogeneousPair<T> nextElement() {
+  public HomoPair<T> nextElement() {
     if(T2Iterator.hasNext()) {
       T2Current = T2Iterator.next();
-      return HomogeneousPair.makeHomogeneousPair(T1Current, T2Current); 
+      return HomoPair.makeHomoPair(T1Current, T2Current); 
     } else if(T1Iterator.hasNext()) {
       T1Current = T1Iterator.next();
       T2Iterator = T2Iterable.iterator();
       T2Current = T2Iterator.next();
-      return HomogeneousPair.makeHomogeneousPair(T1Current, T2Current);
+      return HomoPair.makeHomoPair(T1Current, T2Current);
     }
     throw new NoSuchElementException("No more elements.");
   }

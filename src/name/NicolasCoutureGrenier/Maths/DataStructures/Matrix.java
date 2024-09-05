@@ -24,7 +24,7 @@ import com.google.common.base.Joiner;
  * @param <T>
  */
 public class Matrix<T> {
-  protected TreeMap<HomogeneousPair<Integer>, T> mat;
+  protected TreeMap<HomoPair<Integer>, T> mat;
   /** Number of rows */
   protected int m;
   /** Number of columns */
@@ -160,7 +160,7 @@ public class Matrix<T> {
    * @return
    */
   public T get(int i, int j) {
-    var p = HomogeneousPair.makeHomogeneousPair(i, j);
+    var p = HomoPair.makeHomoPair(i, j);
     if (!mat.containsKey(p)) {
       return defaultValue;
     }
@@ -175,7 +175,7 @@ public class Matrix<T> {
    * @return The previous value of the element at this position
    */
   public void set(int i, int j, T val) {
-    var p = HomogeneousPair.makeHomogeneousPair(i, j);
+    var p = HomoPair.makeHomoPair(i, j);
     if(val == defaultValue) {mat.remove(p);}
     else  mat.put(p, val);
   }
@@ -319,7 +319,7 @@ public class Matrix<T> {
     for(var e : mat.descendingMap().entrySet()) {
       if(e.getKey().getSecond() >= j) {
         mat.put(
-              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst(),e.getKey().getSecond()+1), 
+              HomoPair.makeHomoPair(e.getKey().getFirst(),e.getKey().getSecond()+1), 
               mat.remove(e.getKey())
             );
       }
@@ -331,7 +331,7 @@ public class Matrix<T> {
     for(var e : mat.descendingMap().entrySet()) {
       if(e.getKey().getFirst() >= i) {
         mat.put(
-              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst()+1,e.getKey().getSecond()), 
+              HomoPair.makeHomoPair(e.getKey().getFirst()+1,e.getKey().getSecond()), 
               mat.remove(e.getKey())
             );
       }
@@ -439,7 +439,7 @@ public class Matrix<T> {
       if(e.getKey().getSecond() == j) mat.remove(e.getKey());
       if(e.getKey().getSecond() > j) {
         mat.put(
-              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst(),e.getKey().getSecond()-1), 
+              HomoPair.makeHomoPair(e.getKey().getFirst(),e.getKey().getSecond()-1), 
               mat.remove(e.getKey())
             );
       }
@@ -458,7 +458,7 @@ public class Matrix<T> {
       if(e.getKey().getFirst() == i) mat.remove(e.getKey());
       if(e.getKey().getFirst() > i) {
         mat.put(
-              HomogeneousPair.makeHomogeneousPair(e.getKey().getFirst()-1,e.getKey().getSecond()), 
+              HomoPair.makeHomoPair(e.getKey().getFirst()-1,e.getKey().getSecond()), 
               mat.remove(e.getKey())
             );
       }

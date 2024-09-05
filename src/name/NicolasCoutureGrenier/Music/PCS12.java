@@ -23,7 +23,7 @@ import com.opencsv.exceptions.CsvException;
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.FiniteBinaryRelation;
+import name.NicolasCoutureGrenier.Maths.DataStructures.FiniteRelation;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import com.google.common.collect.ComparisonChain;
@@ -292,7 +292,7 @@ public class PCS12 extends Combination implements Serializable {
     ForteNumbersRotationDict = new TreeMap<PCS12,Integer>();
     ForteNumbersToPCS12Dict = new TreeMap<String, PCS12>();
     InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers.csv");
-    FiniteBinaryRelation<String,Sequence> r = FiniteBinaryRelation.readFromCSV(Parsers.stringParser, Parsers.sequenceParser, is);
+    FiniteRelation<String,Sequence> r = FiniteRelation.readFromCSV(Parsers.stringParser, Parsers.sequenceParser, is);
     
     for(var p : r) {
       PCS12 ch = PCS12.identify(p.getSecond());
@@ -309,7 +309,7 @@ public class PCS12 extends Combination implements Serializable {
     }
     is.close();
     InputStream is2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers_CommonNames.csv");
-    FiniteBinaryRelation<String,String> r2 = FiniteBinaryRelation.readFromCSV(Parsers.stringParser, Parsers.stringParser, is2);
+    FiniteRelation<String,String> r2 = FiniteRelation.readFromCSV(Parsers.stringParser, Parsers.stringParser, is2);
     ForteNumbersCommonNames = new TreeMap<String, String>();
     for(var p : r2) {
       ForteNumbersCommonNames.put(p.getFirst(), p.getSecond());

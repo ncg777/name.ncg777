@@ -10,22 +10,22 @@ import com.opencsv.exceptions.CsvException;
 
 import junit.framework.TestCase;
 
-public class FiniteBinaryRelationTests extends TestCase {
-  FiniteBinaryRelation<String,String> r;
-  FiniteBinaryRelation<String,String> s;
-  FiniteBinaryRelation<String,String> rr_R;
-  FiniteBinaryRelation<String,String> rr_S;
-  FiniteBinaryRelation<String,String> lr_R;
-  FiniteBinaryRelation<String,String> lr_S;
+public class FiniteRelationTests extends TestCase {
+  FiniteRelation<String,String> r;
+  FiniteRelation<String,String> s;
+  FiniteRelation<String,String> rr_R;
+  FiniteRelation<String,String> rr_S;
+  FiniteRelation<String,String> lr_R;
+  FiniteRelation<String,String> lr_S;
   
-  public FiniteBinaryRelationTests(String name) {
+  public FiniteRelationTests(String name) {
     super(name);
   }
 
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    r = new FiniteBinaryRelation<>();
+    r = new FiniteRelation<>();
     r.add(null,"b");
     r.add("a",null);
     r.add("a","b");
@@ -34,7 +34,7 @@ public class FiniteBinaryRelationTests extends TestCase {
     r.add("d","e");
     r.add("d","f");
     
-    s = new FiniteBinaryRelation<>();
+    s = new FiniteRelation<>();
     s.add(null,"c");
     s.add("b",null);
     s.add("b","c");
@@ -43,16 +43,16 @@ public class FiniteBinaryRelationTests extends TestCase {
     s.add("e","g");
     s.add("f","g");
     
-    rr_R = new FiniteBinaryRelation<>();
+    rr_R = new FiniteRelation<>();
     rr_R.add("p1","p3");
     rr_R.add("p2","p3");
-    rr_S = new FiniteBinaryRelation<>();
+    rr_S = new FiniteRelation<>();
     rr_S.add("p1","o");
     rr_S.add("p2","o");
-    lr_S = new FiniteBinaryRelation<>();
+    lr_S = new FiniteRelation<>();
     lr_S.add("o","p1");
     lr_S.add("o","p2");
-    lr_R = new FiniteBinaryRelation<>();
+    lr_R = new FiniteRelation<>();
     lr_R.add("p3","p1");
     lr_R.add("p3","p2");
 
@@ -64,7 +64,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testCompose() {
-    FiniteBinaryRelation<String,String> o = r.compose(s);
+    FiniteRelation<String,String> o = r.compose(s);
     assertTrue(o.apply(null, null));
     assertTrue(o.apply(null, "c"));
     assertTrue(o.apply(null, "c"));
@@ -77,14 +77,14 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testRight_residual() {
-    FiniteBinaryRelation<String,String> e = rr_R.rightResidual(rr_S);
+    FiniteRelation<String,String> e = rr_R.rightResidual(rr_S);
     assertTrue(e.apply("p3", "o"));
     assertTrue(e.size()==1);
     
   }
 
   public final void testLeft_residual() {
-    FiniteBinaryRelation<String,String> e = lr_S.leftResidual(lr_R);
+    FiniteRelation<String,String> e = lr_S.leftResidual(lr_R);
     
     assertTrue(e.apply("o", "p3"));
     assertTrue(e.size()==1);
@@ -110,7 +110,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testConverse() {
-      FiniteBinaryRelation<String, String> o = r.converse();
+      FiniteRelation<String, String> o = r.converse();
       assertTrue(o.apply("b", null));
       assertTrue(o.apply("c", "a"));
       assertTrue(o.apply("c", "b"));
@@ -162,7 +162,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testIsManyToOne() {
-      FiniteBinaryRelation<String, String> z = new FiniteBinaryRelation<>();
+      FiniteRelation<String, String> z = new FiniteRelation<>();
       z.add("a", "b");
       z.add("c", "b");
       z.add("d", "e");
@@ -170,7 +170,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testIsOneToMany() {
-      FiniteBinaryRelation<String, String> z = new FiniteBinaryRelation<>();
+      FiniteRelation<String, String> z = new FiniteRelation<>();
       z.add("a", "b");
       z.add("a", "c");
       z.add("d", "e");
@@ -178,7 +178,7 @@ public class FiniteBinaryRelationTests extends TestCase {
   }
 
   public final void testIsOneToOne() {
-      FiniteBinaryRelation<String, String> z = new FiniteBinaryRelation<>();
+      FiniteRelation<String, String> z = new FiniteRelation<>();
       z.add("a", "b");
       z.add("c", "d");
       assertTrue(z.isOneToOne());
@@ -191,7 +191,7 @@ public class FiniteBinaryRelationTests extends TestCase {
       r.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
       
       var readRelation = 
-          FiniteBinaryRelation.readFromCSV(
+          FiniteRelation.readFromCSV(
               (s) -> s, 
               (s) -> s, 
               tempFile.getPath());
@@ -206,7 +206,7 @@ public class FiniteBinaryRelationTests extends TestCase {
       r.writeToCSV((s) -> s, (s) -> s, tempFile.getPath(), true);
       
       var readRelation = 
-          FiniteBinaryRelation.readFromCSV(
+          FiniteRelation.readFromCSV(
               (s) -> s,
               (s) -> s, 
               tempFile.getPath(), true);
@@ -219,7 +219,7 @@ public class FiniteBinaryRelationTests extends TestCase {
 
       r.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
 
-      var readRelation = FiniteBinaryRelation.readFromCSV((s) -> s, (s) -> s, tempFile.getPath());
+      var readRelation = FiniteRelation.readFromCSV((s) -> s, (s) -> s, tempFile.getPath());
       tempFile.delete();
       assertEquals(r, readRelation);
   }
@@ -256,7 +256,7 @@ public class FiniteBinaryRelationTests extends TestCase {
          }
       };
     
-    //var rel = FiniteBinaryRelation.arrayRelationXY(arr1,arr2,(a,b)->true);
+    //var rel = FiniteRelation.arrayRelationXY(arr1,arr2,(a,b)->true);
     
   }
   

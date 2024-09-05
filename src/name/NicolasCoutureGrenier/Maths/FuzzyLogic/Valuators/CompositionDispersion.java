@@ -6,16 +6,16 @@ import com.google.common.base.Function;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Interval;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
 
 public class CompositionDispersion implements Function<Composition, FuzzyVariable> {
 
-  TreeMap<HeterogeneousPair<Integer, Integer>, Interval<Integer>> minmax;
+  TreeMap<HeteroPair<Integer, Integer>, Interval<Integer>> minmax;
 
   public CompositionDispersion() {
-    minmax = new TreeMap<HeterogeneousPair<Integer, Integer>, Interval<Integer>>();
+    minmax = new TreeMap<HeteroPair<Integer, Integer>, Interval<Integer>>();
   }
 
   /**
@@ -33,7 +33,7 @@ public class CompositionDispersion implements Function<Composition, FuzzyVariabl
 
     int n = input.getTotal();
     int s = t.size();
-    HeterogeneousPair<Integer, Integer> ns = HeterogeneousPair.makeHeterogeneousPair(n, s);
+    HeteroPair<Integer, Integer> ns = HeteroPair.makeHeteroPair(n, s);
 
     int min = 0;
     int max = 0;

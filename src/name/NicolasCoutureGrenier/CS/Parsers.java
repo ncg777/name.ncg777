@@ -3,8 +3,8 @@ package name.NicolasCoutureGrenier.CS;
 import java.util.Base64;
 import java.util.function.Function;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Music.PCS12;
@@ -40,9 +40,9 @@ public class Parsers {
   }
   public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);
   public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);
-  public static Function<String, HomogeneousPair<Integer>> intPairParser = (s) -> {
+  public static Function<String, HomoPair<Integer>> intPairParser = (s) -> {
     Sequence ss = Sequence.parse(s);
-    return HomogeneousPair.makeHomogeneousPair(ss.get(0), ss.get(1));
+    return HomoPair.makeHomoPair(ss.get(0), ss.get(1));
   };
   
   public static <X> Function<String,X> base64Decorator(Function<String,X> parser) {
@@ -63,14 +63,14 @@ public class Parsers {
   public static <
     T extends Comparable<? super T>, 
     U extends Comparable<? super U>> 
-      Function<String, HeterogeneousPair<T,U>>
+      Function<String, HeteroPair<T,U>>
       heteroGeneousPairDecorator(Function<String,T> parser1, Function<String,U> parser2) {
-      return (s) -> HeterogeneousPair.parseJSONObject(s, parser1, parser2);
+      return (s) -> HeteroPair.parseJSONObject(s, parser1, parser2);
   }
   public static <
   T extends Comparable<? super T>> 
-    Function<String, HomogeneousPair<T>>
+    Function<String, HomoPair<T>>
     homoGeneousPairDecorator(Function<String,T> parser) {
-    return (s) -> HomogeneousPair.fromHeterogeneousPair(HeterogeneousPair.parseJSONObject(s, parser, parser));
+    return (s) -> HomoPair.fromHeteroPair(HeteroPair.parseJSONObject(s, parser, parser));
   }
 }

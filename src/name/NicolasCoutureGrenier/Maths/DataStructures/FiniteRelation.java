@@ -57,77 +57,77 @@ import name.NicolasCoutureGrenier.Maths.Relations.Relation;
  * @param <X>
  * @param <Y>
  */
-public class FiniteBinaryRelation<
+public class FiniteRelation<
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> implements Iterable<HeterogeneousPair<X,Y>>, Relation<X,Y>, Comparable<FiniteBinaryRelation<X,Y>> {
+  Y extends Comparable<? super Y>> implements Iterable<HeteroPair<X,Y>>, Relation<X,Y>, Comparable<FiniteRelation<X,Y>> {
   
-  protected TreeSet<HeterogeneousPair<X,Y>> pairs = new TreeSet<>(Ordering.natural().nullsFirst());
-  protected TreeSet<HeterogeneousPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
+  protected TreeSet<HeteroPair<X,Y>> pairs = new TreeSet<>(Ordering.natural().nullsFirst());
+  protected TreeSet<HeteroPair<Y,X>> pairsReversed = new TreeSet<>(Ordering.natural().nullsFirst());
   protected TreeSet<X> domain = new TreeSet<X>(Ordering.natural().nullsFirst());
   protected TreeSet<Y> codomain = new TreeSet<Y>(Ordering.natural().nullsFirst());
   
-  public FiniteBinaryRelation() {
+  public FiniteRelation() {
   }
-  public FiniteBinaryRelation(Map<X,Y> map) {
+  public FiniteRelation(Map<X,Y> map) {
     for(var e : map.entrySet()) {
       add(e.getKey(),e.getValue());
     }
   }
-  public FiniteBinaryRelation(FiniteBinaryRelation<X,Y> rel) {
+  public FiniteRelation(FiniteRelation<X,Y> rel) {
     pairs.clear(); pairs.addAll(rel.pairs);
     pairsReversed.clear(); pairsReversed.addAll(rel.pairsReversed);
   }
-  public FiniteBinaryRelation(Iterable<X> domain, Iterable<Y> codomain, BiPredicate<X,Y> rel) {
+  public FiniteRelation(Iterable<X> domain, Iterable<Y> codomain, BiPredicate<X,Y> rel) {
     this(domain, codomain, Relation.fromBiPredicate(rel));
   }
-  public FiniteBinaryRelation(Iterable<X> domain, Iterable<Y> codomain, Relation<X,Y> rel) {
+  public FiniteRelation(Iterable<X> domain, Iterable<Y> codomain, Relation<X,Y> rel) {
     Collections.list(new HeterogeneousPairEnumeration<X,Y>(domain, codomain)).stream()
     .filter((p) -> rel.apply(p.getFirst(), p.getSecond())).forEach((p) -> add(p.getFirst(), p.getSecond()));
   }
-  public FiniteBinaryRelation(Iterable<X> domain, Function<X,Y> f) {
+  public FiniteRelation(Iterable<X> domain, Function<X,Y> f) {
     for(var x : domain) {
       add(x, f.apply(x));
     }
   }
   @Override
   public boolean equals(Object other) {
-    if(!(other instanceof FiniteBinaryRelation)){ return false;}
+    if(!(other instanceof FiniteRelation)){ return false;}
     @SuppressWarnings("unchecked")
-    FiniteBinaryRelation<X,Y> t = (FiniteBinaryRelation<X,Y>)other;
+    FiniteRelation<X,Y> t = (FiniteRelation<X,Y>)other;
     return this.size() == t.size() && t.pairs.stream().allMatch((p) -> this.contains(p));
   }
   
-  public boolean equals(FiniteBinaryRelation<X,Y> other) {
+  public boolean equals(FiniteRelation<X,Y> other) {
     return this.size() == other.size() && other.pairs.stream().allMatch((p) -> this.contains(p));
   }
   
   public static <
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>>  FiniteBinaryRelation<X,Y> universal(Iterable<X> domain,Iterable<Y> codomain) {
-    return new FiniteBinaryRelation<X,Y>(domain, codomain, (X a,Y b) -> true);
+  Y extends Comparable<? super Y>>  FiniteRelation<X,Y> universal(Iterable<X> domain,Iterable<Y> codomain) {
+    return new FiniteRelation<X,Y>(domain, codomain, (X a,Y b) -> true);
   }
   
-  public FiniteBinaryRelation<X,Y> complement(Iterable<X> domain,Iterable<Y> codomain) {
+  public FiniteRelation<X,Y> complement(Iterable<X> domain,Iterable<Y> codomain) {
     var u = universal(domain, codomain);
     if(!u.pairs.containsAll(this.pairs)) {throw new RuntimeException("the relation exceeds the specified universe.");} 
     return u.minus(this);
   }
   
-  public FiniteBinaryRelation<X,Y> complement() {
+  public FiniteRelation<X,Y> complement() {
     return complement(domain(), codomain());
   }
   
   public int size() { return pairs.size(); }
   public boolean isEmpty() { return pairs.isEmpty(); }
-  public boolean contains(HeterogeneousPair<X,Y> p) { return this.pairs.contains(p); }
+  public boolean contains(HeteroPair<X,Y> p) { return this.pairs.contains(p); }
   public boolean add(X a, Y b) {
-    var f_a = this.pairs.ceiling(HeterogeneousPair.makeHeterogeneousPair(a, null));
+    var f_a = this.pairs.ceiling(HeteroPair.makeHeteroPair(a, null));
     var a0=a==null?null:(f_a != null && f_a.getFirst().equals(a) ? f_a.getFirst() : a);
     
-    var f_b = this.pairsReversed.ceiling(HeterogeneousPair.makeHeterogeneousPair(b, null));
+    var f_b = this.pairsReversed.ceiling(HeteroPair.makeHeteroPair(b, null));
     var b0=b==null?null:(f_b!=null && f_b.getFirst().equals(b) ? f_b.getFirst() : b);
     
-    var p = HeterogeneousPair.makeHeterogeneousPair(a0,b0);
+    var p = HeteroPair.makeHeteroPair(a0,b0);
     boolean o = pairs.add(p);
     if(o) pairsReversed.add(p.converse());
     this.domain.add(a0);
@@ -136,12 +136,12 @@ public class FiniteBinaryRelation<
   }
   
   public boolean remove(X a, Y b) {
-    var p = HeterogeneousPair.makeHeterogeneousPair(a,b);
+    var p = HeteroPair.makeHeteroPair(a,b);
     boolean o = pairs.remove(p);
     if(o) pairsReversed.remove(p.converse());
-    var f_a = this.pairs.ceiling(HeterogeneousPair.makeHeterogeneousPair(a, null));
+    var f_a = this.pairs.ceiling(HeteroPair.makeHeteroPair(a, null));
     if(a==null||f_a==null || !f_a.getFirst().equals(a)) this.domain.remove(a); 
-    var f_b = this.pairsReversed.ceiling(HeterogeneousPair.makeHeterogeneousPair(b, null));
+    var f_b = this.pairsReversed.ceiling(HeteroPair.makeHeteroPair(b, null));
     if(b==null||f_b==null||!f_b.getFirst().equals(b)) this.codomain.remove(b);
     return o;
   }
@@ -159,25 +159,25 @@ public class FiniteBinaryRelation<
     }
   }
   public void spawnLeft(Function<Y,Iterable<X>> multiplier) { spawnLeft(multiplier,codomain());  }
-  public boolean containsAll(FiniteBinaryRelation<X,Y> r) { return pairs.containsAll(r.pairs); }
+  public boolean containsAll(FiniteRelation<X,Y> r) { return pairs.containsAll(r.pairs); }
   
-  public FiniteBinaryRelation<X,Y> intersect(FiniteBinaryRelation<X,Y> S){
-    FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
+  public FiniteRelation<X,Y> intersect(FiniteRelation<X,Y> S){
+    FiniteRelation<X,Y> o = new FiniteRelation<X,Y>();
     for(var p : this) {
       if(S.apply(p.getFirst(), p.getSecond())) o.add(p.getFirst(), p.getSecond());
     }
     return o;
   }
   
-  public FiniteBinaryRelation<X,Y> union(FiniteBinaryRelation<X,Y> S){
-    FiniteBinaryRelation<X,Y> o = new FiniteBinaryRelation<X,Y>();
+  public FiniteRelation<X,Y> union(FiniteRelation<X,Y> S){
+    FiniteRelation<X,Y> o = new FiniteRelation<X,Y>();
     for(var p : this) o.add(p.getFirst(), p.getSecond());
     for(var p : S) o.add(p.getFirst(), p.getSecond());
     return o;
   }
   
-  public FiniteBinaryRelation<X,Y> minus(FiniteBinaryRelation<X,Y> e) {
-    var o = new FiniteBinaryRelation<X,Y>(this);
+  public FiniteRelation<X,Y> minus(FiniteRelation<X,Y> e) {
+    var o = new FiniteRelation<X,Y>(this);
     for(var p : this) o.add(p.getFirst(), p.getSecond());
     for(var p : e) o.remove(p.getFirst(), p.getSecond());
     return o;
@@ -190,8 +190,8 @@ public class FiniteBinaryRelation<
    * @return
    */
   public <V extends Comparable<? super V>>
-  FiniteBinaryRelation<X,V> compose(FiniteBinaryRelation<Y,V> S){
-    var o = new FiniteBinaryRelation<X,V>();
+  FiniteRelation<X,V> compose(FiniteRelation<Y,V> S){
+    var o = new FiniteRelation<X,V>();
     CollectionUtils.cartesianProduct(domain(), S.codomain()).stream()
       .filter((xv) -> {
         TreeSet<Y> common = rightRelata(xv.getFirst());
@@ -206,8 +206,8 @@ public class FiniteBinaryRelation<
    * 
    * @return R˘
    */
-  public FiniteBinaryRelation<Y,X> converse(){
-    var o = new FiniteBinaryRelation<Y,X>();
+  public FiniteRelation<Y,X> converse(){
+    var o = new FiniteRelation<Y,X>();
     for(var p : this) o.add(p.getSecond(), p.getFirst());
     return o;
     }
@@ -225,8 +225,8 @@ public class FiniteBinaryRelation<
    * @return
    */
   public <W extends Comparable<? super W>>
-  FiniteBinaryRelation<Y,W> rightResidual(FiniteBinaryRelation<X,W> S){
-    var o = new FiniteBinaryRelation<Y,W>();
+  FiniteRelation<Y,W> rightResidual(FiniteRelation<X,W> S){
+    var o = new FiniteRelation<Y,W>();
     
     CollectionUtils.cartesianProduct(codomain(), S.codomain()).stream()
       .filter((vw) -> {
@@ -250,8 +250,8 @@ public class FiniteBinaryRelation<
    * @return
    */
   public <V extends Comparable<? super V>>
-  FiniteBinaryRelation<X,V> leftResidual(FiniteBinaryRelation<V,Y> R){
-    var o = new FiniteBinaryRelation<X,V>();
+  FiniteRelation<X,V> leftResidual(FiniteRelation<V,Y> R){
+    var o = new FiniteRelation<X,V>();
     CollectionUtils.cartesianProduct(domain(), R.domain()).stream().filter((uv) -> {
         TreeSet<Y> uSy = rightRelata(uv.getFirst()); 
         TreeSet<Y> vRy = R.rightRelata(uv.getSecond());
@@ -275,7 +275,7 @@ public class FiniteBinaryRelation<
     return this.codomain.containsAll(s);
   }
   public BiPredicate<X,Y> related(){
-    return (t,u) -> pairs.contains(HeterogeneousPair.makeHeterogeneousPair(t, u));
+    return (t,u) -> pairs.contains(HeteroPair.makeHeteroPair(t, u));
   }
   
   public Predicate<Y> rightRelated(X e){
@@ -284,7 +284,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<Y> rightRelata(X e) {
     var o = new TreeSet<Y>(Ordering.natural().nullsFirst());
-    HeterogeneousPair<X,Y> pivot = this.pairs.ceiling(HeterogeneousPair.makeHeterogeneousPair(e, null));
+    HeteroPair<X,Y> pivot = this.pairs.ceiling(HeteroPair.makeHeteroPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairs.tailSet(pivot)) {
@@ -300,7 +300,7 @@ public class FiniteBinaryRelation<
   
   public TreeSet<X> leftRelata(Y e) {
     var o = new TreeSet<X>(Ordering.natural().nullsFirst());
-    HeterogeneousPair<Y,X> pivot = this.pairsReversed.ceiling(HeterogeneousPair.makeHeterogeneousPair(e, null));
+    HeteroPair<Y,X> pivot = this.pairsReversed.ceiling(HeteroPair.makeHeteroPair(e, null));
     if(pivot == null) return o;
     
     for(var p : this.pairsReversed.tailSet(pivot)) {
@@ -346,7 +346,7 @@ public class FiniteBinaryRelation<
   public static <
     X extends Comparable<? super X>,
     Y extends Comparable<? super Y>> void writeToCSV(
-        FiniteBinaryRelation<X, Y> finiteBinaryRelation,
+        FiniteRelation<X, Y> finiteBinaryRelation,
         Function<X, String> xToString, 
         Function<Y, String> yToString, 
         String path, boolean useBase64) throws IOException {
@@ -381,14 +381,14 @@ public class FiniteBinaryRelation<
   
   public static <
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, InputStream is) throws IOException, CsvException {
     return readFromCSV(xParser,yParser,is,false);
   }
   public static <
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, InputStream is, boolean useBase64) throws IOException, CsvException {
     var st = new InputStreamReader(is);
@@ -399,14 +399,14 @@ public class FiniteBinaryRelation<
   
   public static <
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, Reader reader) throws IOException, CsvException {
     return readFromCSV(xParser,yParser,reader,false);
   }
   public static <
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, Reader reader, boolean useBase64) throws IOException, CsvException {
     CSVParserBuilder b = new CSVParserBuilder();
@@ -414,7 +414,7 @@ public class FiniteBinaryRelation<
     CSVParser p = b.withSeparator(',').withQuoteChar('"').withEscapeChar('\\').build();
     CSVReaderBuilder rb = new CSVReaderBuilder(reader);
     CSVReader r = rb.withCSVParser(p).build();
-    var o = new FiniteBinaryRelation<X,Y>();
+    var o = new FiniteRelation<X,Y>();
     if(useBase64) { 
       xParser = Parsers.base64Decorator(xParser);
       yParser = Parsers.base64Decorator(yParser);
@@ -433,7 +433,7 @@ public class FiniteBinaryRelation<
   
   public static <
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, String path, boolean useBase64)  throws IOException, CsvException {
     return readFromCSV(xParser, yParser, new FileReader(path), useBase64);
@@ -441,14 +441,14 @@ public class FiniteBinaryRelation<
   
   public static <
   X extends Comparable<? super X>,
-  Y extends Comparable<? super Y>> FiniteBinaryRelation<X,Y> readFromCSV (
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, String path)  throws IOException, CsvException {
     return readFromCSV(xParser, yParser, new FileReader(path));
   }
 
   @Override
-  public Iterator<HeterogeneousPair<X, Y>> iterator() {
+  public Iterator<HeteroPair<X, Y>> iterator() {
     return Iterators.unmodifiableIterator(this.pairs.iterator());
   }
   
@@ -464,11 +464,11 @@ public class FiniteBinaryRelation<
   
   @Override
   public boolean apply(X a, Y b) {
-    return pairs.contains(HeterogeneousPair.makeHeterogeneousPair(a, b));
+    return pairs.contains(HeteroPair.makeHeteroPair(a, b));
   }
   @Override
-  public int compareTo(FiniteBinaryRelation<X, Y> o) {
-    var it = new IterableComparator<HeterogeneousPair<X,Y>>();
+  public int compareTo(FiniteRelation<X, Y> o) {
+    var it = new IterableComparator<HeteroPair<X,Y>>();
     
     return it.compare(this, o);
   }
@@ -498,10 +498,10 @@ public class FiniteBinaryRelation<
   }
   
   private static <T extends Comparable<? super T>, U extends Comparable<? super U>> void 
-  toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, FiniteBinaryRelation<T,U> rel, JsonGenerator gen) throws IOException {
+  toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, FiniteRelation<T,U> rel, JsonGenerator gen) throws IOException {
     gen.writeStartArray();
     for(var v : rel.pairs) {
-      HeterogeneousPair.toJSONObjectString(printer1, printer2, v, gen);
+      HeteroPair.toJSONObjectString(printer1, printer2, v, gen);
     }
     gen.writeEndArray();
   }
@@ -510,19 +510,19 @@ public class FiniteBinaryRelation<
   public static <
     T extends Comparable<? super T>, 
     U extends Comparable<? super U>> 
-      FiniteBinaryRelation<T,U> parseJSONObject(
+      FiniteRelation<T,U> parseJSONObject(
           String str, 
           Function<String,T> parser1,
           Function<String,U> parser2) {
     try {
-      FiniteBinaryRelation<T,U> o = new FiniteBinaryRelation<>();
+      FiniteRelation<T,U> o = new FiniteRelation<>();
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
       if(!p.isArray()) {
         throw new RuntimeException("invalid");
       }
       for(int i=0;i<p.size();i++) {
-        var pair =  HeterogeneousPair.parseJSONObject(p.get(i).toString(), parser1, parser2);
+        var pair =  HeteroPair.parseJSONObject(p.get(i).toString(), parser1, parser2);
         o.add(pair.getFirst(), pair.getSecond());
       }
       return o;   
@@ -534,12 +534,12 @@ public class FiniteBinaryRelation<
   public static <
   T extends Comparable<? super T>, 
   U extends Comparable<? super U>> 
-    FiniteBinaryRelation<T,U> parseJSONFile(
+    FiniteRelation<T,U> parseJSONFile(
         String path, 
         Function<String,T> parser1,
         Function<String,U> parser2) {
     try {
-      FiniteBinaryRelation<T,U> o = new FiniteBinaryRelation<>();
+      FiniteRelation<T,U> o = new FiniteRelation<>();
       var b = new JsonFactoryBuilder().build();
       File f = new File(path);
       var p = b.setCodec(new ObjectMapper()).createParser(f).readValueAsTree();
@@ -547,7 +547,7 @@ public class FiniteBinaryRelation<
         throw new RuntimeException("invalid");
       }
       for(int i=0;i<p.size();i++) {
-        var pair =  HeterogeneousPair.parseJSONObject(p.get(i), parser1, parser2);
+        var pair =  HeteroPair.parseJSONObject(p.get(i), parser1, parser2);
         o.add(pair.getFirst(), pair.getSecond());
       }
       return o;   

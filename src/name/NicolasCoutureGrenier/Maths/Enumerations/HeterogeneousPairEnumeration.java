@@ -3,11 +3,11 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeterogeneousPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
 
 public class  HeterogeneousPairEnumeration<
   T extends Comparable<? super T>, 
-  U extends Comparable<? super U>> implements Enumeration<HeterogeneousPair<T,U>> {
+  U extends Comparable<? super U>> implements Enumeration<HeteroPair<T,U>> {
   
   private Iterator<T> TIterator;
   private T TCurrent;
@@ -29,15 +29,15 @@ public class  HeterogeneousPairEnumeration<
   }
 
   @Override
-  public HeterogeneousPair<T,U> nextElement() {
+  public HeteroPair<T,U> nextElement() {
     if(UIterator.hasNext()) {
       UCurrent = UIterator.next();
-      return HeterogeneousPair.makeHeterogeneousPair(TCurrent, UCurrent); 
+      return HeteroPair.makeHeteroPair(TCurrent, UCurrent); 
     } else if(TIterator.hasNext()) {
       TCurrent = TIterator.next();
       UIterator = UIterable.iterator();
       UCurrent = UIterator.next();
-      return HeterogeneousPair.makeHeterogeneousPair(TCurrent, UCurrent);
+      return HeteroPair.makeHeteroPair(TCurrent, UCurrent);
     }
     throw new NoSuchElementException("No more elements.");
   }

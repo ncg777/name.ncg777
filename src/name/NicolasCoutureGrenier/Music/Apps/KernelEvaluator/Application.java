@@ -18,7 +18,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.Font;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.R12List;
 import name.NicolasCoutureGrenier.Music.R16List;
@@ -116,7 +116,7 @@ public class Application {
         try {
           btnEvaluate.setEnabled(false);
           Engine engine = new Engine(chckbxDelta.isSelected());
-          HomogeneousPair<Sequence> result = null;
+          HomoPair<Sequence> result = null;
           if(comboBox_1.getSelectedItem() == Rn.Hex) {
             result = engine.evaluate(
               R16List.parseR16Seq(rhythm.getText()).asRhythm(), 

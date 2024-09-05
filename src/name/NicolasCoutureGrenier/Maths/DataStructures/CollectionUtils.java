@@ -89,13 +89,13 @@ public class CollectionUtils {
   public static <
   A extends Comparable<? super A>,
   B extends Comparable<? super B>> 
-  SortedSet<HeterogeneousPair<A,B>> cartesianProduct(
+  SortedSet<HeteroPair<A,B>> cartesianProduct(
   SortedSet<A> a, SortedSet<B> b){
-    TreeSet<HeterogeneousPair<A,B>> o = 
-        new TreeSet<HeterogeneousPair<A,B>>();
+    TreeSet<HeteroPair<A,B>> o = 
+        new TreeSet<HeteroPair<A,B>>();
     for(A x : a){
       for(B y : b){
-        o.add(HeterogeneousPair.makeHeterogeneousPair(x, y));
+        o.add(HeteroPair.makeHeteroPair(x, y));
       }
     }
     return o;
@@ -103,13 +103,13 @@ public class CollectionUtils {
   public static <
   A extends Comparable<? super A>,
   B extends Comparable<? super B>> 
-  List<HeterogeneousPair<A,B>> cartesianProduct(
+  List<HeteroPair<A,B>> cartesianProduct(
   Iterable<A> a, Iterable<B> b){
-    List<HeterogeneousPair<A,B>> o = 
-        new ArrayList<HeterogeneousPair<A,B>>();
+    List<HeteroPair<A,B>> o = 
+        new ArrayList<HeteroPair<A,B>>();
     for(A x : a){
       for(B y : b){
-        o.add(HeterogeneousPair.makeHeterogeneousPair(x, y));
+        o.add(HeteroPair.makeHeteroPair(x, y));
       }
     }
     return o;

@@ -1,16 +1,16 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 
-public class HomogeneousPair<T extends Comparable<? super T>>
-    extends HeterogeneousPair<T,T> {
+public class HomoPair<T extends Comparable<? super T>>
+    extends HeteroPair<T,T> {
 
-  public static <T extends Comparable<? super T>> HomogeneousPair<T> makeHomogeneousPair(
+  public static <T extends Comparable<? super T>> HomoPair<T> makeHomoPair(
       T first, T second) {
-    return new HomogeneousPair<T>(first, second);
+    return new HomoPair<T>(first, second);
   }
   
-  public static <T extends Comparable<? super T>> HomogeneousPair<T> fromHeterogeneousPair(HeterogeneousPair<T,T> o) {
-    return new HomogeneousPair<T>(o.getFirst(),o.getSecond());
+  public static <T extends Comparable<? super T>> HomoPair<T> fromHeteroPair(HeteroPair<T,T> o) {
+    return new HomoPair<T>(o.getFirst(),o.getSecond());
   }
   
 
@@ -33,11 +33,11 @@ public class HomogeneousPair<T extends Comparable<? super T>>
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     @SuppressWarnings("unchecked")
-    HomogeneousPair<T> other = (HomogeneousPair<T>) obj;
+    HomoPair<T> other = (HomoPair<T>) obj;
     return this.compareTo(other) == 0;
   }
 
-  private HomogeneousPair(T p_x, T p_y) {
+  private HomoPair(T p_x, T p_y) {
    super(p_x,p_y);
   }
 

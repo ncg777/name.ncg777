@@ -29,19 +29,19 @@ import name.NicolasCoutureGrenier.CS.Parsers;
  * @param <T> The type of the first element
  * @param <U> The type of the second element
  */
-public class HeterogeneousPair<T extends Comparable<? super T>, U extends Comparable<? super U>>
+public class HeteroPair<T extends Comparable<? super T>, U extends Comparable<? super U>>
     implements
-      Comparable<HeterogeneousPair<T, U>> {
+      Comparable<HeteroPair<T, U>> {
   /**
    * Static method to construct a pair.
    * 
    * @param first
    * @param second
-   * @return HeterogeneousPair<T,U>
+   * @return HeteroPair<T,U>
    */
-  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> HeterogeneousPair<T, U> makeHeterogeneousPair(
+  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> HeteroPair<T, U> makeHeteroPair(
       T first, U second) {
-    return new HeterogeneousPair<T, U>(first, second);
+    return new HeteroPair<T, U>(first, second);
   }
 
   protected T x;
@@ -55,7 +55,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
     return y;
   }
 
-  public HeterogeneousPair<U,T> converse() {return makeHeterogeneousPair(y, x);}
+  public HeteroPair<U,T> converse() {return makeHeteroPair(y, x);}
   
   @Override
   public int hashCode() {
@@ -76,20 +76,20 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     @SuppressWarnings("unchecked")
-    HeterogeneousPair<T, U> other = (HeterogeneousPair<T, U>) obj;
+    HeteroPair<T, U> other = (HeteroPair<T, U>) obj;
     return this.compareTo(other) == 0;
   }
 
-  protected HeterogeneousPair(T p_x, U p_y) {
+  protected HeteroPair(T p_x, U p_y) {
     x = p_x;
     y = p_y;
   }
 
   /**
-   * This compareTo function supports HeterogeneousPair with null values.
+   * This compareTo function supports HeteroPair with null values.
    */
   @Override
-  public int compareTo(HeterogeneousPair<T, U> o) {
+  public int compareTo(HeteroPair<T, U> o) {
     return ComparisonChain.start().compare(x, o.x, Ordering.natural().nullsFirst())
         .compare(y,o.y,Ordering.natural().nullsFirst()).result();
   }
@@ -126,7 +126,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
     return sw.getBuffer().toString();
   }
   
-  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> void toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, HeterogeneousPair<T,U> pair, JsonGenerator gen) throws IOException {
+  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> void toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, HeteroPair<T,U> pair, JsonGenerator gen) throws IOException {
     gen.writeStartArray();
     
     if(pair.getFirst() == null) {
@@ -146,7 +146,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
   public static <
     T extends Comparable<? super T>, 
     U extends Comparable<? super U>> 
-      HeterogeneousPair<T,U> parseJSONObject(
+      HeteroPair<T,U> parseJSONObject(
           String str, 
           Function<String,T> parser1,
           Function<String,U> parser2) {
@@ -160,7 +160,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
       String l = p.get(0).toString();
       String r = p.get(1).toString();
       
-      return makeHeterogeneousPair(
+      return makeHeteroPair(
           Parsers.quoteRemoverDecorator(
               Parsers.nullDecorator(parser1)).apply(l),
           Parsers.quoteRemoverDecorator(
@@ -172,7 +172,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
   public static <
   T extends Comparable<? super T>, 
   U extends Comparable<? super U>> 
-    HeterogeneousPair<T,U> parseJSONObject(
+    HeteroPair<T,U> parseJSONObject(
         com.fasterxml.jackson.core.TreeNode node, 
         Function<String,T> parser1,
         Function<String,U> parser2) {
@@ -181,7 +181,7 @@ public class HeterogeneousPair<T extends Comparable<? super T>, U extends Compar
       throw new RuntimeException("invalid");
     }
     
-    return makeHeterogeneousPair(
+    return makeHeteroPair(
         Parsers.quoteRemoverDecorator(
             Parsers.nullDecorator(parser1)).apply(node.get(0).toString()),
         Parsers.quoteRemoverDecorator(

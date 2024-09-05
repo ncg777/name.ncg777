@@ -159,8 +159,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return stair(o,l,a).juxtapose(stair(o+l*a,l,-a));
   }
   
-  public FiniteBinaryHomogeneousRelation<Integer> toRelation() {
-    var o = new FiniteBinaryHomogeneousRelation<Integer>();
+  public FiniteHomoRelation<Integer> toRelation() {
+    var o = new FiniteHomoRelation<Integer>();
     int i=0;
     for(var e : this) o.add(i++, e);
     return o;
@@ -1149,8 +1149,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     F.remove(1); F.remove(n);
     
     TreeMap<Integer,Integer> I = new TreeMap<>();
-    TreeMap<Integer,HomogeneousPair<Integer>> h = new TreeMap<>();
-    TreeMap<HomogeneousPair<Integer>, TreeMap<Integer,Sequence>> s = new TreeMap<>();
+    TreeMap<Integer,HomoPair<Integer>> h = new TreeMap<>();
+    TreeMap<HomoPair<Integer>, TreeMap<Integer,Sequence>> s = new TreeMap<>();
     TreeMap<Integer, TreeMap<Integer, Integer>> coordf = new TreeMap<>();
     TreeMap<Integer,Sequence> epsf = new TreeMap<>();
     
@@ -1213,7 +1213,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     Sequence seqepsc = new Sequence();
     for(int i=0; i<=c;i++) {
       
-      var pair = HomogeneousPair.makeHomogeneousPair(cs.get(i), V.get(i));
+      var pair = HomoPair.makeHomoPair(cs.get(i), V.get(i));
       h.put(i, pair);
       if(!s.containsKey(pair)) {
         s.put(pair, new TreeMap<>());
@@ -1226,7 +1226,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     int szs = s.size();
     int __i=0;
     Sequence seqs = szs <= 1 ? _s0 : Sequence.genRnd(szs, amp, 0, maxamp, true);
-    for(HomogeneousPair<Integer> pair : s.keySet()) {
+    for(HomoPair<Integer> pair : s.keySet()) {
       
       Sequence sequence0 = new Sequence();
       sequence0.add(seqs.get(__i));

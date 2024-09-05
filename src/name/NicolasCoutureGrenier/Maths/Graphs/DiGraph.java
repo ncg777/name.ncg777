@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.FiniteBinaryHomogeneousRelation;
+import name.NicolasCoutureGrenier.Maths.DataStructures.FiniteHomoRelation;
 import name.NicolasCoutureGrenier.Maths.Graphs.Interfaces.HasMarkableEdges;
 import name.NicolasCoutureGrenier.Maths.Graphs.Interfaces.HasMarkableVertices;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
@@ -91,7 +91,7 @@ public class DiGraph<T extends Comparable<? super T>> extends DirectedSparseGrap
 
   }
 
-  public DiGraph(FiniteBinaryHomogeneousRelation<T> r) {
+  public DiGraph(FiniteHomoRelation<T> r) {
     this(r.domain(), r.related());
   }
     

@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomogeneousPair;
+import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 import name.NicolasCoutureGrenier.Music.Apps.KernelEvaluator.Kernels.Dummy;
@@ -54,11 +54,11 @@ public class Engine {
     this.generatesDeltas = generatesDeltas;
   }
 
-  public HomogeneousPair<Sequence> evaluate(Rhythm rhythm, final String _parameters, String kernel) {
+  public HomoPair<Sequence> evaluate(Rhythm rhythm, final String _parameters, String kernel) {
     return evaluate(rhythm, _parameters, KernelsByName.get(kernel));
   }
   
-  public HomogeneousPair<Sequence> evaluate(Rhythm rhythm, final String _parameters, Kernel kernel) {
+  public HomoPair<Sequence> evaluate(Rhythm rhythm, final String _parameters, Kernel kernel) {
 
     final String lines[] = _parameters.split("\n");
     final TreeMap<String, String> tokens = new TreeMap<String, String>();
@@ -102,9 +102,9 @@ public class Engine {
     }
     
     if(generatesDeltas) {
-      return HomogeneousPair.makeHomogeneousPair(o, o.cyclicalAntidifference(0));
+      return HomoPair.makeHomoPair(o, o.cyclicalAntidifference(0));
     } else {
-      return HomogeneousPair.makeHomogeneousPair(o.cyclicalDifference(), o);
+      return HomoPair.makeHomoPair(o.cyclicalDifference(), o);
     }
   }
   
