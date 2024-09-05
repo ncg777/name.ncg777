@@ -12,7 +12,7 @@ public class SparseList<T> implements List<T> {
   
   @Override
   public int size() {
-    return 0;
+    return n;
   }
 
   @Override
