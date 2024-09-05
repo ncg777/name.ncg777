@@ -14,6 +14,11 @@ public class SparseList<T> implements List<T> {
   public int size() {
     return n;
   }
+  public void resize(int s) {
+    if(s < 0) throw new RuntimeException("invalid size");
+    for(var v : map.tailMap(s, true).keySet()) map.remove(v);
+    this.n = s;
+  }
 
   @Override
   public boolean isEmpty() {

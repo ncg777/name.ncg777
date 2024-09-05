@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -35,6 +36,22 @@ public class JaggedList<T extends Comparable<? super T>>
     super();
     value = t;
   }
+  public JaggedList(int... dimensions) {
+    this();
+    init(dimensions);
+  }
+  public void init(int... dimensions) {
+    this.setValue(null);
+    if(dimensions == null || dimensions.length == 0) return;
+    
+    if(dimensions.length == 1) {
+      children = new SparseList<>();
+      children.resize(dimensions[0]);;
+    } else {
+      int[] subDimension = Arrays.copyOfRange(dimensions, 1, dimensions.length);
+      for(var c : children) c.init(subDimension);    
+    }
+  }
   public boolean isValue() {
     return this.children == null;
   }
@@ -58,18 +75,18 @@ public class JaggedList<T extends Comparable<? super T>>
     return children.add(t); 
   }
 
-  public JaggedList<T> get(Integer...coordinates) {
+  public JaggedList<T> get(int...coordinates) {
     JaggedList<T> o = this;
     for(var i : coordinates) {
       o = o.children.get(i);
     }
     return o;  
   }
-  public T getValue(Integer...coordinates) {
+  public T getValue(int...coordinates) {
     return get(coordinates).getValue();
   }
   
-  public boolean set(T value, Integer... coordinates) {
+  public boolean set(T value, int... coordinates) {
     return get(coordinates).setValue(value);
   }
   public JaggedList(T t, JaggedList<T> parent) {
