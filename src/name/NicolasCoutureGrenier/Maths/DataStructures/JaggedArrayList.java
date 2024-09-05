@@ -6,9 +6,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.io.FileNotFoundException;
@@ -18,35 +16,45 @@ import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Joiner;
 import com.google.common.collect.Ordering;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.Printers;
 
-public class JaggedArrayList<T extends Comparable<? super T>> 
-  extends ArrayList<JaggedArrayList<T>> 
+public class JaggedArrayList<T extends Comparable<? super T>>  
   implements Comparable<JaggedArrayList<T>> {
-  private static final long serialVersionUID = 1L;
 
-  T content = null;
+  T value = null;
   JaggedArrayList<T> parent = null;
-
+  SparseList<JaggedArrayList<T>> children;
   public JaggedArrayList() {
     super();
   }
   public JaggedArrayList(T t) {
     super();
-    content = t;
+    value = t;
+  }
+  public boolean isValue() {
+    return this.children == null;
+  }
+  
+  public JaggedArrayList<T> set(int index, T element) {
+    return children.set(index, new JaggedArrayList<T>(element,this));
+  }
+  public JaggedArrayList<T> set(int index, JaggedArrayList<T> element) {
+    element.parent = this;
+    return children.set(index, element);
+  }
+  public boolean add(T element) {
+    return children.add(new JaggedArrayList<T>(element,this));
   }
   
   public boolean add(JaggedArrayList<T> t) {
-    if(t == null) throw new RuntimeException("nulls not allowed.");
     if(t.parent != null) {
       t.parent = this;
     }
-    
-    return super.add(t);
+    if(children == null) children = new SparseList<>();
+    return children.add(t); 
   }
 
   public JaggedArrayList(T t, JaggedArrayList<T> parent) {
@@ -54,19 +62,17 @@ public class JaggedArrayList<T extends Comparable<? super T>>
     if(parent == null) throw new RuntimeException("parent is null.");
     parent.add(this);
   }
-  public Map<T,JaggedArrayList<T>> toMap(){
-    HashMap<T, JaggedArrayList<T>> h = new HashMap<>();
-    for(var i: this) h.put(i.content, i);
-    h.put(this.content,this);
-    return h;
-  }
-  public void setContent(T t) {
-    content = t;
+  
+  public void setValue(T t) {
+    value = t;
+    children = null;
   }
 
-  public T getContent() {
-    return content;
+  public T getValue() {
+    if(!isValue()) throw new RuntimeException("is not value");
+    return value;
   }
+  
   public boolean isRoot() { return this.getRoot().equals(this); }
   public JaggedArrayList<T> getParent() {return this.parent;}
   public JaggedArrayList<T> getRoot(){ 
@@ -78,13 +84,13 @@ public class JaggedArrayList<T extends Comparable<? super T>>
     return current;
   }
   
-
   public void printToJSON(Function<T,String> printer, String path) throws FileNotFoundException {
     PrintWriter pw = new PrintWriter(path);
     printToJSON(printer,pw);
     pw.flush();
     pw.close();
   }
+  
   public void printToJSON(Function<T,String> printer, Writer sw) {
     try {
       var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
@@ -102,14 +108,18 @@ public class JaggedArrayList<T extends Comparable<? super T>>
     return sw.getBuffer().toString();
   }
   
-  private static <T extends Comparable<? super T>> void toJSONArrayString(Function<T,String> printer, JaggedArrayList<T> root, JsonGenerator gen) {
+  private static <T extends Comparable<? super T>> void toJSONArrayString(Function<T,String> printer, JaggedArrayList<T> arr, JsonGenerator gen) {
     try {
-      if(root.getDepth() == 0 && root.getContent()!=null) {
-        gen.writeString(printer.apply(root.getContent()));
-      } else if((root != null)) {
+      if(arr.isValue()) {
+        if(arr.getValue() == null) {
+          gen.writeNull();
+        } else {
+          gen.writeString(printer.apply(arr.getValue()));  
+        }
+      } else if((arr != null)) {
         gen.writeStartArray();
-        for(int i=0;i<root.size();i++) {
-          toJSONArrayString(printer, root.get(i), gen); 
+        for(int i=0;i<arr.children.size();i++) {
+          toJSONArrayString(printer, arr.children.get(i), gen); 
         }
         gen.writeEndArray();
       }
@@ -117,16 +127,11 @@ public class JaggedArrayList<T extends Comparable<? super T>>
       e.printStackTrace();
     }
   }
-  private static <T extends Comparable<? super T>> Function<String,T> nullExceptionThrower(Function<String,T> parser) {
-    return (s) -> {
-      T o = parser.apply(s);
-      if(o == null) throw new RuntimeException("nulls not allowerd");
-      return o;
-    };
-  }
+  
   public static <T extends Comparable<? super T>> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser) {
-    return JaggedArrayList.parseJSONArray(str,JaggedArrayList.nullExceptionThrower(Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser))),new JaggedArrayList<T>());
+    return JaggedArrayList.parseJSONArray(str,Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser)),new JaggedArrayList<T>());
   }
+  
   private static <T extends Comparable<? super T>> JaggedArrayList<T> parseJSONArray(String str, Function<String,T> parser, JaggedArrayList<T> root) {
     try {      
       var b = new JsonFactoryBuilder().build();
@@ -134,6 +139,7 @@ public class JaggedArrayList<T extends Comparable<? super T>>
       if(p == null) return root;
       if(p.isArray()) {
         JaggedArrayList<T> arr = new JaggedArrayList<T>(null, root);
+        arr.children = new SparseList<>();
         for(int i=0;i<p.size();i++) {
           parseJSONArray(p.get(i).toString(), parser, arr);
         }
@@ -160,57 +166,16 @@ public class JaggedArrayList<T extends Comparable<? super T>>
   public String toString(Function<T,String> printer) {
     return this.toJSONArrayString(Printers.nullDecorator(printer)); 
   }
-  public String toIndentedString(
-      final int level,
-      final String indentationStr,
-      final String nodeSeparator,
-      final String leftEnclose, 
-      final String rightEnclose, 
-      final Function<T,String> printer
-      ) {
-    String indent = "";
-    for(int i=0;i<level;i++) indent += indentationStr;
-    final String indent1 = indent;
-    var subItems = this.stream().<String>map(
-        (q) -> { 
-          return  
-            (q.toIndentedString(
-                level+1,
-                indentationStr,
-                nodeSeparator, 
-                leftEnclose, 
-                rightEnclose,
-                printer));
-          }
-        ).toList();
-    
-    StringBuilder b = new StringBuilder();
-    
-    b.append(indent1+leftEnclose+printer.apply(this.content)+rightEnclose);  
-    
-    
-    if(subItems.size() > 0) {
-      b.append(nodeSeparator+Joiner.on(nodeSeparator).join(subItems));  
-    }
-    
-    return b.toString();
-  }
-
   
   @SuppressWarnings({"unchecked"})
   private static <T extends Comparable<? super T>> JaggedArrayList<T> fromArray(Object object, JaggedArrayList<T> parent) {  
-    if(object == null) return null;
-    
-    if(object.getClass().isArray()) {
+    if(object != null && object.getClass().isArray()) {
       int l = Array.getLength(object);
-      JaggedArrayList<T> t = new JaggedArrayList<T>(null, parent);  
+      JaggedArrayList<T> t = new JaggedArrayList<T>(null, parent);
+      t.children = new SparseList<>();
       for(int i=0;i<l;i++) {
         var o = Array.get(object, i);
-        if(o==null) {
-          throw new RuntimeException("nulls not supported");
-        } else {
-          fromArray(o,t);
-        }
+        fromArray(o,t);
       }
       return parent;
     } else {
@@ -222,67 +187,42 @@ public class JaggedArrayList<T extends Comparable<? super T>>
   }
   
   private Class<T> getContentClass() {
-    @SuppressWarnings("unchecked")
-    Function<T,Class<T>> f = (c) -> c == null ? null : (Class<T>) c.getClass();
-    var o = search(f);
-    return o == null ? getRoot().search(f) : o;
+    var o = searchContentClass();
+    return o == null ? getRoot().searchContentClass() : o;
   }
- 
-  public <U> U search(Function<T,U> f) {
-    U o = f.apply(this.content);
+  
+  private Class<T> searchContentClass() {
+    @SuppressWarnings("unchecked")
+    final Function<T,Class<T>> f = (c) -> c == null ? null : (Class<T>) c.getClass();
+    var o = f.apply(this.value);
     if(o != null) {
       return o;
     } else {
-      for(var n : this) {
-        o = n.search(f);
+      for(var n : this.children) {
+        o = n.searchContentClass();
         if(o!= null) return o;
       } 
     }
     return o;
   }
   
-  public int getDepth() {
-    if(this.size() == 0) return 0;
-    
-    int max = -1;
-    for(JaggedArrayList<T> i : this) {
-      if(i != null) {
-        int x = i.getDepth();
-        if(x > max) max = x;  
-      }
-    }
-    return max+1;
-  }
-  
-  /**
-   * @return A jagged array representing this tree
-   */
-  @Override
   public Object[] toArray() {
     var o = toJaggedArray();
     return (Object[])o;
   }
   
   private Object toJaggedArray() {   
-    if(this.getDepth() < 1) {
-      if(this.size() == 0) {
-        return this.getContent();
-      }
-      Class<T> c = this.getContentClass();
-      var o = Array.newInstance(c, this.size());
-      for(int i=0;i<this.size();i++) {
-        Array.set(o, i, this.get(i) == null ? null : this.get(i).getContent());
-      }
-      return o;
+    if(this.isValue()) {
+      return this.getValue();
     } else {
       Class<T> c = this.getContentClass();
       
       if(c==null) return null;
       List<Object> l = new ArrayList<Object>();
-      for(int i=0;i<this.size();i++) {
-        if(this.get(i) == null) { l.add(null);}
+      for(int i=0;i<this.children.size();i++) {
+        if(this.children.get(i) == null) { l.add(null);}
         else {
-          var arr = this.get(i).toJaggedArray();
+          var arr = this.children.get(i).toJaggedArray();
           l.add(arr);  
         }
       }
@@ -299,26 +239,22 @@ public class JaggedArrayList<T extends Comparable<? super T>>
   private Ordering<T> ordering = Ordering.natural().nullsFirst();
   
   public int compareTo(JaggedArrayList<T> other) {
-    var o = ordering.compare(this.content, other.content);
-    return o == 0 ? IterableComparator.compare(this.iterator(), other.iterator()) : o;
+    var o = ordering.compare(this.getValue(), other.getValue());
+    return o == 0 ? IterableComparator.compare(this.children.iterator(), other.children.iterator()) : o;
   }
   
   @Override
   public int hashCode() {
-    final int prime = 31;
-    int result = super.hashCode();
-    result = prime * result + Objects.hash(content, parent);
-    return result;
+    return Objects.hash(children, ordering, parent, value);
   }
-  
   @Override
+  @SuppressWarnings({"rawtypes", "unchecked"})
   public boolean equals(Object obj) {
     if (this == obj) return true;
-    if (!super.equals(obj)) return false;
+    if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     
-    @SuppressWarnings("unchecked")
-    JaggedArrayList<T> other = (JaggedArrayList<T>) obj;
+    JaggedArrayList other = (JaggedArrayList) obj;
     return this.compareTo(other) == 0;
   }
 }

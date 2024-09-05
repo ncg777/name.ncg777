@@ -32,8 +32,8 @@ public class Parsers {
   public static <T> Function<String, T> quoteRemoverDecorator(Function<String, T> parser) {
     return (s) -> {
       String u = s;
-      if(u.startsWith("\"")) u = u.substring(1);
-      if(u.endsWith("\"")) u = u.substring(0, u.length()-1);
+      u = u.substring(1);
+      u = u.substring(0, u.length()-1);
       
       return parser.apply(u);
     };
@@ -50,7 +50,7 @@ public class Parsers {
   }
   
   public static <X> Function<String,X> nullDecorator(Function<String,X> parser) {
-    return (s) -> s.equals("null") ? null : parser.apply(s);
+    return (s) -> s == null || s.equals("null") ? null : parser.apply(s);
   }
   
   public static <X extends Comparable<? super X>> Function<String,JaggedArrayList<X>> 
