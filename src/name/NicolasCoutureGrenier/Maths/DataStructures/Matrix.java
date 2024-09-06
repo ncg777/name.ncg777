@@ -619,16 +619,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
           Function<String,T> parser) {
     
     parser = Parsers.nullDecorator(parser);
-    
-    var o = new Matrix<T>();
-    for(int i=0;i<arr.size();i++) {
-      o.appendRow();
-      for(int j=0; j<arr.get(i).size();j++) {
-        if(o.columnCount() < j+1) o.appendColumn();
-        o.set(i, j, parser.apply(arr.get(i,j).getValue()));
-      }
-    }
-    return o;
+    return fromJaggedList(fromJaggedList(arr).toJaggedList(parser));
   }
   public static <T extends Comparable<? super T>> 
   Matrix<T> fromJaggedList(
