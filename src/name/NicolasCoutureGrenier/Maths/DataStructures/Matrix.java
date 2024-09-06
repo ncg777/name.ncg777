@@ -619,8 +619,8 @@ public class Matrix<T> {
   public JaggedList<String> toStringJaggedList(Function<T,String> printer) {
     var o = new JaggedList<String>();
     o.init(m,n);
-    for(int i=0;i<n;i++) {
-      for(int j=0;j<m;j++) {
+    for(int i=0;i<m;i++) {
+      for(int j=0;j<n;j++) {
         o.set(printer.apply(get(i,j)), i,j);
       }
     }
@@ -637,7 +637,7 @@ public class Matrix<T> {
     for(int i=0;i<arr.size();i++) {
       o.appendRow();
       for(int j=0; j<arr.get(i).size();j++) {
-        if(o.columnCount() < j) o.appendColumn();
+        if(o.columnCount() < j+1) o.appendColumn();
         o.set(i, j, parser.apply(arr.get(i,j).getValue()));
       }
     }
