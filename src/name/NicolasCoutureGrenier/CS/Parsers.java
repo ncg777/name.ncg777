@@ -2,7 +2,6 @@ package name.NicolasCoutureGrenier.CS;
 
 import java.util.Base64;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.ToIntFunction;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;

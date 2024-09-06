@@ -157,7 +157,7 @@ public class JaggedList<T extends Comparable<? super T>>
     
     int i = d;
     var current = this;
-    while(i>=1) {
+    while(i>0) {
       o[--i] = current.getIndex();
       current = current.parent;
     }
