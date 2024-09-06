@@ -24,7 +24,7 @@ import com.google.common.collect.Ordering;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 
-public class JaggedList<T extends Comparable<? super T>>  
+public class JaggedList<T extends Comparable<? super T>> 
   implements Comparable<JaggedList<T>>, Iterable<JaggedList<T>>{
   private Ordering<T> ordering = Ordering.natural().nullsFirst();
   
