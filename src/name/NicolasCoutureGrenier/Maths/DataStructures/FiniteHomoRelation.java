@@ -183,8 +183,6 @@ extends FiniteRelation<L, L> {
     return new FiniteHomoRelation<L>(FiniteRelation.readFromCSV(lParser, lParser, path, useBase64));
   }
   
-
-
   @Override
   public String toString() {
     return toString((t) -> t.toString());
@@ -232,5 +230,14 @@ extends FiniteRelation<L, L> {
      i++;
    }
    return o;
+  }
+  public JaggedList<String> toStringJaggedList(Function<L,String> printer) {
+    return super.toStringJaggedList(printer, printer);
+  }
+  public static <T extends Comparable<? super T>> 
+    FiniteHomoRelation<T> fromStringJaggedList(
+        JaggedList<String> arr, 
+        Function<String,T> parser){
+    return new FiniteHomoRelation<T>(FiniteRelation.fromStringJaggedList(arr, parser, parser));
   }
 }

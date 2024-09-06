@@ -7,22 +7,25 @@ import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Ordering;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 
 public class JaggedList<T extends Comparable<? super T>>  
-  implements Comparable<JaggedList<T>> {
+  implements Comparable<JaggedList<T>>, Iterable<JaggedList<T>>{
   private Ordering<T> ordering = Ordering.natural().nullsFirst();
   
   T value = null;
@@ -39,6 +42,11 @@ public class JaggedList<T extends Comparable<? super T>>
     this();
     init(dimensions);
   }
+  public int size() {
+    if(children == null) return -1;
+    return children.size();
+  }
+  
   public void init(int... dimensions) {
     this.setValue(null);
     if(dimensions == null || dimensions.length == 0) return;
@@ -63,13 +71,17 @@ public class JaggedList<T extends Comparable<? super T>>
     return children.set(index, element);
   }
   public boolean add(T element) {
-    return children.add(new JaggedList<T>(element,this));
+    var c = newChild();
+    return c.setValue(element); 
   }
-  
-  public boolean add(JaggedList<T> t) {
-    if(t.parent != null) {
-      t.parent = this;
-    }
+  public JaggedList<T> newChild() {
+    var o = new JaggedList<T>();
+    addChild(o);
+    return o;
+  }
+  public boolean addChild(JaggedList<T> t) {
+    t.parent = this;
+    this.value = null;
     if(children == null) children = new SparseList<>();
     return children.add(t); 
   }
@@ -91,7 +103,7 @@ public class JaggedList<T extends Comparable<? super T>>
   public JaggedList(T t, JaggedList<T> parent) {
     this(t);
     if(parent == null) throw new RuntimeException("parent is null.");
-    parent.add(this);
+    parent.addChild(this);
   }
   
   public boolean setValue(T t) {
@@ -116,7 +128,9 @@ public class JaggedList<T extends Comparable<? super T>>
     }
     return current;
   }
-  
+  public void printToJSON(String path) throws FileNotFoundException {
+    printToJSON((e) ->e.toString(), path);
+  }
   public void printToJSON(Function<T,String> printer, String path) throws FileNotFoundException {
     PrintWriter pw = new PrintWriter(path);
     printToJSON(printer,pw);
@@ -161,6 +175,31 @@ public class JaggedList<T extends Comparable<? super T>>
     }
   }
   
+  
+  public static <T extends Comparable<? super T>> 
+  JaggedList<T> parseJSONFile( 
+      String path, Function<String,T> parser) throws JsonParseException, IOException {
+    var b = new JsonFactoryBuilder().build();
+    var p = b.setCodec(new ObjectMapper()).createParser(new File(path)).readValueAsTree();
+    var o = new JaggedList<T>();
+    parser = Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser));
+    return parseJSONFile(parser,o,p);
+  }
+  private static <T extends Comparable<? super T>> 
+    JaggedList<T> parseJSONFile( 
+        Function<String,T> parser, JaggedList<T> root, TreeNode p) {
+    if(p == null) return root;
+    if(p.isArray()) {
+      JaggedList<T> arr = new JaggedList<T>(null, root);
+      arr.children = new SparseList<>();
+      for(int i=0;i<p.size();i++) {
+        parseJSONFile(parser,arr,p.get(i));
+      }
+      return arr;
+    } else {
+      return new JaggedList<T>(parser.apply(p.toString()),root);
+    }  
+  }
   public static <T extends Comparable<? super T>> JaggedList<T> parseJSONArray(String str, Function<String,T> parser) {
     return JaggedList.parseJSONArray(str,Parsers.nullDecorator(Parsers.quoteRemoverDecorator(parser)),new JaggedList<T>());
   }
@@ -287,5 +326,10 @@ public class JaggedList<T extends Comparable<? super T>>
     
     JaggedList other = (JaggedList) obj;
     return this.compareTo(other) == 0;
+  }
+  @Override
+  public Iterator<JaggedList<T>> iterator() {
+    if(children == null) return null;
+    return children.iterator();
   }
 }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import com.opencsv.exceptions.CsvException;
 

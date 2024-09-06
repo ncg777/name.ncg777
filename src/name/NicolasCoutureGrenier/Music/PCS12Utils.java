@@ -53,7 +53,7 @@ public class PCS12Utils {
     }
 
     for (int i = 0; i < x; i++) {
-      o.add(randomChordTreeSub(o, cs[i], n2, t,
+      o.addChild(randomChordTreeSub(o, cs[i], n2, t,
           Predicates.and(p, new BoundRelationFirst<PCS12, PCS12>(cs[i], new NNotesDifference(1))),
           nb));
     }

@@ -41,7 +41,7 @@ public class Printers {
     return (var x) -> new String(Base64.getEncoder().encode(printer.apply(x).getBytes()));
   }
   
-  public static <T extends Comparable<? super T>> Function<JaggedList<T>,String> treeNodeDecorator(Function<T,String> printer) {
+  public static <T extends Comparable<? super T>> Function<JaggedList<T>,String> jaggedListDecorator(Function<T,String> printer) {
     return (JaggedList<T> x) -> {
       return x.toJSONArrayString(printer);
     };
@@ -54,6 +54,6 @@ public class Printers {
   public static <T extends Comparable<? super T>> 
   Function<HomoPair<T>, String>
     homogeneousPairDecorator(Function<T,String> printer) {
-  return (p) -> p.toString(printer, printer);
-}
+    return (p) -> p.toString(printer, printer);
+  }
  }

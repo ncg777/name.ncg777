@@ -540,6 +540,7 @@ public class FiniteRelation<
         Function<String,U> parser2) {
     try {
       FiniteRelation<T,U> o = new FiniteRelation<>();
+      
       var b = new JsonFactoryBuilder().build();
       File f = new File(path);
       var p = b.setCodec(new ObjectMapper()).createParser(f).readValueAsTree();
@@ -554,6 +555,31 @@ public class FiniteRelation<
     } catch (IOException e) {
       throw new RuntimeException("invalid input");
     }
+  }
   
+  public JaggedList<String> toStringJaggedList(Function<X,String> printer1,Function<Y,String> printer2) {
+    var o = new JaggedList<String>();
+    
+    for(var p : pairs) {
+      var x = o.newChild();
+      x.add(p.getFirst() == null ? null : printer1.apply(p.getFirst()));
+      x.add(p.getSecond() == null ? null : printer2.apply(p.getSecond()));
+    }
+    return o;
+  }
+  public static <
+    T extends Comparable<? super T>, 
+    U extends Comparable<? super U>> 
+      FiniteRelation<T,U> fromStringJaggedList(
+          JaggedList<String> arr, 
+          Function<String,T> parser1,
+          Function<String,U> parser2) {
+    var o = new FiniteRelation<T,U>();
+    parser1 = Parsers.nullDecorator(parser1);
+    parser2 = Parsers.nullDecorator(parser2);
+    for(int i=0;i<arr.size();i++) {
+      o.add(parser1.apply(arr.get(i,0).getValue()), parser2.apply(arr.get(i,1).getValue()));
+    }
+    return o;
   }
 }
