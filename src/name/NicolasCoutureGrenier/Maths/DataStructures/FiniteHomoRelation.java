@@ -2,7 +2,6 @@ package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.function.BiPredicate;
