@@ -2,6 +2,7 @@ package name.NicolasCoutureGrenier.CS;
 
 import java.util.Base64;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 
 import com.google.common.base.Joiner;
 
@@ -18,6 +19,12 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
 public class Printers {
   public static Function<String, String> stringPrinter = (s) -> s;
   public static Function<Integer, String> integerPrinter = (i) -> Integer.toString(i);
+  public static IntFunction<String> intPrinter =new IntFunction<String>() {
+    @Override
+    public String apply(int value) {
+      return Integer.toString(value);
+    }
+  };
   public static Function<Double, String> doublePrinter = (d) -> Double.toString(d);
   public static Function<Object[],String> doubleArrayPrinter = arrayDecorator(doublePrinter);
   public static Function<Object[],String> integerArrayPrinter = arrayDecorator(integerPrinter);

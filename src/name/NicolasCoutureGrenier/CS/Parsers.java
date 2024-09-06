@@ -2,6 +2,8 @@ package name.NicolasCoutureGrenier.CS;
 
 import java.util.Base64;
 import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.ToIntFunction;
 
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
@@ -13,6 +15,13 @@ import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Parsers {
   public static Function<String, String> stringParser = (s) -> s;
+  public static ToIntFunction<String> intParser =new ToIntFunction<String>() {
+    @Override
+    public int applyAsInt(String value) {
+        return Integer.parseInt(value);
+    }  
+  };
+  
   public static Function<String, Integer> integerParser = (s) -> Integer.parseInt(s.trim());
   public static Function<String, Double> doubleParser = (s) -> Double.parseDouble(s.trim());
   public static Function<String, Object[]> doubleArrayParser = arrayDecorator(doubleParser);
