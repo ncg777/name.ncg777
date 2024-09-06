@@ -13,6 +13,7 @@ import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Music.PCS12;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
 
 public class Printers {
   public static Function<String, String> stringPrinter = (s) -> s;
@@ -23,6 +24,7 @@ public class Printers {
   public static Function<Sequence, String> sequencePrinter = (s) -> s.toString();
   public static Function<PCS12, String> PCS12Printer = (pcs) -> pcs.toString();
   public static Function<Combination, String> combinationPrinter = (c) -> c.toBinaryString();
+  public static Function<Composition, String> compositionPrinter = (c) -> c.toBinaryString();
   
   public static Function<HomoPair<Integer>, String> intPairPrinter = (p) -> {
     Sequence ss = new Sequence();
@@ -51,12 +53,12 @@ public class Printers {
   }
   public static <T extends Comparable<? super T>, U extends Comparable<? super U>> 
     Function<HeteroPair<T,U>, String>
-      heterogeneousPairDecorator(Function<T,String> printer1, Function<U,String> printer2) {
+      heteroPairDecorator(Function<T,String> printer1, Function<U,String> printer2) {
     return (p) -> p.toString(printer1, printer2);
   }
   public static <T extends Comparable<? super T>> 
   Function<HomoPair<T>, String>
-    homogeneousPairDecorator(Function<T,String> printer) {
+    homoPairDecorator(Function<T,String> printer) {
     return (p) -> p.toString(printer, printer);
   }
  }

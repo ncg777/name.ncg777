@@ -68,13 +68,13 @@ public class Parsers {
     T extends Comparable<? super T>, 
     U extends Comparable<? super U>> 
       Function<String, HeteroPair<T,U>>
-      heteroGeneousPairDecorator(Function<String,T> parser1, Function<String,U> parser2) {
+      heteroPairDecorator(Function<String,T> parser1, Function<String,U> parser2) {
       return (s) -> HeteroPair.parseJSONObject(s, parser1, parser2);
   }
   public static <
   T extends Comparable<? super T>> 
     Function<String, HomoPair<T>>
-    homoGeneousPairDecorator(Function<String,T> parser) {
+    homoPairDecorator(Function<String,T> parser) {
     return (s) -> HomoPair.fromHeteroPair(HeteroPair.parseJSONObject(s, parser, parser));
   }
 }

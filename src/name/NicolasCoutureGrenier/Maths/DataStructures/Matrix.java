@@ -27,7 +27,6 @@ public class Matrix<T> {
   protected int n;
   private T defaultValue = null;
 
-
   /** @return Gets number of columns */
   public int columnCount() {
     return n;
@@ -589,4 +588,5 @@ public class Matrix<T> {
 
     return true;
   }
+  
 }
