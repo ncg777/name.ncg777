@@ -69,11 +69,13 @@ public class JaggedList<T extends Comparable<? super T>>
   }
 
   public JaggedList<T> set(int index, T element) {
+    children.get(index).parent = null;
     return children.set(index, new JaggedList<T>(element, this));
   }
 
   public JaggedList<T> set(int index, JaggedList<T> element) {
     element.parent = this;
+    children.get(index).parent = null;
     return children.set(index, element);
   }
 
