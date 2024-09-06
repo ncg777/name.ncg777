@@ -13,9 +13,6 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 
-
-// TODO: code tests
-
 /**
  * Generic mutable Matrix class with basic functionality.
  * 
@@ -63,7 +60,7 @@ public class Matrix<T> {
    * @param m
    */
   public Matrix(Matrix<T> p_mat) {
-    this(p_mat.m, p_mat.n, p_mat.defaultValue);
+    this(p_mat.m, p_mat.n);
     copy(p_mat);
   }
 
@@ -86,9 +83,8 @@ public class Matrix<T> {
    * Constructs an empty matrix.
    */
   public Matrix() {
-    this.m = 0;
-    this.n = 0;
-    mat = new TreeMap<>();
+    super();
+    init(0,0);
   }
 
   /**
@@ -98,28 +94,10 @@ public class Matrix<T> {
    * @param n Number of columns
    */
   public Matrix(int m, int n) {
-    this(m, n, null);
+    this();
+    init(m,n);
   }
 
-  /**
-   * Construct a matrix filled with a default value.
-   * 
-   * @param m Number of rows
-   * @param n Number of columns
-   * @param defaultValue
-   */
-  public Matrix(int m, int n, T defaultValue) {
-    init(m, n, defaultValue);
-  }
-
-  /**
-   * 
-   * @param m
-   * @param n
-   */
-  protected void init(int m, int n) {
-    init(m, n, null);
-  }
 
   /**
    * Initializes matrix with a default value. Matrix must be unlocked.
@@ -128,9 +106,8 @@ public class Matrix<T> {
    * @param n
    * @param defaultValue
    */
-  protected void init(int p_m, int p_n, T defaultValue) {
+  protected void init(int p_m, int p_n) {
     mat = new TreeMap<>();
-    this.defaultValue = defaultValue;
 
     this.m = p_m;
     this.n = p_n;
@@ -230,7 +207,7 @@ public class Matrix<T> {
     if (from < 0 || to < 0 || from >= m || to >= m) {
       throw new IllegalArgumentException();
     }
-    ArrayList<T> r = getRow(from);
+    List<T> r = getRow(from);
     removeRow(from);
     insertRow(to, r);
   }
@@ -528,7 +505,7 @@ public class Matrix<T> {
    * @return
    */
   public List<T> getColumn(int j) {
-    ArrayList<T> o = new ArrayList<T>();
+    List<T> o = new SparseList<T>();
     for (int i = 0; i < m; i++) {
       o.add(get(i, j));
     }
@@ -541,8 +518,9 @@ public class Matrix<T> {
    * @param i >=0
    * @return
    */
-  public ArrayList<T> getRow(int i) {
-    ArrayList<T> r = new ArrayList<T>(n);
+  public List<T> getRow(int i) {
+    List<T> r = new SparseList<T>();
+    
     for (int j = 0; j < n; j++) {
       r.add(get(i, j));
     }
@@ -555,7 +533,7 @@ public class Matrix<T> {
    * @return
    */
   public Matrix<T> getTranspose() {
-    Matrix<T> o = new Matrix<T>(n, m, defaultValue);
+    Matrix<T> o = new Matrix<T>(n, m);
     for(var e : mat.entrySet()) o.set(e.getKey().getFirst(),e.getKey().getSecond(), e.getValue());
     return o;
   }
