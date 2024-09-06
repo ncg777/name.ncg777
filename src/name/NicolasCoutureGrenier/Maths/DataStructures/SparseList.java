@@ -9,7 +9,14 @@ import java.util.TreeMap;
 public class SparseList<T> implements List<T> {
   private TreeMap<Integer,T> map = new TreeMap<>();
   private int n = 0;
-  
+  T defaultValue = null;
+  public SparseList() {
+    this(null);
+  }
+  public SparseList(T defaultValue) {
+    super();
+    this.defaultValue = defaultValue;
+  }
   @Override
   public int size() {
     return n;
@@ -24,10 +31,13 @@ public class SparseList<T> implements List<T> {
   public boolean isEmpty() {
     return n == 0;
   }
-
+  private boolean isDefaultValue(Object v) {
+    if(v == null) return v == defaultValue;
+    return v.equals(defaultValue);
+  }
   @Override
   public boolean contains(Object o) {
-    return (o == null && map.values().size() < n) ? true : map.values().contains(o);
+    return (isDefaultValue(o) && map.values().size() < n) ? true : map.values().contains(o);
   }
 
   @Override
@@ -52,7 +62,7 @@ public class SparseList<T> implements List<T> {
   @Override
   public boolean add(T e) {
     n++;
-    if(e!=null) map.put(n-1, e);
+    if(!isDefaultValue(e)) map.put(n-1, e);
     return true;
   }
 
@@ -116,14 +126,14 @@ public class SparseList<T> implements List<T> {
   @Override
   public T get(int index) {
     if(index >= n )throw new IndexOutOfBoundsException("out of bounds");
-    return map.containsKey(index) ? map.get(index) : null;
+    return map.containsKey(index) ? map.get(index) : defaultValue;
   }
 
   @Override
   public T set(int index, T element) {
     if(index >= n )throw new IndexOutOfBoundsException("out of bounds");
     var o = get(index);
-    if(element == null) map.remove(index);
+    if(isDefaultValue(element)) map.remove(index);
     map.put(index, element);
     return o;
   }
@@ -135,7 +145,7 @@ public class SparseList<T> implements List<T> {
       if(i < index) break;
       map.put(i+1,map.remove(i));
     }
-    if(element != null) map.put(index, element);
+    if(!isDefaultValue(element)) map.put(index, element);
     n++;
   }
 
@@ -151,7 +161,7 @@ public class SparseList<T> implements List<T> {
 
   @Override
   public int indexOf(Object obj) {
-    if(obj == null) {
+    if(isDefaultValue(obj)) {
       if(map.size() == n) return -1;
       int o = 0;
       for(var k : map.keySet()) {
@@ -170,7 +180,7 @@ public class SparseList<T> implements List<T> {
 
   @Override
   public int lastIndexOf(Object obj) {
-    if(obj == null) {
+    if(isDefaultValue(obj)) {
       if(map.size() == n) return -1;
       int o = n-1;
       for(var k : map.keySet()) {
