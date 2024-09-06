@@ -601,21 +601,14 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
   
   public JaggedList<String> toStringJaggedList(Function<T,String> printer) {
-    var o = new JaggedList<String>();
-    o.init(m,n);
-    for(int i=0;i<m;i++) {
-      for(int j=0;j<n;j++) {
-        o.set(printer.apply(get(i,j)), i,j);
-      }
-    }
-    return o;
+    return toJaggedList(printer);
   }
-  public JaggedList<T> toJaggedList() {
-    var o = new JaggedList<T>();
+  public <U extends Comparable<? super U>> JaggedList<U> toJaggedList(Function<T,U> transformer) {
+    var o = new JaggedList<U>();
     o.init(m,n);
     for(int i=0;i<m;i++) {
       for(int j=0;j<n;j++) {
-        o.set(get(i,j), i,j);
+        o.set(transformer.apply(get(i,j)), i,j);
       }
     }
     return o;
