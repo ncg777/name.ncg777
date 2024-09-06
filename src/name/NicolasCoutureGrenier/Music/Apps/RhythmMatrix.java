@@ -91,7 +91,7 @@ public class RhythmMatrix {
   public RhythmMatrix() {
     initialize();
   }
-  private double[] adjustWeights(ArrayList<Rhythm> row, ArrayList<Rhythm> possibles, int j, Double[] weights) {
+  private double[] adjustWeights(List<Rhythm> row, ArrayList<Rhythm> possibles, int j, Double[] weights) {
     double[] o = new double[possibles.size()];
     for(int i=0;i<possibles.size();i++) {
       int count = 0;
@@ -401,8 +401,8 @@ public class RhythmMatrix {
                 return p;
               };
               
-              BiFunction<Rhythm, ArrayList<Rhythm>, Double[]> calcWeights =
-                  (Rhythm r, ArrayList<Rhythm> p) -> {
+              BiFunction<Rhythm, List<Rhythm>, Double[]> calcWeights =
+                  (Rhythm r, List<Rhythm> p) -> {
                     Double weights[] = new Double[p.size()];
   
                     for (int i = 0; i < p.size(); i++) {

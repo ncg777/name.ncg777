@@ -404,7 +404,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     Map<Integer, Integer> om = mapOrdinalsUnipolar();
     int m = distinct().size();
     int n = this.size();
-    Matrix<Boolean> mat = new Matrix<Boolean>(m, n, false);
+    Matrix<Boolean> mat = new Matrix<Boolean>(m, n);
     for (int j = 0; j < n; j++) {
       mat.set(om.get(get(j)), j, true);
     }

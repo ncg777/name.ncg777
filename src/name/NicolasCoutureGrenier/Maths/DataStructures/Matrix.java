@@ -7,7 +7,6 @@
  */
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
-import java.util.ArrayList;
 import java.util.TreeMap;
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class Matrix<T> {
     this.m = p_mat.m;
     this.n = p_mat.n;
     this.defaultValue = p_mat.defaultValue;
-    init(p_mat.rowCount(), p_mat.columnCount());
+    init(p_mat.rowCount(), p_mat.columnCount(), null);
     setBlock(p_mat, 0, 0);
   }
 
@@ -84,7 +83,7 @@ public class Matrix<T> {
    */
   public Matrix() {
     super();
-    init(0,0);
+    init(0,0, null);
   }
 
   /**
@@ -95,9 +94,13 @@ public class Matrix<T> {
    */
   public Matrix(int m, int n) {
     this();
-    init(m,n);
+    init(m,n, null);
   }
-
+  
+  public Matrix(int m, int n, T fill) {
+    this();
+    init(m,n,fill);
+  }
 
   /**
    * Initializes matrix with a default value. Matrix must be unlocked.
@@ -106,11 +109,18 @@ public class Matrix<T> {
    * @param n
    * @param defaultValue
    */
-  protected void init(int p_m, int p_n) {
+  protected void init(int p_m, int p_n, T fill) {
     mat = new TreeMap<>();
 
     this.m = p_m;
     this.n = p_n;
+    if(fill != null) {
+      for(int i=0;i<p_m;i++) {
+        for(int j=0;j<p_n;j++) {
+          set(i,j,fill);
+        }
+      }
+    }
   }
 
   /**
