@@ -8,9 +8,15 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.util.TreeMap;
+import java.util.function.Function;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.base.Joiner;
+
+import name.NicolasCoutureGrenier.CS.Parsers;
 
 /**
  * Generic mutable Matrix class with basic functionality.
@@ -589,4 +595,55 @@ public class Matrix<T> {
     return true;
   }
   
+  public void printToJSON(Function<T,String> printer, String path) throws FileNotFoundException {
+    this.toStringJaggedList(printer).printToJSON((s) -> s, path);
+  }
+  
+  public String toJSONArrayString(Function<T,String> printer) {
+    return this.toStringJaggedList(printer).toJSONArrayString((s) -> s);
+  }
+  
+  public static <
+    T extends Comparable<? super T>, 
+    U extends Comparable<? super U>> 
+      FiniteRelation<T,U> parseJSONArray(
+          String str, 
+          Function<String,T> parser1,
+          Function<String,U> parser2) {
+      return FiniteRelation.fromStringJaggedList(JaggedList.parseJSONArray(str, (s) -> s), parser1, parser2);
+  }
+  public static <T extends Comparable<? super T>> 
+    Matrix<T> parseJSONFile(
+        String path, 
+        Function<String,T> parser) throws JsonParseException, IOException { 
+      return Matrix.fromStringJaggedList(JaggedList.<String>parseJSONFile(path, (s) -> s), parser);
+  }
+  
+  public JaggedList<String> toStringJaggedList(Function<T,String> printer) {
+    var o = new JaggedList<String>();
+    o.init(m,n);
+    for(int i=0;i<n;i++) {
+      for(int j=0;j<m;j++) {
+        o.set(printer.apply(get(i,j)), i,j);
+      }
+    }
+    return o;
+  }
+  public static <T extends Comparable<? super T>> 
+      Matrix<T> fromStringJaggedList(
+          JaggedList<String> arr, 
+          Function<String,T> parser) {
+    
+    parser = Parsers.nullDecorator(parser);
+    
+    var o = new Matrix<T>();
+    for(int i=0;i<arr.size();i++) {
+      o.appendRow();
+      for(int j=0; j<arr.get(i).size();j++) {
+        if(o.columnCount() < j) o.appendColumn();
+        o.set(i, j, parser.apply(arr.get(i,j).getValue()));
+      }
+    }
+    return o;
+  }
 }
