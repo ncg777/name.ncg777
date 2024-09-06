@@ -51,16 +51,16 @@ public class JaggedList<T extends Comparable<? super T>>
   }
 
   public void init(int... dimensions) {
-    this.setValue(null);
-    if (dimensions == null || dimensions.length == 0) return;
-
-    if (dimensions.length == 1) {
-      children = new SparseList<>();
-      children.resize(dimensions[0]);;
-    } else {
-      int[] subDimension = Arrays.copyOfRange(dimensions, 1, dimensions.length);
-      for (var c : children)
-        c.init(subDimension);
+    if (dimensions == null || dimensions.length == 0) {
+      this.setValue(null);
+      return;
+    }
+    
+    for(int i=0;i<dimensions[0];i++) {
+      newChild();
+    }
+    for (var c : children) {
+      c.init(Arrays.copyOfRange(dimensions, 1, dimensions.length));
     }
   }
 
@@ -119,7 +119,7 @@ public class JaggedList<T extends Comparable<? super T>>
     parent.addChild(this);
   }
   public boolean setValue(T t) {
-    var o = ordering.compare(t, getValue()) == 0;
+    var o = ordering.compare(t, getValue()) != 0;
     value = t;
     children = null;
     return o;
@@ -131,7 +131,7 @@ public class JaggedList<T extends Comparable<? super T>>
   }
 
   public boolean isRoot() {
-    return this.getRoot().equals(this);
+    return this.parent==null;
   }
 
   public JaggedList<T> getParent() {
