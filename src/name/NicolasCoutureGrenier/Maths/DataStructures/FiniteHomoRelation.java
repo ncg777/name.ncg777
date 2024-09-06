@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.opencsv.exceptions.CsvException;
 
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
@@ -213,7 +214,7 @@ extends FiniteRelation<L, L> {
   public static <L extends Comparable<? super L>> 
     FiniteHomoRelation<L> parseJSONFile(
         String path, 
-        Function<String,L> parser) {
+        Function<String,L> parser) throws JsonParseException, IOException {
     return new FiniteHomoRelation<L>(parseJSONFile(path,parser,parser));
   }
   

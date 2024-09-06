@@ -1,7 +1,6 @@
 package name.NicolasCoutureGrenier.Maths.DataStructures;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,7 +26,7 @@ import org.apache.commons.collections4.set.UnmodifiableSortedSet;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonFactoryBuilder;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Ordering;
 import com.opencsv.CSVParser;
@@ -452,7 +451,6 @@ public class FiniteRelation<
     return Iterators.unmodifiableIterator(this.pairs.iterator());
   }
   
-
   @Override
   public String toString() {
     return toString((t) -> t.toString(), (u) -> u.toString());
@@ -499,6 +497,7 @@ public class FiniteRelation<
   
   private static <T extends Comparable<? super T>, U extends Comparable<? super U>> void 
   toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, FiniteRelation<T,U> rel, JsonGenerator gen) throws IOException {
+    
     gen.writeStartArray();
     for(var v : rel.pairs) {
       HeteroPair.toJSONObjectString(printer1, printer2, v, gen);
@@ -514,22 +513,7 @@ public class FiniteRelation<
           String str, 
           Function<String,T> parser1,
           Function<String,U> parser2) {
-    try {
-      FiniteRelation<T,U> o = new FiniteRelation<>();
-      var b = new JsonFactoryBuilder().build();
-      var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
-      if(!p.isArray()) {
-        throw new RuntimeException("invalid");
-      }
-      for(int i=0;i<p.size();i++) {
-        var pair =  HeteroPair.parseJSONObject(p.get(i).toString(), parser1, parser2);
-        o.add(pair.getFirst(), pair.getSecond());
-      }
-      return o;   
-    } catch (IOException e) {
-      throw new RuntimeException("invalid input");
-    }
-    
+      return FiniteRelation.fromStringJaggedList(JaggedList.parseJSONArray(str, (s) -> s), parser1, parser2);
   }
   public static <
   T extends Comparable<? super T>, 
@@ -537,24 +521,9 @@ public class FiniteRelation<
     FiniteRelation<T,U> parseJSONFile(
         String path, 
         Function<String,T> parser1,
-        Function<String,U> parser2) {
-    try {
-      FiniteRelation<T,U> o = new FiniteRelation<>();
-      
-      var b = new JsonFactoryBuilder().build();
-      File f = new File(path);
-      var p = b.setCodec(new ObjectMapper()).createParser(f).readValueAsTree();
-      if(!p.isArray()) {
-        throw new RuntimeException("invalid");
-      }
-      for(int i=0;i<p.size();i++) {
-        var pair =  HeteroPair.parseJSONObject(p.get(i), parser1, parser2);
-        o.add(pair.getFirst(), pair.getSecond());
-      }
-      return o;   
-    } catch (IOException e) {
-      throw new RuntimeException("invalid input");
-    }
+        Function<String,U> parser2) throws JsonParseException, IOException { 
+    
+      return FiniteRelation.fromStringJaggedList(JaggedList.<String>parseJSONFile(path, (s) -> s), parser1, parser2);
   }
   
   public JaggedList<String> toStringJaggedList(Function<X,String> printer1,Function<Y,String> printer2) {
