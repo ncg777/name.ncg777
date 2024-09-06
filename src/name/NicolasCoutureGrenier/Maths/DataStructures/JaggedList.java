@@ -36,7 +36,7 @@ public class JaggedList<T extends Comparable<? super T>>
   }
   public JaggedList(T t) {
     super();
-    value = t;
+    setValue(t);
   }
   public JaggedList(int... dimensions) {
     this();
