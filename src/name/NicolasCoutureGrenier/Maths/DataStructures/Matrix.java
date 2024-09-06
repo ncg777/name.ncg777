@@ -603,14 +603,11 @@ public class Matrix<T> {
     return this.toStringJaggedList(printer).toJSONArrayString((s) -> s);
   }
   
-  public static <
-    T extends Comparable<? super T>, 
-    U extends Comparable<? super U>> 
-      FiniteRelation<T,U> parseJSONArray(
+  public static <T extends Comparable<? super T>> 
+      Matrix<T> parseJSONArray(
           String str, 
-          Function<String,T> parser1,
-          Function<String,U> parser2) {
-      return FiniteRelation.fromStringJaggedList(JaggedList.parseJSONArray(str, (s) -> s), parser1, parser2);
+          Function<String,T> parser) {
+      return Matrix.fromStringJaggedList(JaggedList.parseJSONArray(str, (s) -> s), parser);
   }
   public static <T extends Comparable<? super T>> 
     Matrix<T> parseJSONFile(
