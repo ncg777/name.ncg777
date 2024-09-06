@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ComparisonChain;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 
@@ -25,7 +26,7 @@ import name.NicolasCoutureGrenier.CS.Parsers;
  * 
  * @param <T>
  */
-public class Matrix<T> {
+public class Matrix<T extends Comparable<? super T>> implements Comparable<Matrix<? super T>> {
   protected TreeMap<HomoPair<Integer>, T> mat;
   /** Number of rows */
   protected int m;
@@ -568,31 +569,14 @@ public class Matrix<T> {
     return result;
   }
 
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({"rawtypes", "unchecked"})
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
     Matrix other = (Matrix) obj;
-    if (n != other.n) return false;
-    if (m != other.m) return false;
-    if (mat == null) {
-      if (other.mat != null) return false;
-    }
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-        if (this.get(i, j) == null && other.get(i, j) == null) {
-          continue;
-        } else if ((this.get(i, j) == null && other.get(i, j) != null)
-            || (this.get(i, j) != null && !this.get(i, j).equals(other.get(i, j)))) {
-          return false;
-        }
-      }
-
-    }
-
-    return true;
+    return this.compareTo(other) == 0;
   }
   
   public void printToJSON(Function<T,String> printer, String path) throws FileNotFoundException {
@@ -626,6 +610,16 @@ public class Matrix<T> {
     }
     return o;
   }
+  public JaggedList<T> toJaggedList() {
+    var o = new JaggedList<T>();
+    o.init(m,n);
+    for(int i=0;i<m;i++) {
+      for(int j=0;j<n;j++) {
+        o.set(get(i,j), i,j);
+      }
+    }
+    return o;
+  }
   public static <T extends Comparable<? super T>> 
       Matrix<T> fromStringJaggedList(
           JaggedList<String> arr, 
@@ -642,5 +636,31 @@ public class Matrix<T> {
       }
     }
     return o;
+  }
+  public static <T extends Comparable<? super T>> 
+  Matrix<T> fromJaggedList(
+      JaggedList<T> arr) {
+    var o = new Matrix<T>();
+    for(int i=0;i<arr.size();i++) {
+      o.appendRow();
+      for(int j=0; j<arr.get(i).size();j++) {
+        if(o.columnCount() < j+1) o.appendColumn();
+        o.set(i, j, arr.get(i,j).getValue());
+      }
+    }
+    return o;
+  }
+
+  @Override
+  public int compareTo(Matrix<? super T> o) {
+    int res = ComparisonChain.start().compare(this.m, o.m).compare(this.n, o.n).result();
+    if(res != 0) return res;
+    for(int i=0;i<n;i++) {
+      for(int j=0;j<m;j++) {
+        res = ComparisonChain.start().compare(this.get(i, j), o.get(i, j)).result();
+        if(res != 0) return res;
+      }
+    }
+    return 0;
   }
 }
