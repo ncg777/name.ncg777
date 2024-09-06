@@ -118,7 +118,6 @@ public class JaggedList<T extends Comparable<? super T>>
     if (parent == null) throw new RuntimeException("parent is null.");
     parent.addChild(this);
   }
-
   public boolean setValue(T t) {
     var o = ordering.compare(t, getValue()) == 0;
     value = t;
