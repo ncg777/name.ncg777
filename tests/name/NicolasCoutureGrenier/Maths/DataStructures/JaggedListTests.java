@@ -31,14 +31,16 @@ public class JaggedListTests {
     @Test
     public final void testGetCoordinates() {
         jaggedList.init(2, 3); // create a jagged list with 2 rows and 3 columns
-        JaggedList<String> child = jaggedList.get(0); // Get the first child
-        child.set("FirstValue",0); // Set a value at the first position of the first child
+        JaggedList<String> child = jaggedList.get(1); // Get the first child
+        child.set("FirstValue",2); // Set a value at the first position of the first child
 
-        int[] coordinates = child.getCoordinates(); // Get the coordinates of the child
+        int[] coordinates = child.get(2).getCoordinates(); // Get the coordinates of the child
         
         // Verify that the coordinates are correct
-        assertEquals(1, coordinates.length); // Should have 1 dimension
-        assertEquals(0, coordinates[0]); // The index in the parent list
+        assertEquals(2, coordinates.length); // Should have 1 dimension
+        assertEquals(1, coordinates[0]);
+        assertEquals(2, coordinates[1]);
+        assertEquals("FirstValue", jaggedList.get(coordinates).getValue());
     }
 
     

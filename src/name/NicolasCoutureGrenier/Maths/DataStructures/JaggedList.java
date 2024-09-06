@@ -139,7 +139,7 @@ public class JaggedList<T extends Comparable<? super T>>
   }
 
   public int getDepth() {
-    if(!isRoot()) return parent.getDepth()+1;
+    if(parent != null) return parent.getDepth()+1;
     return 0;
   }
   public int getIndex() {
@@ -157,7 +157,7 @@ public class JaggedList<T extends Comparable<? super T>>
     
     int i = d;
     var current = this;
-    while(i > 1) {
+    while(i>=1) {
       o[--i] = current.getIndex();
       current = current.parent;
     }
