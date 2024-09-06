@@ -138,6 +138,32 @@ public class JaggedList<T extends Comparable<? super T>>
     return this.parent;
   }
 
+  public int getDepth() {
+    if(!isRoot()) return parent.getDepth()+1;
+    return 0;
+  }
+  public int getIndex() {
+    if(parent == null) return -1;
+    for(int i=0;i<parent.size();i++) {
+      if(parent.get(i) == this) return i;
+    }
+    throw new RuntimeException("not found?");
+  }
+  
+  public int[] getCoordinates() {
+    var d = getDepth();
+    
+    int[] o = new int[d];
+    
+    int i = d;
+    var current = this;
+    while(i > 1) {
+      o[--i] = current.getIndex();
+      current = current.parent;
+    }
+    return o;
+  }
+  
   public JaggedList<T> getRoot() {
     JaggedList<T> current = this;
 
