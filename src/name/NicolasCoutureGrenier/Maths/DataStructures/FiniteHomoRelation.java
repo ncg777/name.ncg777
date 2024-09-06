@@ -190,25 +190,22 @@ extends FiniteRelation<L, L> {
   }
   
   public String toString(Function<L,String> printer1) {
-    return this.toJSONObjectString(printer1, printer1);
+    return this.toJSONArrayString(printer1, printer1);
   }
   
   public void printToJSON(Function<L,String> printer, String path) throws FileNotFoundException {
     printToJSON(printer,printer,path);
   }
-  public void printToJSON(Function<L,String> printer, Writer sw) {
-    printToJSON(printer,printer,sw);
-  }
   
   public String toJSONObjectString(Function<L,String> printer) {
-    return this.toJSONObjectString(printer,printer);
+    return this.toJSONArrayString(printer,printer);
   }
   
   public static <L extends Comparable<? super L>>  
       FiniteHomoRelation<L> parseJSONObject(
           String str, 
           Function<String,L> parser) {
-    return new FiniteHomoRelation<L>(parseJSONObject(str, parser, parser));
+    return new FiniteHomoRelation<L>(parseJSONArray(str, parser, parser));
     
   }
   public static <L extends Comparable<? super L>> 

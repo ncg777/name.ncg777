@@ -138,7 +138,7 @@ public class JaggedList<T extends Comparable<? super T>>
     pw.close();
   }
   
-  public void printToJSON(Function<T,String> printer, Writer sw) {
+  private void printToJSON(Function<T,String> printer, Writer sw) {
     try {
       var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
       toJSONArrayString(printer, this, gen);

@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -23,9 +21,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.set.UnmodifiableSortedSet;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonFactoryBuilder;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Ordering;
@@ -457,7 +452,7 @@ public class FiniteRelation<
   }
   
   public String toString(Function<X,String> printer1, Function<Y,String> printer2) {
-    return this.toJSONObjectString(printer1, printer2);
+    return this.toJSONArrayString(printer1, printer2);
   }
   
   @Override
@@ -473,43 +468,17 @@ public class FiniteRelation<
   
 
   public void printToJSON(Function<X,String> printer1, Function<Y,String> printer2, String path) throws FileNotFoundException {
-    PrintWriter pw = new PrintWriter(path);
-    printToJSON(printer1,printer2,pw);
-    pw.flush();
-    pw.close();
-  }
-  public void printToJSON(Function<X,String> printer1, Function<Y,String> printer2, Writer sw) {
-    try {
-      var gen = new JsonFactory(new JsonFactoryBuilder()).createGenerator(sw);
-      toJSONObjectString(printer1,printer2, this, gen);
-      gen.flush();  
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    this.toStringJaggedList(printer1, printer2).printToJSON((s) -> s, path);
   }
   
-  public String toJSONObjectString(Function<X,String> printer1, Function<Y,String> printer2) {
-    StringWriter sw = new StringWriter();
-    this.printToJSON(printer1,printer2,sw);
-    return sw.getBuffer().toString();
+  public String toJSONArrayString(Function<X,String> printer1, Function<Y,String> printer2) {
+    return this.toStringJaggedList(printer1, printer2).toJSONArrayString((s) -> s);
   }
-  
-  private static <T extends Comparable<? super T>, U extends Comparable<? super U>> void 
-  toJSONObjectString(Function<T,String> printer1, Function<U,String> printer2, FiniteRelation<T,U> rel, JsonGenerator gen) throws IOException {
-    
-    gen.writeStartArray();
-    for(var v : rel.pairs) {
-      HeteroPair.toJSONObjectString(printer1, printer2, v, gen);
-    }
-    gen.writeEndArray();
-  }
-  
   
   public static <
     T extends Comparable<? super T>, 
     U extends Comparable<? super U>> 
-      FiniteRelation<T,U> parseJSONObject(
+      FiniteRelation<T,U> parseJSONArray(
           String str, 
           Function<String,T> parser1,
           Function<String,U> parser2) {
