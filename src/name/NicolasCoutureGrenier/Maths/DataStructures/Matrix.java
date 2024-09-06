@@ -159,7 +159,10 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
     return mat.get(p);
   }
-
+  private boolean isDefaultValue(Object v) {
+    if(v == null) return v == defaultValue;
+    return v.equals(defaultValue);
+  }
   /**
    * Sets value at row i, column j. Matrix must be unlocked.
    * 
@@ -169,7 +172,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    */
   public void set(int i, int j, T val) {
     var p = HomoPair.makeHomoPair(i, j);
-    if(val == defaultValue) {mat.remove(p);}
+    if(isDefaultValue(val)) {mat.remove(p);}
     else  mat.put(p, val);
   }
 
@@ -299,9 +302,6 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     for (int i = 0; i < mm; i++) {
       for (int j = 0; j < mn; j++) {
         T v = p_mat.get(i, j);
-        if (v == null && defaultValue == null || (v != null && v.equals(defaultValue))) {
-          continue;
-        }
         Matrix.this.set(i + i0, j + j0, v);
       }
     }
@@ -555,7 +555,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   public boolean contains(T el) {
-    if(el == defaultValue && m>0 && n>0) return true;
+    if(isDefaultValue(el) && m>0 && n>0) return true;
     return mat.values().contains(el);
   }
   
