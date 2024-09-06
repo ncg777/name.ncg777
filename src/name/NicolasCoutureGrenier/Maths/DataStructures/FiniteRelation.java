@@ -462,7 +462,6 @@ public class FiniteRelation<
   @Override
   public int compareTo(FiniteRelation<X, Y> o) {
     var it = new IterableComparator<HeteroPair<X,Y>>();
-    
     return it.compare(this, o);
   }
   
@@ -491,7 +490,6 @@ public class FiniteRelation<
         String path, 
         Function<String,T> parser1,
         Function<String,U> parser2) throws JsonParseException, IOException { 
-    
       return FiniteRelation.fromStringJaggedList(JaggedList.<String>parseJSONFile(path, (s) -> s), parser1, parser2);
   }
   
