@@ -124,6 +124,15 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return sb.toString();
   }
+  public static Combination fromBinaryString(String s) {
+    s = s.trim();
+    int n = s.length();
+    var o = new Combination(n);
+    for(int i=0;i<n;i++) {
+      if(s.charAt(i) != 0) o.set(i);
+    }
+    return o;
+  }
   
   @Override
   public String toString() {

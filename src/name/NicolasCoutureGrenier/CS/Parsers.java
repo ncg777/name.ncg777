@@ -3,6 +3,8 @@ package name.NicolasCoutureGrenier.CS;
 import java.util.Base64;
 import java.util.function.Function;
 
+import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
 import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
@@ -15,6 +17,8 @@ public class Parsers {
   public static Function<String, Double> doubleParser = (s) -> Double.parseDouble(s.trim());
   public static Function<String, Object[]> doubleArrayParser = arrayDecorator(doubleParser);
   public static Function<String, Object[]> integerArrayParser = arrayDecorator(integerParser);
+  public static Function<String, Combination> combinationParser = (s) -> Combination.fromBinaryString(s);
+  public static Function<String, Composition> compositionParser = (s) -> new Composition(Combination.fromBinaryString(s));
   
   public static Function<String, Integer[]> intArrayParser  = (s) -> {
     String[] a = s.trim().split("\\s+");
@@ -54,7 +58,7 @@ public class Parsers {
   }
   
   public static <X extends Comparable<? super X>> Function<String,JaggedList<X>> 
-    treeNodeDecorator(Function<String,X> parser) {
+    jaggedListDecorator(Function<String,X> parser) {
     return (str) -> {
       return JaggedList.<X>parseJSONArray(str,parser);
     };
