@@ -135,7 +135,7 @@ public class JaggedListTests {
     public final void testToArray() {
         jaggedList.add("First");
         jaggedList.add("Second");
-        Object[] array = jaggedList.toArray();
-        assertArrayEquals(new Object[]{"First", "Second"}, array);
+        Object array = jaggedList.toArray();
+        assertArrayEquals(new String[]{"First", "Second"}, (String[])array);
     }
 }

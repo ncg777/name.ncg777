@@ -5,10 +5,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import java.io.File;
@@ -49,10 +47,12 @@ public class JaggedList<T extends Comparable<? super T>>
     if (children == null) return -1;
     return children.size();
   }
-
   public void init(int... dimensions) {
+    this.init(null, dimensions);
+  }
+  public void init(T fillValue, int... dimensions) {
     if (dimensions == null || dimensions.length == 0) {
-      this.setValue(null);
+      this.setValue(fillValue);
       return;
     }
     
@@ -60,7 +60,7 @@ public class JaggedList<T extends Comparable<? super T>>
       newChild();
     }
     for (var c : children) {
-      c.init(Arrays.copyOfRange(dimensions, 1, dimensions.length));
+      c.init(fillValue, Arrays.copyOfRange(dimensions, 1, dimensions.length));
     }
   }
 
@@ -143,6 +143,16 @@ public class JaggedList<T extends Comparable<? super T>>
   public int getDepth() {
     if(parent != null) return parent.getDepth()+1;
     return 0;
+  }
+  
+  public int getHeight() {
+    if(isValue()) return 0;
+    int o = -1;
+    for(var c : children) {
+      var h = c.getHeight();
+      o = h > o ? h : o;
+    }
+    return o+1;
   }
   public int getIndex() {
     if(parent == null) return -1;
@@ -337,35 +347,18 @@ public class JaggedList<T extends Comparable<? super T>>
     return o;
   }
 
-  public Object[] toArray() {
-    var o = toJaggedArray();
-    return (Object[]) o;
-  }
-
-  private Object toJaggedArray() {
-    if (this.isValue()) {
-      return this.getValue();
-    } else {
-      Class<T> c = this.getContentClass();
-
-      if (c == null) return null;
-      List<Object> l = new ArrayList<Object>();
-      for (int i = 0; i < this.children.size(); i++) {
-        if (this.children.get(i) == null) {
-          l.add(null);
-        } else {
-          var arr = this.children.get(i).toJaggedArray();
-          l.add(arr);
-        }
-      }
-      Object o = Array.newInstance(Object.class, l.size());
-
-      for (int i = 0; i < l.size(); i++) {
-        Array.set(o, i, l.get(i));
-      }
-
-      return o;
+  public Object toArray() {
+    if(isValue()) throw new RuntimeException("is not array");
+    
+    int[] dimensions = new int[getHeight()];
+    dimensions[0] = this.size();
+    var o = Array.newInstance(getContentClass(), dimensions);
+    
+    for(int i=0;i<this.size();i++) {
+      if(get(i).isValue()) Array.set(o, i, get(i).getValue());
+      else Array.set(o, i, get(i).toArray());
     }
+    return o;
   }
 
   public int compareTo(JaggedList<T> other) {
