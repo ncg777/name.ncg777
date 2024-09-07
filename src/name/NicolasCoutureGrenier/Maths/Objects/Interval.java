@@ -26,9 +26,8 @@ public class Interval<T extends Comparable<? super T>> implements Comparable<Int
   }
   
   public static <T extends Comparable<? super T>> Interval<T> getEmptyInterval() {
-    return new Interval<T>(null, true, null, true);
+    return new Interval<T>(null, false, null, false);
   }
-  
   public T getMinimum() {
     return minimum;
   }
@@ -79,30 +78,36 @@ public class Interval<T extends Comparable<? super T>> implements Comparable<Int
     }
     
     T minimum = null;
-    Boolean include_min = null; 
-    if(this.minimum.compareTo(other.minimum) < 0) {
-      minimum = this.minimum;
-      include_min = this.includesMinimum;
-    } else if(this.minimum.equals(other.minimum) ) {
-      minimum = this.minimum;
-      include_min = this.includesMinimum || other.includesMinimum;
-    } else if(this.minimum.compareTo(other.minimum) > 0) {
-      minimum = other.minimum;
-      include_min = other.includesMinimum;
+    Boolean include_min = false;
+    if(this.minimum != null) {
+      if(this.minimum.compareTo(other.minimum) < 0) {
+        minimum = this.minimum;
+        include_min = this.includesMinimum;
+      } else if(this.minimum.equals(other.minimum) ) {
+        minimum = this.minimum;
+        include_min = this.includesMinimum || other.includesMinimum;
+      } else if(this.minimum.compareTo(other.minimum) > 0) {
+        minimum = other.minimum;
+        include_min = other.includesMinimum;
+      }
+  
+    }
+        
+    T maximum = null;
+    Boolean include_max = false; 
+    if(this.maximum != null) {
+      if(this.maximum.compareTo(other.maximum) < 0) {
+        maximum = other.maximum;
+        include_max = other.includesMaximum;
+      } else if(this.maximum.equals(other.maximum) ) {
+        maximum = this.maximum;
+        include_max = this.includesMaximum || other.includesMaximum;
+      } else if(this.maximum.compareTo(other.maximum) > 0) {
+        maximum = this.maximum;
+        include_max = this.includesMaximum;
+      }  
     }
     
-    T maximum = null;
-    Boolean include_max = null; 
-    if(this.maximum.compareTo(other.maximum) < 0) {
-      maximum = other.maximum;
-      include_max = other.includesMaximum;
-    } else if(this.maximum.equals(other.maximum) ) {
-      maximum = this.maximum;
-      include_max = this.includesMaximum || other.includesMaximum;
-    } else if(this.maximum.compareTo(other.maximum) > 0) {
-      maximum = this.maximum;
-      include_max = this.includesMaximum;
-    }
     return make(minimum, include_min, maximum, include_max);
   }
   
@@ -268,13 +273,13 @@ public class Interval<T extends Comparable<? super T>> implements Comparable<Int
       throw new IllegalArgumentException("minimum cannot be null if maximum is not also null and vice versa.");
     } else if (minimum == null && maximum == null && (includesMinimum || includesMaximum)) {
       throw new IllegalArgumentException("null minimum and maximum is only for the empty interval.");
-    } else if (minimum.equals(maximum) && includesMinimum != includesMaximum) {
+    } else if(minimum != null && maximum != null && minimum.equals(maximum) && includesMinimum != includesMaximum) {
       throw new IllegalArgumentException("contradictory arguments.");
     }
     
     this.includesMinimum = includesMinimum;
     this.includesMaximum = includesMaximum;
-    if(!(minimum == null && maximum == null) && 
+    if(minimum != null && maximum != null && 
         // if minimum == maximum and both ends are open, 
         // we have an empty set and the minimum and maximum remain null
         !(minimum.compareTo(maximum) == 0 && !includesMinimum && !includesMaximum)) {

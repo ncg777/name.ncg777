@@ -9,6 +9,7 @@ public class Contiguous implements StandardAndGuavaPredicate<Sequence>{
   public Contiguous(int value){
     this.value = value;
   }
+  @SuppressWarnings("null")
   @Override
   public boolean apply(Sequence input) {
     Sequence order = new Sequence();

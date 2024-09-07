@@ -15,6 +15,7 @@ public class BoundRelationSecond<T extends Comparable<? super T>, U extends Comp
   }
 
 
+  @SuppressWarnings("null")
   @Override
   public boolean apply(T input) {
     return r.apply(input, b);

@@ -22,6 +22,7 @@ public class MultiplesOf implements StandardAndGuavaPredicate<Integer> {
 
   }
 
+  @SuppressWarnings("null")
   @Override
   public boolean apply(Integer k) {
     if (ones && k == 1) {

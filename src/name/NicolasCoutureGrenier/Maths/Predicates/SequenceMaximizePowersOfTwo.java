@@ -9,6 +9,7 @@ import name.NicolasCoutureGrenier.Statistics.SpectrumMaximizePowersOfTwo;
 
 public class SequenceMaximizePowersOfTwo implements StandardAndGuavaPredicate<Sequence>{
 
+  @SuppressWarnings("null")
   @Override
   public boolean apply(Sequence input) {
     TreeMap<Integer, Sequence> v = CollectionUtils.calcIntervalVector(input);

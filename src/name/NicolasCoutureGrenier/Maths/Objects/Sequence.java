@@ -34,11 +34,13 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   private static final long serialVersionUID = 7765339983542999624L;
   
   public static final Equivalence<Sequence> UnderRotationEquivalence = new Equivalence<Sequence>() {
+    @SuppressWarnings("null")
     @Override
     protected boolean doEquivalent(Sequence a, Sequence b) {
       return Sequence.equivalentUnderRotation(a, b);
     }
 
+    @SuppressWarnings("null")
     @Override
     protected int doHash(Sequence t) {
       return t.getMininumRotation().hashCode();
