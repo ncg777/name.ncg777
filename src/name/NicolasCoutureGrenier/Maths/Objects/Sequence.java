@@ -20,8 +20,6 @@ import com.google.common.base.Equivalence;
 import com.google.common.base.Joiner;
 
 import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.CS.DataStructures.ComparableMap;
-import name.NicolasCoutureGrenier.CS.DataStructures.ComparableSet;
 import name.NicolasCoutureGrenier.CS.DataStructures.HomoPair;
 import name.NicolasCoutureGrenier.CS.DataStructures.IterableComparator;
 import name.NicolasCoutureGrenier.Maths.Numbers;
@@ -674,8 +672,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    * 
    * @return a TreeSet with all distinct elements of this sequence.
    */
-  public ComparableSet<Integer> distinct() {
-    return new ComparableSet<Integer>(this);
+  public Set<Integer> distinct() {
+    return new TreeSet<Integer>(this);
   }
 
   /**
@@ -792,7 +790,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    */
   public TreeBidiMap<Integer, Integer> mapOrdinalsUnipolar() {
     TreeBidiMap<Integer, Integer> o = new TreeBidiMap<Integer, Integer>();
-    TreeSet<Integer> d =  this.distinct();
+    Set<Integer> d =  this.distinct();
     
     int k = 1;
     for(Integer i : d) {
@@ -824,7 +822,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   public TreeBidiMap<Integer, Integer> mapOrdinalsBipolar() {
     TreeBidiMap<Integer, Integer> o = new TreeBidiMap<Integer, Integer>();
     o.put(0, 0);
-    TreeSet<Integer> d =  this.distinct();
+    Set<Integer> d =  this.distinct();
     TreeSet<Integer> abs_d = new TreeSet<Integer>();
     
     for(Integer i : d) {
@@ -993,8 +991,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    * @param s The sequence to which a map is seeked
    * @return A map that map this sequence into sequence s or null if it does not exists.
    */
-  public ComparableMap<Integer, Integer> mapTo(Sequence s) {
-    ComparableMap<Integer, Integer> mapping = new ComparableMap<Integer, Integer>();
+  public Map<Integer, Integer> mapTo(Sequence s) {
+    var mapping = new TreeMap<Integer, Integer>();
 
     if (size() != s.size()) {
       return null;

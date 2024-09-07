@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.NicolasCoutureGrenier.CS.DataStructures.ComparableSet;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.R16List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
@@ -105,7 +104,7 @@ public class ModularArithmeticSequencer {
           
         }
         
-        ComparableSet<Integer> distinct = o.distinct();
+        var distinct = o.distinct();
         
         ArrayList<R16List> rs = new ArrayList<>();
         

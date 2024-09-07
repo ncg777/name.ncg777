@@ -1,8 +1,7 @@
 package name.NicolasCoutureGrenier.Maths.FuzzyLogic.Valuators;
 
 import java.util.Iterator;
-import java.util.TreeSet;
-
+import java.util.Set;
 import com.google.common.base.Function;
 
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
@@ -26,7 +25,7 @@ public class SequencePeriodicity implements Function<Sequence, FuzzyVariable> {
    */
   @Override
   public FuzzyVariable apply(Sequence input) {
-    TreeSet<Integer> d = input.distinct();
+    Set<Integer> d = input.distinct();
 
     Double v = 0.0;
 
