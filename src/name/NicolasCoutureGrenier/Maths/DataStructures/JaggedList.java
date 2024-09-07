@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Function;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -346,7 +347,7 @@ public class JaggedList<T extends Comparable<? super T>>
     }
     return o;
   }
-
+  
   public Object toArray() {
     if(isValue()) throw new RuntimeException("is not array");
     
