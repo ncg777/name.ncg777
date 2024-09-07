@@ -2,7 +2,7 @@ package name.NicolasCoutureGrenier.Maths.Relations;
 
 import java.util.TreeSet;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 
 public class CombinationFlatSymmetricDifference implements Relation<Combination, Combination> {
 

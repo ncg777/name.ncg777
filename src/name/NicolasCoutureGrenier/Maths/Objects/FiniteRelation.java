@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.Maths.Objects;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -34,6 +34,10 @@ import com.opencsv.exceptions.CsvException;
 import name.NicolasCoutureGrenier.CS.Functional;
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.Printers;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.CS.DataStructures.HeteroPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.IterableComparator;
+import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Maths.Enumerations.HeterogeneousPairEnumeration;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 

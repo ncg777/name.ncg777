@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 // TODO: remove code repetition...
 public class R48List extends LinkedList<Rhythm48> implements Comparable<R48List>{
   private static final long serialVersionUID = 1L;

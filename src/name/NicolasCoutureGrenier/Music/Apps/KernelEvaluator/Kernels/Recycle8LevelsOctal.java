@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.Apps.KernelEvaluator.Kernel;
 import name.NicolasCoutureGrenier.Music.Apps.KernelEvaluator.ParameterType;
 

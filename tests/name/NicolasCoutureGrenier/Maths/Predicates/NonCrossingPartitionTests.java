@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.Enumerations.SetPartitionEnumeration;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class NonCrossingPartitionTests extends TestCase  {
 

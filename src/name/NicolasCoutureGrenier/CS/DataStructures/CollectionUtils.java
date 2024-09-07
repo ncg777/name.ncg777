@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.CS.DataStructures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +16,9 @@ import java.util.TreeSet;
 import java.util.function.Function;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Matrix;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 import com.google.common.base.Equivalence;

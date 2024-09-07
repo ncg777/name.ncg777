@@ -2,7 +2,7 @@ package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 

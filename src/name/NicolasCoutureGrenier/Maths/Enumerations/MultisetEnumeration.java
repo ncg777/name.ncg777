@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.collections4.bag.TreeBag;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 
 /**
  * This class enumerates multisets with a fixed size.

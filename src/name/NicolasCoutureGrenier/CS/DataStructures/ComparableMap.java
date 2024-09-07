@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.CS.DataStructures;
 
 import java.util.Comparator;
 import java.util.TreeMap;

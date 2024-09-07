@@ -3,7 +3,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.HeteroPair;
 
 public class  HeterogeneousPairEnumeration<
   T extends Comparable<? super T>, 

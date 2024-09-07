@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

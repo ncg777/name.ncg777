@@ -1,6 +1,6 @@
 package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 
-import static name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils.*;
+import static name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils.*;
 
 import java.util.Arrays;
 import java.util.Iterator;

@@ -10,7 +10,7 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 import javax.swing.SwingConstants;
 import javax.swing.JSpinner;

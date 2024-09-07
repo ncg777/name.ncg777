@@ -5,8 +5,8 @@ import java.util.TreeSet;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedList;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Maths.Predicates.BoundRelationFirst;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.NNotesDifference;
 

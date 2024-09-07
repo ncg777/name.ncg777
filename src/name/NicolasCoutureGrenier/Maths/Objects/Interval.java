@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.Maths.Objects;
 
 /**
  * Interval on a total order with a notion of open and closed boundaries.

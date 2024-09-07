@@ -1,6 +1,6 @@
 package name.NicolasCoutureGrenier.Maths.Relations;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class SequenceRelations {
   public static Relation<Sequence,Sequence> equivalentUnderRotation = 

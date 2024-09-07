@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.Maths.Objects;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.io.Serializable;
 
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.Enumerations.CombinationEnumeration;
 import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;

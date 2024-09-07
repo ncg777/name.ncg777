@@ -7,11 +7,11 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Necklace;
 
 import static com.google.common.math.IntMath.checkedPow;
-import static name.NicolasCoutureGrenier.Maths.DataStructures.Sequence.ReverseComparator;
+import static name.NicolasCoutureGrenier.Maths.Objects.Sequence.ReverseComparator;
 
 public class Rhythm12 extends Rhythm implements Serializable{
 

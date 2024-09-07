@@ -2,8 +2,7 @@ package name.NicolasCoutureGrenier.Maths.Relations;
 
 import java.util.function.BiPredicate;
 
-
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class LessThan implements BiPredicate<Sequence, Sequence> {
 

@@ -1,6 +1,6 @@
 package name.NicolasCoutureGrenier.Music;
 
-import static name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils.calcIntervalVector;
+import static name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils.calcIntervalVector;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class Rhythm extends Combination implements Serializable {
 

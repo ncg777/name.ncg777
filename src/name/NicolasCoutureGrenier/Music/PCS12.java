@@ -1,6 +1,6 @@
 package name.NicolasCoutureGrenier.Music;
 
-import static name.NicolasCoutureGrenier.Maths.DataStructures.Sequence.ReverseComparator;
+import static name.NicolasCoutureGrenier.Maths.Objects.Sequence.ReverseComparator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,10 +22,11 @@ import com.opencsv.exceptions.CsvException;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.FiniteRelation;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Necklace;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.FiniteRelation;
+import name.NicolasCoutureGrenier.Maths.Objects.Necklace;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
+
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 

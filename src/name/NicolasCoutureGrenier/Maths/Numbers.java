@@ -5,7 +5,7 @@ import java.util.TreeMap;
 // import static com.google.common.math.IntMath.checkedPow;
 import java.util.TreeSet;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Matrix;
+import name.NicolasCoutureGrenier.Maths.Objects.Matrix;
 
 
 public class Numbers {

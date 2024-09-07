@@ -8,13 +8,13 @@ import com.google.common.base.Joiner;
 
 import java.util.List;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Music.PCS12;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
+import name.NicolasCoutureGrenier.CS.DataStructures.HeteroPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.HomoPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class Printers {
   public static Function<String, String> stringPrinter = (s) -> s;

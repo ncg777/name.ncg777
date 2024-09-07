@@ -2,7 +2,7 @@ package name.NicolasCoutureGrenier.Maths.Relations;
 
 import com.google.common.base.Equivalence;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 /**
  * This equivalence states that 2 sequences s1 and s2 are considered equal if there exist a

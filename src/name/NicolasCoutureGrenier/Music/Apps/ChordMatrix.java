@@ -14,10 +14,10 @@ import javax.swing.SpinnerNumberModel;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Matrix;
 import name.NicolasCoutureGrenier.Maths.Graphs.DiGraph;
+import name.NicolasCoutureGrenier.Maths.Objects.Matrix;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.PCS12;
 import name.NicolasCoutureGrenier.Music.PCS12Predicates.Consonant;

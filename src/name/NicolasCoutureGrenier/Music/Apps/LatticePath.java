@@ -13,8 +13,8 @@ import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JLabel;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.R16List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 

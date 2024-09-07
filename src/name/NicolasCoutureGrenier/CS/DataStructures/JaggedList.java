@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.CS.DataStructures;
 
 import java.io.IOException;
 import java.io.PrintWriter;

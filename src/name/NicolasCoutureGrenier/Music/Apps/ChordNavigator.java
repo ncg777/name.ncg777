@@ -20,7 +20,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.NicolasCoutureGrenier.CS.Utils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.PCS12;
 import name.NicolasCoutureGrenier.Music.PCS12Predicates.Consonant;

@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
 
 
 public class GraphUtils {

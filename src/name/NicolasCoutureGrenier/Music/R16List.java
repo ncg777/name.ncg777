@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class R16List extends LinkedList<Rhythm16> implements Comparable<R16List>{
   private static final long serialVersionUID = 1L;

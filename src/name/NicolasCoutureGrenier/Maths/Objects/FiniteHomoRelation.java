@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.Maths.Objects;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.function.Function;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.opencsv.exceptions.CsvException;
 
+import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 
 public class FiniteHomoRelation<L extends Comparable<? super L>>

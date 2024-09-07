@@ -2,9 +2,9 @@ package name.NicolasCoutureGrenier.Maths.Predicates;
 
 import java.util.TreeMap;
 
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Statistics.SpectrumMaximizePowersOfTwo;
 
 public class SequenceMaximizePowersOfTwo implements StandardAndGuavaPredicate<Sequence>{

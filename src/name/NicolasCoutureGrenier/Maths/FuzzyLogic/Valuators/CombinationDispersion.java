@@ -2,8 +2,8 @@ package name.NicolasCoutureGrenier.Maths.FuzzyLogic.Valuators;
 
 import com.google.common.base.Function;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 
 public class CombinationDispersion implements Function<Combination, FuzzyVariable> {
   CompositionDispersion v;

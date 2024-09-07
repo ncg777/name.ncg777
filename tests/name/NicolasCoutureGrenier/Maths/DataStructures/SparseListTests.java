@@ -5,6 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import name.NicolasCoutureGrenier.CS.DataStructures.SparseList;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;

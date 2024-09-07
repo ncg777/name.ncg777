@@ -5,9 +5,9 @@ import java.util.TreeSet;
 
 import com.google.common.base.Function;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class SequencePeriodicity implements Function<Sequence, FuzzyVariable> {
   CompositionDispersion ch;

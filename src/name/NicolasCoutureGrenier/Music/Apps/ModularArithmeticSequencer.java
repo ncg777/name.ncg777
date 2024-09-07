@@ -7,8 +7,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.ComparableSet;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.CS.DataStructures.ComparableSet;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.R16List;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 

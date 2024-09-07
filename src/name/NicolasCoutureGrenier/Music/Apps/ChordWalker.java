@@ -14,7 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.Graphs.DiGraph;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.PCS12;

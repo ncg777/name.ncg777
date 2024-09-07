@@ -8,9 +8,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.Maths.Enumerations.MixedRadixEnumeration;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 import static com.google.common.math.IntMath.checkedPow;

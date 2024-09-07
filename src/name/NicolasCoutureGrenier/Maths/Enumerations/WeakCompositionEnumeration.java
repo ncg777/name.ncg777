@@ -2,7 +2,7 @@ package name.NicolasCoutureGrenier.Maths.Enumerations;
 
 import java.util.Enumeration;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 
 public class WeakCompositionEnumeration implements Enumeration<Integer[]>  {
 

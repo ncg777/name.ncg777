@@ -4,11 +4,11 @@ import java.util.TreeMap;
 
 import com.google.common.base.Function;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Interval;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.CS.DataStructures.HeteroPair;
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Interval;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class CompositionDispersion implements Function<Composition, FuzzyVariable> {
 

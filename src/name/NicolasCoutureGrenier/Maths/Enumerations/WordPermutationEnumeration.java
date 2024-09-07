@@ -3,7 +3,7 @@ package name.NicolasCoutureGrenier.Maths.Enumerations;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 
 /**
  * Generates the combinatorial objects associated with multinomial coefficients

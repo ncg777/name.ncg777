@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 public class Ordinal implements StandardAndGuavaPredicate<Rhythm>  {

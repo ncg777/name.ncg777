@@ -1,7 +1,7 @@
 package name.NicolasCoutureGrenier.Maths.Predicates;
 
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class Contiguous implements StandardAndGuavaPredicate<Sequence>{
 

@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.CS.DataStructures;
 
 
 public class HomoPair<T extends Comparable<? super T>>

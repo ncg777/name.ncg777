@@ -5,7 +5,7 @@
  * 
  * @author Nicolas Couture-Grenier
  */
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.Maths.Objects;
 
 import java.util.TreeMap;
 import java.util.function.Function;
@@ -18,6 +18,9 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ComparisonChain;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
+import name.NicolasCoutureGrenier.CS.DataStructures.HomoPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
+import name.NicolasCoutureGrenier.CS.DataStructures.SparseList;
 
 /**
  * Generic mutable Matrix class with basic functionality.

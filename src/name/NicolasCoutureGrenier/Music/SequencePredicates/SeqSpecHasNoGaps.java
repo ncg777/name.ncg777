@@ -1,9 +1,9 @@
 package name.NicolasCoutureGrenier.Music.SequencePredicates;
 
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
-import static name.NicolasCoutureGrenier.Maths.DataStructures.CollectionUtils.*;
+import static name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils.*;
 
 import java.util.Iterator;
 import java.util.LinkedList;

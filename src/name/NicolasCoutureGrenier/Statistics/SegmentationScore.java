@@ -1,7 +1,7 @@
 package name.NicolasCoutureGrenier.Statistics;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class SegmentationScore {
 

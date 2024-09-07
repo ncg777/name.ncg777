@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates and open the template in the editor.
  */
 
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.CS.DataStructures;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

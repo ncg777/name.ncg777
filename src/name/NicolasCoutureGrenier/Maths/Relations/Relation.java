@@ -4,7 +4,7 @@ import java.util.function.BiPredicate;
 
 import com.google.common.base.Predicate;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.HeteroPair;
 import name.NicolasCoutureGrenier.Maths.Predicates.BoundRelationFirst;
 import name.NicolasCoutureGrenier.Maths.Predicates.BoundRelationSecond;
 

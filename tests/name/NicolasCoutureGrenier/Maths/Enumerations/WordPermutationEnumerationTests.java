@@ -3,7 +3,7 @@ package name.NicolasCoutureGrenier.Maths.Enumerations;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class WordPermutationEnumerationTests extends TestCase {
   

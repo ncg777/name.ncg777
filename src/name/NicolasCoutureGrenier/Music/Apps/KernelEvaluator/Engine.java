@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.CS.DataStructures.HomoPair;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 import name.NicolasCoutureGrenier.Music.Apps.KernelEvaluator.Kernels.Dummy;
 import name.NicolasCoutureGrenier.Music.Apps.KernelEvaluator.Kernels.ModsRecycle;

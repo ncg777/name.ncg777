@@ -2,7 +2,7 @@ package name.NicolasCoutureGrenier.Maths.Enumerations;
 
 import java.util.Enumeration;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 /**
  * 

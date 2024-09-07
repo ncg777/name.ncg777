@@ -2,7 +2,7 @@ package name.NicolasCoutureGrenier.Maths.Enumerations;
 
 import java.util.Enumeration;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
 
 public class CompositionEnumeration implements Enumeration<Composition> {
 

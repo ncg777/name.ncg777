@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 import javax.swing.JTextArea;

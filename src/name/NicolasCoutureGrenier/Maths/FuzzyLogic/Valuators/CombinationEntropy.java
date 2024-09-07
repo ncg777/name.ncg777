@@ -5,9 +5,9 @@ import java.util.TreeMap;
 import com.google.common.base.Function;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Interval;
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Interval;
 
 public class CombinationEntropy implements Function<Combination, FuzzyVariable> {
 

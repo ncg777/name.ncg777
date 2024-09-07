@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.Maths.Objects;
 
 import static com.google.common.math.IntMath.checkedPow;
 
@@ -19,6 +19,11 @@ import org.apache.commons.collections4.bidimap.TreeBidiMap;
 import com.google.common.base.Equivalence;
 import com.google.common.base.Joiner;
 
+import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
+import name.NicolasCoutureGrenier.CS.DataStructures.ComparableMap;
+import name.NicolasCoutureGrenier.CS.DataStructures.ComparableSet;
+import name.NicolasCoutureGrenier.CS.DataStructures.HomoPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.IterableComparator;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.Enumerations.PermutationEnumeration;
 import name.NicolasCoutureGrenier.Music.Rhythm;
@@ -800,7 +805,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   /**
    * Converts the elements of this sequence to unipolar ordinals.
    * 
-   * @see name.NicolasCoutureGrenier.Maths.DataStructures.Sequence#mapOrdinalsUnipolar()
+   * @see name.NicolasCoutureGrenier.Maths.Objects.Sequence#mapOrdinalsUnipolar()
    * @return
    */
   public Sequence asOrdinalsUnipolar() {
@@ -813,7 +818,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    * respectively to negative and positive. Absolute ordinal values correspond to their order in the
    * sorted list of absolute values.
    * 
-   * @see name.NicolasCoutureGrenier.Maths.DataStructures.Sequence#mapOrdinalsBipolar()
+   * @see name.NicolasCoutureGrenier.Maths.Objects.Sequence#mapOrdinalsBipolar()
    * @return
    */
   public TreeBidiMap<Integer, Integer> mapOrdinalsBipolar() {
@@ -838,7 +843,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   /**
    * Converts the elements of this sequence to bipolar ordinals.
    * 
-   * @see name.NicolasCoutureGrenier.Maths.DataStructures.Sequence#mapOrdinalsBipolar()
+   * @see name.NicolasCoutureGrenier.Maths.Objects.Sequence#mapOrdinalsBipolar()
    * @return
    */
   public Sequence asOrdinalsBipolar() {

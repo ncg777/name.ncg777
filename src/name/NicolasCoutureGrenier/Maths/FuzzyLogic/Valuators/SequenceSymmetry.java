@@ -2,8 +2,8 @@ package name.NicolasCoutureGrenier.Maths.FuzzyLogic.Valuators;
 
 import com.google.common.base.Function;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
 import name.NicolasCoutureGrenier.Maths.FuzzyLogic.FuzzyVariable;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class SequenceSymmetry implements Function<Sequence, FuzzyVariable> {
 

@@ -3,9 +3,9 @@ package name.NicolasCoutureGrenier.Maths.Predicates;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import name.NicolasCoutureGrenier.CS.DataStructures.ComparableSet;
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
-import name.NicolasCoutureGrenier.Maths.DataStructures.ComparableSet;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 public class ContiguousDistinctValuesExceptZero implements StandardAndGuavaPredicate<Sequence>{
 

@@ -4,12 +4,12 @@ import java.util.Base64;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
-import name.NicolasCoutureGrenier.Maths.DataStructures.Combination;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Composition;
-import name.NicolasCoutureGrenier.Maths.DataStructures.HeteroPair;
-import name.NicolasCoutureGrenier.Maths.DataStructures.HomoPair;
-import name.NicolasCoutureGrenier.Maths.DataStructures.Sequence;
-import name.NicolasCoutureGrenier.Maths.DataStructures.JaggedList;
+import name.NicolasCoutureGrenier.CS.DataStructures.HeteroPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.HomoPair;
+import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
+import name.NicolasCoutureGrenier.Maths.Objects.Combination;
+import name.NicolasCoutureGrenier.Maths.Objects.Composition;
+import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Parsers {
