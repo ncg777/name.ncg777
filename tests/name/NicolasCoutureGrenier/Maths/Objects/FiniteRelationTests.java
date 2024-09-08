@@ -1,4 +1,4 @@
-package name.NicolasCoutureGrenier.Maths.DataStructures;
+package name.NicolasCoutureGrenier.Maths.Objects;
 
 import java.io.File;
 import java.io.IOException;
