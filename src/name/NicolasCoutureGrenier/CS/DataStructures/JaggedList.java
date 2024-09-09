@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class JaggedList<T extends Comparable<? super T>>
 
   T value = null;
   JaggedList<T> parent = null;
-  SparseList<JaggedList<T>> children;
+  ArrayList<JaggedList<T>> children;
 
   public JaggedList() {
     super();
@@ -96,7 +97,7 @@ public class JaggedList<T extends Comparable<? super T>>
   public boolean addChild(JaggedList<T> t) {
     t.parent = this;
     this.value = null;
-    if (children == null) children = new SparseList<>();
+    if (children == null) children = new ArrayList<>();
     return children.add(t);
   }
 
@@ -255,7 +256,7 @@ public class JaggedList<T extends Comparable<? super T>>
     if (p == null) return root;
     if (p.isArray()) {
       JaggedList<T> arr = new JaggedList<T>(null, root);
-      arr.children = new SparseList<>();
+      arr.children = new ArrayList<>();
       for (int i = 0; i < p.size(); i++) {
         parseJSONFile(parser, arr, p.get(i));
       }
@@ -279,7 +280,7 @@ public class JaggedList<T extends Comparable<? super T>>
       if (p == null) return root;
       if (p.isArray()) {
         JaggedList<T> arr = new JaggedList<T>(null, root);
-        arr.children = new SparseList<>();
+        arr.children = new ArrayList<>();
         for (int i = 0; i < p.size(); i++) {
           parseJSONArray(p.get(i).toString(), parser, arr);
         }
@@ -313,7 +314,7 @@ public class JaggedList<T extends Comparable<? super T>>
     if (object != null && object.getClass().isArray()) {
       int l = Array.getLength(object);
       JaggedList<T> t = new JaggedList<T>(null, parent);
-      t.children = new SparseList<>();
+      t.children = new ArrayList<>();
       for (int i = 0; i < l; i++) {
         var o = Array.get(object, i);
         fromArray(o, t);
