@@ -524,13 +524,21 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * @return
    */
   public List<T> getColumn(int j) {
-    List<T> o = new SparseList<T>();
+    List<T> o = new SparseList<T>(defaultValue);
     for (int i = 0; i < m; i++) {
       o.add(get(i, j));
     }
     return o;
   }
-
+  
+  public Vector<T> getColumnVector(int j) {
+    List<T> o = new SparseList<T>(defaultValue);
+    for (int i = 0; i < m; i++) {
+      o.add(get(i, j));
+    }
+    return Vector.of(o);
+  }
+  
   /**
    * Returns row i. Changes made to the row will not affect the matrix.
    * 
@@ -538,14 +546,22 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * @return
    */
   public List<T> getRow(int i) {
-    List<T> r = new SparseList<T>();
+    List<T> r = new SparseList<T>(defaultValue);
     
     for (int j = 0; j < n; j++) {
       r.add(get(i, j));
     }
     return r;
   }
-
+  
+  public Vector<T> getRowVector(int i) {
+    List<T> o = new SparseList<T>(defaultValue);
+    for (int j = 0; j < n; j++) {
+      o.add(get(i, j));
+    }
+    return Vector.of(o);
+  }
+  
   /**
    * Returns the transpose of the matrix. Doesn't affect the original.
    * 

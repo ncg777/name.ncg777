@@ -11,10 +11,16 @@ public class Vector<T extends Comparable<? super T>> implements Comparable<Vecto
   private IterableComparator<T> it = new IterableComparator<>();
   @SafeVarargs
   public static <T extends Comparable<? super T>> Vector<T> of(T...  values){
+    return of(List.of(values));
+  }
+  public static <T extends Comparable<? super T>> Vector<T> of(Iterable<T>  values){
     Vector<T> o = new Vector<T>();
-    o.values.addAll(List.of(values));
+    for(var x : values) o.values.add(x);
     return o;
   }
+  public T get(int i) {return values.get(i);}
+  public T set(int i, T value) {return values.set(i,value);}
+  
   public int getDimension() { return values.size(); }
   @Override
   public int compareTo(Vector<T> o) {
