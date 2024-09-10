@@ -532,11 +532,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
   
   public Vector<T> getColumnVector(int j) {
-    List<T> o = new SparseList<T>(defaultValue);
-    for (int i = 0; i < m; i++) {
-      o.add(get(i, j));
-    }
-    return Vector.of(o);
+    return Vector.of(getColumn(j));
   }
   
   /**
@@ -555,11 +551,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
   
   public Vector<T> getRowVector(int i) {
-    List<T> o = new SparseList<T>(defaultValue);
-    for (int j = 0; j < n; j++) {
-      o.add(get(i, j));
-    }
-    return Vector.of(o);
+    return Vector.of(getRow(i));
   }
   
   /**
