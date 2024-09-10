@@ -87,6 +87,27 @@ public class FiniteRelation<
       add(x, f.apply(x));
     }
   }
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> evaluateParametric(
+      Function<Double, HeteroPair<X,Y>> f,double delta) {
+    return evaluateParametric(f, delta, 0.0, 1.0);
+  }
+  
+  public static <
+  X extends Comparable<? super X>,
+  Y extends Comparable<? super Y>> FiniteRelation<X,Y> evaluateParametric(
+      Function<Double,HeteroPair<X,Y>> f,double delta, double startInclusive, double endExclusive) {
+    double c = startInclusive;
+    FiniteRelation<X,Y> o = new FiniteRelation<>();
+    while(c < endExclusive) {
+      var p = f.apply(c);
+      c+= delta;
+      o.add(p.getFirst(), p.getSecond());
+    }
+    return o;  
+  }
+  
   @Override
   public boolean equals(Object other) {
     if(!(other instanceof FiniteRelation)){ return false;}
