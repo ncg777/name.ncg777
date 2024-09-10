@@ -38,7 +38,7 @@ public class DoubleMatrix extends Matrix<Double> {
     var o = new DoubleMatrix(mat.rows(),mat.columns());
     for(int i=0;i<o.rowCount();i++) {
       for(int j=0;j<o.columnCount();j++) {
-        o.set(i, j, mat.get(j, i));
+        o.set(i, j, mat.get(i, j));
       }
     }
     return o;
@@ -48,7 +48,7 @@ public class DoubleMatrix extends Matrix<Double> {
     
     for(int i=0;i<o.rows();i++) {
       for(int j=0;j<o.columns();j++) {
-        o.set(i, j, get(j, i).doubleValue());
+        o.set(i, j, get(i, j).doubleValue());
       }
     }
     return o;
