@@ -15,6 +15,10 @@ import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 import name.NicolasCoutureGrenier.Maths.Objects.Composition;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Vector;
+import name.NicolasCoutureGrenier.Maths.Objects.VectorOfBooleans;
+import name.NicolasCoutureGrenier.Maths.Objects.VectorOfDoubles;
+import name.NicolasCoutureGrenier.Maths.Objects.VectorOfIntegers;
 
 public class Printers {
   public static Function<String, String> stringPrinter = (s) -> s;
@@ -32,6 +36,13 @@ public class Printers {
   public static Function<PCS12, String> PCS12Printer = (pcs) -> pcs.toString();
   public static Function<Combination, String> combinationPrinter = (c) -> c.toBinaryString();
   public static Function<Composition, String> compositionPrinter = (c) -> c.toBinaryString();
+  public static Function<VectorOfDoubles,String> vectorOfDoublesPrinter = (v) -> v.toString();
+  public static Function<VectorOfIntegers,String> vectorOfIntegersPrinter = (v) -> v.toString();
+  public static Function<VectorOfBooleans,String> vectorOfBooleansPrinter = (v) -> v.toString();
+  
+  public static <T extends Comparable<? super T>> Function<Vector<T>, String> vectorDecorator(Function<T,String> printer) {
+    return (v) -> v.toString(printer);
+  }
   
   public static Function<HomoPair<Integer>, String> intPairPrinter = (p) -> {
     Sequence ss = new Sequence();

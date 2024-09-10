@@ -10,6 +10,10 @@ import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
 import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 import name.NicolasCoutureGrenier.Maths.Objects.Composition;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
+import name.NicolasCoutureGrenier.Maths.Objects.Vector;
+import name.NicolasCoutureGrenier.Maths.Objects.VectorOfBooleans;
+import name.NicolasCoutureGrenier.Maths.Objects.VectorOfDoubles;
+import name.NicolasCoutureGrenier.Maths.Objects.VectorOfIntegers;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class Parsers {
@@ -27,6 +31,13 @@ public class Parsers {
   public static Function<String, Object[]> integerArrayParser = arrayDecorator(integerParser);
   public static Function<String, Combination> combinationParser = (s) -> Combination.fromBinaryString(s);
   public static Function<String, Composition> compositionParser = (s) -> new Composition(Combination.fromBinaryString(s));
+  public static Function<String,VectorOfDoubles> vectorOfDoublesParser = (s) -> VectorOfDoubles.fromString(s);
+  public static Function<String,VectorOfIntegers> vectorOfIntegersParser = (s) -> VectorOfIntegers.fromString(s);
+  public static Function<String,VectorOfBooleans> vectorOfBooleansParser = (s) -> VectorOfBooleans.fromString(s);
+  
+  public static <T extends Comparable<? super T>> Function<String,Vector<T>> vectorDecorator(Function<String,T> parser) {
+    return (s) -> Vector.fromString(parser, s);
+  }
   
   public static Function<String, Integer[]> intArrayParser  = (s) -> {
     String[] a = s.trim().split("\\s+");

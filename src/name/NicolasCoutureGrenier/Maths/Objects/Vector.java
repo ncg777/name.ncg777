@@ -3,11 +3,14 @@ package name.NicolasCoutureGrenier.Maths.Objects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
+
+import com.google.common.base.Joiner;
 
 import name.NicolasCoutureGrenier.CS.DataStructures.IterableComparator;
 
 public class Vector<T extends Comparable<? super T>> implements Comparable<Vector<T>> {
-  private ArrayList<T> values = new ArrayList<T>();
+  protected ArrayList<T> values = new ArrayList<T>();
   private IterableComparator<T> it = new IterableComparator<>();
   @SafeVarargs
   public static <T extends Comparable<? super T>> Vector<T> of(T...  values){
@@ -39,9 +42,16 @@ public class Vector<T extends Comparable<? super T>> implements Comparable<Vecto
     Vector other = (Vector) obj;
     return Objects.equals(it, other.it) && Objects.equals(values, other.values);
   }
+  
+  public String toString(Function<T,String> printer) {
+    return "<" + Joiner.on(",").join(values.stream().map(printer).toList())+ ">";
+  }
   @Override
   public String toString() {
-    return values.toString();
+    return toString((v) -> v.toString());
   }
-  
+  public static <T extends Comparable<? super T>> Vector<T> fromString(Function<String,T> parser,String s) {
+    s = s.substring(1, s.length()-1);
+    return of(List.of(s.split(",")).stream().map(parser).toList());
+  }
 }
