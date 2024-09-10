@@ -352,9 +352,18 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     for (T v : c) {
       set(i++, j, v);
     }
-    m = c.size();
   }
+  public void insertColumn(int j, Vector<T> c) { 
+    if (c.getDimension() != m && n != 0) {
+      throw new IllegalArgumentException("Matrix::insertColumn vector dimension don't match matrix.");
+    }
 
+    shiftColumnsRight(j);
+
+    for (int i=0;i<m;i++) {
+      set(i, j, c.get(i));
+    }
+  }
   /**
    * Inserts a column with all values set to v. Matrix must be unlocked.
    * 
@@ -390,14 +399,20 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     if (r.size() != n && m != 0) {
       throw new IllegalArgumentException("Matrix::insertRow list size don't match matrix.");
     }
-    n = r.size();
     shiftRowsDown(i);
     for (int j = 0; j < n; j++) {
       set(i, j, r.get(j));
     }
-
   }
-
+  public void insertRow(int i, Vector<T> r) {
+    if (r.getDimension() != n && m != 0) {
+      throw new IllegalArgumentException("Matrix::insertRow vector dimension don't match matrix.");
+    }
+    shiftRowsDown(i);
+    for (int j = 0; j < n; j++) {
+      set(i, j, r.get(j));
+    }
+  }
   /**
    * Insert a row with all values set to v. Matrix must be unlocked.
    * 
@@ -488,7 +503,14 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
       set(i, j, c);
     }
   }
-
+  public void setColumn(int j, Vector<T> c) {
+    if (c.getDimension() != m) {
+      throw new IllegalArgumentException("Matrix::setColumn vector dimension don't match matrix.");
+    }
+    for (int i=0;i<c.getDimension();i++) {
+      set(i, j, c.get(i));
+    }
+  }
   /**
    * Overwrites row i with ArrayList l Matrix must be unlocked.
    * 
@@ -504,7 +526,14 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
       set(i, j++, e);
     }
   }
-
+  public void setRow(int i, Vector<T> r) {
+    if (r.getDimension() != n) {
+      throw new IllegalArgumentException("Matrix::setRow vector dimension don't match matrix.");
+    }
+    for (int j=0;j<r.getDimension();j++) {
+      set(i, j, r.get(j));
+    }
+  }
   /**
    * Sets all elements in row i to r Matrix must be unlocked.
    * 
