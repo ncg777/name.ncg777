@@ -117,7 +117,7 @@ public class DoubleMatrix extends Matrix<Double> {
     
     for (int i = 0; i < arr.rowCount(); i++) {
       for(int j=0;j<arr.columnCount();j++) {
-        arr.set(i, j, Double.parseDouble(p.get(j).toString()));
+        arr.set(i, j, Double.parseDouble(p.get(i).get(j).toString()));
       }
     }
     return arr;  
@@ -136,6 +136,5 @@ public class DoubleMatrix extends Matrix<Double> {
       e.printStackTrace();
     }
     return null;
-
   }
 }
