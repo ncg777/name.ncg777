@@ -12,6 +12,9 @@ import com.google.common.base.Joiner;
  * special cases like parentheses, ensuring that the output remains readable and well-structured.
  * The formatting preserves leading and trailing whitespace based on specified rules and splits long
  * lines into multiple shorter lines as necessary.
+ * 
+ * This is not a code formatter; if you try to format ill-formatted code, it will produce 
+ * ill-formatted code.
  */
 public class ConsoleFormatter {
   private int consoleWidth = 80;
