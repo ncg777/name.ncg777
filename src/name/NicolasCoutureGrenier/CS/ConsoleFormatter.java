@@ -86,7 +86,7 @@ public class ConsoleFormatter {
       }
       String indentation = tab.repeat(tabcount);
 
-      str = indentation + str.stripIndent().trim();
+      str = indentation + str.trim();
 
       if (str.length() <= consoleWidth) {
         lines.set(i, str.stripTrailing());
