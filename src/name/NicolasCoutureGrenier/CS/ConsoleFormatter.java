@@ -58,9 +58,9 @@ public class ConsoleFormatter {
       boolean reeval = false;
 
       if (!reeval) {
-        for (String d : parentheseses) {
-          int first = str.indexOf(d.charAt(0));
-          int last = str.lastIndexOf(d.charAt(1));
+        for (String parenthesisChars : parentheseses) {
+          int first = str.indexOf(parenthesisChars.charAt(0));
+          int last = str.lastIndexOf(parenthesisChars.charAt(1));
 
           boolean matched = first > -1 && last > -1;
           if (matched) {
@@ -79,7 +79,12 @@ public class ConsoleFormatter {
                 }
               }
               int current = i + leadingLines.size();
-              lines.add(current++, indentation + String.valueOf(d.charAt(0)));
+              lines.add(current++, indentation + String.valueOf(parenthesisChars.charAt(0)));
+              if(lines.get(current-2).length() < consoleWidth-1) {
+                lines.set(current-2, lines.get(current - 2) + " " + lines.get(current - 1).trim());
+                current--;
+                lines.remove(current);
+              }
               if (!startsWithParenthesis) {
                 String[] splitted = {innerBody};
                 Character lastChar =
@@ -111,15 +116,11 @@ public class ConsoleFormatter {
                 lines.add(current++, indentation + tab + innerBody);
               }
 
-              lines.add(current++, indentation + String.valueOf(d.charAt(1)));
+              lines.add(current++, indentation + String.valueOf(parenthesisChars.charAt(1)));
               String q = indentation + str.substring(last + 1);
 
               if (!q.isBlank()) lines.add(current++, q);
 
-              if (lines.get(i).length() < consoleWidth - 2) {
-                lines.set(i, lines.get(i) + " " + lines.get(i + 1));
-                lines.remove(i + 1);
-              }
               reeval = true;
             } else {
               lines.remove(i);
