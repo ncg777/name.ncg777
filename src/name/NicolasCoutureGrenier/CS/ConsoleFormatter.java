@@ -64,7 +64,7 @@ public class ConsoleFormatter {
       String str = lines.get(i);
       if (str.isBlank() || str.isEmpty()) continue;
       int tabcount = 0;
-      str = str.replaceAll("(\t)|(\s\s)", "  ");
+      str = str.replaceAll("(\t)|(\s\s)", tab);
 
       while (str.length() >= ((tabcount + 1) * tab.length())
           && str.substring(tabcount * tab.length(), (tabcount + 1) * tab.length()).equals(tab)) {
