@@ -16,8 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 
-public class DoubleMatrix extends Matrix<Double> {
-  public DoubleMatrix() {
+public class MatrixOfDoubles extends Matrix<Double> {
+  public MatrixOfDoubles() {
     super();
   }
 
@@ -27,15 +27,15 @@ public class DoubleMatrix extends Matrix<Double> {
    * @param m Number of rows
    * @param n Number of columns
    */
-  public DoubleMatrix(int m, int n) {
+  public MatrixOfDoubles(int m, int n) {
     this(m,n,Double.valueOf(0.0));
   }
   
-  public DoubleMatrix(int m, int n, Double fill) {
+  public MatrixOfDoubles(int m, int n, Double fill) {
     super(m,n,fill);
   }
-  public static DoubleMatrix fromColtMatix(DoubleMatrix2D mat) {
-    var o = new DoubleMatrix(mat.rows(),mat.columns());
+  public static MatrixOfDoubles fromColtMatix(DoubleMatrix2D mat) {
+    var o = new MatrixOfDoubles(mat.rows(),mat.columns());
     for(int i=0;i<o.rowCount();i++) {
       for(int j=0;j<o.columnCount();j++) {
         o.set(i, j, mat.get(i, j));
@@ -99,20 +99,20 @@ public class DoubleMatrix extends Matrix<Double> {
   }
 
 
-  public static DoubleMatrix parseJSONFile(String path) throws JsonParseException, IOException {
+  public static MatrixOfDoubles parseJSONFile(String path) throws JsonParseException, IOException {
     var b = new JsonFactoryBuilder().build();
     var p = b.setCodec(new ObjectMapper()).createParser(new File(path)).readValueAsTree();
     return parseJSONNode(p);
   }
 
-  private static DoubleMatrix parseJSONNode(TreeNode p) {
+  private static MatrixOfDoubles parseJSONNode(TreeNode p) {
     if (p == null) return null;
           
-    DoubleMatrix arr = null; 
+    MatrixOfDoubles arr = null; 
     if(p.size() == 0) {
-      arr = new DoubleMatrix(0, 0);
+      arr = new MatrixOfDoubles(0, 0);
     } else {
-      arr = new DoubleMatrix(p.size(), p.get(0).size());
+      arr = new MatrixOfDoubles(p.size(), p.get(0).size());
     }
     
     for (int i = 0; i < arr.rowCount(); i++) {
@@ -123,7 +123,7 @@ public class DoubleMatrix extends Matrix<Double> {
     return arr;  
   }
 
-  public static DoubleMatrix parseJSONString(String str) {
+  public static MatrixOfDoubles parseJSONString(String str) {
     try {
       var b = new JsonFactoryBuilder().build();
       var p = b.setCodec(new ObjectMapper()).createParser(str).readValueAsTree();
