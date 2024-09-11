@@ -5,27 +5,54 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 
+/**
+ * A class for formatting text for console output with automatic line wrapping.
+ * 
+ * The ConsoleFormatter class takes into account the console width and handles indentation and
+ * special cases like parentheses, ensuring that the output remains readable and well-structured.
+ * The formatting preserves leading and trailing whitespace based on specified rules and splits long
+ * lines into multiple shorter lines as necessary.
+ */
 public class ConsoleFormatter {
   private int consoleWidth = 80;
   private static String[] parentheseses = {"{}", "()", "[]"};
   private final static Character[] potentialDelimiters = {' ', ',', ';'};
   private final static String tab = "  ";
 
+  /**
+   * Constructs a ConsoleFormatter with the specified console width.
+   * 
+   * @param consoleWidth the width of the console for formatting
+   * @throws IllegalArgumentException if console width is less than 1
+   */
   public ConsoleFormatter(int consoleWidth) {
     super();
     this.consoleWidth = consoleWidth;
   }
 
+  /**
+   * Constructs a ConsoleFormatter with a default console width of 80.
+   */
   public ConsoleFormatter() {
     super();
   }
-  
+
   public void setConsoleWidth(int w) {
-    if(w<1) throw new IllegalArgumentException("you testing me?");
+    if (w < 1) throw new IllegalArgumentException("you testing me?");
     this.consoleWidth = w;
   }
-  public int getConsoleWidth() {return consoleWidth;}
-  
+
+  public int getConsoleWidth() {
+    return consoleWidth;
+  }
+
+  /**
+   * Formats a given string by adjusting its structure to fit within the specified console width,
+   * wrapping lines and preserving indentation.
+   * 
+   * @param answer the string to format
+   * @return the formatted string, adjusted to fit within the console width
+   */
   public String format(String answer) {
     ArrayList<String> lines = new ArrayList<>(List.of(answer.split("\n")));
     boolean isFirstIndentation = true;
@@ -49,11 +76,11 @@ public class ConsoleFormatter {
       if (isFirstIndentation && tabcount > 2 && !str.startsWith("\t")) {
         is4SpaceTab = true;
       }
-      
-      if(is4SpaceTab) {
-        tabcount = tabcount/2;
+
+      if (is4SpaceTab) {
+        tabcount = tabcount / 2;
       }
-      
+
       if (tabcount > 0) {
         isFirstIndentation = false;
       }
@@ -91,8 +118,9 @@ public class ConsoleFormatter {
               }
               int current = i + leadingLines.size();
               lines.add(current++, indentation + String.valueOf(parenthesisChars.charAt(0)));
-              if(lines.get(current-2).length() < consoleWidth-1) {
-                lines.set(current-2, lines.get(current - 2) + " " + lines.get(current - 1).trim());
+              if (lines.get(current - 2).length() < consoleWidth - 1) {
+                lines.set(current - 2,
+                    lines.get(current - 2) + " " + lines.get(current - 1).trim());
                 current--;
                 lines.remove(current);
               }
@@ -188,6 +216,12 @@ public class ConsoleFormatter {
     return Joiner.on("\n").join(lines.stream().map((s) -> s.stripTrailing()).toList());
   }
 
+  /**
+   * Splits a string into multiple lines based on the console width, preserving indentation.
+   * 
+   * @param str the string to split
+   * @return a list of strings representing the split lines
+   */
   private List<String> splitOnBlank(String str) {
     List<String> lines = new ArrayList<>();
     lines.add(str);
