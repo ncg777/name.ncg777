@@ -64,11 +64,7 @@ public class ConsoleFormatter {
       String str = lines.get(i);
       if (str.isBlank() || str.isEmpty()) continue;
       int tabcount = 0;
-
-      while (str.charAt(tabcount) == '\t') {
-        tabcount++;
-        str = str.substring(1);
-      }
+      str = str.replaceAll("(\t)|(\s\s)", "  ");
 
       while (str.length() >= ((tabcount + 1) * tab.length())
           && str.substring(tabcount * tab.length(), (tabcount + 1) * tab.length()).equals(tab)) {
@@ -76,7 +72,7 @@ public class ConsoleFormatter {
         str = str.substring(tab.length());
       }
 
-      if (isFirstIndentation && tabcount > 2 && !str.startsWith("\t")) {
+      if (isFirstIndentation && tabcount > 2) {
         is4SpaceTab = true;
       }
 
