@@ -155,6 +155,7 @@ public class ConsoleFormatter {
               lines.addAll(i, newLines);
 
               reeval = true;
+              break;
             }
           }
 
