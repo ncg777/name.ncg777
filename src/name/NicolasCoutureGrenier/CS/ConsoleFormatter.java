@@ -7,9 +7,9 @@ import com.google.common.base.Joiner;
 
 public class ConsoleFormatter {
   private int consoleWidth = 80;
-  final static String[] parentheseses = {"{}", "()", "[]"};
-  final static Character[] potentialDelimiters = {' ', ',', ';'};
-  final static String tab2 = "  ";
+  private static String[] parentheseses = {"{}", "()", "[]"};
+  private final static Character[] potentialDelimiters = {' ', ',', ';'};
+  private final static String tab = "  ";
 
   public ConsoleFormatter(int consoleWidth) {
     super();
@@ -21,8 +21,7 @@ public class ConsoleFormatter {
   }
 
   public String format(String answer) {
-    ArrayList<String> lines = new ArrayList<String>(List.of(answer.split("\n")));
-    String tab = tab2;
+    ArrayList<String> lines = new ArrayList<>(List.of(answer.split("\n")));
     boolean isFirstIndentation = true;
     for (int i = 0; i < lines.size(); i++) {
       String str = lines.get(i);
@@ -73,8 +72,8 @@ public class ConsoleFormatter {
               lines.addAll(i, leadingLines);
               String innerBody = str.substring(first + 1, last).trim();
               boolean startsWithParenthesis = false;
-              for (int j = 0; j < parentheseses.length; j++) {
-                if (innerBody.charAt(0) == parentheseses[j].charAt(0)) {
+              for (String p : parentheseses) {
+                if (innerBody.charAt(0) == p.charAt(0)) {
                   startsWithParenthesis = true;
                   break;
                 }
@@ -90,11 +89,11 @@ public class ConsoleFormatter {
                   splitted = innerBody.split(";");
                   ch = ';';
                 } else {
-                  for (int j = 0; j < potentialDelimiters.length; j++) {
-                    String[] candidate = innerBody.split(String.valueOf(potentialDelimiters[j]));
+                  for (Character delim : potentialDelimiters) {
+                    String[] candidate = innerBody.split(String.valueOf(delim));
                     if (candidate.length > splitted.length) {
                       splitted = candidate;
-                      ch = potentialDelimiters[j];
+                      ch = delim;
                     }
                   }
                 }
@@ -131,8 +130,8 @@ public class ConsoleFormatter {
               if (firstchar == null)
                 postblock = "";
               else {
-                for (int j = 0; j < potentialDelimiters.length; j++) {
-                  if (potentialDelimiters[j].equals(firstchar)) postblock = "";
+                for (Character delim : potentialDelimiters) {
+                  if (delim.equals(firstchar)) postblock = "";
                 }
               }
               if (newLines.get(newLines.size() - 1).length() + 1 + block.length()
@@ -178,7 +177,7 @@ public class ConsoleFormatter {
   }
 
   private List<String> splitOnBlank(String str) {
-    List<String> lines = new ArrayList<String>();
+    List<String> lines = new ArrayList<>();
     lines.add(str);
     if (str.length() < consoleWidth) return lines;
     int i = 0;
@@ -188,7 +187,6 @@ public class ConsoleFormatter {
     int search = Math.min(str.length() - 1, (consoleWidth - 1) - indentation.length());
 
     c = str.charAt(search);
-
     while (search > -1 && !String.valueOf(c).isBlank()) {
       search--;
       if (search >= 0) c = str.charAt(search);
@@ -218,5 +216,4 @@ public class ConsoleFormatter {
     }
     return lines;
   }
-
 }
