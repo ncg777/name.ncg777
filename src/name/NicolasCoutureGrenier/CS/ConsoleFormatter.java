@@ -29,6 +29,7 @@ public class ConsoleFormatter {
   public String format(String answer) {
     ArrayList<String> lines = new ArrayList<>(List.of(answer.split("\n")));
     boolean isFirstIndentation = true;
+    boolean is4SpaceTab = false;
     for (int i = 0; i < lines.size(); i++) {
       String str = lines.get(i);
       if (str.isBlank() || str.isEmpty()) continue;
@@ -45,10 +46,14 @@ public class ConsoleFormatter {
         str = str.substring(tab.length());
       }
 
-      if (isFirstIndentation && tabcount > 2) {
-        tabcount = tabcount / 2;
+      if (isFirstIndentation && tabcount > 2 && !str.startsWith("\t")) {
+        is4SpaceTab = true;
       }
-
+      
+      if(is4SpaceTab) {
+        tabcount = tabcount/2;
+      }
+      
       if (tabcount > 0) {
         isFirstIndentation = false;
       }
