@@ -4,7 +4,7 @@ import java.util.List;
 
 public class VectorOfDoubles extends Vector<Double> {
   
-  private VectorOfDoubles(Vector<Double> v) {
+  public VectorOfDoubles(Vector<Double> v) {
     this.values.addAll(v.values);
   }
   @SafeVarargs

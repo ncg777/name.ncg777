@@ -34,6 +34,17 @@ public class MatrixOfDoubles extends Matrix<Double> {
   public MatrixOfDoubles(int m, int n, Double fill) {
     super(m,n,fill);
   }
+  
+  @Override
+  public VectorOfDoubles getColumnVector(int j) {
+    return new VectorOfDoubles(super.getColumnVector(j));
+  }
+  
+  @Override
+  public VectorOfDoubles getRowVector(int i) {
+    return new VectorOfDoubles(super.getRowVector(i));
+  }
+  
   public static MatrixOfDoubles fromColtMatix(DoubleMatrix2D mat) {
     var o = new MatrixOfDoubles(mat.rows(),mat.columns());
     for(int i=0;i<o.rowCount();i++) {
