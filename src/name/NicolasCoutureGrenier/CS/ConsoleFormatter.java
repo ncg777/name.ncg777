@@ -19,7 +19,13 @@ public class ConsoleFormatter {
   public ConsoleFormatter() {
     super();
   }
-
+  
+  public void setConsoleWidth(int w) {
+    if(w<1) throw new IllegalArgumentException("you testing me?");
+    this.consoleWidth = w;
+  }
+  public int getConsoleWidth() {return consoleWidth;}
+  
   public String format(String answer) {
     ArrayList<String> lines = new ArrayList<>(List.of(answer.split("\n")));
     boolean isFirstIndentation = true;
