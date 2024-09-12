@@ -16,9 +16,7 @@ public class UnionSet<T extends Comparable<? super T>> {
 
   private TreeMap<T,TreeSet<T>> instances = new TreeMap<>();
   private Equivalence<T> equivalence;
-  public UnionSet() {
-    
-  }
+  
   public UnionSet(Equivalence<T> equivalence) {
     this.equivalence = equivalence;
   }
