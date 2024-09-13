@@ -7,14 +7,15 @@ import com.google.common.base.Predicates;
 
 import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
 import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
-import name.NicolasCoutureGrenier.Maths.Predicates.BoundRelationFirst;
+import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.NNotesDifference;
 
 public class PCS12Utils {
 
   public static JaggedList<PCS12> randomChordTree(TreeSet<PCS12> t, Integer[] n, int nb) {
     PCS12 i = CollectionUtils.chooseAtRandom(t);
-    Predicate<PCS12> p = new BoundRelationFirst<PCS12, PCS12>(i, new NNotesDifference(1));
+    
+    Predicate<PCS12> p = Relation.bindFirst(i, new NNotesDifference(1));
     return randomChordTreeSub(null, i, n, t, p, nb);
 
   }
@@ -54,7 +55,9 @@ public class PCS12Utils {
 
     for (int i = 0; i < x; i++) {
       o.addChild(randomChordTreeSub(o, cs[i], n2, t,
-          Predicates.and(p, new BoundRelationFirst<PCS12, PCS12>(cs[i], new NNotesDifference(1))),
+          Predicates.and(p, 
+              Relation.bindFirst(cs[i], new NNotesDifference(1))
+              ),
           nb));
     }
 

@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -117,7 +118,7 @@ public class ChordMatrix {
               Matrix<PCS12> output = new Matrix<>(m,n);
              
               Relation<PCS12, PCS12> rel_horiz = Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1)));
-              Relation<PCS12, PCS12> rel_vert = new PredicatedUnion(new Consonant());
+              BiPredicate<PCS12, PCS12> rel_vert = new PredicatedUnion(new Consonant());
               DiGraph<PCS12> d = new DiGraph<>(t, rel_horiz);
               
               Function<PCS12, List<PCS12>> possibles = new Function<PCS12, List<PCS12>>() {
@@ -151,7 +152,7 @@ public class ChordMatrix {
                         double[] w = new double[p.size()];
                         int ii=0;
                         for(var c : p) {
-                          w[ii++]=1.0/(output.get(i, j-1).intersect(c).size()+1);
+                          w[ii++]=1.0/(output.get(i, j-1).intersect(c).getN()+1);
                         }
                         
                         
@@ -176,7 +177,7 @@ public class ChordMatrix {
                         boolean failed = false;
                         
                         for(int k=i-1;k>=0;k--) {
-                          if(!rel_vert.apply(output.get(i, j), output.get(k, j))) {
+                          if(!rel_vert.test(output.get(i, j), output.get(k, j))) {
                             failed = true;
                             break;
                           }

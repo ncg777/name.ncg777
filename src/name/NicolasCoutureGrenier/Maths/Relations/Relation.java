@@ -5,8 +5,6 @@ import java.util.function.BiPredicate;
 import com.google.common.base.Predicate;
 
 import name.NicolasCoutureGrenier.CS.DataStructures.HeteroPair;
-import name.NicolasCoutureGrenier.Maths.Predicates.BoundRelationFirst;
-import name.NicolasCoutureGrenier.Maths.Predicates.BoundRelationSecond;
 
 public interface Relation<T extends Comparable<? super T>, U extends Comparable<? super U>> extends BiPredicate<T,U>{
   public static <T extends Comparable<? super T>, U extends Comparable<? super U>> Relation<T,U> fromBiPredicate(BiPredicate<T,U> p) {
@@ -21,15 +19,14 @@ public interface Relation<T extends Comparable<? super T>, U extends Comparable<
 
   public default boolean test(T t, U u) {return apply(t,u); }
   
-  public static <T extends Comparable<? super T>, U extends Comparable<? super U>> Predicate<T> bindSecond(
-       Relation<T, U> r1, U u) {
-     return new BoundRelationSecond<T, U>(r1, u);
-   }
+  public static <T, U> Predicate<T> bindSecond(
+      U u, BiPredicate<T, U> r) {
+    return (T t) -> r.test(t, u);
+  }
   
-   public static <T extends Comparable<? super T>, U extends Comparable<? super U>> Predicate<U> bindFirst(
-       T t, Relation<T, U> r1) {
-     return new BoundRelationFirst<T, U>(t, r1);
-  
+   public static <T, U> Predicate<U> bindFirst(
+       T t, BiPredicate<T, U> r) {
+     return (U u) -> r.test(t, u);
    }
    
    @SafeVarargs

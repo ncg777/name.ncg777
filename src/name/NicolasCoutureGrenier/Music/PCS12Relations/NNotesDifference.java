@@ -22,8 +22,8 @@ public class NNotesDifference implements Relation<PCS12, PCS12> {
       return false;
     }
     BitSet x = new BitSet();
-    x.or(a);
-    x.and(b);
+    x.or(a.getCombinationCopy());
+    x.and(b.getCombinationCopy());
     return (b.getK() - x.cardinality()) == m_n;
   }
 

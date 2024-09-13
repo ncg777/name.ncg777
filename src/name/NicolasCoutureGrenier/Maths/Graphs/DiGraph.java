@@ -9,10 +9,9 @@ import java.util.function.BiPredicate;
 
 import name.NicolasCoutureGrenier.Maths.Graphs.Interfaces.HasMarkableEdges;
 import name.NicolasCoutureGrenier.Maths.Graphs.Interfaces.HasMarkableVertices;
-import name.NicolasCoutureGrenier.Maths.Objects.FiniteHomoRelation;
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
 
-public class DiGraph<T extends Comparable<? super T>> extends DirectedSparseGraph<T, Long>
+public class DiGraph<T> extends DirectedSparseGraph<T, Long>
     implements
       HasMarkableVertices<T>,
       HasMarkableEdges<T>, Serializable{
@@ -89,10 +88,6 @@ public class DiGraph<T extends Comparable<? super T>> extends DirectedSparseGrap
   public DiGraph() {
     super();
 
-  }
-
-  public DiGraph(FiniteHomoRelation<T> r) {
-    this(r.domain(), r.related());
   }
     
   public DiGraph(final Set<T> nodes, 

@@ -25,6 +25,7 @@ public class FunnyCSVPrinter implements Function<List<PCS12>, Void> {
     o.close();
   }
 
+  @SuppressWarnings("null")
   @Override
   public Void apply(List<PCS12> input) {
     TreeSet<Integer> I = new TreeSet<Integer>();
@@ -60,7 +61,7 @@ public class FunnyCSVPrinter implements Function<List<PCS12>, Void> {
     o.printf("\"");
     for (PCS12 ch : input) {
       global_mean += ch.getMean();
-      disp_prod *= cd.apply(ch).getValue();
+      disp_prod *= cd.apply(ch.getCombinationCopy()).getValue();
       o.printf(ch.toString());
       I.add(ch.getOrder());
       if (++i != sz) {
@@ -74,7 +75,7 @@ public class FunnyCSVPrinter implements Function<List<PCS12>, Void> {
     Double last = null;
 
     for (PCS12 ch : input) {
-      double cdv = cd.apply(ch).getValue();
+      double cdv = cd.apply(ch.getCombinationCopy()).getValue();
       if (last != null) {
         succ_disp_sum += Math.abs(last - cdv);
       }
@@ -82,7 +83,7 @@ public class FunnyCSVPrinter implements Function<List<PCS12>, Void> {
       dist += Math.abs(ch.getMean() - global_mean);
     }
     int nb_distinct = combined.getK();
-    succ_disp_sum += Math.abs(last - cd.apply(input.get(0)).getValue());
+    succ_disp_sum += Math.abs(last - cd.apply(input.get(0).getCombinationCopy()).getValue());
 
     dist /= sz;
 

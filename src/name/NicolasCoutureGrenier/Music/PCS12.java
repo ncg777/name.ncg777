@@ -24,18 +24,19 @@ import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 import name.NicolasCoutureGrenier.Maths.Objects.FiniteRelation;
+import name.NicolasCoutureGrenier.Maths.Objects.ImmutableCombination;
 import name.NicolasCoutureGrenier.Maths.Objects.Necklace;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
-public class PCS12 extends Combination implements Serializable {
+public class PCS12 extends ImmutableCombination implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   static TreeMap<String, PCS12> ChordDict;
-  static TreeMap<Combination, PCS12> ChordCombinationDict;
+  static TreeMap<ImmutableCombination, PCS12> ChordCombinationDict;
   static TreeMap<PCS12, String> ForteNumbersDict;
   static TreeMap<PCS12, Integer> ForteNumbersRotationDict;
   static TreeMap<String, PCS12> ForteNumbersToPCS12Dict;
@@ -99,7 +100,7 @@ public class PCS12 extends Combination implements Serializable {
 
   public PCS12 S12Permutate(Sequence s) {
     if(s.distinct().size() != 12 || s.getMin() != 0 || s.getMax() != 11) throw new RuntimeException("Invalid permutation");
-    return PCS12.identify(Combination.fromBinarySequence(this.asBinarySequence().permutate(s)));
+    return PCS12.identify(ImmutableCombination.fromBinarySequence(this.asBinarySequence().permutate(s)));
   }
   
   public static TreeMap<String, PCS12> getChordDict() {
@@ -144,7 +145,7 @@ public class PCS12 extends Combination implements Serializable {
   }
 
   public String combinationString() {
-    return (new Combination(this)).toString();
+    return super.toString();
   }
 
   public Integer getOrder() {
@@ -217,7 +218,7 @@ public class PCS12 extends Combination implements Serializable {
   }
 
   public PCS12 combineWith(PCS12 x) {
-    return PCS12.identify(Combination.merge(this, x));
+    return PCS12.identify(this.merge(x));
   }
 
   public PCS12 symmetricDifference(PCS12 y) {
@@ -322,7 +323,7 @@ public class PCS12 extends Combination implements Serializable {
     TreeSet<PCS12> t = generate();
 
     TreeMap<String, PCS12> output = new TreeMap<String, PCS12>();
-    TreeMap<Combination, PCS12> output2 = new TreeMap<Combination, PCS12>();
+    TreeMap<ImmutableCombination, PCS12> output2 = new TreeMap<>();
     Iterator<PCS12> i = t.iterator();
 
     while (i.hasNext()) {
@@ -348,7 +349,7 @@ public class PCS12 extends Combination implements Serializable {
     return new PCS12(new TreeSet<Integer>(), 1, 0);
   }
 
-  public static PCS12 identify(Combination input) {
+  public static PCS12 identify(ImmutableCombination input) {
     if (input.getN() != 12) {
       throw new IllegalArgumentException(
           "PCS12::IdentifyChord the combination is not bounded by 12");
@@ -379,7 +380,7 @@ public class PCS12 extends Combination implements Serializable {
       throw new IllegalArgumentException("PCS12::IdentifyChord Provided set is not a valid chord.");
     }
 
-    return identify(new Combination(12, input));
+    return identify(new ImmutableCombination(12, input));
   }
   
   public static String[] CommonScales() {
