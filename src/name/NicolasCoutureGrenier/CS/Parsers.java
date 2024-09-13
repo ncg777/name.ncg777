@@ -62,7 +62,7 @@ public class Parsers {
     };
   }
   public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);
-  public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parse(s);
+  public static Function<String, PCS12> PCS12parser = (s) -> PCS12.parseForte(s);
   public static Function<String, HomoPair<Integer>> intPairParser = (s) -> {
     Sequence ss = Sequence.parse(s);
     return HomoPair.makeHomoPair(ss.get(0), ss.get(1));

@@ -360,15 +360,6 @@ public class PCS12 extends ImmutableCombination implements Serializable {
     fillForteNumbersDict();
   }
 
-  public static PCS12Sequence parseSeq(String input) {
-    String[] s = input.split("\\s");
-    PCS12Sequence output = new PCS12Sequence();
-    for (int i = 0; i < s.length; i++) {
-      output.add(parse(s[i]));
-    }
-    return output;
-  }
-
   public static PCS12 empty() {
     return new PCS12(new TreeSet<Integer>(), 1, 0);
   }

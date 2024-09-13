@@ -33,7 +33,7 @@ public class Printers {
   public static Function<Object[],String> doubleArrayPrinter = arrayDecorator(doublePrinter);
   public static Function<Object[],String> integerArrayPrinter = arrayDecorator(integerPrinter);
   public static Function<Sequence, String> sequencePrinter = (s) -> s.toString();
-  public static Function<PCS12, String> PCS12Printer = (pcs) -> pcs.toString();
+  public static Function<PCS12, String> PCS12Printer = (pcs) -> pcs.toForteNumberString();
   public static Function<Combination, String> combinationPrinter = (c) -> c.toBinaryString();
   public static Function<Composition, String> compositionPrinter = (c) -> c.toBinaryString();
   public static Function<VectorOfDoubles,String> vectorOfDoublesPrinter = (v) -> v.toString();

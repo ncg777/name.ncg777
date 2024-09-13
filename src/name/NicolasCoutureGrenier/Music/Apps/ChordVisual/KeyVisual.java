@@ -28,7 +28,7 @@ public class KeyVisual extends JPanel {
   JLabel lbl11 = new JLabel("");
   private final JLabel lblName = new JLabel("");
   private final JLabel lblIV = new JLabel("");
-  public void setChord(String chord) {this.setChord(PCS12.parse(chord));}
+  public void setChord(String chord) {this.setChord(PCS12.parseForte(chord));}
   public void setChord(PCS12 chord) {
     this.chord = chord;
     lbl00.setText(chord.get(0) ? "X":"");
