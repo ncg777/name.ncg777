@@ -11,10 +11,10 @@ package name.NicolasCoutureGrenier.Music;
  *
  * The available numeral systems are:
  * <ul>
- * <li>{@link #Tribble}: Represents a rhythm in tribble format, typically using a 
- * hexadecimal representation.</li>
- * <li>{@link #Hex}: Represents a rhythm in standard hexadecimal format.</li>
- * <li>{@link #Octal}: Represents a rhythm in octal format.</li>
+ * <li>{@link #Hex}: Represents a rhythm in standard hexadecimal format, for example "CA FE".</li>
+ * <li>{@link #Octal}: Represents a rhythm in octal format, for example "77 77".</li>
+ * <li>{@link #Tribble}: Represents a rhythm in tribble format, using a 
+ * hexadecimal representation, for example "924 924 924 888".</li>
  * </ul>
  *
  * <p>Example usage:</p>
