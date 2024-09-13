@@ -2,28 +2,19 @@ package name.NicolasCoutureGrenier.Maths.Apps;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.NicolasCoutureGrenier.Maths.Enumerations.CombinationEnumeration;
-import name.NicolasCoutureGrenier.Maths.Enumerations.KPermutationEnumeration;
 import name.NicolasCoutureGrenier.Maths.Enumerations.WordPermutationEnumeration;
 
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.TreeSet;
 
-import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 

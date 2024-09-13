@@ -2,6 +2,8 @@ package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 
 import java.util.LinkedList;
 
+import javax.annotation.Nonnull;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.Rhythm;
@@ -14,7 +16,7 @@ public class HasNoGaps implements StandardAndGuavaPredicate<Rhythm> {
 
 
   @Override
-  public boolean apply(Rhythm input) {
+  public boolean apply(@Nonnull Rhythm input) {
     Sequence s = input.getIntervalVector();
     LinkedList<Integer> l = new LinkedList<Integer>();
 

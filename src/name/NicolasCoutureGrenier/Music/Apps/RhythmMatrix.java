@@ -35,7 +35,6 @@ import name.NicolasCoutureGrenier.Music.RhythmPredicates.SecondOrderDifferenceSu
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.SecondOrderDifferenceSum.Keep;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.ShadowContourIsomorphic;
 import name.NicolasCoutureGrenier.Music.RhythmPredicates.SpectrumRising;
-import name.NicolasCoutureGrenier.Music.RhythmRelations.Different;
 import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedDifferences;
 import name.NicolasCoutureGrenier.Music.RhythmRelations.PredicatedJuxtaposition;
 
@@ -57,7 +56,6 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import name.NicolasCoutureGrenier.Music.Rn;
 import javax.swing.JTextField;
-import java.awt.TextArea;
 
 public class RhythmMatrix {
 

@@ -1,5 +1,7 @@
 package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 
+import javax.annotation.Nonnull;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
@@ -11,7 +13,7 @@ public class MaximumGap implements StandardAndGuavaPredicate<Rhythm> {
     this.n = n;
   }
   @Override
-  public boolean apply(Rhythm input) {
+  public boolean apply(@Nonnull Rhythm input) {
     return input.getComposition().asSequence().getMax() <= this.n;
   }
 

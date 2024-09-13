@@ -1,5 +1,7 @@
 package name.NicolasCoutureGrenier.Maths.Relations;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Equivalence;
 
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
@@ -14,7 +16,7 @@ import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 public class UpToIsomorphismAndRotation extends Equivalence<Sequence> {
 
   @Override
-  protected boolean doEquivalent(Sequence a, Sequence b) {
+  protected boolean doEquivalent(@Nonnull Sequence a, @Nonnull Sequence b) {
     if (a.size() != b.size() || a.distinct().size() != b.distinct().size()) {
       return false;
     }
@@ -31,7 +33,7 @@ public class UpToIsomorphismAndRotation extends Equivalence<Sequence> {
   }
 
   @Override
-  protected int doHash(Sequence t) {
+  protected int doHash(@Nonnull Sequence t) {
     return t.distinct().size() * 3 + 5 * t.size();
   }
 

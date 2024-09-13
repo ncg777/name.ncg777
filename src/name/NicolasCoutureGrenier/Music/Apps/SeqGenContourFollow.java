@@ -117,6 +117,7 @@ public class SeqGenContourFollow {
                 R48List r = R48List.parseR48Seq(str_R);
                 C = r.asRhythm().getComposition().asSequence();
               }
+              @SuppressWarnings("null")
               Sequence s = C.cyclicalDifference().signs().circularHoldNonZero();
               
               int k=0;

@@ -84,6 +84,7 @@ public class XRSequenceGenerator {
     
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.addActionListener(new ActionListener() {
+      @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
         Sequence comp = null;
         boolean useHalf = true;

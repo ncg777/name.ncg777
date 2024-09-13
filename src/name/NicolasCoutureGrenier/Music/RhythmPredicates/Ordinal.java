@@ -3,6 +3,8 @@ package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 import java.util.BitSet;
 import java.util.TreeSet;
 
+import javax.annotation.Nonnull;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.Objects.Combination;
@@ -35,7 +37,7 @@ public class Ordinal implements StandardAndGuavaPredicate<Rhythm>  {
   }
   
   @Override
-  public boolean apply(Rhythm input) {
+  public boolean apply(@Nonnull Rhythm input) {
     if(input.getN() % this.n != 0) throw new RuntimeException("Ordinal:: rhythm is incompatible with n");
     
     int k = input.getN()/this.n;

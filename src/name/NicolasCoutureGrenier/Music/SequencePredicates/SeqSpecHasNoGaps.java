@@ -12,7 +12,7 @@ import java.util.TreeMap;
 public class SeqSpecHasNoGaps implements StandardAndGuavaPredicate<Integer[]> {
 
   @Override
-  public boolean apply(Integer[] input) {
+  public boolean apply(@SuppressWarnings("null") Integer[] input) {
 
     TreeMap<Integer, Sequence> t = calcIntervalVector(input);
     Iterator<Integer> j = t.keySet().iterator();

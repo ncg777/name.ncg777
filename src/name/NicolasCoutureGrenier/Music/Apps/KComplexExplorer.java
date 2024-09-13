@@ -16,12 +16,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.NicolasCoutureGrenier.CS.Utils;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
-import name.NicolasCoutureGrenier.Maths.Relations.Relation;
 import name.NicolasCoutureGrenier.Music.PCS12;
 import name.NicolasCoutureGrenier.Music.PCS12Predicates.Consonant;
 import name.NicolasCoutureGrenier.Music.PCS12Predicates.SubsetOf;
@@ -32,14 +30,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.TreeSet;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
-
-import name.NicolasCoutureGrenier.Music.PCS12Relations.PredicatedUnion;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
@@ -50,7 +45,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.ListModel;
 
 public class KComplexExplorer {
 

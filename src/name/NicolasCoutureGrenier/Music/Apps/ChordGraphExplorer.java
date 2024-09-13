@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
+import javax.annotation.Nonnull;
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
@@ -96,7 +97,7 @@ public class ChordGraphExplorer {
     CollectionUtils.filter(t, new Predicate<PCS12> () {
 
       @Override
-      public boolean apply(PCS12 input) {
+      public boolean apply(@Nonnull PCS12 input) {
         return d.getSuccessorCount(input) > 0;
       }
       

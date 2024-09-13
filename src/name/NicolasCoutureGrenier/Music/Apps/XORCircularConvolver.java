@@ -77,6 +77,7 @@ public class XORCircularConvolver {
     
     JButton btnConvolve = new JButton("Convolve");
     btnConvolve.addActionListener(new ActionListener() {
+      @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
         Rhythm carrier = null; R16List.parseR16Seq(txtCarrier.getText()).asRhythm();
         Rhythm impulse = null; R16List.parseR16Seq(txtImpulse.getText()).asRhythm();

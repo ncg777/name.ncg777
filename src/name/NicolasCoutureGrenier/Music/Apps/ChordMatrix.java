@@ -15,7 +15,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
-import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.Graphs.DiGraph;
 import name.NicolasCoutureGrenier.Maths.Objects.Matrix;
 import name.NicolasCoutureGrenier.Maths.Relations.Relation;
@@ -26,7 +25,6 @@ import name.NicolasCoutureGrenier.Music.PCS12Relations.CloseIVs;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.CommonNotesAtLeast;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.Different;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.IVEQRotOrRev;
-import name.NicolasCoutureGrenier.Music.PCS12Relations.PredicatedDifferences;
 import name.NicolasCoutureGrenier.Music.PCS12Relations.PredicatedUnion;
 
 import javax.swing.JButton;

@@ -21,7 +21,6 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.TreeSet;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 

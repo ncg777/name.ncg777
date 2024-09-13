@@ -1,7 +1,6 @@
 package name.NicolasCoutureGrenier.Music.Apps;
 
 import java.awt.EventQueue;
-import java.awt.TextArea;
 
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
@@ -12,19 +11,11 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Music.PCS12Sequence;
-import name.NicolasCoutureGrenier.Music.R12List;
-import name.NicolasCoutureGrenier.Music.R16List;
-import name.NicolasCoutureGrenier.Music.R48List;
-import name.NicolasCoutureGrenier.Music.Rhythm;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import name.NicolasCoutureGrenier.Music.Rn;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 

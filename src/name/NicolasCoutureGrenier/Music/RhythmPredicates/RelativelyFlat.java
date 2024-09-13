@@ -1,5 +1,7 @@
 package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 
+import javax.annotation.Nonnull;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
@@ -10,7 +12,7 @@ public class RelativelyFlat implements StandardAndGuavaPredicate<Rhythm> {
   HasNoGaps h = new HasNoGaps();
 
   @Override
-  public boolean apply(Rhythm input) {
+  public boolean apply(@Nonnull Rhythm input) {
     if (!h.apply(input)) {
       return false;
     }

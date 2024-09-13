@@ -127,6 +127,7 @@ public class RexRandomizer {
             break;
         }
         
+        @SuppressWarnings("null")
         Sequence c = r.getComposition().asSequence();
         
         TreeMap<Integer, TreeSet<HomoPair<Integer>>> posM = new TreeMap<>();

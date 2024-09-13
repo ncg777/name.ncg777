@@ -3,6 +3,8 @@ package name.NicolasCoutureGrenier.Music.PCS12Predicates;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.Nonnull;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
@@ -19,7 +21,7 @@ public class OrderIn implements StandardAndGuavaPredicate<PCS12> {
     s.add(p_s);
   }
 
-  public boolean apply(PCS12 o) {
+  public boolean apply(@Nonnull PCS12 o) {
     return s.contains(o.getOrder());
   }
 }

@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 import com.opencsv.exceptions.CsvException;
 
 import junit.framework.TestCase;
-import name.NicolasCoutureGrenier.Maths.Objects.FiniteRelation;
 
 public class FiniteRelationTests extends TestCase {
   FiniteRelation<String,String> r;
@@ -222,43 +221,6 @@ public class FiniteRelationTests extends TestCase {
       var readRelation = FiniteRelation.readFromCSV((s) -> s, (s) -> s, tempFile.getPath());
       tempFile.delete();
       assertEquals(r, readRelation);
-  }
-  
-  public void testArrayRelationXY() {
-    Integer[][][][] arr1 = 
-      {
-       {
-         {
-           {1,2,3},
-           {1,2},
-           {}
-         },
-         {
-           {4,5,6},
-           {7,8},
-           {}
-         }
-        }
-      };
-    String[][][][] arr2 = 
-      {
-        {
-          {
-            {"9","10","11"},
-            {"12","13"},
-            {}
-          },
-          {
-            {"14","15","16"},
-            {"17","18"},
-            {}
-          }
-         }
-      };
-    
-    //var rel = FiniteRelation.arrayRelationXY(arr1,arr2,(a,b)->true);
-    
-  }
-  
+  }  
 }
   

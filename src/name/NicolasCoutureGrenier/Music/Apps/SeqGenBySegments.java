@@ -94,6 +94,7 @@ public class SeqGenBySegments {
           if(comboBox.getSelectedItem() == Rn.Tribble) {
             r = R48List.parseR48Seq(str_R).asRhythm();
           }
+          @SuppressWarnings("null")
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();
           

@@ -230,7 +230,7 @@ public class Rhythm48 extends Rhythm implements Serializable {
     ArrayList<Integer> base = new ArrayList<Integer>();
     for (int i = 0; i < 4; i++)
       base.add(sz);
-    Long szl = Long.valueOf(sz);
+    //Long szl = Long.valueOf(sz);
 
     //szl = szl * szl * szl * szl;
     //Long counter = 0l;

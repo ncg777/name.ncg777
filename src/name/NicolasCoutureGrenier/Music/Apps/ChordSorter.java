@@ -10,7 +10,6 @@ import com.google.common.base.Joiner;
 
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.PCS12;
-import name.NicolasCoutureGrenier.Music.PCS12Sequence;
 
 import javax.swing.JTextField;
 import javax.swing.JSpinner;

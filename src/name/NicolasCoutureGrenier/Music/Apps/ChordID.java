@@ -12,8 +12,6 @@ import javax.swing.JButton;
 
 import name.NicolasCoutureGrenier.Music.PCS12;
 
-import com.google.common.base.Splitter;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.TreeSet;

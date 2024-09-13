@@ -1,12 +1,14 @@
 package name.NicolasCoutureGrenier.Music.PCS12Equivalences;
 
+import javax.annotation.Nonnull;
+
 import com.google.common.base.Equivalence;
 import name.NicolasCoutureGrenier.Music.PCS12;
 
 public class SameTranspose extends Equivalence<PCS12> {
 
   @Override
-  protected boolean doEquivalent(PCS12 a, PCS12 b) {
+  protected boolean doEquivalent(@Nonnull PCS12 a, @Nonnull PCS12 b) {
     if (a == null || b == null) {
       return false;
     }
@@ -14,10 +16,7 @@ public class SameTranspose extends Equivalence<PCS12> {
   }
 
   @Override
-  protected int doHash(PCS12 t) {
-    if (t == null) {
-      return 0;
-    }
+  protected int doHash(@Nonnull PCS12 t) {
     return t.getTranspose().hashCode();
   }
 

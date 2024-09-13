@@ -145,6 +145,7 @@ public class RhythmDiluter {
       r = R48List.parseR48Seq(textRhythm.getText()).asRhythm();
     }
     
+    @SuppressWarnings("null")
     int n = r.getN();
     
     int from = (int)spinnerFrom.getValue();

@@ -1,5 +1,7 @@
 package name.NicolasCoutureGrenier.Music.RhythmPredicates;
 
+import javax.annotation.Nonnull;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
@@ -16,7 +18,7 @@ public class SecondOrderDifferenceSum implements StandardAndGuavaPredicate<Rhyth
   }
 
   @Override
-  public boolean apply(Rhythm input) {
+  public boolean apply(@Nonnull Rhythm input) {
     int sum = input.getComposition().asSequence().cyclicalDifference().cyclicalDifference().sum();    
     
     switch(keep) {

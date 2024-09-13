@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.TreeSet;
 
 import javax.swing.JFrame;
+import javax.annotation.Nonnull;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -84,7 +85,7 @@ public class ChordWalker {
     CollectionUtils.filter(t, new Predicate<PCS12> () {
 
       @Override
-      public boolean apply(PCS12 input) {
+      public boolean apply(@Nonnull PCS12 input) {
         return d.getSuccessorCount(input) > 0;
       }
       

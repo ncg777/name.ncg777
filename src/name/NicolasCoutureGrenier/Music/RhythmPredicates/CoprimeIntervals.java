@@ -6,13 +6,15 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import javax.annotation.Nonnull;
+
 import name.NicolasCoutureGrenier.CS.Functional.StandardAndGuavaPredicate;
 import name.NicolasCoutureGrenier.Music.Rhythm;
 
 public class CoprimeIntervals implements StandardAndGuavaPredicate<Rhythm> {
 
   @Override
-  public boolean apply(Rhythm input) {
+  public boolean apply(@Nonnull Rhythm input) {
     int n = input.getN();
     if (input.getK() <= 1) {
       return false;

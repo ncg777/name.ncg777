@@ -6,8 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import name.NicolasCoutureGrenier.CS.DataStructures.SparseList;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -79,7 +77,7 @@ public class SparseListTests {
         list.add("one");
         list.add("two");
         int count = 0;
-        for (String item : list) {
+        for (@SuppressWarnings("unused") String item : list) {
             count++;
         }
         assertEquals(2, count);
