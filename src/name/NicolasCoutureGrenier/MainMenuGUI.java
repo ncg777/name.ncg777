@@ -121,9 +121,8 @@ public class MainMenuGUI {
   }
 
   private static String getCurrentJarPath() throws URISyntaxException {
-    String jarPath =
-        new File(MainMenuGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI())
-            .getPath();
+    String jarPath = MainMenuGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+    
     return jarPath;
   }
 }
