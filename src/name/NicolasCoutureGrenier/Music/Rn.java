@@ -23,7 +23,7 @@ package name.NicolasCoutureGrenier.Music;
  * </pre>
  */
 public enum Rn {
-  Tribble,
   Hex,
-  Octal
+  Octal,
+  Tribble
 }
