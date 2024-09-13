@@ -5,6 +5,7 @@
 	<groupId>name.NicolasCoutureGrenier</groupId>
 	<artifactId>name.NicolasCoutureGrenier</artifactId>
 	<version>0.1.9</version>
+	<url>https://github.com/ncg777/name.NicolasCoutureGrenier.git</url>
 	<build>
 		<resources>
 			<resource>
