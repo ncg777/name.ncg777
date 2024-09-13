@@ -3,6 +3,39 @@ import java.io.Serializable;
 import java.util.BitSet;
 import java.util.Set;
 
+
+/**
+ * The {@code ImmutableCombination} class represents a combination of elements that cannot 
+ * be modified after creation. It encapsulates an instance of the {@code Combination} class, 
+ * providing an immutable interface for handling set operations relevant to combinatorial 
+ * structures in various contexts, including music theory.
+ *
+ * <p>This class implements the {@code Serializable} interface, allowing instances of 
+ * {@code ImmutableCombination} to be serialized and deserialized, which is useful for 
+ * saving state and data persistence.</p>
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li>Creation of combinations using different constructors that accept various parameters 
+ * such as a size, a set of elements, or a binary representation.</li>
+ * <li>Support for common combinatorial operations like intersection, difference, and 
+ * symmetric difference through methods like {@link #intersect(ImmutableCombination)} and
+ * {@link #symmetricDifference(ImmutableCombination)}.</li>
+ * <li>Rotation and partitioning of combinations to facilitate the exploration of 
+ * combinatorial structures, utilizing methods such as {@link #rotate(int)} and 
+ * {@link #partition(Integer[])}.</li>
+ * <li>Distance calculations between combinations using 
+ * {@link #calcNormalizedDistanceWith(ImmutableCombination)}.</li>
+ * <li>A variety of utility methods for accessing internal properties of the combination, 
+ * such as getting its size with {@link #getN()} or its set representation through 
+ * {@link #asSequence()}.</li>
+ * </ul>
+ *
+ * <p>This class is designed to be used with the related {@code Combination} class, which 
+ * contains the mutable logic necessary for generating and manipulating combinations.</p>
+ *
+ * @see Combination
+ */
 public class ImmutableCombination implements Serializable, Comparable<ImmutableCombination> {
 
     private static final long serialVersionUID = 1L;

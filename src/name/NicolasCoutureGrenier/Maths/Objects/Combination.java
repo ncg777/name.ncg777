@@ -12,9 +12,41 @@ import name.NicolasCoutureGrenier.Maths.Enumerations.CombinationEnumeration;
 import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 /**
+ * The {@code Combination} class represents a combination of elements using a 
+ * {@code BitSet} to efficiently store and manipulate sets of binary values. 
+ * This class allows for operations related to combinatorial mathematics, including 
+ * set operations, distance calculations, and the generation of combinations.
  * 
- * @author Nicolas Couture-Grenier
- * 
+ * <p>{@code Combination} extends {@code BitSet}, facilitating operations 
+ * for sets of binary values while adding additional functionalities specific 
+ * to combinatorial analysis.</p>
+ *
+ * <p>Key features include:</p>
+ * <ul>
+ * <li>Construction of combinations using different constructors that accept parameters 
+ * such as size, set membership, or binary representations.</li>
+ * <li>Access to the size of the combination with {@link #getN()} and the 
+ * cardinality (number of elements) with {@link #getK()}.</li>
+ * <li>Calculation of the span of the combination using {@link #calcSpan()}.</li>
+ * <li>Support for calculating distances between combinations with
+ * {@link #calcNormalizedDistanceWith(Combination)}.</li>
+ * <li>Symmetric difference and intersection operations through methods like 
+ * {@link #symmetricDifference(Combination)} and {@link #intersect(Combination)}.</li>
+ * <li>Generation of subdivisions (partitions) of the combination with 
+ * {@link #partition(Integer[])}.</li>
+ * <li>Methods for generating all combinations of a given size with 
+ * {@link #generate(int, int)}.</li>
+ * <li>Random combination generation via {@link #genRnd(int)} and 
+ * {@link #genRnd(int, int)}.</li>
+ * </ul>
+ *
+ * <p>This class is designed to be used in conjunction with other classes related to 
+ * collections of sets and should provide a basis for various combinatorial operations 
+ * relevant in applications such as music theory, combinatorial enumeration, and 
+ * computational mathematics.</p>
+ *
+ * @see BitSet
+ * @see Sequence
  */
 public class Combination extends BitSet implements Comparable<Combination>, Serializable {
 

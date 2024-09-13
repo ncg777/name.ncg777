@@ -31,6 +31,36 @@ import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
+/**
+ * The {@code PCS12} class represents a twelve-tone pitch class set, inheriting from the 
+ * {@code ImmutableCombination} class, which allows it to handle combinations of pitch classes in 
+ * a way that includes transposition and permutation functionalities, among other operations.
+ * 
+ * <p>This class is designed to work with music theory concepts, particularly related to set 
+ * theory in music, where it provides a robust model for the creation, comparison, and manipulation 
+ * of twelve-tone compositions.</p>
+ * 
+ * <p>The class maintains several static data structures to facilitate the management of 
+ * pitch classes, including their identification, mapping to tonal qualities (like Forte 
+ * numbers), and common names, as defined in music theory literature.</p>
+ * 
+ * <p>Key features include:</p>
+ * <ul>
+ * <li>Identification of pitch class sets and their properties through methods like 
+ * {@link #identify(ImmutableCombination)}, {@link #parse(String)}, and {@link #transpose(int)}.</li>
+ * <li>Distance calculations between two pitch class sets with {@link #calcDistanceWith(PCS12)}.</li>
+ * <li>Symmetric operations such as union and intersection with methods like 
+ * {@link #symmetricDifference(PCS12)} and {@link #intersect(PCS12)}.</li>
+ * <li>Forte number handling for pitch-class sets, enabling ease of reference within 
+ * tonal analysis contexts.</li>
+ * </ul>
+ * 
+ * <p>This class assumes the existence of accompanying classes such as {@link ImmutableCombination}, 
+ * {@link Sequence}, and utility classes for parsing and reading data from external CSV files.</p>
+ *
+ * @see ImmutableCombination
+ * @see Sequence
+ */
 public class PCS12 extends ImmutableCombination implements Serializable {
 
   private static final long serialVersionUID = 1L;

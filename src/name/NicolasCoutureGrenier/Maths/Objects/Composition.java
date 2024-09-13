@@ -7,6 +7,35 @@ import name.NicolasCoutureGrenier.CS.Backtracker;
 import name.NicolasCoutureGrenier.Statistics.SegmentationScore;
 
 
+/**
+ * The {@code Composition} class represents a specific type of combinatorial structure that
+ * extends the functionalities of the {@code Combination} class. It encapsulates a bitset that
+ * represents a composition of elements, providing methods to manipulate and analyze these
+ * compositions in various ways.
+ *
+ * <p>This class is particularly useful in mathematical contexts where compositions and their
+ * properties are sought, including in applications such as music theory and combinatorial
+ * optimization.</p>
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li>Constructors for creating compositions based on boolean lists, bitsets, or integer sizes.</li>
+ * <li>Conversion methods to transform a composition into a sequence of integers, indicating 
+ * the lengths of segments in the composition.</li>
+ * <li>Degradation of compositions to modify their structure while retaining certain properties.</li>
+ * <li>Methods for partitioning by equality, providing groupings of similar values within the 
+ * composition.</li>
+ * <li>Segmentation capabilities through backtracking, allowing for optimized refinement into 
+ * meaningful structures.</li>
+ * </ul>
+ *
+ * <p>Instances of {@code Composition} can represent musical segments, statistical distributions, 
+ * or other applications of combinatorial mathematics where sequences of values matter.</p>
+ *
+ * @see Combination
+ * @see SegmentationScore
+ * @see Backtracker
+ */
 public class Composition extends Combination {
   private static final long serialVersionUID = 1L;
 

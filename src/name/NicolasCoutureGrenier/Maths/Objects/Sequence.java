@@ -28,6 +28,32 @@ import name.NicolasCoutureGrenier.Music.Rhythm;
 import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 /**
+ * The {@code Sequence} class represents a sequence of integers and extends 
+ * {@code ArrayList<Integer>}. This class provides a variety of methods for mathematical
+ * operations, sequence manipulation, and analysis commonly used in areas such as music
+ * theory, statistics, and combinatorial mathematics.
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li>Arithmetic operations: methods for generating sequences based on specified patterns 
+ * including arpeggios, stair patterns, and others.</li>
+ * <li>Transformations: methods for rotating, flipping, and permuting sequences, as well as 
+ * generating new sequences derived from existing ones.</li>
+ * <li>Statistical analysis: methods for calculating means, standard deviations, and 
+ * frequency distributions of sequence elements.</li>
+ * <li>Manipulations: methods to perform operations such as convolution, extraction, and 
+ * holding of rhythms.</li>
+ * <li>Mapping and Comparison: facilities to map between sequences and compare them based 
+ * on various criteria.</li>
+ * </ul>
+ *
+ * <p>The functionality of this class leverages collections and mathematical utilities to perform 
+ * complex sequence operations efficiently. Additionally, the class supports generating random 
+ * sequences under specific constraints.</p>
+ *
+ * <p>Instances of {@code Sequence} may represent rhythmic patterns, melodic lines, or numerical 
+ * data collected in various contexts.</p>
+ *
  * @author Nicolas Couture-Grenier
  */
 public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>, Serializable {
