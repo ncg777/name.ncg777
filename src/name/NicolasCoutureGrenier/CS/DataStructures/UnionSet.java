@@ -18,6 +18,7 @@ public class UnionSet<T extends Comparable<? super T>> {
   private Equivalence<T> equivalence;
   
   public UnionSet(Equivalence<T> equivalence) {
+    if(equivalence == null) throw new IllegalArgumentException("equivalence can't be null");
     this.equivalence = equivalence;
   }
   /**
