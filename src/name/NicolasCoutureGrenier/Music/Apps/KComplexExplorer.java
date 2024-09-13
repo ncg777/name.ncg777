@@ -169,7 +169,7 @@ public class KComplexExplorer {
   private JTextField textCommonName = new JTextField();
   private JTextField textIntervals = new JTextField();
   private JTextField textTonicDistance = new JTextField();
-  private JSpinner spinnerCenter = new JSpinner(new SpinnerNumberModel(9, 0, 11, 1));
+  private JSpinner spinnerCenter = new JSpinner(new SpinnerNumberModel(0, 0, 11, 1));
   
   private void initMidiSynth() {
     try {
@@ -318,7 +318,7 @@ public class KComplexExplorer {
     String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
     Arrays.sort(cs, PCS12.ForteStringComparator);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("7-35.11"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     frmKComplexExplorer.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_2 = new JLabel("Pitch class sets");
