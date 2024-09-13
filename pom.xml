@@ -43,6 +43,14 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.antlr/antlr4 -->
+		<!--
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4</artifactId>
+			<version>4.13.2</version>
+		</dependency>
+		-->
 		<dependency>
 			<groupId>io.jenetics</groupId>
 			<artifactId>colt</artifactId>
