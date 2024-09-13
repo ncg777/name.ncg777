@@ -68,44 +68,7 @@
 			<artifactId>aima-core</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-		<!--  <dependency>
-	  <groupId>org.deeplearning4j</groupId>
-	  <artifactId>rl4j</artifactId>
-	  <version>1.0.0-beta3</version>
-	  <type>pom</type>
-	</dependency>
-	<dependency>
-	  <groupId>org.deeplearning4j</groupId>
-	  <artifactId>deeplearning4j</artifactId>
-	  <version>1.0.0-beta3</version>
-	  <type>pom</type>
-	</dependency>
-	<dependency>
-	  <groupId>org.deeplearning4j</groupId>
-	  <artifactId>deeplearning4j-core</artifactId>
-	  <version>1.0.0-beta3</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.deeplearning4j</groupId>
-	  <artifactId>deeplearning4j-nlp</artifactId>
-	  <version>1.0.0-beta3</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.deeplearning4j</groupId>
-	  <artifactId>deeplearning4j-ui-standalone</artifactId>
-	  <version>1.0.0-beta3</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.deeplearning4j</groupId>
-	  <artifactId>deeplearning4j-ui-resources</artifactId>
-	  <version>1.0.0-beta3</version>
-	</dependency>
-	<dependency>
-	  <groupId>org.deeplearning4j</groupId>
-	  <artifactId>deeplearning4j-cuda-9.0</artifactId>
-	  <version>1.0.0-beta3</version>
-	</dependency>
-	-->
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -162,11 +125,13 @@
 			<artifactId>opencsv</artifactId>
 			<version>5.7.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>31.1-jre</version>
+			<version>33.3.0-jre</version>
 		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
