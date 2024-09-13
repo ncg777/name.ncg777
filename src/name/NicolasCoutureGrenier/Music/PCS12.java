@@ -41,7 +41,7 @@ import com.google.common.collect.Ordering;
  * <p>Key features include:</p>
  * <ul>
  * <li>Identification of pitch class sets and their properties through methods like 
- * {@link #identify(ImmutableCombination)}, {@link #parse(String)}, and {@link #transpose(int)}.</li>
+ * {@link #identify(ImmutableCombination)}, {@link #parseForte(String)}, and {@link #transpose(int)}.</li>
  * <li>Distance calculations between two pitch class sets with {@link #calcDistanceWith(PCS12)}.</li>
  * <li>Symmetric operations such as union and intersection with methods like 
  * {@link #symmetricDifference(PCS12)} and {@link #intersect(PCS12)}.</li>
