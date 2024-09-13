@@ -11,7 +11,8 @@ import name.NicolasCoutureGrenier.Music.Apps.KernelEvaluator.Application;
 import name.NicolasCoutureGrenier.Maths.Apps.*;
 
 import java.awt.GridLayout;
-import java.lang.reflect.Method;
+import java.io.File;
+import java.net.URISyntaxException;
 
 public class MainMenuGUI {
   public static void main(String[] args) {
@@ -97,7 +98,6 @@ public class MainMenuGUI {
   private static void addAppButton(JPanel panel, String appName, Class<?> appClass) {
     JButton button = new JButton(appName);
     button.addActionListener(e -> {
-      System.out.println(appName + " button clicked.");
       openApp(appClass);
     });
     panel.add(button);
@@ -106,27 +106,24 @@ public class MainMenuGUI {
   private static void openApp(Class<?> appClass) {
     try {
       var appClassName = appClass.getCanonicalName();
-      // Print out for debugging
-      System.out.println("Attempting to open: " + appClassName);
+      String currentJarPath = getCurrentJarPath();
 
-      // Create a ProcessBuilder instance to launch the Java application
-      ProcessBuilder processBuilder =
-          new ProcessBuilder("java", "-cp", System.getProperty("java.class.path"), appClassName);
-      Process process = processBuilder.start();
+      String classpath =
+          currentJarPath + File.pathSeparator + System.getProperty("java.class.path");
 
-      // Optionally, you can handle process output or wait for it to complete
-      // Example: Reading Output/Errors
-      // InputStream is = process.getInputStream();
-      // InputStreamReader isr = new InputStreamReader(is);
-      // BufferedReader br = new BufferedReader(isr);
-      // String line;
-      // while ((line = br.readLine()) != null) {
-      // System.out.println(line);
-      // }
+      ProcessBuilder processBuilder = new ProcessBuilder("java", "-cp", classpath, appClassName);
+      processBuilder.start();
 
     } catch (Exception ex) {
       System.err.println("Error opening application: " + ex.getMessage());
-      ex.printStackTrace(); // Handle exceptions properly
+      ex.printStackTrace();
     }
+  }
+
+  private static String getCurrentJarPath() throws URISyntaxException {
+    String jarPath =
+        new File(MainMenuGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI())
+            .getPath();
+    return jarPath;
   }
 }
