@@ -13,6 +13,40 @@ import name.NicolasCoutureGrenier.Maths.Objects.Necklace;
 import static com.google.common.math.IntMath.checkedPow;
 import static name.NicolasCoutureGrenier.Maths.Objects.Sequence.ReverseComparator;
 
+/**
+ * The {@code Rhythm12} class represents a specific type of rhythm based on a 12-element 
+ * rhythmic structure. It extends the {@code Rhythm} class and provides methods for 
+ * various operations specific to a 12-member rhythmic pattern, such as rotation, bitwise 
+ * operations (AND, OR, NOT, XOR), and parsing from octal representations.
+ *
+ * <p>This class is especially useful in applications involving musical rhythms, 
+ * enabling analysis, manipulation, and generation of rhythmic sequences.</p>
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li>{@code rotate(Rhythm12 r, int t)}: Returns a new {@code Rhythm12} by rotating 
+ * the rhythm by a specified number of steps.</li>
+ * <li>{@code parseRhythm12Octal(String input)}: Parses a string representing a rhythm 
+ * in octal format and returns the corresponding {@code Rhythm12} representation.</li>
+ * <li>{@code getZeroRhythm()}: Returns a zero rhythm, equivalent to all elements being 
+ * inactive.</li>
+ * <li>{@code Generate()}: Generates all unique {@code Rhythm12} patterns based on 
+ * combinatorial properties.</li>
+ * <li>Standard bitwise operations like {@code and(Rhythm12 a, Rhythm12 b)}, 
+ * {@code or(Rhythm12 a, Rhythm12 b)}, {@code not(Rhythm12 a)}, 
+ * {@code xor(Rhythm12 a, Rhythm12 b)}, and {@code minus(Rhythm12 a, Rhythm12 b)}.</li>
+ * </ul>
+ *
+ * <p>Example Usage:</p>
+ * <pre>
+ * Rhythm12 rhythm = Rhythm12.parseRhythm12Octal("01 10");
+ * Rhythm12 newRhythm = Rhythm12.rotate(rhythm, 3);
+ * Rhythm12 zeroRhythm = Rhythm12.getZeroRhythm();
+ * </pre>
+ *
+ * @see Rhythm
+ * @see Combination
+ */
 public class Rhythm12 extends Rhythm implements Serializable{
 
   private static final long serialVersionUID = 1L;

@@ -15,6 +15,42 @@ import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 import name.NicolasCoutureGrenier.Maths.Objects.Composition;
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 
+/**
+ * The {@code Rhythm} class represents a rhythmic structure based on a combination of 
+ * elements, inheriting properties and functionalities from the {@code Combination} class. 
+ * It encapsulates various operations related to rhythmic patterns, such as partitioning, 
+ * scaling, juxtaposition, and calculating rhythmic features like contour and entropy.
+ *
+ * <p>This class is ideal for applications in music theory, composition, and rhythmic 
+ * analysis, allowing for the manipulation and examination of rhythmic sequences.</p>
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li>{@code partitionByEquality()}: Divides the rhythm into parts based on equality, 
+ * returning an array of {@code Rhythm} objects.</li>
+ * <li>{@code scaleModulo(int k, int n)}: Applies modulo scaling to the rhythm.</li>
+ * <li>{@code juxtapose(Rhythm other)}: Combines this rhythm with another, forming a 
+ * new rhythm that represents both.</li>
+ * <li>Static factory methods such as {@code buildRhythm(...)}, which create a 
+ * {@code Rhythm} instance from various representations (e.g., string, binary, etc.).</li>
+ * <li>{@code getContour()}: Computes the contour of the rhythm, representing the cyclical 
+ * differences between its elements.</li>
+ * <li>{@code compositionEntropy()}: Evaluates the entropy of the rhythm's composition, 
+ * indicating its complexity or unpredictability.</li>
+ * <li>{@code calcSpectrum(Rhythm r)}: Calculates the spectrum of a rhythm, storing results 
+ * in a memoization table for efficiency.</li>
+ * </ul>
+ *
+ * <p>Example usage:</p>
+ * <pre>
+ * Rhythm rhythm = Rhythm.buildRhythm("101010");
+ * Rhythm juxtaposedRhythm = rhythm.juxtapose(Rhythm.buildRhythm("1100"));
+ * Sequence contour = rhythm.getContour();
+ * </pre>
+ *
+ * @see Combination
+ * @see Sequence
+ */
 public class Rhythm extends Combination implements Serializable {
 
   private static final long serialVersionUID = 1L;

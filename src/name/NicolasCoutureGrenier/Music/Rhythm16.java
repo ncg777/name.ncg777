@@ -13,6 +13,42 @@ import name.NicolasCoutureGrenier.Maths.Objects.Necklace;
 import static com.google.common.math.IntMath.checkedPow;
 import static name.NicolasCoutureGrenier.Maths.Objects.Sequence.ReverseComparator;
 
+
+/**
+ * The {@code Rhythm16} class represents a specific type of rhythmic structure 
+ * based on a 16-element pattern. It extends the {@code Rhythm} class and 
+ * provides methods tailored for operations related to this specific rhythmic 
+ * configuration, such as rotation, bitwise analysis, and hexadecimal parsing.
+ *
+ * <p>This class is particularly useful in contexts requiring manipulation 
+ * and analysis of rhythmic sequences, such as music composition and rhythmic 
+ * modeling.</p>
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li>{@code rotate(Rhythm16 r, int t)}: Returns a new {@code Rhythm16} 
+ * instance by rotating the rhythm by a specified number of steps.</li>
+ * <li>{@code parseRhythm16Hex(String input)}: Parses a string representation 
+ * of a rhythm in hexadecimal format and returns the corresponding {@code Rhythm16}.</li>
+ * <li>{@code getZeroRhythm()}: Returns a zero rhythm, equivalent to all 
+ * elements being inactive.</li>
+ * <li>{@code Generate()}: Generates all unique {@code Rhythm16} patterns based 
+ * on combinatorial properties.</li>
+ * <li>Bitwise operations such as {@code and(Rhythm16 a, Rhythm16 b)}, 
+ * {@code or(Rhythm16 a, Rhythm16 b)}, {@code not(Rhythm16 a)}, 
+ * {@code xor(Rhythm16 a, Rhythm16 b)}, and {@code minus(Rhythm16 a, Rhythm16 b)}.</li>
+ * </ul>
+ *
+ * <p>Example Usage:</p>
+ * <pre>
+ * Rhythm16 rhythm = Rhythm16.parseRhythm16Hex("1F 00");
+ * Rhythm16 rotatedRhythm = Rhythm16.rotate(rhythm, 4);
+ * Rhythm16 zeroRhythm = Rhythm16.getZeroRhythm();
+ * </pre>
+ *
+ * @see Rhythm
+ * @see Combination
+ */
 public class Rhythm16 extends Rhythm implements Serializable{
 
   private static final long serialVersionUID = 1L;

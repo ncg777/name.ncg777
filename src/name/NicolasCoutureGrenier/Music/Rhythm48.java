@@ -15,6 +15,44 @@ import name.NicolasCoutureGrenier.Statistics.RandomNumberGenerator;
 
 import static com.google.common.math.IntMath.checkedPow;
 
+/**
+ * The {@code Rhythm48} class represents a rhythmic structure based on a 48-element pattern,
+ * extending the {@code Rhythm} class. This class provides methods specifically designed for
+ * manipulating and analyzing rhythmic sequences of this size, including operations for
+ * rotation, parsing, and various bitwise manipulations.
+ * 
+ * <p>This class is particularly useful in musical compositions and rhythm generation,
+ * allowing for the creation and randomization of complex rhythmic patterns.</p>
+ *
+ * <p>Key functionalities include:</p>
+ * <ul>
+ * <li>{@code rotate(Rhythm48 r, int t)}: Returns a new {@code Rhythm48} by rotating
+ * the rhythm by a specified number of steps.</li>
+ * <li>{@code parseRhythm48Tribbles(String input)}: Parses a string representation of a
+ * rhythm in "tribble" format (hexadecimal) and returns the corresponding {@code Rhythm48}.</li>
+ * <li>{@code getZeroRhythm()}: Returns a zero rhythm, where all elements are inactive.</li>
+ * <li>{@code getValid4Beats()} and {@code getValid3Beats()}: Generate and return collections
+ * of valid 3-beat and 4-beat rhythmic patterns, respectively.</li>
+ * <li>{@code Generate()}: Produces all unique {@code Rhythm48} combinations based on valid beats.</li>
+ * <li>Bitwise operations such as {@code and(Rhythm48 a, Rhythm48 b)}, 
+ * {@code or(Rhythm48 a, Rhythm48 b)}, {@code not(Rhythm48 a)}, 
+ * {@code xor(Rhythm48 a, Rhythm48 b)}, and {@code minus(Rhythm48 a, Rhythm48 b)}.</li>
+ * <li>{@code getRandomRhythm48(Predicate<Rhythm> pred)}: Generates a random {@code Rhythm48} 
+ * that satisfies a given predicate condition.</li>
+ * <li>{@code randomizeBeat(int n, Predicate<Rhythm> pred)}: Randomizes a specified number 
+ * of beats within the rhythm based on a given predicate.</li>
+ * </ul>
+ *
+ * <p>Example Usage:</p>
+ * <pre>
+ * Rhythm48 rhythm = Rhythm48.parseRhythm48Tribbles("1F0F0F0F");
+ * Rhythm48 rotatedRhythm = Rhythm48.rotate(rhythm, 4);
+ * Rhythm48 zeroRhythm = Rhythm48.getZeroRhythm();
+ * </pre>
+ *
+ * @see Rhythm
+ * @see Combination
+ */
 public class Rhythm48 extends Rhythm implements Serializable {
 
   private static final long serialVersionUID = 1L;
