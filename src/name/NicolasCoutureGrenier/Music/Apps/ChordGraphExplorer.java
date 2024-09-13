@@ -3,6 +3,8 @@ package name.NicolasCoutureGrenier.Music.Apps;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -92,7 +94,7 @@ public class ChordGraphExplorer {
     TreeSet<PCS12> t = new TreeSet<PCS12>();
     t.addAll(PCS12.getChords());
     CollectionUtils.filter(t, new SizeIs((int) spinner_1.getValue()));
-    CollectionUtils.filter(t, Predicates.and(new SubsetOf(PCS12.parse(cbxScale.getSelectedItem().toString())), new Consonant()));
+    CollectionUtils.filter(t, Predicates.and(new SubsetOf(PCS12.parseForte(cbxScale.getSelectedItem().toString())), new Consonant()));
     d = new DiGraph<PCS12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
     CollectionUtils.filter(t, new Predicate<PCS12> () {
 
@@ -102,25 +104,24 @@ public class ChordGraphExplorer {
       }
       
     });
-    String[] s = new String[t.size()];
-    int k = 0;
+    List<String> s0 = new ArrayList<String>();
     for (PCS12 x : t) {
-      s[k++] = x.toString();
+      s0.add(x.toForteNumberString());
     }
-    Arrays.sort(s);
-
+    s0.sort(comparator);
+    String[] s = s0.toArray(new String[0]); 
     cbxStart.setModel(new DefaultComboBoxModel<String>(s));
     fillSuccessors();
     updateLabels();
   }
 
   JComboBox<String> cbxSuccessors = new JComboBox<String>();
-
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   private void fillSuccessors() {
-    PCS12 start = PCS12.parse(cbxStart.getSelectedItem().toString());
+    PCS12 start = PCS12.parseForte(cbxStart.getSelectedItem().toString());
     ArrayList<String> successors = new ArrayList<String>(
-        this.d.getSuccessors(start).stream().map(c -> c.toString()).collect(Collectors.toList()));
-    successors.sort((a, b) -> a.compareTo(b));
+        this.d.getSuccessors(start).stream().map(c -> c.toForteNumberString()).collect(Collectors.toList()));
+    successors.sort(comparator);
 
     cbxSuccessors.setModel(new DefaultComboBoxModel<String>(successors.toArray(new String[0])));
     
@@ -141,20 +142,20 @@ public class ChordGraphExplorer {
     }
   }
   private void updateLabels() {
-    PCS12 s = PCS12.parse(cbxScale.getSelectedItem().toString());
+    PCS12 s = PCS12.parseForte(cbxScale.getSelectedItem().toString());
     
-    PCS12 c = PCS12.parse(cbxStart.getSelectedItem().toString());
+    PCS12 c = PCS12.parseForte(cbxStart.getSelectedItem().toString());
     lblStartIV.setText(c.getIntervalVector().toString());
-    lblStartC.setText(PCS12.identify(s.minus(c)).toString());
+    lblStartC.setText(PCS12.identify(s.minus(c)).toForteNumberString());
     pitches_start.setText(c.asSequence().toString());
-    PCS12 c1 = PCS12.parse(cbxSuccessors.getSelectedItem().toString());
+    PCS12 c1 = PCS12.parseForte(cbxSuccessors.getSelectedItem().toString());
     lblSuccIV.setText(c1.getIntervalVector().toString());
-    lblSuccC.setText(PCS12.identify(s.minus(c1)).toString());
+    lblSuccC.setText(PCS12.identify(s.minus(c1)).toForteNumberString());
     pitches_end.setText(c1.asSequence().toString());
   }
   private void playChord(PCS12 chord, int durInMs) {
     if (chord == null) return;
-    Utils.copyStringToClipboard(chord.toString());
+    Utils.copyStringToClipboard(chord.toForteNumberString());
     Thread t = new Thread(new Runnable() {
       public void run() {
         try {
@@ -199,10 +200,12 @@ public class ChordGraphExplorer {
   private int play_len = 250;
   private JLabel pitches_start = new JLabel("");;
   private JLabel pitches_end = new JLabel("");
+  private final JLabel lblNewLabel_1 = new JLabel("Complements :");
   /**
    * Initialize the contents of the frame.
    */
   private void initialize() {
+    lblNewLabel_1.setForeground(new Color(255, 255, 255));
     this.initMidiSynth();
     try {
       this.midiSynth.open();
@@ -210,9 +213,11 @@ public class ChordGraphExplorer {
       // TODO Auto-generated catch block
       e1.printStackTrace();
     }
-    String[] cs = PCS12.getChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs);
-
+    String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
+    List<String> cs0 = new ArrayList<String>();
+    for(var s : cs) cs0.add(s);
+    cs0.sort(comparator);
+    cs = cs0.toArray(new String[0]);
     cbxScale = new JComboBox<String>(new DefaultComboBoxModel<String>(cs));
     frmChordPleasure = new JFrame();
     frmChordPleasure.addWindowListener(new WindowAdapter() {
@@ -221,11 +226,11 @@ public class ChordGraphExplorer {
         midiSynth.close();
       }
     });
-    frmChordPleasure.setTitle("PCS12 Graph Explorer");
+    frmChordPleasure.setTitle("Forte Graph Explorer");
     frmChordPleasure.getContentPane().setBackground(Color.DARK_GRAY);
     frmChordPleasure.setBounds(100, 100, 641, 160);
     frmChordPleasure.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    cbxScale.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.11"));
+    cbxScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     fillChords();
 
 
@@ -238,7 +243,7 @@ public class ChordGraphExplorer {
       @Override
       public void mouseClicked(MouseEvent e) {
         
-        playChord(PCS12.parse(cbxStart.getSelectedItem().toString()), play_len);
+        playChord(PCS12.parseForte(cbxStart.getSelectedItem().toString()), play_len);
         
       }
     });
@@ -259,7 +264,7 @@ public class ChordGraphExplorer {
     lblSuccessor.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(PCS12.parse(cbxSuccessors.getSelectedItem().toString()), play_len);
+        playChord(PCS12.parseForte(cbxSuccessors.getSelectedItem().toString()), play_len);
       }
     });
     lblSuccessor.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -279,22 +284,22 @@ public class ChordGraphExplorer {
         updateLabels();
       }
     });
-    lblStartIV.setText(PCS12.parse(cbxStart.getSelectedItem().toString()).getIntervalVector().toString());
+    lblStartIV.setText(PCS12.parseForte(cbxStart.getSelectedItem().toString()).getIntervalVector().toString());
     lblStartIV.setForeground(Color.WHITE);
     
     
     lblSuccIV.setForeground(Color.WHITE);
-    lblSuccIV.setText(PCS12.parse(cbxSuccessors.getSelectedItem().toString()).getIntervalVector().toString());
+    lblSuccIV.setText(PCS12.parseForte(cbxSuccessors.getSelectedItem().toString()).getIntervalVector().toString());
     lblStartC.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(PCS12.parse(lblStartC.getText()), play_len);
+        playChord(PCS12.parseForte(lblStartC.getText()), play_len);
       }
     });
     lblSuccC.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(PCS12.parse(lblSuccC.getText()), play_len);
+        playChord(PCS12.parseForte(lblSuccC.getText()), play_len);
       }
     });
     lblStartC.setForeground(Color.WHITE);
@@ -310,16 +315,19 @@ public class ChordGraphExplorer {
       groupLayout.createParallelGroup(Alignment.TRAILING)
         .addGroup(groupLayout.createSequentialGroup()
           .addContainerGap()
-          .addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(cbxScale, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(lblK, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.RELATED)
-          .addComponent(lblStart, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-          .addPreferredGap(ComponentPlacement.RELATED)
+          .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+            .addGroup(groupLayout.createSequentialGroup()
+              .addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(cbxScale, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(lblK, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(lblStart, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
+            .addComponent(lblNewLabel_1))
+          .addPreferredGap(ComponentPlacement.UNRELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
             .addGroup(groupLayout.createSequentialGroup()
               .addComponent(cbxStart, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
@@ -361,7 +369,8 @@ public class ChordGraphExplorer {
           .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(lblSuccC, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-            .addComponent(lblStartC, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+            .addComponent(lblStartC, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+            .addComponent(lblNewLabel_1))
           .addPreferredGap(ComponentPlacement.RELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(pitches_end, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)

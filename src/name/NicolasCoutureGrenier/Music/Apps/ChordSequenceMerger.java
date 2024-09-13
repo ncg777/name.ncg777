@@ -62,8 +62,8 @@ public class ChordSequenceMerger {
       public void actionPerformed(ActionEvent e) {
         ArrayList<PCS12Sequence> arr = new ArrayList<>();
         var ss = txtArea.getText().trim().split("\n+");
-        for(var s :ss) {arr.add(PCS12Sequence.parse(s));}
-        txtResult.setText(PCS12Sequence.merge(arr).toString());
+        for(var s :ss) {arr.add(PCS12Sequence.parseForte(s));}
+        txtResult.setText(PCS12Sequence.merge(arr).toString((c) -> c.toForteNumberString()));
       }
     });
     
@@ -74,10 +74,7 @@ public class ChordSequenceMerger {
     txtResult.setColumns(10);
     
     JScrollPane scrollPane = new JScrollPane();
-    
-    
-    
-    
+
     GroupLayout groupLayout = new GroupLayout(frmChordSequenceMerger.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
@@ -110,7 +107,7 @@ public class ChordSequenceMerger {
     );
     
     
-    txtArea.setText("01-01.00 01-01.02 01-01.04\r\n01-01.05 01-01.07");
+    txtArea.setText("1-1.00 1-1.02 1-1.04\r\n1-1.05 1-1.07");
     scrollPane.setViewportView(txtArea);
     frmChordSequenceMerger.getContentPane().setLayout(groupLayout);
   }

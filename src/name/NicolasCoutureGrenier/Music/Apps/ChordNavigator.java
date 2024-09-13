@@ -80,17 +80,17 @@ public class ChordNavigator {
     refreshAvailable();
     refreshButtons();
   }
-
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   private void refreshAvailable() {
     
     TreeSet<PCS12> pCS12s = PCS12.getChords();
-    PCS12 scale = PCS12.parse(cboScale.getSelectedItem().toString());
+    PCS12 scale = PCS12.parseForte(cboScale.getSelectedItem().toString());
     DefaultListModel<String> modelIncl = (DefaultListModel<String>) included.getModel();
     
     TreeSet<String> incl = new TreeSet<String>();
     for(int i=0;i<modelIncl.size();i++) incl.add(modelIncl.elementAt(i));
     TreeSet<PCS12> inclCh = new TreeSet<PCS12>();
-    for(String s : incl) inclCh.add(PCS12.parse(s));
+    for(String s : incl) inclCh.add(PCS12.parseForte(s));
     PCS12 union = null;
     for(PCS12 ch : inclCh) {
       if(union == null) union = ch;
@@ -105,17 +105,12 @@ public class ChordNavigator {
     
     ArrayList<String> filtered = new ArrayList<String>();
     for(PCS12 ch : pCS12s) {
-      if(pred.apply(ch) && !incl.contains(ch.toString())) {
-        filtered.add(ch.toString());
+      if(pred.apply(ch) && !incl.contains(ch.toForteNumberString())) {
+        filtered.add(ch.toForteNumberString());
       }
     }
     
-    filtered.sort(new Comparator<String>() {
-      @Override
-      public int compare(String o1, String o2) {
-        return o2.compareTo(o1);
-      }
-    });
+    filtered.sort(comparator);
     
     DefaultListModel<String> modelAv = (DefaultListModel<String>) available.getModel();
     
@@ -153,18 +148,16 @@ public class ChordNavigator {
       textPitches.setText("");
       textIV.setText("");
       textComplement.setText("");
-      textForte.setText("");
       textSymmetries.setText("");
       this.current = null;
       textIntervals.setText("");
       textTonicDistance.setText("");
     } else {
-      textCurrent.setText(ch.toString());
+      textCurrent.setText(ch.toForteNumberString());
       textPitches.setText(ch.combinationString().replaceAll("[,}{]", "").trim()); 
       textIV.setText(ch.getIntervalVector().toString().replaceAll("[,})({]", ""));
-      PCS12 scale = PCS12.parse(cboScale.getSelectedItem().toString());
-      textComplement.setText(scale.minus(ch).toString());
-      textForte.setText(ch.toForteNumberString());
+      PCS12 scale = PCS12.parseForte(cboScale.getSelectedItem().toString());
+      textComplement.setText(scale.minus(ch).toForteNumberString());
       textSymmetries.setText(Joiner.on(", ").join(ch.getSymmetries()));
       var commonName = ch.getCommonName();
       if(commonName == null) commonName = "";
@@ -183,7 +176,7 @@ public class ChordNavigator {
     TreeSet<String> incl = new TreeSet<String>();
     for(int i=0;i<modelIncl.size();i++) incl.add(modelIncl.elementAt(i));
     TreeSet<PCS12> inclCh = new TreeSet<PCS12>();
-    for(String s : incl) inclCh.add(PCS12.parse(s));
+    for(String s : incl) inclCh.add(PCS12.parseForte(s));
     PCS12 union = null;
     for(PCS12 ch : inclCh) {
       if(union == null) union = ch;
@@ -198,7 +191,7 @@ public class ChordNavigator {
         textUnionPitches.setText("");  
       }
     } else {
-      textUnion.setText(union.toString());
+      textUnion.setText(union.toForteNumberString());
       textUnionPitches.setText(union.combinationString().replaceAll("[,}{]", "").trim());
     }
     
@@ -224,13 +217,13 @@ public class ChordNavigator {
   
   private void addAllSubchords() {
     if(included.isSelectionEmpty()) return;
-    PCS12 selected = PCS12.parse(included.getSelectedValue());
+    PCS12 selected = PCS12.parseForte(included.getSelectedValue());
     Predicate<PCS12> pred = new SubsetOf(selected);
     DefaultListModel<String> modelAvailable = (DefaultListModel<String>) available.getModel();
     DefaultListModel<String> modelIncl = (DefaultListModel<String>) included.getModel();
     for(int i=0;i<modelAvailable.size();i++) {
-      PCS12 tmp = PCS12.parse(modelAvailable.get(i));
-      if(pred.apply(tmp)) modelIncl.add(modelIncl.size(), tmp.toString());
+      PCS12 tmp = PCS12.parseForte(modelAvailable.get(i));
+      if(pred.apply(tmp)) modelIncl.add(modelIncl.size(), tmp.toForteNumberString());
     }
     refreshAvailable();
     refreshButtons();
@@ -239,13 +232,13 @@ public class ChordNavigator {
   
   private void addAllSuperchords() {
     if(included.isSelectionEmpty()) return;
-    PCS12 selected = PCS12.parse(included.getSelectedValue());
+    PCS12 selected = PCS12.parseForte(included.getSelectedValue());
     Predicate<PCS12> pred = new SupersetOf(selected);
     DefaultListModel<String> modelAvailable = (DefaultListModel<String>) available.getModel();
     DefaultListModel<String> modelIncl = (DefaultListModel<String>) included.getModel();
     for(int i=0;i<modelAvailable.size();i++) {
-      PCS12 tmp = PCS12.parse(modelAvailable.get(i));
-      if(pred.apply(tmp)) modelIncl.add(modelIncl.size(), tmp.toString());
+      PCS12 tmp = PCS12.parseForte(modelAvailable.get(i));
+      if(pred.apply(tmp)) modelIncl.add(modelIncl.size(), tmp.toForteNumberString());
     }
     refreshAvailable();
     refreshButtons();
@@ -253,7 +246,6 @@ public class ChordNavigator {
   }
   private Synthesizer midiSynth = null;
   private JTextField textComplement;
-  private JTextField textForte;
   private JTextField textSymmetries;
   private JTextField textCommonName;
   private JTextField textIntervals;
@@ -273,7 +265,7 @@ public class ChordNavigator {
   }
   private void playChord(PCS12 chord) {
     if(chord == null) return;
-    Utils.copyStringToClipboard(chord.toString());
+    Utils.copyStringToClipboard(chord.toForteNumberString());
     Thread t = new Thread(new Runnable() {
       public void run() {
         int stepdur = 250;
@@ -335,13 +327,12 @@ public class ChordNavigator {
       }
     });
     frmChordNavigator.setResizable(false);
-    frmChordNavigator.setTitle("PCS12 Navigator");
+    frmChordNavigator.setTitle("Chord Navigator");
     frmChordNavigator.setBounds(100, 100, 534, 684);
     frmChordNavigator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmChordNavigator.getContentPane().setLayout(null);
     
     JLabel lblNewLabel = new JLabel("Scale:");
-    lblNewLabel.setToolTipText("<html>\r\n07-26.04 Major Locrian<br/>\r\n07-28.11 Persian<br/>\r\n07-29.06 Hungarian<br/>\r\n07-38.11 Harmonic minor<br/>\r\n07-39.11 Melodic minor<br/>\r\n07-42.11 Harmonic major<br/>\r\n07-43.11 Major<br/>\r\n08-35.00 Octatonic<br/>\r\n</html>");
     lblNewLabel.setBounds(10, 15, 42, 14);
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -373,7 +364,7 @@ public class ChordNavigator {
     included.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     included.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        PCS12 ch = included.isSelectionEmpty() ? null : PCS12.parse(included.getSelectedValue());
+        PCS12 ch = included.isSelectionEmpty() ? null : PCS12.parseForte(included.getSelectedValue());
         setCurrent(ch);
         refreshButtons();
       }
@@ -394,7 +385,7 @@ public class ChordNavigator {
     available.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     available.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        PCS12 ch = available.isSelectionEmpty() ? null : PCS12.parse(available.getSelectedValue());
+        PCS12 ch = available.isSelectionEmpty() ? null : PCS12.parseForte(available.getSelectedValue());
         setCurrent(ch);
         refreshButtons();
       }
@@ -434,10 +425,10 @@ public class ChordNavigator {
         refreshUnion();
       }
     });
-    String[] cs = PCS12.getChordDict().keySet().toArray(new String[0]);
+    String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
     Arrays.sort(cs);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.11"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     frmChordNavigator.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_1 = new JLabel("Included");
@@ -493,7 +484,7 @@ public class ChordNavigator {
     textPitches.setColumns(10);
     
     JLabel lblNewLabel_5 = new JLabel("Union");
-    lblNewLabel_5.setBounds(194, 411, 132, 23);
+    lblNewLabel_5.setBounds(194, 372, 132, 23);
     lblNewLabel_5.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     lblNewLabel_5.setHorizontalAlignment(SwingConstants.CENTER);
     frmChordNavigator.getContentPane().add(lblNewLabel_5);
@@ -505,7 +496,7 @@ public class ChordNavigator {
         playChord(union);
       }
     });
-    textUnion.setBounds(194, 433, 132, 23);
+    textUnion.setBounds(194, 394, 132, 23);
     textUnion.setEditable(false);
     textUnion.setHorizontalAlignment(SwingConstants.CENTER);
     textUnion.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -513,7 +504,7 @@ public class ChordNavigator {
     textUnion.setColumns(10);
     
     JLabel lblNewLabel_6 = new JLabel("Union Pitches");
-    lblNewLabel_6.setBounds(194, 456, 132, 23);
+    lblNewLabel_6.setBounds(194, 417, 132, 23);
     lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_6.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     frmChordNavigator.getContentPane().add(lblNewLabel_6);
@@ -525,7 +516,7 @@ public class ChordNavigator {
         playChord(union);
       }
     });
-    textUnionPitches.setBounds(195, 477, 132, 23);
+    textUnionPitches.setBounds(195, 438, 132, 23);
     textUnionPitches.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     textUnionPitches.setEditable(false);
     textUnionPitches.setHorizontalAlignment(SwingConstants.CENTER);
@@ -539,7 +530,7 @@ public class ChordNavigator {
     
     
     btnAllSubchords.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
-    btnAllSubchords.setBounds(195, 599, 132, 14);
+    btnAllSubchords.setBounds(195, 560, 132, 14);
     frmChordNavigator.getContentPane().add(btnAllSubchords);
     
     
@@ -550,7 +541,7 @@ public class ChordNavigator {
     });
     btnAllSuperchords.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
     btnAllSuperchords.setEnabled(false);
-    btnAllSuperchords.setBounds(194, 618, 132, 17);
+    btnAllSuperchords.setBounds(194, 579, 132, 17);
     frmChordNavigator.getContentPane().add(btnAllSuperchords);
     
     JLabel lblNewLabel_6_1 = new JLabel("Interval vector");
@@ -571,7 +562,7 @@ public class ChordNavigator {
     textComplement.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(PCS12.parse(textComplement.getText()));
+        playChord(PCS12.parseForte(textComplement.getText()));
       }
     });
     textComplement.setHorizontalAlignment(SwingConstants.CENTER);
@@ -587,32 +578,18 @@ public class ChordNavigator {
     lblNewLabel_6_2.setBounds(194, 273, 132, 23);
     frmChordNavigator.getContentPane().add(lblNewLabel_6_2);
     
-    JLabel lblNewLabel_6_3 = new JLabel("Forte number");
-    lblNewLabel_6_3.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel_6_3.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
-    lblNewLabel_6_3.setBounds(195, 320, 132, 23);
-    frmChordNavigator.getContentPane().add(lblNewLabel_6_3);
-    
-    textForte = new JTextField();
-    textForte.setHorizontalAlignment(SwingConstants.CENTER);
-    textForte.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
-    textForte.setEditable(false);
-    textForte.setColumns(10);
-    textForte.setBounds(195, 344, 132, 23);
-    frmChordNavigator.getContentPane().add(textForte);
-    
     textSymmetries = new JTextField();
     textSymmetries.setHorizontalAlignment(SwingConstants.CENTER);
     textSymmetries.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     textSymmetries.setEditable(false);
     textSymmetries.setColumns(10);
-    textSymmetries.setBounds(195, 388, 132, 23);
+    textSymmetries.setBounds(195, 349, 132, 23);
     frmChordNavigator.getContentPane().add(textSymmetries);
     
     JLabel lblSymmetries = new JLabel("Symmetries");
     lblSymmetries.setHorizontalAlignment(SwingConstants.CENTER);
     lblSymmetries.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
-    lblSymmetries.setBounds(195, 367, 132, 23);
+    lblSymmetries.setBounds(195, 328, 132, 23);
     frmChordNavigator.getContentPane().add(lblSymmetries);
     
     textCommonName = new JTextField();
@@ -620,13 +597,13 @@ public class ChordNavigator {
     textCommonName.setFont(new Font("Dialog", Font.PLAIN, 11));
     textCommonName.setEditable(false);
     textCommonName.setColumns(10);
-    textCommonName.setBounds(195, 524, 132, 23);
+    textCommonName.setBounds(195, 485, 132, 23);
     frmChordNavigator.getContentPane().add(textCommonName);
     
     JLabel lblNewLabel_6_4 = new JLabel("Common Name");
     lblNewLabel_6_4.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_6_4.setFont(new Font("Dialog", Font.PLAIN, 11));
-    lblNewLabel_6_4.setBounds(195, 500, 132, 23);
+    lblNewLabel_6_4.setBounds(195, 461, 132, 23);
     frmChordNavigator.getContentPane().add(lblNewLabel_6_4);
     
     JLabel lblNewLabel_6_2_1 = new JLabel("Intervals");
@@ -646,7 +623,7 @@ public class ChordNavigator {
     JLabel lblNewLabel_6_4_1 = new JLabel("Center tuning");
     lblNewLabel_6_4_1.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_6_4_1.setFont(new Font("Dialog", Font.PLAIN, 11));
-    lblNewLabel_6_4_1.setBounds(194, 546, 132, 23);
+    lblNewLabel_6_4_1.setBounds(194, 507, 132, 23);
     frmChordNavigator.getContentPane().add(lblNewLabel_6_4_1);
     
     textTonicDistance = new JTextField();
@@ -654,11 +631,11 @@ public class ChordNavigator {
     textTonicDistance.setFont(new Font("Dialog", Font.PLAIN, 11));
     textTonicDistance.setEditable(false);
     textTonicDistance.setColumns(10);
-    textTonicDistance.setBounds(194, 565, 132, 23);
+    textTonicDistance.setBounds(194, 526, 132, 23);
     frmChordNavigator.getContentPane().add(textTonicDistance);
     
     spinnerCenter = new JSpinner();
-    spinnerCenter.setModel(new SpinnerNumberModel(9, 0, 11, 1));
+    spinnerCenter.setModel(new SpinnerNumberModel(0, 0, 11, 1));
     spinnerCenter.setBounds(461, 11, 50, 23);
     frmChordNavigator.getContentPane().add(spinnerCenter);
     

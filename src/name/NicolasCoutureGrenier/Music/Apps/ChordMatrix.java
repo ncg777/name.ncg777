@@ -31,6 +31,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.function.BiPredicate;
@@ -68,7 +69,7 @@ public class ChordMatrix {
     initialize();
    
   }
-  
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   JComboBox<String> comboFilter = new JComboBox<String>();
   JTextArea textArea; 
   JSpinner spinner_k = new JSpinner(new SpinnerNumberModel(3, 2, 11, 1));
@@ -101,7 +102,7 @@ public class ChordMatrix {
               running = true;
               TreeSet<PCS12> t0 = PCS12.getChords();
               TreeSet<PCS12> t = new TreeSet<PCS12>();
-              PCS12 scale = PCS12.parse(comboFilter.getSelectedItem().toString());
+              PCS12 scale = PCS12.parseForte(comboFilter.getSelectedItem().toString());
               Predicate<PCS12> pred = Predicates.and(new SubsetOf(scale),new Consonant());
               
               for(PCS12 r : t0){
@@ -193,7 +194,7 @@ public class ChordMatrix {
                 if(successful) break;
               }
               
-              String str_output = output.toString();
+              String str_output = output.toString((c) -> c.toForteNumberString());
               
               Matrix<PCS12> complements = new Matrix<PCS12>(m,n);
               
@@ -203,19 +204,13 @@ public class ChordMatrix {
                 }
               }
               
-              str_output += "\n\n" + complements.toString();
+              str_output += "\n\n" + complements.toString((c) -> c.toForteNumberString());
               
               textArea.setText(str_output);
-              
-              
-              
             } catch(Exception ex) {textArea.setText(ex.getMessage());}
             running = false;
             btnGenerate.setText("Generate");
           }}).start();
-        
-        
-        
       }
     });
     
@@ -232,10 +227,13 @@ public class ChordMatrix {
     // hung 07-29.06
     // enigmatic 07-65.04
     // oct 08-35.00
-    String[] cs = PCS12.getChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs);
+    String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
+    List<String> cs0 = new ArrayList<String>();
+    for(var s : cs) cs0.add(s);
+    cs0.sort(comparator);
+    cs = cs0.toArray(new String[0]);
     comboFilter.setModel(new DefaultComboBoxModel<String>(cs));
-    comboFilter.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.11"));
+    comboFilter.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     
     JScrollPane scrollPane = new JScrollPane();
     

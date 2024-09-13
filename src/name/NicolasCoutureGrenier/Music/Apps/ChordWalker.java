@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.TreeSet;
 
 import javax.swing.JFrame;
@@ -71,6 +73,7 @@ public class ChordWalker {
   public ChordWalker() {
     initialize();
   }
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   JComboBox<String> cbxStart = new JComboBox<>(); 
   JSpinner spinner = new JSpinner();
   JCheckBox chckbxReverse = new JCheckBox("reverse");
@@ -90,9 +93,11 @@ public class ChordWalker {
       }
       
     });
-    String[] s =new String[t.size()]; int k=0;
-    for(PCS12 x : t){s[k++] = x.toString();}
-    Arrays.sort(s);
+    List<String> s0 = new ArrayList<String>();
+    
+    for(PCS12 x : t)s0.add(x.toForteNumberString());
+    s0.sort(comparator);
+    String[] s = s0.toArray(new String[0]);
     ((DefaultComboBoxModel<String>)cbxStart.getModel()).removeAllElements();
     cbxStart.setModel(new DefaultComboBoxModel<String>(s));
   }
@@ -100,7 +105,7 @@ public class ChordWalker {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    String[] cs = PCS12.getChordDict().keySet().toArray(new String[0]);
+    String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
     Arrays.sort(cs);
     
     cbxScale = new JComboBox<String>(new DefaultComboBoxModel<String>(cs));
@@ -109,7 +114,7 @@ public class ChordWalker {
     frmChordPleasure.getContentPane().setBackground(Color.DARK_GRAY);
     frmChordPleasure.setBounds(100, 100, 639, 311);
     frmChordPleasure.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    cbxScale.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.11"));
+    cbxScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     fillChords();
     JButton btnPouf = new JButton("Walk");
     btnPouf.addActionListener(new ActionListener() {
@@ -120,7 +125,7 @@ public class ChordWalker {
         ArrayList<String> o = new ArrayList<String>(); o.add(s);
 
         while(n>1){
-            PCS12 t = CollectionUtils.chooseAtRandom(d.getNeighbors(PCS12.parse(o.get(o.size()-1))));
+            PCS12 t = CollectionUtils.chooseAtRandom(d.getNeighbors(PCS12.parseForte(o.get(o.size()-1))));
             o.add(t.toString());
             n--;
         }

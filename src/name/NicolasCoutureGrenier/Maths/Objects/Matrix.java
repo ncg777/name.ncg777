@@ -132,17 +132,20 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
 
+  @Override
+  public String toString() {
+    return toString((t) -> t.toString());
+  }
   /**
    * Only prints each row on a line with values separated by tabs,
    * 
    * @return String
    */
-  @Override
-  public String toString() {
+  public String toString(Function<T,String> printer) {
     StringBuilder sb = new StringBuilder();
     var joiner = Joiner.on(" ");
     for (int i = 0; i < m; i++) {
-      sb.append(joiner.join(getRow(i)) + "\n");
+      sb.append(joiner.join(getRow(i).stream().map((t) -> printer.apply(t)).toList()) + "\n");
     }
     return sb.toString();
   }

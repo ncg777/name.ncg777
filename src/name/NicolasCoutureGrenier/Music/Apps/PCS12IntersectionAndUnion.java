@@ -14,7 +14,10 @@ import name.NicolasCoutureGrenier.Music.PCS12;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public class PCS12IntersectionAndUnion {
 
@@ -51,19 +54,19 @@ public class PCS12IntersectionAndUnion {
   private JTextField textUnionPitches = new JTextField();
   
   private void refresh() {
-    PCS12 s1 = PCS12.parse(cboScale.getSelectedItem().toString());
-    PCS12 s2 = PCS12.parse(cboScale_1.getSelectedItem().toString());
+    PCS12 s1 = PCS12.parseForte(cboScale.getSelectedItem().toString());
+    PCS12 s2 = PCS12.parseForte(cboScale_1.getSelectedItem().toString());
     
     PCS12 inter = s1.intersect(s2);
-    textInter.setText(inter.toString());
+    textInter.setText(inter.toForteNumberString());
     textIntersectionPitches.setText(inter.asSequence().toString());
     
     PCS12 union = s1.combineWith(s2);
-    textUnion.setText(union.toString());
+    textUnion.setText(union.toForteNumberString());
     textUnionPitches.setText(union.asSequence().toString());
     
   }
-  
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   private void initialize() {
     frmPCS12IntersectionAndUnion = new JFrame();
     frmPCS12IntersectionAndUnion.setResizable(false);
@@ -73,7 +76,6 @@ public class PCS12IntersectionAndUnion {
     frmPCS12IntersectionAndUnion.getContentPane().setLayout(null);
     
     JLabel lblNewLabel = new JLabel("Scale 1:");
-    lblNewLabel.setToolTipText("<html>\r\n07-26.04 Major Locrian<br/>\r\n07-28.11 Persian<br/>\r\n07-29.06 Hungarian<br/>\r\n07-38.11 Harmonic minor<br/>\r\n07-39.11 Melodic minor<br/>\r\n07-42.11 Harmonic major<br/>\r\n07-43.11 Major<br/>\r\n08-35.00 Octatonic<br/>\r\n</html>");
     lblNewLabel.setBounds(10, 15, 64, 14);
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -93,12 +95,15 @@ public class PCS12IntersectionAndUnion {
       }
     });
     
-    String[] cs = PCS12.getChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs);
+    String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
+    List<String> cs0 = new ArrayList<String>();
+    for(var x : cs) cs0.add(x);
+    cs0.sort(comparator);
+    cs = cs0.toArray(new String[0]);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
     cboScale_1.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.11"));
-    cboScale_1.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.04"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
+    cboScale_1.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.04"));
     frmPCS12IntersectionAndUnion.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_5 = new JLabel("Intersection");
@@ -122,7 +127,6 @@ public class PCS12IntersectionAndUnion {
     textIntersectionPitches.setColumns(10);
     
     JLabel lblScale = new JLabel("Scale 2:");
-    lblScale.setToolTipText("<html>\r\n07-26.04 Major Locrian<br/>\r\n07-28.11 Persian<br/>\r\n07-29.06 Hungarian<br/>\r\n07-38.11 Harmonic minor<br/>\r\n07-39.11 Melodic minor<br/>\r\n07-42.11 Harmonic major<br/>\r\n07-43.11 Major<br/>\r\n08-35.00 Octatonic<br/>\r\n</html>");
     lblScale.setHorizontalAlignment(SwingConstants.RIGHT);
     lblScale.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     lblScale.setBounds(183, 15, 64, 14);
@@ -151,7 +155,7 @@ public class PCS12IntersectionAndUnion {
     frmPCS12IntersectionAndUnion.getContentPane().add(lblNewLabel_6_1);
     
     textUnion = new JTextField();
-    textUnion.setText("06-69.00");
+    //textUnion.setText("8-23.11");
     textUnion.setHorizontalAlignment(SwingConstants.CENTER);
     textUnion.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     textUnion.setEditable(false);
@@ -160,7 +164,7 @@ public class PCS12IntersectionAndUnion {
     frmPCS12IntersectionAndUnion.getContentPane().add(textUnion);
     
     textUnionPitches = new JTextField();
-    textUnionPitches.setText("0 2 4 5 7 9");
+    //textUnionPitches.setText("0 2 4 5 7 9");
     textUnionPitches.setHorizontalAlignment(SwingConstants.CENTER);
     textUnionPitches.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     textUnionPitches.setEditable(false);

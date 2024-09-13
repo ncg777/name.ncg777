@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.TreeSet;
 
 import name.NicolasCoutureGrenier.Maths.Numbers;
@@ -44,7 +46,7 @@ public class ChordRotator {
       }
     });
   }
-
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   /**
    * Create the application.
    */
@@ -53,7 +55,7 @@ public class ChordRotator {
   }
   private PCS12 getSelectedChord() {
     if(cboScale.getSelectedIndex() < 0) return null;
-    return PCS12.parse(cboScale.getSelectedItem().toString());
+    return PCS12.parseForte(cboScale.getSelectedItem().toString());
   }
   private void refreshPitches() {
     if(cboScale.getSelectedIndex() < 0 || textPitches == null) return;
@@ -78,7 +80,6 @@ public class ChordRotator {
     frmChordRotator.getContentPane().setLayout(null);
     
     JLabel lblNewLabel = new JLabel("Scale:");
-    lblNewLabel.setToolTipText("<html>\r\n07-26.04 Major Locrian<br/>\r\n07-28.11 Persian<br/>\r\n07-29.06 Hungarian<br/>\r\n07-38.11 Harmonic minor<br/>\r\n07-39.11 Melodic minor<br/>\r\n07-42.11 Harmonic major<br/>\r\n07-43.11 Major<br/>\r\n08-35.00 Octatonic<br/>\r\n</html>");
     lblNewLabel.setBounds(10, 15, 114, 14);
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -93,10 +94,13 @@ public class ChordRotator {
     });
     
     
-    String[] cs = PCS12.getChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs);
+    String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
+    List<String> cs0 = new ArrayList<String>();
+    for(var s: cs) cs0.add(s);
+    cs0.sort(comparator);
+    cs = cs0.toArray(new String[0]);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.11"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     frmChordRotator.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_6_1 = new JLabel("Index sequence:");
@@ -122,7 +126,6 @@ public class ChordRotator {
         Sequence s = Sequence.parse(textField.getText().trim());
         int k = s.size();
         StringBuilder sb = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
         ArrayList<PCS12> chords = new ArrayList<>();
         for(int i=0;i<n;i++) {
           TreeSet<Integer> si = new TreeSet<>();
@@ -132,10 +135,9 @@ public class ChordRotator {
           PCS12 chx = PCS12.identify(si);
           if(chords.contains(chx)) {break;}
           chords.add(chx);
-          sb.append(chx.toString() + " (" + chx.toForteNumberString() + ")" + "\n");
-          sb2.append(chx.toString() + " ");
+          sb.append(chx.toForteNumberString()+ "\n");
         }
-        textResult.setText(sb.toString() + "\n\n" + sb2.toString().trim());
+        textResult.setText(sb.toString());
       }
     });
     btnNewButton.setBounds(10, 121, 290, 23);

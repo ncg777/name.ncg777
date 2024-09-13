@@ -53,7 +53,7 @@ public class ChordID {
     frmChordId = new JFrame();
     frmChordId.getContentPane().setBackground(Color.DARK_GRAY);
     frmChordId.setTitle("PCS12 identifier");
-    frmChordId.setBounds(100, 100, 468, 135);
+    frmChordId.setBounds(100, 100, 556, 146);
     frmChordId.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JLabel lblPitches = new JLabel("Pitches :");
@@ -64,14 +64,14 @@ public class ChordID {
     textField.setForeground(Color.WHITE);
     textField.setColumns(10);
     
-    JLabel lblChord = new JLabel("PCS12 :");
+    JLabel lblChord = new JLabel("Forte number :");
     lblChord.setForeground(Color.WHITE);
     
     final JLabel lblChord_1 = new JLabel("");
     lblChord_1.setBackground(new Color(0, 0, 0));
     lblChord_1.setForeground(Color.WHITE);
     
-    JButton btnId = new JButton("Pitches -> PCS12");
+    JButton btnId = new JButton("Pitches -> Forte number");
     btnId.setBackground(Color.BLACK);
     btnId.setForeground(Color.WHITE);
     btnId.addActionListener(new ActionListener() {
@@ -82,7 +82,7 @@ public class ChordID {
           p.add(Integer.parseInt(s));
           
         }
-        lblChord_1.setText(PCS12.identify(p).toString());
+        lblChord_1.setText(PCS12.identify(p).toForteNumberString());
       }
     });
     
@@ -96,18 +96,16 @@ public class ChordID {
     JLabel lblChord_2 = new JLabel("PCS12 :");
     lblChord_2.setForeground(Color.WHITE);
     
-    JButton btnNewButton = new JButton("PCS12 -> Pitches");
+    JButton btnNewButton = new JButton("Forte number -> Pitches");
     btnNewButton.setForeground(Color.WHITE);
     btnNewButton.setBackground(Color.BLACK);
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
         lblPitches_1.setText(
-          PCS12.parse(textField_1.getText())
+          PCS12.parseForte(textField_1.getText())
           .combinationString().replace("{", "").replace("}","").replace(",", ""));
       }
     });
-    
-    
     
     JLabel lblPitches_2 = new JLabel("Pitches :");
     lblPitches_2.setForeground(Color.WHITE);

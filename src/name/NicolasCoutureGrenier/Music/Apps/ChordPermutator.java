@@ -12,7 +12,10 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import name.NicolasCoutureGrenier.Maths.Objects.Sequence;
 import name.NicolasCoutureGrenier.Music.PCS12;
@@ -47,8 +50,9 @@ public class ChordPermutator {
   }
   private PCS12 getSelectedChord() {
     if(cboScale.getSelectedIndex() < 0) return null;
-    return PCS12.parse(cboScale.getSelectedItem().toString());
+    return PCS12.parseForte(cboScale.getSelectedItem().toString());
   }
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   private void refreshPitches() {
     if(cboScale.getSelectedIndex() < 0 || textPitches == null) return;
     PCS12 ch = getSelectedChord();
@@ -86,10 +90,13 @@ public class ChordPermutator {
     });
     
     
-    String[] cs = PCS12.getChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs);
+    String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
+    List<String> cs0 = new ArrayList<String>();
+    for(var s:cs) cs0.add(s);
+    cs0.sort(comparator);
+    cs = cs0.toArray(new String[0]);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("07-43.11"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     frmChordPermutator.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_6_1 = new JLabel("S12 Permutation:");
@@ -115,7 +122,7 @@ public class ChordPermutator {
           StringBuilder sb = new StringBuilder();
           
           do {
-            sb.append(ch.toString() + "\n");
+            sb.append(ch.toForteNumberString() + "\n");
             ch = ch.S12Permutate(s);
           } while(!ch.equals(initialChord));
           

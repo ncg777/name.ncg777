@@ -52,7 +52,7 @@ public class ChordSorter {
   public ChordSorter() {
     initialize();
   }
-
+  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   /**
    * Initialize the contents of the frame.
    */
@@ -94,19 +94,12 @@ public class ChordSorter {
         var chstr = textChords.getText().trim().split("\\s+");
         var chlist = new ArrayList<PCS12>();
         boolean rev = chckbxReverse.isSelected();
-        for(int i = 0;i<chstr.length;i++) {chlist.add(PCS12.parse(chstr[i]));}
+        for(int i = 0;i<chstr.length;i++) {chlist.add(PCS12.parseForte(chstr[i]));}
         
         ArrayList<PCS12> orig = new ArrayList<PCS12>();
         for(var c : chlist) orig.add(c);
         int r = (Integer)spinnerRotation.getValue();
-        chlist.sort(new Comparator<PCS12>() {
-
-          @Override
-          public int compare(PCS12 a, PCS12 b) {
-            double va = a.calcCenterTuning(r);
-            double vb = b.calcCenterTuning(r);
-            return (rev ? -1 : 1) * Double.compare(va, vb);
-          }});
+        chlist.sort((a,b) -> comparator.compare(a.toForteNumberString(), b.toForteNumberString()));
         
         Sequence permu = new Sequence();
         for(int i=0;i<chlist.size();i++) {
