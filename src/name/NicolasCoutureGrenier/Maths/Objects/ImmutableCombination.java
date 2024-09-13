@@ -59,6 +59,10 @@ public class ImmutableCombination implements Serializable, Comparable<ImmutableC
         this(new Combination(c, n));
     }
 
+    public static ImmutableCombination fromCombination(Combination c) {
+      return new ImmutableCombination(new Combination(c));
+    }
+    
     public Integer getN() {
         return combination.getN();
     }

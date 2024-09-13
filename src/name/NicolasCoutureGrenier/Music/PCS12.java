@@ -9,19 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.apache.lucene.util.automaton.RegExp;
 
 import com.opencsv.exceptions.CsvException;
 
 import name.NicolasCoutureGrenier.CS.Parsers;
-import name.NicolasCoutureGrenier.Maths.Numbers;
 import name.NicolasCoutureGrenier.Maths.Objects.Combination;
 import name.NicolasCoutureGrenier.Maths.Objects.FiniteRelation;
 import name.NicolasCoutureGrenier.Maths.Objects.ImmutableCombination;
@@ -378,7 +372,9 @@ public class PCS12 extends ImmutableCombination implements Serializable {
   public static PCS12 empty() {
     return new PCS12(new TreeSet<Integer>(), 1, 0);
   }
-
+  public static PCS12 identify(Combination input) {
+    return identify(ImmutableCombination.fromCombination(input));
+  }
   public static PCS12 identify(ImmutableCombination input) {
     if (input.getN() != 12) {
       throw new IllegalArgumentException(
