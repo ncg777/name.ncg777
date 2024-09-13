@@ -90,7 +90,7 @@ public class KComplexExplorer {
       }
     }
     
-    filtered.sort(PCS12.ForteStringComparator);
+    filtered.sort(PCS12.ForteStringComparator.reversed());
     
     DefaultListModel<String> modelPcs = (DefaultListModel<String>) pitchclasssets.getModel();
     
