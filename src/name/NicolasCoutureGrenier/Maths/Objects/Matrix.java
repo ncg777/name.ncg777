@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import java.util.function.Function;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -20,7 +21,6 @@ import com.google.common.collect.ComparisonChain;
 import name.NicolasCoutureGrenier.CS.Parsers;
 import name.NicolasCoutureGrenier.CS.DataStructures.HomoPair;
 import name.NicolasCoutureGrenier.CS.DataStructures.JaggedList;
-import name.NicolasCoutureGrenier.CS.DataStructures.SparseList;
 
 /**
  * Generic mutable Matrix class with basic functionality.
@@ -556,7 +556,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * @return
    */
   public List<T> getColumn(int j) {
-    List<T> o = new SparseList<T>(defaultValue);
+    List<T> o = new ArrayList<T>();
     for (int i = 0; i < m; i++) {
       o.add(get(i, j));
     }
@@ -574,7 +574,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * @return
    */
   public List<T> getRow(int i) {
-    List<T> r = new SparseList<T>(defaultValue);
+    List<T> r = new ArrayList<T>();
     
     for (int j = 0; j < n; j++) {
       r.add(get(i, j));
