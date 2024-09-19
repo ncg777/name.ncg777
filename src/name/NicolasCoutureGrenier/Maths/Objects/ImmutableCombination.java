@@ -120,6 +120,9 @@ public class ImmutableCombination implements Serializable, Comparable<ImmutableC
     public Sequence asSequence() {
         return combination.asSequence();
     }
+    public Set<Integer> asSet() {
+      return combination.asSet();
+    }
     public Sequence asBinarySequence() {
       return this.combination.asBinarySequence();
     }

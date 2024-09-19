@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.io.Serializable;
 
 import name.NicolasCoutureGrenier.CS.DataStructures.CollectionUtils;
@@ -187,9 +188,14 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
       o.add(i);
     }
     return o;
-    
   }
-  
+  public Set<Integer> asSet(){
+    Set<Integer> o = new TreeSet<Integer>();
+    for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
+      o.add(i);
+    }
+    return o;
+  }
   public Sequence asBinarySequence() {
     Sequence o = new Sequence();
     for(int i=0;i<getN();i++) {
