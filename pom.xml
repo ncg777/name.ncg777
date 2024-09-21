@@ -32,8 +32,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>
-								name.NicolasCoutureGrenier.MainMenuGUI</mainClass>
+							<mainClass>name.NicolasCoutureGrenier.MainMenuGUI</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
