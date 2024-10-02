@@ -86,7 +86,7 @@ public class TritSet {
     // Quantize method with beta cut threshold
     public static TritSet quantize(Iterable<Double> values, double threshold) {
         int count = 0;
-        for (Double ignored : values) {
+        for (@SuppressWarnings("unused") Double ignored : values) {
             count++;
         }
 
