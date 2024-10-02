@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import com.opencsv.exceptions.CsvException;
 
 import junit.framework.TestCase;
+import name.NicolasCoutureGrenier.CS.Parsers;
 
 public class FiniteRelationTests extends TestCase {
   FiniteRelation<String,String> r;
@@ -187,7 +188,7 @@ public class FiniteRelationTests extends TestCase {
   public void testWriteToCSVAndReadFromCSV() throws IOException, CsvException {
       File tempFile = File.createTempFile("finite-binary-relation-test", ".csv");
 
-      r.writeToCSV(Object::toString, Object::toString, tempFile.getPath());
+      r.writeToCSV((s) -> s==null? "null" :s.toString() , (s) ->s==null? "null" : s.toString(), tempFile.getPath());
       
       var readRelation = 
           FiniteRelation.readFromCSV(

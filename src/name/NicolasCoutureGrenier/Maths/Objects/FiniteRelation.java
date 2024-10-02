@@ -371,8 +371,8 @@ public class FiniteRelation<
         String path, boolean useBase64) throws IOException {
     PrintWriter p = new PrintWriter(path);
     CSVWriter w = new CSVWriter(p,',', '"','\\', "\n");
-    Function<X,String> xp = (x) -> xToString.apply((X)x);
-    Function<Y,String> yp = (y) -> yToString.apply((Y)y);
+    Function<X,String> xp = (x) -> x==null?"null":xToString.apply((X)x);
+    Function<Y,String> yp = (y) -> y==null?"null":yToString.apply((Y)y);
     
     if(useBase64) { 
       xp = Printers.base64Decorator(xp);
@@ -411,7 +411,7 @@ public class FiniteRelation<
     Function<String, X> xParser, 
     Function<String,Y> yParser, InputStream is, boolean useBase64) throws IOException, CsvException {
     var st = new InputStreamReader(is);
-    var o = readFromCSV(xParser, yParser, new BufferedReader(st), useBase64);
+    var o = readFromCSV(Parsers.nullDecorator(xParser), Parsers.nullDecorator(yParser), new BufferedReader(st), useBase64);
     st.close();
     return o;
   }
@@ -421,7 +421,7 @@ public class FiniteRelation<
   Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, Reader reader) throws IOException, CsvException {
-    return readFromCSV(xParser,yParser,reader,false);
+    return readFromCSV(Parsers.nullDecorator(xParser),Parsers.nullDecorator(yParser),reader,false);
   }
   public static <
   X extends Comparable<? super X>,
@@ -438,8 +438,8 @@ public class FiniteRelation<
       xParser = Parsers.base64Decorator(xParser);
       yParser = Parsers.base64Decorator(yParser);
     }
-    final var fxp = Parsers.nullDecorator(xParser);
-    final var fyp = Parsers.nullDecorator(yParser);
+    final var fxp = xParser;
+    final var fyp = yParser;
     
     r.readAll().stream()
       .forEach((s) -> {
@@ -455,7 +455,7 @@ public class FiniteRelation<
   Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, String path, boolean useBase64)  throws IOException, CsvException {
-    return readFromCSV(xParser, yParser, new FileReader(path), useBase64);
+    return readFromCSV(Parsers.nullDecorator(xParser), Parsers.nullDecorator(yParser), new FileReader(path), useBase64);
   }
   
   public static <
@@ -463,7 +463,7 @@ public class FiniteRelation<
   Y extends Comparable<? super Y>> FiniteRelation<X,Y> readFromCSV (
     Function<String, X> xParser, 
     Function<String,Y> yParser, String path)  throws IOException, CsvException {
-    return readFromCSV(xParser, yParser, new FileReader(path));
+    return readFromCSV(Parsers.nullDecorator(xParser), Parsers.nullDecorator(yParser), new FileReader(path));
   }
 
   @Override
