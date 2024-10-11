@@ -23,9 +23,9 @@ public class SetPartitionEnumerationTest extends TestCase {
   public final void testSetPartitionEnumeration() {
     for(int i=0;i<8;i++) {
       
-      int b = Numbers.bell(i);
+      long b = Numbers.bell(i);
       
-      int c = 0;
+      long c = 0;
       var e = new SetPartitionEnumeration(i);
       while(e.hasMoreElements()) {
         e.nextElement(); 

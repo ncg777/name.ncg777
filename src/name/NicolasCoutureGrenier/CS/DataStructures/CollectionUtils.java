@@ -54,13 +54,13 @@ public class CollectionUtils {
   }
   
   @SuppressWarnings("null")
-  public static int getPermutationOrder(Integer[] permutation) {
+  public static long getPermutationOrder(Integer[] permutation) {
     TreeSet<Sequence> cs = getPermutationAsDisjointCycles(permutation);
     
-    Integer o = null;
+    Long o = null;
     
     for(var s: cs) {
-      if(o == null) {o = s.size();}
+      if(o == null) {o = Long.valueOf(s.size());}
       else { o = Numbers.lcm(o, s.size());}
     }
     return o;

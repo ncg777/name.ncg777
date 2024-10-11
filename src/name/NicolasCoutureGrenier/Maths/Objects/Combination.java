@@ -269,7 +269,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
   }
 
   public static Combination[] generate(int n, int k) {
-    int cnt = Numbers.binomial(n, k);
+    int cnt = (int)Numbers.binomial(n, k);
     Combination[] o = new Combination[cnt];
 
     CombinationEnumeration ce = new CombinationEnumeration(n, k);

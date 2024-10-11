@@ -45,7 +45,7 @@ public class PCS12Sequence extends ArrayList<PCS12> {
   public static PCS12Sequence merge(ArrayList<PCS12Sequence> s) {
     int n = 1;
     
-    for(var _s:s) {n = Numbers.lcm(n,_s.size());}
+    for(var _s:s) {n = (int)Numbers.lcm(n,_s.size());}
     PCS12Sequence o = new PCS12Sequence();
     for(int i=0;i<n;i++) {
       PCS12 m = PCS12.empty();

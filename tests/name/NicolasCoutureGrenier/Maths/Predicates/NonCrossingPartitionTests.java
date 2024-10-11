@@ -21,8 +21,8 @@ public class NonCrossingPartitionTests extends TestCase  {
   public final void testCatalanBell() {
     NonCrossingPartition pred = new NonCrossingPartition();
     for(int i=0;i<9;i++) {
-      int nc = Numbers.catalan(i);
-      int c = Numbers.bell(i)-nc;
+      long nc = Numbers.catalan(i);
+      long c = Numbers.bell(i)-nc;
       
       int cntnc = 0;
       int cntc = 0;

@@ -119,10 +119,10 @@ public class Numbers {
 
   }
 
-  public static int gcd(int a0, int b0) {
-    int a = a0;
-    int b = b0;
-    int t = 0;
+  public static long gcd(long a0, long b0) {
+    long a = a0;
+    long b = b0;
+    long t = 0;
     while (b != 0) {
       t = b;
       b = a % b;
@@ -131,17 +131,17 @@ public class Numbers {
     return a;
   }
 
-  public static int lcm(int a, int b) {
+  public static long lcm(long a, long b) {
     return (a * b) / gcd(a, b);
   }
 
-  public static int catalan(int n) {
+  public static long catalan(int n) {
     if(n==0) return 1;
     return binomial(2*n, n) - binomial(2*n,n+1);
   }
   
-  public static int bell(int n) {
-    int[][] bellTriangle = new int[n + 1][n + 1];
+  public static long bell(int n) {
+    long[][] bellTriangle = new long[n + 1][n + 1];
 
     // Initialize the first row
     bellTriangle[0][0] = 1;
@@ -161,7 +161,7 @@ public class Numbers {
     return bellTriangle[n][0];
   }
   
-  public static int binomial(int n, int k) {
+  public static long binomial(int n, int k) {
     long num = n;
     long den = 1;
     for (int i = 2; i <= k; i++) {
@@ -169,7 +169,7 @@ public class Numbers {
       num *= (n - i + 1);
     }
 
-    return (int) (num / den);
+    return (num / den);
   }
 
   /**
@@ -183,7 +183,7 @@ public class Numbers {
       throw new IllegalArgumentException();
     }
     int sum = 0;
-    for (int i = 0; i < n.length; i++) {
+    for(int i = 0; i < n.length; i++) {
       if (n[i] < 0) {
         throw new IllegalArgumentException();
       }
@@ -195,7 +195,7 @@ public class Numbers {
       nf = nf / factorial(n[i]);
     }
 
-    return (int) nf;
+    return nf;
   }
 
   /**
@@ -214,8 +214,8 @@ public class Numbers {
     }
     return o;
   }
-  public static int triangularNumber(int n) {return binomial(n+1, 2);}
-  public static int reverseTriangularNumber(int n) {
+  public static long triangularNumber(int n) {return binomial(n+1, 2);}
+  public static long reverseTriangularNumber(int n) {
     return Double.valueOf(Math.floor((Math.sqrt((double)(1+8*n))-1.0)/2.0)).intValue();
   }
 }
