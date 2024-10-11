@@ -136,8 +136,35 @@ public class Numbers {
   }
 
   public static long catalan(int n) {
-    if(n==0) return 1;
-    return binomial(2*n, n) - binomial(2*n,n+1);
+    if (n < 0) {
+      throw new IllegalArgumentException("n must be non-negative.");
+    }
+  
+    // Array to store the computed Catalan numbers
+    long[] catalan = new long[n + 1];
+  
+    // Initialize the first Catalan number
+    catalan[0] = 1;
+  
+    // Calculate Catalan numbers using dynamic programming
+    for (int i = 1; i <= n; i++) {
+        catalan[i] = 0;
+        for (int j = 0; j < i; j++) {
+            // Check for overflow before performing the multiplication
+            if (catalan[i] > Long.MAX_VALUE / catalan[j]) {
+                throw new ArithmeticException("Overflow detected.");
+            }
+  
+            catalan[i] += catalan[j] * catalan[i - 1 - j];
+  
+            // Check for overflow after addition
+            if (catalan[i] < 0) {
+                throw new ArithmeticException("Overflow detected.");
+            }
+        }
+    }
+  
+    return catalan[n];
   }
   
   public static long bell(int n) {
