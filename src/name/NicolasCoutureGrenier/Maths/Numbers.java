@@ -189,14 +189,34 @@ public class Numbers {
   }
   
   public static long binomial(int n, int k) {
-    long num = n;
-    long den = 1;
-    for (int i = 2; i <= k; i++) {
-      den *= i;
-      num *= (n - i + 1);
+    if (n < 0) {
+      throw new IllegalArgumentException("n must be non-negative.");
     }
-
-    return (num / den);
+    if (k < 0) {
+        throw new IllegalArgumentException("k must be non-negative.");
+    }
+    if (k > n) {
+        throw new IllegalArgumentException("k cannot be greater than n.");
+    }
+  
+    // Since binomial(n, k) == binomial(n, n-k), use the smaller k for efficiency
+    if (k > n - k) {
+        k = n - k;
+    }
+  
+    long result = 1;
+  
+    for (int i = 0; i < k; i++) {
+        // Check for overflow before multiplying
+        if (result > Long.MAX_VALUE / (n - i)) {
+            throw new ArithmeticException("Overflow detected.");
+        }
+  
+        result *= (n - i);
+        result /= (i + 1);  // Division will not overflow, safe operation
+    }
+  
+    return result;
   }
 
   /**
