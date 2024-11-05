@@ -1,11 +1,11 @@
 package name.NicolasCoutureGrenier.CS.DataStructures;
 
-public class TritSet {
+public class TritChain {
     private final Object storage;
     private final int tritsPerInt;
     private final int size;
 
-    public TritSet(int size) {
+    public TritChain(int size) {
         this.size = size;
         boolean is64Bit = System.getProperty("os.arch").contains("64");
 
@@ -78,32 +78,32 @@ public class TritSet {
         }
     }
 
-    // Get the size of the TritSet (number of trits)
+    // Get the size of the TritChain (number of trits)
     public int size() {
         return this.size;
     }
 
     // Quantize method with beta cut threshold
-    public static TritSet quantize(Iterable<Double> values, double threshold) {
+    public static TritChain quantize(Iterable<Double> values, double threshold) {
         int count = 0;
         for (@SuppressWarnings("unused") Double ignored : values) {
             count++;
         }
 
-        TritSet tritSet = new TritSet(count);
+        TritChain tritChain = new TritChain(count);
         int index = 0;
 
         for (Double value : values) {
             if (value > threshold) {
-                tritSet.set(index, 1);
+                tritChain.set(index, 1);
             } else if (value < -threshold) {
-                tritSet.set(index, -1);
+                tritChain.set(index, -1);
             } else {
-                tritSet.set(index, 0);
+                tritChain.set(index, 0);
             }
             index++;
         }
 
-        return tritSet;
+        return tritChain;
     }
 }
