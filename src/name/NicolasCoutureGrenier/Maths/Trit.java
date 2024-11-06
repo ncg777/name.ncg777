@@ -3,22 +3,22 @@ package name.NicolasCoutureGrenier.Maths;
 import java.util.TreeMap;
 
 public class Trit {
-  private static TreeMap<Integer,Integer> trit_index= new TreeMap<Integer,Integer>();
+  private final static TreeMap<Integer,Integer> trit_index= new TreeMap<Integer,Integer>();
   private static TreeMap<String,int[]> unaryOperators;
   private static TreeMap<String,int[][]> binaryOperators;
   
-  public static int AND(int t, int u) { return binop("AND", t, u); }
-  public static int NAND(int t, int u) { return binop("NAND", t, u); }
-  public static int OR(int t, int u) { return binop("OR", t, u); }
-  public static int NOR(int t, int u) { return binop("NOR", t, u); }
-  public static int CONS(int t, int u) { return binop("CONS", t, u); }
-  public static int NCONS(int t, int u) { return binop("NCONS", t, u); }
-  public static int ANY(int t, int u) { return binop("ANY", t, u); }
-  public static int NANY(int t, int u) { return binop("NANY", t, u); }
-  public static int MUL(int t, int u) { return binop("MUL", t, u); }
-  public static int NMUL(int t, int u) { return binop("NMUL", t, u); }
-  public static int SUM(int t, int u) { return binop("SUM", t, u); }
-  public static int NSUM(int t, int u) { return binop("NSUM", t, u); }
+  public static int AND(int t, int u) { return binaryOperator("AND", t, u); }
+  public static int NAND(int t, int u) { return binaryOperator("NAND", t, u); }
+  public static int OR(int t, int u) { return binaryOperator("OR", t, u); }
+  public static int NOR(int t, int u) { return binaryOperator("NOR", t, u); }
+  public static int CONS(int t, int u) { return binaryOperator("CONS", t, u); }
+  public static int NCONS(int t, int u) { return binaryOperator("NCONS", t, u); }
+  public static int ANY(int t, int u) { return binaryOperator("ANY", t, u); }
+  public static int NANY(int t, int u) { return binaryOperator("NANY", t, u); }
+  public static int MUL(int t, int u) { return binaryOperator("MUL", t, u); }
+  public static int NMUL(int t, int u) { return binaryOperator("NMUL", t, u); }
+  public static int SUM(int t, int u) { return binaryOperator("SUM", t, u); }
+  public static int NSUM(int t, int u) { return binaryOperator("NSUM", t, u); }
   
   static {
     int[] BUF = {-1,0,1};
@@ -85,28 +85,28 @@ public class Trit {
   }
   
   
-  public static int unop(String opname, int t) {
+  public static int unaryOperator(String opname, int t) {
     if(!unaryOperators.containsKey(opname)) throw new RuntimeException("Unknown op.");
     if(t < -1 || t > 1) throw new RuntimeException("Invalid input.");
     return unaryOperators.get(opname)[trit_index.get(t)];
   }
   
-  public static int BUF(int t) { return unop("BUF",t); }
-  public static int NOT(int t) { return unop("NOT",t); }
-  public static int PNOT(int t) { return unop("PNOT",t); }
-  public static int NNOT(int t) { return unop("NNOT",t); }
-  public static int ABS(int t) { return unop("ABS",t); }
-  public static int CLU(int t) { return unop("CLU",t); }
-  public static int CLD(int t) { return unop("CLD",t); }
-  public static int INC(int t) { return unop("INC",t); }
-  public static int DEC(int t) { return unop("DEC",t); }
-  public static int RTU(int t) { return unop("RTU",t); }
-  public static int RTD(int t) { return unop("RTD",t); }
-  public static int ISP(int t) { return unop("ISP",t); }
-  public static int ISZ(int t) { return unop("ISZ",t); }
-  public static int ISN(int t) { return unop("ISN",t); }
+  public static int BUF(int t) { return unaryOperator("BUF",t); }
+  public static int NOT(int t) { return unaryOperator("NOT",t); }
+  public static int PNOT(int t) { return unaryOperator("PNOT",t); }
+  public static int NNOT(int t) { return unaryOperator("NNOT",t); }
+  public static int ABS(int t) { return unaryOperator("ABS",t); }
+  public static int CLU(int t) { return unaryOperator("CLU",t); }
+  public static int CLD(int t) { return unaryOperator("CLD",t); }
+  public static int INC(int t) { return unaryOperator("INC",t); }
+  public static int DEC(int t) { return unaryOperator("DEC",t); }
+  public static int RTU(int t) { return unaryOperator("RTU",t); }
+  public static int RTD(int t) { return unaryOperator("RTD",t); }
+  public static int ISP(int t) { return unaryOperator("ISP",t); }
+  public static int ISZ(int t) { return unaryOperator("ISZ",t); }
+  public static int ISN(int t) { return unaryOperator("ISN",t); }
   
-  public static int binop(String opname, int t, int u) {
+  public static int binaryOperator(String opname, int t, int u) {
     if(!binaryOperators.containsKey(opname)) throw new RuntimeException("Unknown op.");
     if((t < -1 || t > 1) || (u < -1 || u > 1)) throw new RuntimeException("Invalid input.");
     

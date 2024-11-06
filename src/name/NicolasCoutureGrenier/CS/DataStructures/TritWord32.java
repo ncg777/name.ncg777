@@ -31,7 +31,7 @@ public class TritWord32 {
     private TritWord32 unop(String opname) {
       var o = new TritWord32();
       for(int i=0;i<32;i++) {
-        o.set(i, Trit.unop(opname, this.get(i)));
+        o.set(i, Trit.unaryOperator(opname, this.get(i)));
       }
       return o;
     }
@@ -39,7 +39,7 @@ public class TritWord32 {
     private TritWord32 binop(String opname, TritWord32 other) {
       var o = new TritWord32();
       for(int i=0;i<32;i++) {
-        o.set(i, Trit.binop(opname, this.get(i), other.get(i)));
+        o.set(i, Trit.binaryOperator(opname, this.get(i), other.get(i)));
       }
       return o;
     }
