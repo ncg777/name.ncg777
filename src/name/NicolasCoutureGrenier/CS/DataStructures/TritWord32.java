@@ -172,4 +172,20 @@ public class TritWord32 {
         long bits = (storage >> bitOffset) & 0b11L;
         return decodeTrit((int) bits);
     }
+    
+    public String toString() {
+      final TreeMap<Integer, String> symbols = new TreeMap<>();
+      
+      symbols.put(-1, "T");
+      symbols.put(0, "0");
+      symbols.put(1, "1");
+      
+      StringBuilder sb = new StringBuilder();
+      
+      for(int i=0;i<32;i++) {
+        sb.append(symbols.get(this.get(i)));
+      }
+      
+      return sb.toString();
+    }
 }
