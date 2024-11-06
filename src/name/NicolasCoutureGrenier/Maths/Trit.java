@@ -86,8 +86,8 @@ public class Trit {
   
   
   public static int unaryOperator(String opname, int t) {
-    if(!unaryOperators.containsKey(opname)) throw new RuntimeException("Unknown op.");
-    if(t < -1 || t > 1) throw new RuntimeException("Invalid input.");
+    if(!unaryOperators.containsKey(opname)) throw new IllegalArgumentException("Unknown op.");
+    if(t < -1 || t > 1) throw new IllegalArgumentException("Invalid input.");
     return unaryOperators.get(opname)[trit_index.get(t)];
   }
   
@@ -107,8 +107,8 @@ public class Trit {
   public static int ISN(int t) { return unaryOperator("ISN",t); }
   
   public static int binaryOperator(String opname, int t, int u) {
-    if(!binaryOperators.containsKey(opname)) throw new RuntimeException("Unknown op.");
-    if((t < -1 || t > 1) || (u < -1 || u > 1)) throw new RuntimeException("Invalid input.");
+    if(!binaryOperators.containsKey(opname)) throw new IllegalArgumentException("Unknown op.");
+    if((t < -1 || t > 1) || (u < -1 || u > 1)) throw new IllegalArgumentException("Invalid input.");
     
     return binaryOperators.get(opname)[trit_index.get(t)][trit_index.get(u)];
   }

@@ -58,7 +58,7 @@ public class TritWord32 {
     
     public TritWord32() {
         boolean is64Bit = System.getProperty("os.arch").contains("64");
-        if(!is64Bit) throw new RuntimeException("Only 64 bit architectures supported");    
+        if(!is64Bit) throw new IllegalArgumentException("Only 64 bit architectures supported");    
     }
 
     private int encodeTrit(int trit) {
@@ -110,7 +110,7 @@ public class TritWord32 {
       
       StringBuilder sb = new StringBuilder();
       
-      for(int i=0;i<32;i++) {
+      for(int i=31;i<0;i--) {
         sb.append(symbols.get(this.get(i)));
       }
       
