@@ -7,7 +7,7 @@ public class TritWord32 {
        
     private static TreeMap<String,int[]> unaryOperators;
     private static TreeMap<String,int[][]> binaryOperators;
-    
+    private static TreeMap<Integer,Integer> trit_index= new TreeMap<Integer,Integer>();
     static {
       int[] BUF = {-1,0,1};
       int[] NOT = {1,0,-1};
@@ -66,6 +66,9 @@ public class TritWord32 {
       binaryOperators.put("NMUL", NMUL);
       binaryOperators.put("SUM", SUM);
       binaryOperators.put("NSUM", NSUM);
+      trit_index.put(-1, 0);
+      trit_index.put(0, 1);
+      trit_index.put(1, 2);
     }
     
     public TritWord32 BUF() { return unop("BUF"); }
@@ -83,10 +86,12 @@ public class TritWord32 {
     public TritWord32 ISZ() { return unop("ISZ"); }
     public TritWord32 ISN() { return unop("ISN"); }
     
+    
+    
     private TritWord32 unop(String opname) {
       var o = new TritWord32();
       for(int i=0;i<32;i++) {
-        o.set(i, unaryOperators.get(opname)[this.get(i) == -1 ? 0 : this.get(i) == 0 ? 1 : 2]);
+        o.set(i, unaryOperators.get(opname)[trit_index.get(this.get(i))]);
       }
       return o;
     }
@@ -94,7 +99,7 @@ public class TritWord32 {
     private TritWord32 binop(String opname, TritWord32 other) {
       var o = new TritWord32();
       for(int i=0;i<32;i++) {
-        o.set(i, binaryOperators.get(opname)[this.get(i) == -1 ? 0 : this.get(i) == 0 ? 1 : 2][other.get(i) == -1 ? 0 : other.get(i) == 0 ? 1 : 2]);
+        o.set(i, binaryOperators.get(opname)[trit_index.get(this.get(i))][trit_index.get(other.get(i))]);
       }
       return o;
     }
