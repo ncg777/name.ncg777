@@ -1,7 +1,12 @@
 package name.NicolasCoutureGrenier.CS.DataStructures;
 
 import java.util.TreeMap;
-
+/**
+ * A class representing a word of 32 trits.
+ * 
+ * Operators defined by:https://louis-dr.github.io/ternlogic.html
+ * 
+ */
 public class TritWord32 {
     private Long storage = 0l;
        
