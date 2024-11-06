@@ -86,8 +86,6 @@ public class TritWord32 {
     public TritWord32 ISZ() { return unop("ISZ"); }
     public TritWord32 ISN() { return unop("ISN"); }
     
-    
-    
     private TritWord32 unop(String opname) {
       var o = new TritWord32();
       for(int i=0;i<32;i++) {

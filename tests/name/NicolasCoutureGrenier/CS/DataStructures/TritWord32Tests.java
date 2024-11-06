@@ -2,8 +2,6 @@ package name.NicolasCoutureGrenier.CS.DataStructures;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 
 public class TritWord32Tests {
