@@ -91,6 +91,27 @@ public class TritWord32 {
     public TritWord32 ISZ() { return unop("ISZ"); }
     public TritWord32 ISN() { return unop("ISN"); }
     
+    public static int BUF(int t) { return unop("BUF",t); }
+    public static int NOT(int t) { return unop("NOT",t); }
+    public static int PNOT(int t) { return unop("PNOT",t); }
+    public static int NNOT(int t) { return unop("NNOT",t); }
+    public static int ABS(int t) { return unop("ABS",t); }
+    public static int CLU(int t) { return unop("CLU",t); }
+    public static int CLD(int t) { return unop("CLD",t); }
+    public static int INC(int t) { return unop("INC",t); }
+    public static int DEC(int t) { return unop("DEC",t); }
+    public static int RTU(int t) { return unop("RTU",t); }
+    public static int RTD(int t) { return unop("RTD",t); }
+    public static int ISP(int t) { return unop("ISP",t); }
+    public static int ISZ(int t) { return unop("ISZ",t); }
+    public static int ISN(int t) { return unop("ISN",t); }
+    
+    
+    public static int unop(String opname, int t) {
+      if(t < -1 || t > 1) throw new RuntimeException("Invalid input.");
+      return unaryOperators.get(opname)[trit_index.get(t)];
+    }
+    
     private TritWord32 unop(String opname) {
       var o = new TritWord32();
       for(int i=0;i<32;i++) {
@@ -105,6 +126,10 @@ public class TritWord32 {
         o.set(i, binaryOperators.get(opname)[trit_index.get(this.get(i))][trit_index.get(other.get(i))]);
       }
       return o;
+    }
+    
+    private static int binop(String opname, int t, int u) {
+      return binaryOperators.get(opname)[trit_index.get(t)][trit_index.get(u)];
     }
     
     int[][] NAND = {{1,1,1},{1,0,0},{1,0,-1}};
@@ -130,6 +155,18 @@ public class TritWord32 {
     public TritWord32 NMUL(TritWord32 other) { return binop("NMUL", other); }
     public TritWord32 SUM(TritWord32 other) { return binop("SUM", other); }
     public TritWord32 NSUM(TritWord32 other) { return binop("NSUM", other); }
+    
+    public static int AND(int t, int u) { return binop("AND", t, u); }
+    public static int OR(int t, int u) { return binop("OR", t, u); }
+    public static int NOR(int t, int u) { return binop("NOR", t, u); }
+    public static int CONS(int t, int u) { return binop("CONS", t, u); }
+    public static int NCONS(int t, int u) { return binop("NCONS", t, u); }
+    public static int ANY(int t, int u) { return binop("ANY", t, u); }
+    public static int NANY(int t, int u) { return binop("NANY", t, u); }
+    public static int MUL(int t, int u) { return binop("MUL", t, u); }
+    public static int NMUL(int t, int u) { return binop("NMUL", t, u); }
+    public static int SUM(int t, int u) { return binop("SUM", t, u); }
+    public static int NSUM(int t, int u) { return binop("NSUM", t, u); }
     
     public TritWord32() {
         boolean is64Bit = System.getProperty("os.arch").contains("64");
@@ -171,6 +208,10 @@ public class TritWord32 {
 
         long bits = (storage >> bitOffset) & 0b11L;
         return decodeTrit((int) bits);
+    }
+    
+    public Long getLong() {
+      return storage;
     }
     
     public String toString() {
