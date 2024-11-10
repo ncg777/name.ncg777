@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>name.NicolasCoutureGrenier</groupId>
 	<artifactId>name.NicolasCoutureGrenier</artifactId>
-	<version>0.1.10</version>
+	<version>0.1.11</version>
 	<url>https://github.com/ncg777/name.NicolasCoutureGrenier.git</url>
 	<build>
 		<resources>
