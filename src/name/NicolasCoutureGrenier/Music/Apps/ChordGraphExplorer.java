@@ -230,7 +230,7 @@ public class ChordGraphExplorer {
     frmChordPleasure.getContentPane().setBackground(Color.DARK_GRAY);
     frmChordPleasure.setBounds(100, 100, 641, 160);
     frmChordPleasure.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    cbxScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
+    cbxScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.04"));
     fillChords();
 
 

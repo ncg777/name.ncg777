@@ -318,7 +318,7 @@ public class KComplexExplorer {
     String[] cs = PCS12.getForteChordDict().keySet().toArray(new String[0]);
     Arrays.sort(cs, PCS12.ForteStringComparator);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.04"));
     frmKComplexExplorer.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_2 = new JLabel("Pitch class sets");
