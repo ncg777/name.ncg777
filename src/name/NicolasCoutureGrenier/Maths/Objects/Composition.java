@@ -165,10 +165,10 @@ public class Composition extends Combination {
         
         return SegmentationScore.evaluate(d, c);
       });
-    List<Composition> out = new ArrayList<Composition>();
+    List<Composition> o = new ArrayList<Composition>();
     
-    b.backtrack(new Composition(getK()+1), out);
-    return out;
+    b.backtrack(new Composition(getK()+1), o);
+    return o;
     
   }
   @Override

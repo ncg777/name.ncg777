@@ -16,10 +16,8 @@ import javax.swing.JSpinner;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.awt.event.ActionEvent;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.JCheckBox;
 
 public class ChordSorter {
 
@@ -27,7 +25,6 @@ public class ChordSorter {
   private JTextField textChords;
   private JTextField textResult;
   private JSpinner spinnerRotation;
-  private JCheckBox chckbxReverse;
   private JTextField textPermutation;
 
   /**
@@ -52,7 +49,7 @@ public class ChordSorter {
   public ChordSorter() {
     initialize();
   }
-  private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
+  //private Comparator<String> comparator = PCS12.ForteStringComparator.reversed();
   /**
    * Initialize the contents of the frame.
    */
@@ -93,13 +90,12 @@ public class ChordSorter {
       public void actionPerformed(ActionEvent e) {
         var chstr = textChords.getText().trim().split("\\s+");
         var chlist = new ArrayList<PCS12>();
-        boolean rev = chckbxReverse.isSelected();
         for(int i = 0;i<chstr.length;i++) {chlist.add(PCS12.parseForte(chstr[i]));}
         
         ArrayList<PCS12> orig = new ArrayList<PCS12>();
         for(var c : chlist) orig.add(c);
         int r = (Integer)spinnerRotation.getValue();
-        chlist.sort((a,b) -> comparator.compare(a.toForteNumberString(), b.toForteNumberString()));
+        chlist.sort((a,b) -> a.rotatedCompareTo(b,r));
         
         Sequence permu = new Sequence();
         for(int i=0;i<chlist.size();i++) {
@@ -108,7 +104,7 @@ public class ChordSorter {
           permu.add(x);
         }
         
-        textResult.setText(Joiner.on(" ").join(chlist));
+        textResult.setText(Joiner.on(" ").join(chlist.stream().map(c -> c.toForteNumberString()).toList()));
         textPermutation.setText(permu.toString());
       }
     });
@@ -119,10 +115,6 @@ public class ChordSorter {
     textResult.setBounds(76, 97, 348, 17);
     frmChordSorter.getContentPane().add(textResult);
     textResult.setColumns(10);
-    
-    chckbxReverse = new JCheckBox("Reverse");
-    chckbxReverse.setBounds(10, 32, 97, 23);
-    frmChordSorter.getContentPane().add(chckbxReverse);
     
     JLabel lblNewLabel_2_1 = new JLabel("Permutation:");
     lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.RIGHT);

@@ -1222,8 +1222,6 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       }
     }
     
-    
-    // Generating the sequences
     acc = 0;
     
     cs.put(0,0);
@@ -1307,4 +1305,138 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return o;
   }
 
+  
+  /***
+   * 
+   * 
+   * @param R
+   * @param amp
+   * @param maxamp
+   * @param addF
+   * @param addS
+   * @return
+   */
+  /*
+  public static Sequence genRndOnRhythm2(Rhythm R, int amp, int maxamp, boolean addF, boolean addS) {
+    Sequence o = new Sequence();
+    int n = R.getN();
+    Sequence rhythmCompositionSequence = R.getComposition().asSequence();
+    TreeMap<Integer, Integer> seg = new TreeMap<>();
+    TreeSet<Integer> F = Numbers.factors(n);
+    F.remove(1); F.remove(n);
+    
+    TreeMap<Integer,Integer> I = new TreeMap<>();
+    TreeMap<Integer, TreeMap<Integer, Integer>> coordf = new TreeMap<>();
+    TreeMap<Integer,Sequence> epsf = new TreeMap<>();
+    
+    int rhythmCompositionSequenceSize = rhythmCompositionSequence.size();
+    
+    TreeMap<Integer, Integer> cs = new TreeMap<>();
+    
+    
+    //Generating the random factor sequence
+    int nbFactors = 1+RandomNumberGenerator.nextInt((F.size()%2 == 0 ? F.size()/2 : (F.size()+1)/2)-1);
+    Sequence F2 = new Sequence();
+    
+    for(int i=0; i<nbFactors;i++) {
+      double[] weights = new double[F.size()];
+      int j = 0;
+      for(int _f : F) { weights[j++] = Math.exp(-Math.abs(Math.sqrt(n) - (double) _f)); }
+      int f = F.size() == 1 ? F.first() : CollectionUtils.chooseAtRandomWithWeights(F, weights);
+      int kp = n / f;
+      F.remove(f);
+      F.remove(kp);
+      F2.add(f);
+      int _sum = RandomNumberGenerator.nextInt(maxamp);
+      epsf.put(f, Sequence.genRnd(kp, amp, _sum, maxamp, true));
+    }
+    
+    int d=0;
+    int c=0;
+    int acc=0;
+    
+    for(int i=0; i<F2.size();i++) {
+      int f = F2.get(i);
+      coordf.put(f, new TreeMap<>());
+      acc = 0;
+      for(int j=0; j<rhythmCompositionSequenceSize;j++) {
+        coordf.get(f).put(j, (int)Math.floor((double) acc / (double)f));
+        acc += rhythmCompositionSequence.get(j);
+      }
+    }
+    
+    
+    acc = 0;
+    
+    cs.put(0,0);
+    for(int i=0; i<rhythmCompositionSequenceSize; i++) {
+      if(i != 0 && rhythmCompositionSequence.get(i) != rhythmCompositionSequence.get(i-1)) {
+        c++; 
+        cs.put(c, 0);
+        d=0;
+      }
+      seg.put(i, c);
+      cs.put(c, cs.get(c)+1);
+      I.put(i, d++);
+      acc += rhythmCompositionSequence.get(i);
+    }
+    
+    Sequence seqepsc = new Sequence();
+  
+    Sequence _s0 = new Sequence();
+    _s0.add(0);
+    
+    int szs = s.size();
+    int __i=0;
+    Sequence seqs = szs <= 1 ? _s0 : Sequence.genRnd(szs, amp, 0, maxamp, true);
+    for(HomoPair<Integer> pair : s.keySet()) {
+      
+      Sequence sequence0 = new Sequence();
+      sequence0.add(seqs.get(__i));
+      
+      int j=0;
+      Sequence plainSeq = pair.getFirst() == 1 ? sequence0 : Sequence.genRnd(pair.getFirst(), amp, seqs.get(__i), maxamp, true);
+      
+      s.get(pair).put(j++, plainSeq);
+      int pk = plainSeq.size();
+      if(pk > 1) {
+        s.get(pair).put(j++, plainSeq.reverse());
+        TreeSet<Integer> pf = Numbers.factors(pk);
+        pf.remove(pk);
+        pf.remove(1);
+        
+        for(int _f : pf) {
+          for(int u=_f;u<pk;u+=_f) {
+            s.get(pair).put(j++, plainSeq.rotate(u));
+            s.get(pair).put(j++, plainSeq.rotate(u).reverse());
+            s.get(pair).put(j++, plainSeq.rotate(u).flip());
+            s.get(pair).put(j++, plainSeq.rotate(u).reverse().flip());
+          }
+        }
+      }
+      __i++;
+    }
+    
+    for(int i=0; i<=c;i++) {
+      seqepsc.add(RandomNumberGenerator.nextInt(s.get(h.get(i)).size()));
+    }
+    
+    // Adding it up
+    for(int i=0;i<rhythmCompositionSequenceSize;i++) {
+      int v = 0;
+      int _c = seg.get(i);
+      if(addS) v += s.get(h.get(_c)).get(seqepsc.get(_c)).get(I.get(i));
+      
+      if(addF) {
+        for(int j=0; j<nbFactors;j++) {
+          int _f = F2.get(j);
+          v += epsf.get(_f).get(coordf.get(_f).get(i));
+        }
+      }
+      
+      o.add(v);
+    }
+    return o;
+  }
+  */
 }
