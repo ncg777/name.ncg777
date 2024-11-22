@@ -1,21 +1,23 @@
 package name.ncg777.Maths.Objects;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.TreeSet;
+
 
 /**
  * 
  * P(n) = \sum_{k=0}^{n} \binom{n}{k} \cdot 2^{n-k}
  */
-public class Parenthesization {
+public class Parenthesization implements Comparable<Parenthesization> {
   public enum Parenthesis {
     OPEN,
     CLOSE
   }
   
-  private static final char OPEN = '(';
-  private static final char DEFAULT_CHAR = '□';
-  private static final char CLOSE = ')';
+  private static final char OPEN = '{';
+  private static final char DEFAULT_CHAR = '|';
+  private static final char CLOSE = '}';
 
   private Integer nbOfCharacters = null;
   private ArrayList<Character> innerParentheses = null;
@@ -31,21 +33,44 @@ public class Parenthesization {
     for(int i=0;i<this.nbOfCharacters;i++) characters.add(i, DEFAULT_CHAR);
   }
   
-  public void setParenthesis(int i, Parenthesis p) {
+  @SuppressWarnings("null")
+  public Parenthesization mutateParenthesis(int i, Parenthesis p) {
     if(i < 0 || i > this.nbOfCharacters-1) throw new IndexOutOfBoundsException();
-    if(p == Parenthesis.CLOSE) innerParentheses.set(i, CLOSE);
+    
+    Parenthesization c = null;
+    try {
+      c = (Parenthesization)this.clone();
+    } catch (CloneNotSupportedException e){;}
+    if(p == Parenthesis.CLOSE) c.innerParentheses.set(i, CLOSE);
     else innerParentheses.set(i, OPEN);
+    return c;
   }
+  
   public void setCharacter(int i, char c) {
     if(i < 0 || i > this.nbOfCharacters) throw new IndexOutOfBoundsException();
     this.characters.set(i,c);
   }
-  /*
-  public TreeSet<Parenthesis> generate() {
-    
+  
+  public static Set<Parenthesization> generate(int nbOfCharacters) {
+    return generate(new TreeSet<Parenthesization>(), nbOfCharacters, new Parenthesization(nbOfCharacters), 0);
   }
-  */
+  
+  private static Set<Parenthesization> generate(Set<Parenthesization> set, int nbOfCharacters, Parenthesization current, int i) {
+    set.add(current);
+    if(i < nbOfCharacters-1) {
+      try {
+        generate(set,nbOfCharacters, ((Parenthesization)current.clone()).mutateParenthesis(i, Parenthesis.OPEN), i+1);
+        generate(set,nbOfCharacters, ((Parenthesization)current.clone()).mutateParenthesis(i, Parenthesis.CLOSE), i+1);
+      } catch (CloneNotSupportedException e){;}
+    }
+    return set;
+  }
+  
   public String toString() {
+    return this.toString(false);
+  }
+  
+  public String toString(boolean useDefaultCharacter) {
     int parenthesis_index = 0;
     int character_index = 0;
     
@@ -57,7 +82,7 @@ public class Parenthesization {
       if(b) {
         sb.append(innerParentheses.get(parenthesis_index++));
       } else {
-        sb.append(characters.get(character_index++));
+        sb.append(useDefaultCharacter ? DEFAULT_CHAR : characters.get(character_index++));
       }
       
       if(parenthesis_index < this.innerParentheses.size() && 
@@ -67,6 +92,11 @@ public class Parenthesization {
     }
     
     return OPEN + sb.toString() + CLOSE;
+  }
+
+  @Override
+  public int compareTo(Parenthesization o) {
+    return this.toString(true).compareTo(o.toString(true));
   }
   
 }
