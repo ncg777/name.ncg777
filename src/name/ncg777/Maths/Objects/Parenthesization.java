@@ -60,7 +60,14 @@ public class Parenthesization implements Comparable<Parenthesization> {
     if(s.length() != this.nbOfCharacters) throw new IllegalArgumentException();
     for(int i=0;i<this.nbOfCharacters;i++) characters.set(i,s.charAt(i));
   }
-  public static void enumerate(Consumer<Parenthesization> consumer, int nbOfCharacters ) {
+  public static void enumerate(Consumer<Parenthesization> consumer, String s) {
+    enumerate((p) -> {
+      p.setCharacters(s);
+      consumer.accept(p);
+    }, s.length(), new Parenthesization(s.length()), 0);
+  }
+  
+  public static void enumerate(Consumer<Parenthesization> consumer, int nbOfCharacters) {
     enumerate(consumer, nbOfCharacters, new Parenthesization(nbOfCharacters), 0);
   }
   
