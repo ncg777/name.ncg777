@@ -1,5 +1,6 @@
 package name.ncg777.Maths.Objects;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
@@ -60,6 +61,11 @@ public class Parenthesization implements Comparable<Parenthesization> {
     if(s.length() != this.nbOfCharacters) throw new IllegalArgumentException();
     for(int i=0;i<this.nbOfCharacters;i++) characters.set(i,s.charAt(i));
   }
+  
+  static public void main(String[] args) throws IOException {
+    if(args.length == 1) enumerate((p) -> System.out.println(p.toString()), args[0]);
+  }
+  
   public static void enumerate(Consumer<Parenthesization> consumer, String s) {
     enumerate((p) -> {
       p.setCharacters(s);
