@@ -52,13 +52,17 @@ public class Parenthesization implements Comparable<Parenthesization> {
     p.characters.set(i,c);
     return p;
   }
+  public void setCharacter(int i, char c) {
+    if(i < 0 || i > this.nbOfCharacters) throw new IndexOutOfBoundsException();
+    characters.set(i,c);
+  }
   
-  public static void enumerate(Consumer<String> consumer, int nbOfCharacters ) {
+  public static void enumerate(Consumer<Parenthesization> consumer, int nbOfCharacters ) {
     enumerate(consumer, nbOfCharacters, new Parenthesization(nbOfCharacters), 0);
   }
   
-  private static void enumerate(Consumer<String> consumer, int nbOfCharacters, Parenthesization current, int i) {
-    consumer.accept(current.toString());
+  private static void enumerate(Consumer<Parenthesization> consumer, int nbOfCharacters, Parenthesization current, int i) {
+    consumer.accept(current);
     if(i < nbOfCharacters-1) {
       enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, Parenthesis.OPEN), i+1);
       enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, null), i+1);
