@@ -81,7 +81,6 @@ public class Parenthesization implements Comparable<Parenthesization> {
     consumer.accept(current);
     if(i < nbOfCharacters-1) {
       enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, Parenthesis.OPEN), i+1);
-      enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, null), i+1);
       enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, Parenthesis.CLOSE), i+1);
     }
   }
