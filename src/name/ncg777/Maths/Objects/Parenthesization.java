@@ -2,9 +2,11 @@ package name.ncg777.Maths.Objects;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 /**
- * https://oeis.org/A000225
+ * https://oeis.org/A133494
  */
 public class Parenthesization implements Comparable<Parenthesization> {
   public enum Parenthesis {
@@ -65,24 +67,32 @@ public class Parenthesization implements Comparable<Parenthesization> {
   }
   
   static public void main(String[] args) throws IOException {
-    if(args.length == 1) enumerate((p) -> System.out.println(p.toString()), args[0]);
+    if(args.length != 1) throw new IllegalArgumentException();
+    enumerate(args[0]);
   }
   
-  public static void enumerate(Consumer<Parenthesization> consumer, String s) {
+  public static void enumerate(String s) {
+    Set<Parenthesization> o = new TreeSet<Parenthesization>();
     enumerate((p) -> {
       p.setCharacters(s);
-      consumer.accept(p);
+      o.add(p);
     }, s.length(), new Parenthesization(s.length()), 0);
+    
+    for(var p : o) System.out.println(p.toString());
   }
   
-  public static void enumerate(Consumer<Parenthesization> consumer, int nbOfCharacters) {
-    enumerate(consumer, nbOfCharacters, new Parenthesization(nbOfCharacters), 0);
+  public static void enumerate(int nbOfCharacters) {
+    Set<Parenthesization> o = new TreeSet<Parenthesization>();
+    enumerate((p) -> o.add(p), nbOfCharacters, new Parenthesization(nbOfCharacters), 0);
+    
+    for(var p : o) System.out.println(p);
   }
   
   private static void enumerate(Consumer<Parenthesization> consumer, int nbOfCharacters, Parenthesization current, int i) {
     consumer.accept(current);
     if(i < nbOfCharacters-1) {
       enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, Parenthesis.OPEN), i+1);
+      enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, null), i+1);
       enumerate(consumer, nbOfCharacters, current.mutateParenthesis(i, Parenthesis.CLOSE), i+1);
     }
   }
