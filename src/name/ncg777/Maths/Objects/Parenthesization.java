@@ -3,7 +3,9 @@ package name.ncg777.Maths.Objects;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.function.Consumer;
-
+/**
+ * https://oeis.org/A000225
+ */
 public class Parenthesization implements Comparable<Parenthesization> {
   public enum Parenthesis {
     OPEN,
