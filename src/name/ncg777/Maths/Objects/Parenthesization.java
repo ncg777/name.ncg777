@@ -56,7 +56,10 @@ public class Parenthesization implements Comparable<Parenthesization> {
     if(i < 0 || i > this.nbOfCharacters) throw new IndexOutOfBoundsException();
     characters.set(i,c);
   }
-  
+  public void setCharacters(String s) {
+    if(s.length() != this.nbOfCharacters) throw new IllegalArgumentException();
+    for(int i=0;i<this.nbOfCharacters;i++) characters.set(i,s.charAt(i));
+  }
   public static void enumerate(Consumer<Parenthesization> consumer, int nbOfCharacters ) {
     enumerate(consumer, nbOfCharacters, new Parenthesization(nbOfCharacters), 0);
   }
