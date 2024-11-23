@@ -77,7 +77,8 @@ public class Parenthesization implements Comparable<Parenthesization> {
     StringBuilder sb = new StringBuilder();
     sb.append(OPEN);
     while(c_i < characters.size()) {
-      sb.append(useDefaultChar ? DEFAULT_CHAR : characters.get(c_i++));
+      c_i++;
+      sb.append(useDefaultChar ? DEFAULT_CHAR : characters.get(c_i-1));
       
       if(p_i++ < innerParentheses.size() && innerParentheses.get(p_i-1) != null) {
           sb.append(innerParentheses.get(p_i-1));  
