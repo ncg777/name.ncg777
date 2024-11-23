@@ -67,13 +67,17 @@ public class Parenthesization implements Comparable<Parenthesization> {
   }
   
   public String toString() {
+    return toString(false);
+  }
+  
+  public String toString(boolean useDefaultChar) {
     int p_i = 0;
     int c_i = 0;
     
     StringBuilder sb = new StringBuilder();
     sb.append(OPEN);
     while(c_i < characters.size()) {
-      sb.append(characters.get(c_i++));
+      sb.append(useDefaultChar ? DEFAULT_CHAR : characters.get(c_i++));
       
       if(p_i++ < innerParentheses.size() && innerParentheses.get(p_i-1) != null) {
           sb.append(innerParentheses.get(p_i-1));  
@@ -85,6 +89,6 @@ public class Parenthesization implements Comparable<Parenthesization> {
 
   @Override
   public int compareTo(Parenthesization o) {
-    return this.toString().compareTo(o.toString());
+    return this.toString(true).compareTo(o.toString(true));
   }
 }
