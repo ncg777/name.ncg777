@@ -172,6 +172,30 @@ public class Composition extends Combination {
     return o;
     
   }
+  
+  public <T> List<List<T>> segmentList(List<T> s) {
+    if(this.getTotal() != s.size()) throw new IllegalArgumentException();
+    var o = new ArrayList<List<T>>();
+    var cs = this.asSequence();
+    int start = 0;
+    for(int i=0;i<cs.size();i++) {
+      o.add(s.subList(start, start+cs.get(i)));
+      start += cs.get(i);
+    }
+    return o;
+  }
+  
+  public List<String> segmentString(String str) {
+    if(this.getTotal() != str.length()) throw new IllegalArgumentException();
+    var o = new ArrayList<String>();
+    var s = this.asSequence();
+    int start = 0;
+    for(int i=0;i<s.size();i++) {
+      o.add(str.substring(start, start+s.get(i)));
+      start += s.get(i);
+    }
+    return o;
+  }
   @Override
   public String toString() {
     return asSequence().toString();
