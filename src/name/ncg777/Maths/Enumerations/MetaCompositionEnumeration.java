@@ -4,7 +4,9 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 import name.ncg777.Maths.Objects.Composition;
-
+/**
+ * https://oeis.org/A133494
+ */
 public class MetaCompositionEnumeration  implements Enumeration<String> {
 
   private String s;
