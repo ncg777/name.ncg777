@@ -49,5 +49,4 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
     
     return sb.toString();
   }
-  
 }
