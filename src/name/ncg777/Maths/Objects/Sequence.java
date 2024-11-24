@@ -425,6 +425,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
     return o;
   }
+  
   /**
    * Each row i of the output matrix correspond to a distinct value of the sequence. Each cell i,j
    * set to true means that the value at position j in the sequence is the i'th biggest.
@@ -513,7 +514,6 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
     
     return map(m);
-    
   }
 
   /**
@@ -667,14 +667,19 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
   }
 
+  public Sequence(String s) {
+    this();
+    for (int i=0;i<s.length();i++) {
+      this.add(Character.getNumericValue(s.charAt(i)));
+    }
+  }
+  
   /**
    * Empty constructor.
    */
   public Sequence() {
     super();
   }
-
-  
   
   /**
    * Returns a sequence constructed from a list.
@@ -740,6 +745,14 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return Joiner.on(' ').join(this);
   }
 
+  public String toString(boolean interpretIntsAsChars) {
+    StringBuilder sb = new StringBuilder();
+    for(Integer n : this) {
+      sb.append(Character.getNumericValue(n));
+    }
+    return sb.toString();
+  }
+  
   /**
    * @return The sum of the sequence.
    */
