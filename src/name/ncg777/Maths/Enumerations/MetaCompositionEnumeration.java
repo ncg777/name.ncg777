@@ -39,10 +39,13 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
     var l = currentLow.segmentList(currentUp.segmentString(s));
     
     var sb = new StringBuilder();
+    
     for(int i=0; i<l.size();i++) {
       sb.append("(");
       for(int j=0; j<l.get(i).size(); j++) {
+        sb.append("(");
         sb.append(l.get(i).get(j));
+        sb.append(")");
       }
       sb.append(")");
     }
