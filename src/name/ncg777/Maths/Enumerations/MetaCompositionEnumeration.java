@@ -4,7 +4,6 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 import name.ncg777.Maths.Objects.Composition;
-
 /**
  * https://oeis.org/A133494
  */
@@ -42,17 +41,17 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
     var l = currentLow.segmentList(currentUp.segmentString(s));
     
     var sb = new StringBuilder();
-    sb.append("[");
+    
     for(int i=0; i<l.size();i++) {
-      sb.append("'");
+      sb.append("[");
       for(int j=0; j<l.get(i).size(); j++) {
+        sb.append("[");
         sb.append(l.get(i).get(j));
+        sb.append("]");
       }
-      
-      sb.append("'");
-      if(i<l.size()-1) sb.append(",");
+      sb.append("]");
     }
-    sb.append("]");
+    
     return sb.toString();
   }
 }
