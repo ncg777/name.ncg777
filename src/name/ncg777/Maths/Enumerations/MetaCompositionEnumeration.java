@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 import name.ncg777.Maths.Objects.Composition;
+
 /**
  * https://oeis.org/A133494
  */
@@ -45,7 +46,6 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
     for(int i=0; i<l.size();i++) {
       sb.append("'");
       for(int j=0; j<l.get(i).size(); j++) {
-        
         sb.append(l.get(i).get(j));
       }
       
