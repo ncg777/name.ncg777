@@ -78,7 +78,6 @@
 			<artifactId>aima-core</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -124,11 +123,13 @@
 			<artifactId>jts</artifactId>
 			<version>1.13</version>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>ca.umontreal.iro.simul</groupId>
 			<artifactId>ssj</artifactId>
 			<version>3.3.1</version>
 		</dependency>
+		-->
 		<!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
 		<dependency>
 			<groupId>com.opencsv</groupId>
@@ -146,11 +147,21 @@
 		    <artifactId>commons-codec</artifactId>
 		    <version>1.17.1</version>
 		</dependency>
+		<!--
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-text</artifactId>
 		    <version>1.12.0</version>
 		</dependency>
+		-->
+		<!-- https://mvnrepository.com/artifact/org.antlr/antlr4-runtime -->
+		<!--
+		<dependency>
+		    <groupId>org.antlr</groupId>
+		    <artifactId>antlr4-runtime</artifactId>
+		    <version>4.13.2</version>
+		</dependency>
+		-->
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
