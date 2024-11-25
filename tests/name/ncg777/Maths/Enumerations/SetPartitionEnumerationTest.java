@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 import name.ncg777.Maths.Numbers;
-import name.ncg777.Maths.Enumerations.SetPartitionEnumeration;
 
 public class SetPartitionEnumerationTest extends TestCase {
 

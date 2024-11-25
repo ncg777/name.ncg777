@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import name.ncg777.Maths.Enumerations.FixedSetPartitionEnumeration;
 
 
 public class FixedSetPartitionEnumerationTests extends TestCase {

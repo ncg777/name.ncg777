@@ -5,8 +5,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import name.ncg777.Maths.Objects.Matrix;
-
 import java.util.Arrays;
 import java.util.List;
 

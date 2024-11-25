@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import name.ncg777.CS.DataStructures.TritWord32;
-
 public class TritWord32Tests {
 
   @Test

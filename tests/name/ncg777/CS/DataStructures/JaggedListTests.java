@@ -6,7 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import name.ncg777.CS.DataStructures.JaggedList;
 
 public class JaggedListTests {
     private JaggedList<String> jaggedList;

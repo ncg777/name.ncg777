@@ -8,7 +8,6 @@ import junit.framework.TestCase;
 import name.ncg777.Maths.Numbers;
 import name.ncg777.Maths.Enumerations.SetPartitionEnumeration;
 import name.ncg777.Maths.Objects.Sequence;
-import name.ncg777.Maths.Predicates.NonCrossingPartition;
 
 public class NonCrossingPartitionTests extends TestCase  {
 
