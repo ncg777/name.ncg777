@@ -1,4 +1,4 @@
-package name.ncg777;
+package name.ncg777.CS.GUI;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
