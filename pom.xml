@@ -34,7 +34,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>name.ncg777.MainMenuGUI</mainClass>
+							<mainClass>name.ncg777.CS.GUI.MainMenuGUI</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

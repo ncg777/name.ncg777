@@ -43,15 +43,15 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
     var sb = new StringBuilder();
     
     for(int i=0; i<l.size();i++) {
-      sb.append("[");
+      sb.append("<");
       for(int j=0; j<l.get(i).size(); j++) {
-        sb.append("[");
+        sb.append("<");
         sb.append(l.get(i).get(j));
-        sb.append("]");
+        sb.append(">");
       }
-      sb.append("]");
+      sb.append(">");
     }
     
-    return sb.toString();
+    return sb.toString().replaceAll("><", "<").replaceAll("><", ">").replaceAll("<<", "<").replaceAll(">>", ">");
   }
 }
