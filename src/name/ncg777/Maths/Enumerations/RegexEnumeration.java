@@ -42,7 +42,7 @@ public class RegexEnumeration implements Enumeration<String> {
 
     @Override
     public boolean hasMoreElements() {
-        return count <= stopAt && nextElement != null;
+        return (stopAt == -1 || count <= stopAt) && nextElement != null;
     }
 
     @Override
