@@ -666,13 +666,29 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       this.add(e);
     }
   }
-
+  
+  /*
   public Sequence(String s) {
     this();
     for (int i=0;i<s.length();i++) {
       this.add(Character.getNumericValue(s.charAt(i)));
     }
   }
+  
+  public boolean add(char c) {
+    return this.add(Character.getNumericValue(c));
+  }
+  */
+  
+  /*
+  public String toString(boolean interpretIntsAsChars) {
+    StringBuilder sb = new StringBuilder();
+    for(Integer n : this) {
+      sb.append(Character.getNumericValue(n));
+    }
+    return sb.toString();
+  }
+  */
   
   /**
    * Empty constructor.
@@ -743,14 +759,6 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   @Override
   public String toString() {
     return Joiner.on(' ').join(this);
-  }
-
-  public String toString(boolean interpretIntsAsChars) {
-    StringBuilder sb = new StringBuilder();
-    for(Integer n : this) {
-      sb.append(Character.getNumericValue(n));
-    }
-    return sb.toString();
   }
   
   /**

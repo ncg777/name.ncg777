@@ -1,5 +1,6 @@
 package name.ncg777.Maths.Enumerations;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -52,6 +53,32 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
       sb.append(">");
     }
     
-    return sb.toString().replaceAll("><", "<").replaceAll("><", ">").replaceAll("<<", "<").replaceAll(">>", ">");
+    return sb.toString()
+        .replaceAll("><", "<")
+        .replaceAll("><", ">")
+        .replaceAll("<<", "<")
+        .replaceAll(">>", ">");
+  }
+  
+  public static ArrayList<String> extractStructure(String s) {
+    if(s.charAt(0) != '<' || s.charAt(s.length()-1) != '>') 
+      throw new IllegalArgumentException();
+    
+    var strs = new ArrayList<String>();
+    var o = new ArrayList<String>();
+    for(int i=0;i<s.length();i++) {
+      switch(s.charAt(i)) {
+        case '<':
+          if(!strs.isEmpty()) o.add(strs.stream().reduce("", (a,b) -> a+b));
+          break;
+        case '>':
+          o.add(strs.stream().reduce("", (a,b) -> a+b));
+          strs.removeLast();
+          break;
+        default:
+          strs.add(String.valueOf(s.charAt(i)));
+      }
+    }
+    return o;
   }
 }
