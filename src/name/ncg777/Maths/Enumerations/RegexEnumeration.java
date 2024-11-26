@@ -22,7 +22,9 @@ public class RegexEnumeration implements Enumeration<String> {
   public RegexEnumeration(String regex) {
       this(regex, -1, Integer.MAX_VALUE); // By default, no limit
   }
-  
+  public RegexEnumeration(String regex, int stopAt) {
+    this(regex, stopAt, Integer.MAX_VALUE); // By default, no limit
+  }
   /**
    * Constructs a RegexEnumeration with the given regular expression,
    * optional stopping index, and maximum string length.
