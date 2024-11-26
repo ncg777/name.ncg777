@@ -4,21 +4,28 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
+import com.google.common.base.Joiner;
+
 import name.ncg777.Maths.Objects.Composition;
 /**
  * https://oeis.org/A133494
  */
 public class MetaCompositionEnumeration  implements Enumeration<String> {
-
   private String s;
   private CompositionEnumeration up;
   private Composition currentUp;
   
   private CompositionEnumeration low;
   private Composition currentLow;
+  private boolean transform = false;
   
   public MetaCompositionEnumeration(String s) {
+    this(s, false);
+  }
+  
+  public MetaCompositionEnumeration(String s, boolean transform) {
     this.s = s;
+    this.transform = transform;
     up = new CompositionEnumeration(s.length());
   }
   
@@ -53,14 +60,18 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
       sb.append(">");
     }
     
-    return sb.toString()
+    String o = sb.toString()
         .replaceAll("><", "<")
         .replaceAll("><", ">")
         .replaceAll("<<", "<")
         .replaceAll(">>", ">");
+    
+    if(this.transform) o = Joiner.on(" ").join(transform(o));
+    
+    return o;
   }
   
-  public static ArrayList<String> extractStructure(String s) {
+  public static ArrayList<String> transform(String s) {
     if(s.charAt(0) != '<' || s.charAt(s.length()-1) != '>') 
       throw new IllegalArgumentException();
     
