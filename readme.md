@@ -44,12 +44,6 @@ Arguments' names cannot be specified and are just determined positionally at the
 - **Parameters**: 
   - `base` (List[int] or int[] as a space separated list of integers within double quotes) : The base for the mixed radix enumeration.
 
-## weakcompositions.sh
-- **Class**: name.ncg777.Maths.Enumerations.WeakCompositionEnumeration
-- **Parameters**: 
-  - `n` (int) : Number of balls.
-  - `k` (int) : Number of urns.
-
 ## ngoodpaths.sh
 - **Class**: name.ncg777.Maths.Enumerations.NGoodPathEnumeration
 - **Parameters**: 
@@ -86,15 +80,14 @@ Arguments' names cannot be specified and are just determined positionally at the
 ## weakcompositions.sh
 - **Class**: name.ncg777.Maths.Enumerations.WeakCompositionEnumeration
 - **Parameters**: 
-  - `n` (int) : Number of stars.
-  - `k` (int) : Size of ordering.
+  - `n` (int) : Total.
+  - `k` (int) : Number of summands.
 
 ## weakorders.sh
 - **Class**: name.ncg777.Maths.Enumerations.WeakOrdersEnumeration
 - **Parameters**: 
   - `n` (int) : Size of ordering.
   
-
 ## words.sh
 - **Class**: name.ncg777.Maths.Enumerations.WordEnumeration
 - **Parameters**: 
@@ -104,4 +97,4 @@ Arguments' names cannot be specified and are just determined positionally at the
 ## wordpermutations.sh
 - **Class**: name.ncg777.Maths.Enumerations.WordPermutationEnumeration
 - **Parameters**: 
-  - `rk` (List[int] or int[] as a space separated list of integers within double quotes) : List of the number of occurences of each element. The sum of this list will be the length of the output lists. 
+  - `rk` (List[int] or int[] as a space separated list of integers within double quotes) : List of the number of occurences of each element. The sum of this list will be the length of the output lists.
