@@ -172,7 +172,12 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   }
   
   public static Sequence parse(String s) {
-    String[] ss = s.trim().split("\\s+");
+    String str0 = s.trim().replaceAll(",", "");
+    if(str0.startsWith("[") && str0.endsWith("]")) {
+      str0 = str0.substring(1, str0.length()-1);
+    }
+    String[] ss = str0.split("\\s+");
+    
     Sequence output = new Sequence();
     for(String i : ss) {
       if(!i.trim().isEmpty()) { output.add(Integer.parseInt(i.trim()));}
