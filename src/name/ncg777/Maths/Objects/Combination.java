@@ -171,11 +171,11 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
   
   @Override
   public String toString() {
-
     String output = "";
     for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
       output += Integer.toString(i) + ", ";
     }
+    
     if (!output.isEmpty()) {
       output = output.substring(0, output.length() - 2);
     }

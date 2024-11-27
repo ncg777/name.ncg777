@@ -11,10 +11,10 @@ import name.ncg777.Maths.Objects.Combination;
  * 
  * @author Nicolas Couture-Grenier
  */
-public class WordPermutationEnumeration implements Enumeration<Integer[]> {
+public class WordPermutationEnumeration implements Enumeration<int[]> {
   private ArrayList<Integer> nonzeroindices;
   private Combination[][] combis;
-  private Enumeration<Integer[]> it;
+  private Enumeration<int[]> it;
   private Integer n;
   
   /**
@@ -27,20 +27,20 @@ public class WordPermutationEnumeration implements Enumeration<Integer[]> {
    * 
    * @param rk Integer[]
    */
-  public WordPermutationEnumeration(Integer[] rk) {
+  public WordPermutationEnumeration(int[] rk) {
     super();
 
     if (rk == null) {
       throw new RuntimeException("null array");
     }
 
-    Integer k = rk.length;
+    int k = rk.length;
 
     n = 0;
 
     nonzeroindices = new ArrayList<Integer>();
 
-    for (Integer i = 0; i < k; i++) {
+    for (int i = 0; i < k; i++) {
       if (rk[i] < 0) {
         throw new RuntimeException("null or negative element");
       }
@@ -50,14 +50,14 @@ public class WordPermutationEnumeration implements Enumeration<Integer[]> {
       }
     }
 
-    Integer c = 0;
+    int c = 0;
 
-    Integer nzsz = nonzeroindices.size();
+    int nzsz = nonzeroindices.size();
     combis = new Combination[nzsz][];
 
-    Integer[] sizes = new Integer[nzsz];
-    for (Integer i = 0; i < nzsz; i++) {
-      Integer nz = nonzeroindices.get(i);
+    int[] sizes = new int[nzsz];
+    for (int i = 0; i < nzsz; i++) {
+      int nz = nonzeroindices.get(i);
       c += rk[nz];
 
       combis[i] = Combination.generate(c, rk[nz]);
@@ -73,28 +73,26 @@ public class WordPermutationEnumeration implements Enumeration<Integer[]> {
   }
 
   @Override
-  public Integer[] nextElement() {
-    Integer[] mr = it.nextElement();
+  public int[] nextElement() {
+    int[] mr = it.nextElement();
 
     ArrayList<Integer> pos = new ArrayList<Integer>();
-    Integer[] x = new Integer[n];
+    int[] x = new int[n];
 
-    for (Integer i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       x[i] = 0;
       pos.add(i);
     }
 
-    for (Integer i = mr.length - 1; i >= 0; i--) {
+    for (int i = mr.length - 1; i >= 0; i--) {
       Combination p = combis[i][mr[i]];
-      for (Integer j = p.getN() - 1; j >= 0; j--) {
+      for (int j = p.getN() - 1; j >= 0; j--) {
         if (p.get(j)) {
           x[pos.get(j)] = nonzeroindices.get(i);
           pos.remove((int)j);
         }
       }
-
     }
     return x;
   }
-
 }

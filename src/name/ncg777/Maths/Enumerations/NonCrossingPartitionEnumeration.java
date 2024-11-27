@@ -5,7 +5,6 @@ import java.util.Stack;
 import java.util.TreeMap;
 
 public class NonCrossingPartitionEnumeration implements Enumeration<int[]> {
-
   private final DyckWordEnumeration dwe;
   
   public NonCrossingPartitionEnumeration(int n) {
@@ -24,8 +23,7 @@ public class NonCrossingPartitionEnumeration implements Enumeration<int[]> {
 
   public static int[] dyckToPartition(String s) {
     int n = s.length()/2;
-    
-    
+     
     Stack<Integer> stack = new Stack<>();
     TreeMap<Integer,Integer> matching_close = new TreeMap<>();
     TreeMap<Integer,Integer> close_label = new TreeMap<>();
@@ -43,8 +41,6 @@ public class NonCrossingPartitionEnumeration implements Enumeration<int[]> {
           k++;
         }
         close_label.put(i, k-1);
-        
-        
       }
     }
     int j=0;
@@ -52,11 +48,8 @@ public class NonCrossingPartitionEnumeration implements Enumeration<int[]> {
     for(int i=0;i<2*n;i++) {
       if(s.charAt(i) == '(') {
         o[j++] = close_label.get(matching_close.get(i));
-        
       }
     }
     return o;
-    
   }
-  
 }

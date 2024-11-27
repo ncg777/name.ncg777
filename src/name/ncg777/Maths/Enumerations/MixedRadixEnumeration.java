@@ -10,20 +10,20 @@ import java.util.List;
  * @link http://en.wikipedia.org/wiki/Mixed_radix
  * 
  */
-public class MixedRadixEnumeration implements Enumeration<Integer[]> {
-  private Integer[] base;
-  private Integer[] current;
+public class MixedRadixEnumeration implements Enumeration<int[]> {
+  private int[] base;
+  private int[] current;
   private boolean isLast = false;
 
   public MixedRadixEnumeration(List<Integer> base0){
-    Integer[] base = new Integer[base0.size()];
-    for(Integer i=0;i<base0.size();i++){
+    int[] base = new int[base0.size()];
+    for(int i=0;i<base0.size();i++){
       base[i] = base0.get(i);
     }
     init(base);
   }
   
-  private void init(Integer[] base){
+  private void init(int[] base){
     if (base == null) {
       throw new IllegalArgumentException("Utilities.MixedRadixEnumeration - null base array");
     }
@@ -40,7 +40,7 @@ public class MixedRadixEnumeration implements Enumeration<Integer[]> {
   /**
    * @param base the base
    */
-  public MixedRadixEnumeration(Integer[] base) {
+  public MixedRadixEnumeration(int[] base) {
     super();
     init(base);
   }
@@ -68,20 +68,20 @@ public class MixedRadixEnumeration implements Enumeration<Integer[]> {
   }
 
   @Override
-  public Integer[] nextElement() {
+  public int[] nextElement() {
     if (!hasMoreElements()) {
       throw new IllegalStateException(
           "Utilities.MixedRadixEnumeration - call on nextElement, but there's no next element!");
     }
 
-    Integer[] o = new Integer[base.length];
+    int[] o = new int[base.length];
     if (current == null) {
-      for (Integer i = 0; i < base.length; i++) {
+      for (int i = 0; i < base.length; i++) {
         o[i] = 0;
       }
     } else {
       o = Arrays.copyOf(current, current.length);
-      for (Integer i = 0; i < base.length; i++) {
+      for (int i = 0; i < base.length; i++) {
         if (o[i] < (base[i] - 1)) {
           o[i]++;
           break;
@@ -95,16 +95,15 @@ public class MixedRadixEnumeration implements Enumeration<Integer[]> {
     return o;
   }
 
-  public static Integer[] mapIndexToCoordinates(Integer index, Integer[] base) {
-    Integer[] o = new Integer[base.length];
-    Integer t = index;
+  public static int[] mapIndexToCoordinates(int index, int[] base) {
+    int[] o = new int[base.length];
+    int t = index;
 
-    for (Integer k = base.length - 1; k >= 0; k--) {
-      Integer b = base[k];
+    for (int k = base.length - 1; k >= 0; k--) {
+      int b = base[k];
       o[k] = t % b;
       t = t / b;
     }
     return o;
   }
-  
 }

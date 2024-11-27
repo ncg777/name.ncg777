@@ -16,20 +16,20 @@ public class WordPermutationEnumerationTests extends TestCase {
   }
   
   public final void testNextElement() {
-    Integer[] rk = {1,2,3};
+    int[] rk = {1,2,3};
     
     var wpe = new WordPermutationEnumeration(rk);
-    Integer[] e1 = {2,2,2,1,1,0};
+    int[] e1 = {2,2,2,1,1,0};
     var we1 = wpe.nextElement();
     assertTrue(Arrays.equals(we1, e1));
-    Integer[] e2 = {2,2,2,1,0,1};
+    int[] e2 = {2,2,2,1,0,1};
     var we2 = wpe.nextElement();
     System.out.println(new Sequence(we2));
     assertTrue(Arrays.equals(we2, e2));
   }
   
   public final void testCount() {
-    Integer[] rk = {1,2,3};
+    int[] rk = {1,2,3};
     
     var wpe = new WordPermutationEnumeration(rk);
     int count = 0;

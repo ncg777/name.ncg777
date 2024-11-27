@@ -10,9 +10,9 @@ import java.util.NoSuchElementException;
  * @author Nicolas Couture-Grenier
  * 
  */
-public class FixedSetPartitionEnumeration implements Enumeration<Integer[]> {
-  private Integer[] kappa;
-  private Integer[] M;
+public class FixedSetPartitionEnumeration implements Enumeration<int[]> {
+  private int[] kappa;
+  private int[] M;
   private int n;
   private int k;
   private boolean hasNext = true;
@@ -22,9 +22,9 @@ public class FixedSetPartitionEnumeration implements Enumeration<Integer[]> {
   public FixedSetPartitionEnumeration(int n, int k) {
     this.n = n;
     this.k = k;
-    this.kappa = new Integer[n];
+    this.kappa = new int[n];
     Arrays.fill(kappa, 0);
-    this.M = new Integer[n];
+    this.M = new int[n];
     Arrays.fill(M, 0);
 
     int offset = n - k;
@@ -36,11 +36,11 @@ public class FixedSetPartitionEnumeration implements Enumeration<Integer[]> {
 
 
   @Override
-  public Integer[] nextElement() {
+  public int[] nextElement() {
     if (!hasNext) {
       throw new NoSuchElementException();
     }
-    Integer[] o = Arrays.copyOf(kappa, kappa.length);
+    int[] o = Arrays.copyOf(kappa, kappa.length);
     
     hasNext = false;
 

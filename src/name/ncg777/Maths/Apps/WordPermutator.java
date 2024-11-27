@@ -77,7 +77,7 @@ public class WordPermutator {
           if(!charsarr.contains(word.charAt(i))) {charsarr.add(word.charAt(i));}
         }
         
-        Integer[] counts = new Integer[charsarr.size()];
+        int[] counts = new int[charsarr.size()];
         Arrays.fill(counts, 0);
         for(int i=0;i<counts.length;i++) {
           for(int j=0;j<word.length();j++) {
@@ -86,7 +86,6 @@ public class WordPermutator {
         }
         
         var wpe = new WordPermutationEnumeration(counts);
-        
         
         ArrayList<String> ps = new ArrayList<>();
         while(wpe.hasMoreElements()) {

@@ -18,7 +18,6 @@ public class NGoodPathEnumeration implements Enumeration<int[]> {
     public int[] nextElement() {
       return convertDyckWordToPath(dw.nextElement());
     }
-
     
     private static int[] convertDyckWordToPath(String s) {
       int x=0;
@@ -35,6 +34,5 @@ public class NGoodPathEnumeration implements Enumeration<int[]> {
         }
       }
       return o;
-      
     }
 }

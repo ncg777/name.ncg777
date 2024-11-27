@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+import name.ncg777.Maths.Objects.Sequence;
+
 @Command(name = "enum-printer", mixinStandardHelpOptions = true, 
          description = "Print elements of any Enumeration class")
 public class ReflectiveEnumerationPrinter implements Callable<Integer> {
@@ -101,6 +103,9 @@ public class ReflectiveEnumerationPrinter implements Callable<Integer> {
         }
         if (obj instanceof Integer[]) {
             return Arrays.toString((Integer[]) obj);
+        }
+        if (obj instanceof Sequence) {
+          return ((Sequence)obj).toString(true);
         }
         if (obj instanceof List) {
             return ((List<?>) obj).stream()

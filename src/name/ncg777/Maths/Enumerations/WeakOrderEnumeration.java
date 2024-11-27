@@ -12,12 +12,12 @@ import name.ncg777.Maths.Objects.Sequence;
  * @author Nicolas Couture-Grenier
  * 
  */
-public class WeakOrderEnumeration implements Enumeration<Integer[]> {
+public class WeakOrderEnumeration implements Enumeration<int[]> {
   private CompositionEnumeration ce;
   private WordPermutationEnumeration me;
-  private Integer[] current_base;
-  private Integer[] zerocase = {};
-  public WeakOrderEnumeration(Integer n) {
+  private int[] current_base;
+  private int[] zerocase = {};
+  public WeakOrderEnumeration(int n) {
     super();
     if(n>0) {
       ce = new CompositionEnumeration(n);
@@ -28,12 +28,11 @@ public class WeakOrderEnumeration implements Enumeration<Integer[]> {
 
   private void nextBase() {
     Sequence s = ce.nextElement().asSequence();
-    current_base = new Integer[s.size()];
-    for (Integer i = 0; i < s.size(); i++) {
+    current_base = new int[s.size()];
+    for (int i = 0; i < s.size(); i++) {
       current_base[i] = s.get(i);
     }
   }
-
 
   @Override
   public boolean hasMoreElements() {
@@ -44,11 +43,11 @@ public class WeakOrderEnumeration implements Enumeration<Integer[]> {
   }
 
   @Override
-  public Integer[] nextElement() {
+  public int[] nextElement() {
     if(ce == null) {
       if(zerocase == null) throw new RuntimeException("No such element.");
       zerocase=null;
-      return new Integer[0];
+      return new int[0];
     }
     if (!me.hasMoreElements()) {
       nextBase();
