@@ -78,17 +78,14 @@ public class ReflectiveEnumerationPrinter implements Callable<Integer> {
         } else if (paramType == boolean.class || paramType == Boolean.class) {
             return Boolean.parseBoolean(param);
         } else if (paramType == int[].class) {
-            return Arrays.stream(param.split("\\s+"))
-                         .mapToInt(Integer::parseInt)
-                         .toArray();
+          Sequence _s = Sequence.parse(param);
+          int[] o = new int[_s.size()];
+          for(int i=0;i<o.length;i++) o[i] = _s.get(i);
+          return o;
         } else if (paramType == Integer[].class) {
-            return Arrays.stream(param.split("\\s+"))
-                         .map(Integer::parseInt)
-                         .toArray(Integer[]::new);
+            return ((Integer[])Sequence.parse(param).toArray());
         } else if (paramType == List.class) {
-            return Arrays.stream(param.split("\\s+"))
-                         .map(Integer::parseInt)
-                         .collect(Collectors.toList());
+            return Sequence.parse(param);
         }
         // Add more type conversions as needed
         throw new IllegalArgumentException("Unsupported parameter type: " + paramType);
