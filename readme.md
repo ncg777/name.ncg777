@@ -1,7 +1,9 @@
 # name.ncg777
-This application was compiled with Microsoft's build of OpenJDK 21.
+Some of these apps may be considered experimental or may contain unusual terminology.
 
 To run the main menu application that lets one open the apps with graphical interfaces, run the name.ncg777.sh script.
+
+This application was compiled with Microsoft's build of OpenJDK 21.
 
 # Enumeration Scripts Documentation
 Arguments' names cannot be specified and are just determined positionally at the moment.
