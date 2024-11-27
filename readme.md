@@ -16,7 +16,7 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 ## bitsets.sh
 - **Class**: name.ncg777.Maths.Enumerations.BitSetEnumeration
 - **Parameters**: 
-  - `n` (int): The size of the bit set.
+  - `n` (int): The size of the bit sets.
 
 ## combinations.sh
 - **Class**: name.ncg777.Maths.Enumerations.CombinationEnumeration
