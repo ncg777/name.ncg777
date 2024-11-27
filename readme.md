@@ -6,10 +6,17 @@ To run the main menu application that lets one open the apps with graphical inte
 # Enumeration Scripts Documentation
 Arguments' names cannot be specified and are just determined positionally at the moment.
 
+The int[] type is printed like 1 level JSON integer arrays and can be parsed from space-joined integer strings (ex: "1 2 3") or JSON array-like strings (ex: "[1, 2, 3]").
+
+## bitsequences.sh
+- **Class**: name.ncg777.Maths.Enumerations.BitSequenceEnumeration
+- **Parameters**: 
+  - `n` (int): The size of the bit sequences.
+  
 ## bitsets.sh
 - **Class**: name.ncg777.Maths.Enumerations.BitSetEnumeration
 - **Parameters**: 
-  - `n` (int): The size of the bitset.
+  - `n` (int): The size of the bit set.
 
 ## combinations.sh
 - **Class**: name.ncg777.Maths.Enumerations.CombinationEnumeration
@@ -42,7 +49,7 @@ Arguments' names cannot be specified and are just determined positionally at the
 ## mixedradices.sh
 - **Class**: name.ncg777.Maths.Enumerations.MixedRadixEnumeration
 - **Parameters**: 
-  - `base` (List[int] or int[] as a space separated list of integers within double quotes) : The base for the mixed radix enumeration.
+  - `base` (int[]) : The base for the mixed radix enumeration.
 
 ## ngoodpaths.sh
 - **Class**: name.ncg777.Maths.Enumerations.NGoodPathEnumeration
@@ -97,4 +104,4 @@ Arguments' names cannot be specified and are just determined positionally at the
 ## wordpermutations.sh
 - **Class**: name.ncg777.Maths.Enumerations.WordPermutationEnumeration
 - **Parameters**: 
-  - `rk` (List[int] or int[] as a space separated list of integers within double quotes) : List of the number of occurences of each element. The sum of this list will be the length of the output lists.
+  - `rk` (int[]) : List of the number of occurences of each element. The sum of this list will be the length of the output lists.
