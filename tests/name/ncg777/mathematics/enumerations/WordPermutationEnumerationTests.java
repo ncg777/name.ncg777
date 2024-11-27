@@ -3,7 +3,6 @@ package name.ncg777.mathematics.enumerations;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
-import name.ncg777.mathematics.enumerations.WordPermutationEnumeration;
 import name.ncg777.mathematics.objects.Sequence;
 
 public class WordPermutationEnumerationTests extends TestCase {
