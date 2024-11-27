@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>name.ncg777</groupId>
 	<artifactId>name.ncg777</artifactId>
-	<version>20241127T2154Z</version>
+	<version>20241127T2205Z</version>
 	<url>https://github.com/ncg777/name.ncg777.git</url>
 	<build>
 		<resources>
@@ -34,7 +34,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>name.ncg777.CS.GUI.MainMenuGUI</mainClass>
+							<mainClass>name.ncg777.computerScience.graphicalUserInterfaces.MainMenuGUI</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
