@@ -3,8 +3,6 @@ Some of these apps may be considered experimental or may contain unusual termino
 
 To run the main menu application that lets one open the apps with graphical interfaces, run the name.ncg777.sh script.
 
-This application was compiled with Microsoft's build of OpenJDK 21.
-
 # Enumeration Scripts Documentation
 Arguments' names cannot be specified and are just determined positionally at the moment.
 
@@ -107,3 +105,6 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 - **Class**: name.ncg777.Maths.Enumerations.WordPermutationEnumeration
 - **Parameters**: 
   - `rk` (int[]) : List of the number of occurences of each element. The sum of this list will be the length of the output lists.
+
+---
+This application was compiled with Microsoft's build of OpenJDK 21.
