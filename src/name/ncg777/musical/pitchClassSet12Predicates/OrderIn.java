@@ -6,9 +6,9 @@ import java.util.TreeSet;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
-public class OrderIn implements StandardAndGuavaPredicate<pitchClassSet12> {
+public class OrderIn implements StandardAndGuavaPredicate<PitchClassSet12> {
   Set<Integer> s;
 
   public OrderIn(Set<Integer> p_s) {
@@ -21,7 +21,7 @@ public class OrderIn implements StandardAndGuavaPredicate<pitchClassSet12> {
     s.add(p_s);
   }
 
-  public boolean apply(@Nonnull pitchClassSet12 o) {
+  public boolean apply(@Nonnull PitchClassSet12 o) {
     return s.contains(o.getOrder());
   }
 }

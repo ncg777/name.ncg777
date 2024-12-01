@@ -30,7 +30,7 @@ import name.ncg777.computerScience.dataStructures.CollectionUtils;
 import name.ncg777.mathematics.graphTheory.DiGraph;
 import name.ncg777.mathematics.objects.Sequence;
 import name.ncg777.mathematics.relations.Relation;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 import name.ncg777.musical.pitchClassSet12Predicates.Consonant;
 import name.ncg777.musical.pitchClassSet12Predicates.SizeIs;
 import name.ncg777.musical.pitchClassSet12Predicates.SubsetOf;
@@ -72,7 +72,7 @@ public class ChordGraphExplorer {
     });
   }
 
-  DiGraph<pitchClassSet12> d;
+  DiGraph<PitchClassSet12> d;
 
   /**
    * Create the application.
@@ -89,21 +89,21 @@ public class ChordGraphExplorer {
   JLabel lblSuccC = new JLabel("");
   private void fillChords() {
     
-    TreeSet<pitchClassSet12> t = new TreeSet<pitchClassSet12>();
-    t.addAll(pitchClassSet12.getChords());
+    TreeSet<PitchClassSet12> t = new TreeSet<PitchClassSet12>();
+    t.addAll(PitchClassSet12.getChords());
     CollectionUtils.filter(t, new SizeIs((int) spinner_1.getValue()));
-    CollectionUtils.filter(t, Predicates.and(new SubsetOf(pitchClassSet12.parseForte(cbxScale.getSelectedItem().toString())), new Consonant()));
-    d = new DiGraph<pitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
-    CollectionUtils.filter(t, new Predicate<pitchClassSet12> () {
+    CollectionUtils.filter(t, Predicates.and(new SubsetOf(PitchClassSet12.parseForte(cbxScale.getSelectedItem().toString())), new Consonant()));
+    d = new DiGraph<PitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
+    CollectionUtils.filter(t, new Predicate<PitchClassSet12> () {
 
       @Override
-      public boolean apply(@Nonnull pitchClassSet12 input) {
+      public boolean apply(@Nonnull PitchClassSet12 input) {
         return d.getSuccessorCount(input) > 0;
       }
       
     });
     List<String> s0 = new ArrayList<String>();
-    for (pitchClassSet12 x : t) {
+    for (PitchClassSet12 x : t) {
       s0.add(x.toForteNumberString());
     }
     s0.sort(comparator);
@@ -114,9 +114,9 @@ public class ChordGraphExplorer {
   }
 
   JComboBox<String> cbxSuccessors = new JComboBox<String>();
-  private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   private void fillSuccessors() {
-    pitchClassSet12 start = pitchClassSet12.parseForte(cbxStart.getSelectedItem().toString());
+    PitchClassSet12 start = PitchClassSet12.parseForte(cbxStart.getSelectedItem().toString());
     ArrayList<String> successors = new ArrayList<String>(
         this.d.getSuccessors(start).stream().map(c -> c.toForteNumberString()).collect(Collectors.toList()));
     successors.sort(comparator);
@@ -140,18 +140,18 @@ public class ChordGraphExplorer {
     }
   }
   private void updateLabels() {
-    pitchClassSet12 s = pitchClassSet12.parseForte(cbxScale.getSelectedItem().toString());
+    PitchClassSet12 s = PitchClassSet12.parseForte(cbxScale.getSelectedItem().toString());
     
-    pitchClassSet12 c = pitchClassSet12.parseForte(cbxStart.getSelectedItem().toString());
+    PitchClassSet12 c = PitchClassSet12.parseForte(cbxStart.getSelectedItem().toString());
     lblStartIV.setText(c.getIntervalVector().toString());
-    lblStartC.setText(pitchClassSet12.identify(s.minus(c)).toForteNumberString());
+    lblStartC.setText(PitchClassSet12.identify(s.minus(c)).toForteNumberString());
     pitches_start.setText(c.asSequence().toString());
-    pitchClassSet12 c1 = pitchClassSet12.parseForte(cbxSuccessors.getSelectedItem().toString());
+    PitchClassSet12 c1 = PitchClassSet12.parseForte(cbxSuccessors.getSelectedItem().toString());
     lblSuccIV.setText(c1.getIntervalVector().toString());
-    lblSuccC.setText(pitchClassSet12.identify(s.minus(c1)).toForteNumberString());
+    lblSuccC.setText(PitchClassSet12.identify(s.minus(c1)).toForteNumberString());
     pitches_end.setText(c1.asSequence().toString());
   }
-  private void playChord(pitchClassSet12 chord, int durInMs) {
+  private void playChord(PitchClassSet12 chord, int durInMs) {
     if (chord == null) return;
     Utils.copyStringToClipboard(chord.toForteNumberString());
     Thread t = new Thread(new Runnable() {
@@ -211,7 +211,7 @@ public class ChordGraphExplorer {
       // TODO Auto-generated catch block
       e1.printStackTrace();
     }
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
     List<String> cs0 = new ArrayList<String>();
     for(var s : cs) cs0.add(s);
     cs0.sort(comparator);
@@ -241,7 +241,7 @@ public class ChordGraphExplorer {
       @Override
       public void mouseClicked(MouseEvent e) {
         
-        playChord(pitchClassSet12.parseForte(cbxStart.getSelectedItem().toString()), play_len);
+        playChord(PitchClassSet12.parseForte(cbxStart.getSelectedItem().toString()), play_len);
         
       }
     });
@@ -262,7 +262,7 @@ public class ChordGraphExplorer {
     lblSuccessor.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(pitchClassSet12.parseForte(cbxSuccessors.getSelectedItem().toString()), play_len);
+        playChord(PitchClassSet12.parseForte(cbxSuccessors.getSelectedItem().toString()), play_len);
       }
     });
     lblSuccessor.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -282,22 +282,22 @@ public class ChordGraphExplorer {
         updateLabels();
       }
     });
-    lblStartIV.setText(pitchClassSet12.parseForte(cbxStart.getSelectedItem().toString()).getIntervalVector().toString());
+    lblStartIV.setText(PitchClassSet12.parseForte(cbxStart.getSelectedItem().toString()).getIntervalVector().toString());
     lblStartIV.setForeground(Color.WHITE);
     
     
     lblSuccIV.setForeground(Color.WHITE);
-    lblSuccIV.setText(pitchClassSet12.parseForte(cbxSuccessors.getSelectedItem().toString()).getIntervalVector().toString());
+    lblSuccIV.setText(PitchClassSet12.parseForte(cbxSuccessors.getSelectedItem().toString()).getIntervalVector().toString());
     lblStartC.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(pitchClassSet12.parseForte(lblStartC.getText()), play_len);
+        playChord(PitchClassSet12.parseForte(lblStartC.getText()), play_len);
       }
     });
     lblSuccC.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(pitchClassSet12.parseForte(lblSuccC.getText()), play_len);
+        playChord(PitchClassSet12.parseForte(lblSuccC.getText()), play_len);
       }
     });
     lblStartC.setForeground(Color.WHITE);

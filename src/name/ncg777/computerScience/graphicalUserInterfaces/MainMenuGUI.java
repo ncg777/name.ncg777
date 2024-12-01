@@ -38,13 +38,13 @@ public class MainMenuGUI {
     addAppButton(panel, "ChordSeqVisual", ChordSeqVisual.class);
     addAppButton(panel, "ChordWalker", ChordWalker.class);
     addAppButton(panel, "Decimator", Decimator.class);
-    addAppButton(panel, "KComplexExplorer", KComplexExplorer.class);
+    addAppButton(panel, "k-ComplexExplorer", KComplexExplorer.class);
     addAppButton(panel, "KernelEvaluator", Application.class);
     addAppButton(panel, "LatticePath", LatticePath.class);
     addAppButton(panel, "LyricalGuideMaker", LyricalGuideMaker.class);
     addAppButton(panel, "MeasureGateSequence", MeasureGateSequence.class);
     addAppButton(panel, "ModularArithmeticSequencer", ModularArithmeticSequencer.class);
-    addAppButton(panel, "PCS12IntersectionAndUnion", PCS12IntersectionAndUnion.class);
+    addAppButton(panel, "PitchClassSet12PairIntersectionAndUnion", PitchClassSet12PairIntersectionAndUnion.class);
     addAppButton(panel, "PseudoBase", PseudoBase.class);
     addAppButton(panel, "R16Divider", R16Divider.class);
     addAppButton(panel, "RandomWalker1", RandomWalker1.class);

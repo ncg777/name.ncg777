@@ -8,7 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.musical.pitchClassSet12Sequence;
+import name.ncg777.musical.PitchClassSet12Sequence;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -61,10 +61,10 @@ public class ChordSequenceMerger {
     JButton btnMerge = new JButton("Merge");
     btnMerge.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        ArrayList<pitchClassSet12Sequence> arr = new ArrayList<>();
+        ArrayList<PitchClassSet12Sequence> arr = new ArrayList<>();
         var ss = txtArea.getText().trim().split("\n+");
-        for(var s :ss) {arr.add(pitchClassSet12Sequence.parseForte(s));}
-        txtResult.setText(pitchClassSet12Sequence.merge(arr).toString((c) -> c.toForteNumberString()));
+        for(var s :ss) {arr.add(PitchClassSet12Sequence.parseForte(s));}
+        txtResult.setText(PitchClassSet12Sequence.merge(arr).toString((c) -> c.toForteNumberString()));
       }
     });
     

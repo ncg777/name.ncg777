@@ -4,16 +4,16 @@ package name.ncg777.musical.pitchClassSet12Relations;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
-public class PredicatedUnion implements BiPredicate<pitchClassSet12, pitchClassSet12> {
-  Predicate<pitchClassSet12> f;
+public class PredicatedUnion implements BiPredicate<PitchClassSet12, PitchClassSet12> {
+  Predicate<PitchClassSet12> f;
 
-  public PredicatedUnion(Predicate<pitchClassSet12> p) {
+  public PredicatedUnion(Predicate<PitchClassSet12> p) {
     f = p;
   }
   @Override
-  public boolean test(pitchClassSet12 a, pitchClassSet12 b) {
+  public boolean test(PitchClassSet12 a, PitchClassSet12 b) {
     return f.test(a.combineWith(b));
   }
 

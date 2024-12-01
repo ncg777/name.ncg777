@@ -25,7 +25,7 @@ import com.google.common.base.Predicate;
 import name.ncg777.computerScience.dataStructures.CollectionUtils;
 import name.ncg777.mathematics.graphTheory.DiGraph;
 import name.ncg777.mathematics.relations.Relation;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 import name.ncg777.musical.pitchClassSet12Predicates.SizeIs;
 import name.ncg777.musical.pitchClassSet12Predicates.SubsetOf;
 import name.ncg777.musical.pitchClassSet12Relations.CloseIVs;
@@ -64,14 +64,14 @@ public class ChordWalker {
   }
   
   JTextArea txtrResult = new JTextArea();
-  DiGraph<pitchClassSet12> d;
+  DiGraph<PitchClassSet12> d;
   /**
    * Create the application.
    */
   public ChordWalker() {
     initialize();
   }
-  private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   JComboBox<String> cbxStart = new JComboBox<>(); 
   JSpinner spinner = new JSpinner();
   JCheckBox chckbxReverse = new JCheckBox("reverse");
@@ -79,21 +79,21 @@ public class ChordWalker {
   JComboBox<String> cbxScale;
   JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(4, 1, 12, 1));
   private void fillChords() {
-    TreeSet<pitchClassSet12> t = new TreeSet<pitchClassSet12>(); t.addAll(pitchClassSet12.getChords());
+    TreeSet<PitchClassSet12> t = new TreeSet<PitchClassSet12>(); t.addAll(PitchClassSet12.getChords());
     CollectionUtils.filter(t, new SizeIs((int)spinner_1.getValue()));
-    CollectionUtils.filter(t,new SubsetOf(pitchClassSet12.parseForte(cbxScale.getSelectedItem().toString())));
-    d = new DiGraph<pitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
-    CollectionUtils.filter(t, new Predicate<pitchClassSet12> () {
+    CollectionUtils.filter(t,new SubsetOf(PitchClassSet12.parseForte(cbxScale.getSelectedItem().toString())));
+    d = new DiGraph<PitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
+    CollectionUtils.filter(t, new Predicate<PitchClassSet12> () {
 
       @Override
-      public boolean apply(@Nonnull pitchClassSet12 input) {
+      public boolean apply(@Nonnull PitchClassSet12 input) {
         return d.getSuccessorCount(input) > 0;
       }
       
     });
     List<String> s0 = new ArrayList<String>();
     
-    for(pitchClassSet12 x : t)s0.add(x.toForteNumberString());
+    for(PitchClassSet12 x : t)s0.add(x.toForteNumberString());
     s0.sort(comparator);
     String[] s = s0.toArray(new String[0]);
     ((DefaultComboBoxModel<String>)cbxStart.getModel()).removeAllElements();
@@ -103,12 +103,12 @@ public class ChordWalker {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
     Arrays.sort(cs);
     
     cbxScale = new JComboBox<String>(new DefaultComboBoxModel<String>(cs));
     frmChordPleasure = new JFrame();
-    frmChordPleasure.setTitle("pitchClassSet12 Walker");
+    frmChordPleasure.setTitle("PitchClassSet12 Walker");
     frmChordPleasure.getContentPane().setBackground(Color.DARK_GRAY);
     frmChordPleasure.setBounds(100, 100, 639, 311);
     frmChordPleasure.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -123,7 +123,7 @@ public class ChordWalker {
         ArrayList<String> o = new ArrayList<String>(); o.add(s);
 
         while(n>1){
-            pitchClassSet12 t = CollectionUtils.chooseAtRandom(d.getNeighbors(pitchClassSet12.parseForte(o.get(o.size()-1))));
+            PitchClassSet12 t = CollectionUtils.chooseAtRandom(d.getNeighbors(PitchClassSet12.parseForte(o.get(o.size()-1))));
             o.add(t.toString());
             n--;
         }

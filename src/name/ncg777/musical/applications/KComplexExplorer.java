@@ -30,7 +30,7 @@ import com.google.common.base.Predicates;
 
 import name.ncg777.computerScience.Utils;
 import name.ncg777.mathematics.objects.Sequence;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 import name.ncg777.musical.pitchClassSet12Predicates.Consonant;
 import name.ncg777.musical.pitchClassSet12Predicates.SubsetOf;
 import name.ncg777.musical.pitchClassSet12Predicates.SupersetOf;
@@ -76,20 +76,20 @@ public class KComplexExplorer {
 
   private void refreshPcs() {
     
-    TreeSet<pitchClassSet12> pitchClassSet12s = pitchClassSet12.getChords();
-    pitchClassSet12 scale = pitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
+    TreeSet<PitchClassSet12> PitchClassSet12s = PitchClassSet12.getChords();
+    PitchClassSet12 scale = PitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
           
-    Predicate<pitchClassSet12> pred = new SubsetOf(scale);
+    Predicate<PitchClassSet12> pred = new SubsetOf(scale);
     if(chckbxNoMinorSecond.isSelected()) pred = Predicates.and(pred, new Consonant());
     
     ArrayList<String> filtered = new ArrayList<String>();
-    for(pitchClassSet12 ch : pitchClassSet12s) {
+    for(PitchClassSet12 ch : PitchClassSet12s) {
       if(pred.apply(ch)) {
         filtered.add(ch.toForteNumberString());
       }
     }
     
-    filtered.sort(pitchClassSet12.ForteStringComparator.reversed());
+    filtered.sort(PitchClassSet12.ForteStringComparator.reversed());
     
     DefaultListModel<String> modelPcs = (DefaultListModel<String>) pitchclasssets.getModel();
     
@@ -108,17 +108,17 @@ public class KComplexExplorer {
     }
     DefaultListModel<String> modelPcs = (DefaultListModel<String>) pitchclasssets.getModel();
     
-    Predicate<pitchClassSet12> pred1 = new SubsetOf(current);
+    Predicate<PitchClassSet12> pred1 = new SubsetOf(current);
     DefaultListModel<String> modelSubsets = (DefaultListModel<String>) subsets.getModel();
     for(int i=0;i<modelPcs.size();i++) {
-      pitchClassSet12 tmp = pitchClassSet12.parseForte(modelPcs.get(i));
+      PitchClassSet12 tmp = PitchClassSet12.parseForte(modelPcs.get(i));
       if(pred1.apply(tmp)) modelSubsets.add(modelSubsets.size(), tmp.toForteNumberString());
     }
     
-    Predicate<pitchClassSet12> pred2 = new SupersetOf(current);
+    Predicate<PitchClassSet12> pred2 = new SupersetOf(current);
     DefaultListModel<String> modelSupersets = (DefaultListModel<String>) supersets.getModel();
     for(int i=0;i<modelPcs.size();i++) {
-      pitchClassSet12 tmp = pitchClassSet12.parseForte(modelPcs.get(i));
+      PitchClassSet12 tmp = PitchClassSet12.parseForte(modelPcs.get(i));
       if(pred2.apply(tmp)) modelSupersets.add(modelSupersets.size(), tmp.toForteNumberString());
     }
   }
@@ -129,12 +129,12 @@ public class KComplexExplorer {
   JList<String> supersets = new JList<String>(new DefaultListModel<String>());
   JList<String> subsets = new JList<String>(new DefaultListModel<String>());
   private JTextField textIV = new JTextField();;
-  private pitchClassSet12 current = null;
+  private PitchClassSet12 current = null;
   /**
    * Initialize the contents of the frame.
    */
   
-  private void setCurrent(pitchClassSet12 ch) {
+  private void setCurrent(PitchClassSet12 ch) {
     if(ch == null) {
       textCurrent.setText(""); 
       textPitches.setText("");
@@ -149,7 +149,7 @@ public class KComplexExplorer {
       textCurrent.setText(ch.toForteNumberString());
       textPitches.setText(ch.combinationString().replaceAll("[,}{]", "").trim()); 
       textIV.setText(ch.getIntervalVector().toString().replaceAll("[,})({]", ""));
-      pitchClassSet12 scale = pitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
+      PitchClassSet12 scale = PitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
       textComplement.setText(scale.minus(ch).toForteNumberString());
       textPCS12.setText(ch.toString());
       textSymmetries.setText(Joiner.on(", ").join(ch.getSymmetries()));
@@ -181,7 +181,7 @@ public class KComplexExplorer {
 
     }
   }
-  private void playChord(pitchClassSet12 chord) {
+  private void playChord(PitchClassSet12 chord) {
     if(chord == null) return;
     Utils.copyStringToClipboard(chord.toString());
     Thread t = new Thread(new Runnable() {
@@ -245,7 +245,7 @@ public class KComplexExplorer {
       }
     });
     frmKComplexExplorer.setResizable(false);
-    frmKComplexExplorer.setTitle("K-Complex Explorer");
+    frmKComplexExplorer.setTitle("k-Complex Explorer");
     frmKComplexExplorer.setBounds(100, 100, 588, 712);
     frmKComplexExplorer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmKComplexExplorer.getContentPane().setLayout(null);
@@ -275,7 +275,7 @@ public class KComplexExplorer {
     subsets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     subsets.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        pitchClassSet12 ch = subsets.isSelectionEmpty() ? null : pitchClassSet12.parseForte(subsets.getSelectedValue());
+        PitchClassSet12 ch = subsets.isSelectionEmpty() ? null : PitchClassSet12.parseForte(subsets.getSelectedValue());
         setCurrent(ch);
       }
     });
@@ -283,7 +283,7 @@ public class KComplexExplorer {
     supersets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     supersets.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        pitchClassSet12 ch = supersets.isSelectionEmpty() ? null : pitchClassSet12.parseForte(supersets.getSelectedValue());
+        PitchClassSet12 ch = supersets.isSelectionEmpty() ? null : PitchClassSet12.parseForte(supersets.getSelectedValue());
         setCurrent(ch);
       }
     });
@@ -295,7 +295,7 @@ public class KComplexExplorer {
     pitchclasssets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     pitchclasssets.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        pitchClassSet12 ch = pitchclasssets.isSelectionEmpty() ? null : pitchClassSet12.parseForte(pitchclasssets.getSelectedValue());
+        PitchClassSet12 ch = pitchclasssets.isSelectionEmpty() ? null : PitchClassSet12.parseForte(pitchclasssets.getSelectedValue());
         setCurrent(ch);
         setComplex();
       }
@@ -314,10 +314,10 @@ public class KComplexExplorer {
         setComplex();
       }
     });
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs, pitchClassSet12.ForteStringComparator);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    Arrays.sort(cs, PitchClassSet12.ForteStringComparator);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.04"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
     frmKComplexExplorer.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_2 = new JLabel("Pitch class sets");
@@ -380,7 +380,7 @@ public class KComplexExplorer {
     textComplement.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(pitchClassSet12.parseForte(textComplement.getText()));
+        playChord(PitchClassSet12.parseForte(textComplement.getText()));
       }
     });
     textComplement.setHorizontalAlignment(SwingConstants.CENTER);
@@ -396,7 +396,7 @@ public class KComplexExplorer {
     lblNewLabel_6_2.setBounds(10, 235, 132, 23);
     frmKComplexExplorer.getContentPane().add(lblNewLabel_6_2);
     
-    JLabel lblNewLabel_6_3 = new JLabel("pitchClassSet12");
+    JLabel lblNewLabel_6_3 = new JLabel("PitchClassSet12");
     lblNewLabel_6_3.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_6_3.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     lblNewLabel_6_3.setBounds(11, 282, 132, 23);

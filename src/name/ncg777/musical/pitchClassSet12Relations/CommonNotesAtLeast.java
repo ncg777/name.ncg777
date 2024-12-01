@@ -3,9 +3,9 @@ package name.ncg777.musical.pitchClassSet12Relations;
 import java.util.BitSet;
 
 import name.ncg777.mathematics.relations.Relation;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
-public class CommonNotesAtLeast implements Relation<pitchClassSet12, pitchClassSet12>   {
+public class CommonNotesAtLeast implements Relation<PitchClassSet12, PitchClassSet12>   {
 
   private int n = -1;
   
@@ -14,7 +14,7 @@ public class CommonNotesAtLeast implements Relation<pitchClassSet12, pitchClassS
     this.n = n;
   }
   @Override
-  public boolean apply(pitchClassSet12 a, pitchClassSet12 b) {
+  public boolean apply(PitchClassSet12 a, PitchClassSet12 b) {
     if (a == null || b == null) {
       return false;
     }

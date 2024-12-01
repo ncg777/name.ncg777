@@ -18,7 +18,7 @@ import name.ncg777.computerScience.dataStructures.CollectionUtils;
 import name.ncg777.mathematics.graphTheory.DiGraph;
 import name.ncg777.mathematics.objects.Matrix;
 import name.ncg777.mathematics.relations.Relation;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 import name.ncg777.musical.pitchClassSet12Predicates.Consonant;
 import name.ncg777.musical.pitchClassSet12Predicates.SubsetOf;
 import name.ncg777.musical.pitchClassSet12Relations.CloseIVs;
@@ -69,7 +69,7 @@ public class ChordMatrix {
     initialize();
    
   }
-  private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   JComboBox<String> comboFilter = new JComboBox<String>();
   JTextArea textArea; 
   JSpinner spinner_k = new JSpinner(new SpinnerNumberModel(3, 2, 11, 1));
@@ -78,7 +78,7 @@ public class ChordMatrix {
   private boolean running = false;
   private void initialize() {
     frmChordMatrix = new JFrame();
-    frmChordMatrix.setTitle("pitchClassSet12 Matrix");
+    frmChordMatrix.setTitle("PitchClassSet12 Matrix");
     frmChordMatrix.setBounds(100, 100, 549, 300);
     frmChordMatrix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -100,12 +100,12 @@ public class ChordMatrix {
               btnGenerate.setText("Cancel");
               textArea.setText("Searching...");
               running = true;
-              TreeSet<pitchClassSet12> t0 = pitchClassSet12.getChords();
-              TreeSet<pitchClassSet12> t = new TreeSet<pitchClassSet12>();
-              pitchClassSet12 scale = pitchClassSet12.parseForte(comboFilter.getSelectedItem().toString());
-              Predicate<pitchClassSet12> pred = Predicates.and(new SubsetOf(scale),new Consonant());
+              TreeSet<PitchClassSet12> t0 = PitchClassSet12.getChords();
+              TreeSet<PitchClassSet12> t = new TreeSet<PitchClassSet12>();
+              PitchClassSet12 scale = PitchClassSet12.parseForte(comboFilter.getSelectedItem().toString());
+              Predicate<PitchClassSet12> pred = Predicates.and(new SubsetOf(scale),new Consonant());
               
-              for(pitchClassSet12 r : t0){
+              for(PitchClassSet12 r : t0){
                 if(pred.apply(r) && r.getK() == (int)spinner_k.getValue()) {
                   t.add(r);
                 }
@@ -114,16 +114,16 @@ public class ChordMatrix {
               int m = getM();
               int n = getN();
 
-              Matrix<pitchClassSet12> output = new Matrix<>(m,n);
+              Matrix<PitchClassSet12> output = new Matrix<>(m,n);
              
-              Relation<pitchClassSet12, pitchClassSet12> rel_horiz = Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1)));
-              BiPredicate<pitchClassSet12, pitchClassSet12> rel_vert = new PredicatedUnion(new Consonant());
-              DiGraph<pitchClassSet12> d = new DiGraph<>(t, rel_horiz);
+              Relation<PitchClassSet12, PitchClassSet12> rel_horiz = Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1)));
+              BiPredicate<PitchClassSet12, PitchClassSet12> rel_vert = new PredicatedUnion(new Consonant());
+              DiGraph<PitchClassSet12> d = new DiGraph<>(t, rel_horiz);
               
-              Function<pitchClassSet12, List<pitchClassSet12>> possibles = new Function<pitchClassSet12, List<pitchClassSet12>>() {
+              Function<PitchClassSet12, List<PitchClassSet12>> possibles = new Function<PitchClassSet12, List<PitchClassSet12>>() {
 
                 @Override
-                public List<pitchClassSet12> apply(pitchClassSet12 x) {
+                public List<PitchClassSet12> apply(PitchClassSet12 x) {
                   return new ArrayList<>(d.getSuccessors(x));
                 }
                 
@@ -139,7 +139,7 @@ public class ChordMatrix {
                       if(j==0) {
                         output.set(i, j, CollectionUtils.chooseAtRandom(t));
                       } else {
-                        List<pitchClassSet12> p = possibles.apply(output.get(i, j-1));
+                        List<PitchClassSet12> p = possibles.apply(output.get(i, j-1));
                         if(p.size() == 0 ) {
                             failures = 0;
                             output.clear();
@@ -196,7 +196,7 @@ public class ChordMatrix {
               
               String str_output = output.toString((c) -> c.toForteNumberString());
               
-              Matrix<pitchClassSet12> complements = new Matrix<pitchClassSet12>(m,n);
+              Matrix<PitchClassSet12> complements = new Matrix<PitchClassSet12>(m,n);
               
               for(int i=0;i<m;i++) {
                 for(int j=0;j<n;j++) {
@@ -227,7 +227,7 @@ public class ChordMatrix {
     // hung 07-29.06
     // enigmatic 07-65.04
     // oct 08-35.00
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
     List<String> cs0 = new ArrayList<String>();
     for(var s : cs) cs0.add(s);
     cs0.sort(comparator);

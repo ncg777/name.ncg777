@@ -26,7 +26,7 @@ import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
 /**
- * The {@code pitchClassSet12} class represents a twelve-tone pitch class set, inheriting from the 
+ * The {@code PitchClassSet12} class represents a twelve-tone pitch class set, inheriting from the 
  * {@code ImmutableCombination} class, which allows it to handle combinations of pitch classes in 
  * a way that includes transposition and permutation functionalities, among other operations.
  * 
@@ -42,9 +42,9 @@ import com.google.common.collect.Ordering;
  * <ul>
  * <li>Identification of pitch class sets and their properties through methods like 
  * {@link #identify(ImmutableCombination)}, {@link #parseForte(String)}, and {@link #transpose(int)}.</li>
- * <li>Distance calculations between two pitch class sets with {@link #calcDistanceWith(pitchClassSet12)}.</li>
+ * <li>Distance calculations between two pitch class sets with {@link #calcDistanceWith(PitchClassSet12)}.</li>
  * <li>Symmetric operations such as union and intersection with methods like 
- * {@link #symmetricDifference(pitchClassSet12)} and {@link #intersect(pitchClassSet12)}.</li>
+ * {@link #symmetricDifference(PitchClassSet12)} and {@link #intersect(PitchClassSet12)}.</li>
  * <li>Forte number handling for pitch-class sets, enabling ease of reference within 
  * tonal analysis contexts.</li>
  * </ul>
@@ -55,15 +55,15 @@ import com.google.common.collect.Ordering;
  * @see ImmutableCombination
  * @see Sequence
  */
-public class pitchClassSet12 extends ImmutableCombination implements Serializable {
+public class PitchClassSet12 extends ImmutableCombination implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  static TreeMap<String, pitchClassSet12> ChordDict;
-  static TreeMap<ImmutableCombination, pitchClassSet12> ChordCombinationDict;
-  static TreeMap<pitchClassSet12, String> ForteNumbersDict;
-  static TreeMap<pitchClassSet12, Integer> ForteNumbersRotationDict;
-  static TreeMap<String, pitchClassSet12> ForteNumbersToPCS12Dict;
+  static TreeMap<String, PitchClassSet12> ChordDict;
+  static TreeMap<ImmutableCombination, PitchClassSet12> ChordCombinationDict;
+  static TreeMap<PitchClassSet12, String> ForteNumbersDict;
+  static TreeMap<PitchClassSet12, Integer> ForteNumbersRotationDict;
+  static TreeMap<String, PitchClassSet12> ForteNumbersToPCS12Dict;
   static TreeMap<String, String> ForteNumbersCommonNames;
   
   Integer m_Order;
@@ -100,11 +100,11 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
     var f = getForteNumber();
     return f.contains("A") ? "A" : f.contains("B") ? "B" : "";
   }
-  public int rotatedCompareTo(pitchClassSet12 other, int rotate) {
+  public int rotatedCompareTo(PitchClassSet12 other, int rotate) {
     return this.asBinarySequence().rotate(rotate).compareTo(other.asBinarySequence().rotate(rotate));
   }
   
-  public int calcDistanceWith(pitchClassSet12 other) {
+  public int calcDistanceWith(PitchClassSet12 other) {
     int maxn = Math.max(this.getN(), other.getN());
     
     int acc = 0;
@@ -118,34 +118,34 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
     return super.get(i%getN());
   }
   
-  public pitchClassSet12 transpose(int t) {
+  public PitchClassSet12 transpose(int t) {
     return identify(this.rotate(t));
   }
 
-  public pitchClassSet12 S12Permutate(Sequence s) {
+  public PitchClassSet12 S12Permutate(Sequence s) {
     if(s.distinct().size() != 12 || s.getMin() != 0 || s.getMax() != 11) throw new RuntimeException("Invalid permutation");
-    return pitchClassSet12.identify(ImmutableCombination.fromBinarySequence(this.asBinarySequence().permutate(s)));
+    return PitchClassSet12.identify(ImmutableCombination.fromBinarySequence(this.asBinarySequence().permutate(s)));
   }
   
-  public static TreeMap<String, pitchClassSet12> getChordDict() {
+  public static TreeMap<String, PitchClassSet12> getChordDict() {
     return ChordDict;
   }
-  public static TreeMap<String, pitchClassSet12> getForteChordDict() {
+  public static TreeMap<String, PitchClassSet12> getForteChordDict() {
     return ForteNumbersToPCS12Dict;
   }
-  public static TreeSet<pitchClassSet12> getChords() {
-    TreeSet<pitchClassSet12> output = new TreeSet<pitchClassSet12>();
+  public static TreeSet<PitchClassSet12> getChords() {
+    TreeSet<PitchClassSet12> output = new TreeSet<PitchClassSet12>();
     output.addAll(ChordDict.values());
     return output;
   }
 
-  public static pitchClassSet12 parse(String input) {
+  public static PitchClassSet12 parse(String input) {
     return ChordDict.get(input);
   }
-  public static pitchClassSet12 parseForte(String input) {
+  public static PitchClassSet12 parseForte(String input) {
     return ForteNumbersToPCS12Dict.get(input);
   }
-  private pitchClassSet12(Set<Integer> p_s, Integer p_Order, Integer p_Transpose) {
+  private PitchClassSet12(Set<Integer> p_s, Integer p_Order, Integer p_Transpose) {
     super(12, p_s);
     m_Order = p_Order;
     m_Transpose = p_Transpose;
@@ -180,22 +180,22 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
     return m_Transpose;
   }
   
-  public pitchClassSet12 intersect(pitchClassSet12 c){
+  public PitchClassSet12 intersect(PitchClassSet12 c){
     return identify(super.intersect(c));
   }
   
-  public pitchClassSet12 minus(pitchClassSet12 c){
+  public PitchClassSet12 minus(PitchClassSet12 c){
     return identify(super.minus(c));
   }
 
-  static TreeSet<pitchClassSet12> generate() {
+  static TreeSet<PitchClassSet12> generate() {
     Integer[] o = new Integer[12];
 
     for (int i = 0; i < 12; i++) {
       o[i] = 0;
     }
 
-    TreeSet<pitchClassSet12> output = new TreeSet<pitchClassSet12>();
+    TreeSet<PitchClassSet12> output = new TreeSet<PitchClassSet12>();
     TreeSet<Necklace> nck = Necklace.generate(12, 2);
     Necklace[] arr = new Necklace[nck.size()];
 
@@ -227,7 +227,7 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
           }
         }
         if (!c.isEmpty()) {
-          output.add(new pitchClassSet12(c, o[sz_tmp - 1]+1, j));
+          output.add(new PitchClassSet12(c, o[sz_tmp - 1]+1, j));
 
         }
       }
@@ -236,17 +236,17 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
       }
     }
 
-    output.add(pitchClassSet12.empty());
+    output.add(PitchClassSet12.empty());
 
     return output;
   }
 
-  public pitchClassSet12 combineWith(pitchClassSet12 x) {
-    return pitchClassSet12.identify(this.merge(x));
+  public PitchClassSet12 combineWith(PitchClassSet12 x) {
+    return PitchClassSet12.identify(this.merge(x));
   }
 
-  public pitchClassSet12 symmetricDifference(pitchClassSet12 y) {
-    return pitchClassSet12.identify(super.symmetricDifference(y));
+  public PitchClassSet12 symmetricDifference(PitchClassSet12 y) {
+    return PitchClassSet12.identify(super.symmetricDifference(y));
   }
   public String getCommonName() {return ForteNumbersCommonNames.get(getForteNumber());}
   public String getForteNumber() {return ForteNumbersDict.get(this);}
@@ -314,17 +314,17 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
   }
   
   private static void fillForteNumbersDict() throws IOException, CsvException {
-    ForteNumbersDict = new TreeMap<pitchClassSet12, String>();
-    ForteNumbersRotationDict = new TreeMap<pitchClassSet12,Integer>();
-    ForteNumbersToPCS12Dict = new TreeMap<String, pitchClassSet12>();
+    ForteNumbersDict = new TreeMap<PitchClassSet12, String>();
+    ForteNumbersRotationDict = new TreeMap<PitchClassSet12,Integer>();
+    ForteNumbersToPCS12Dict = new TreeMap<String, PitchClassSet12>();
     InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers.csv");
     FiniteRelation<String,Sequence> r = FiniteRelation.readFromCSV(Parsers.stringParser, Parsers.sequenceParser, is);
     
     for(var p : r) {
-      pitchClassSet12 ch = pitchClassSet12.identify(p.getSecond());
+      PitchClassSet12 ch = PitchClassSet12.identify(p.getSecond());
       
       for(int i=0;i<12;i++) {
-        pitchClassSet12 t = ch.transpose(i);
+        PitchClassSet12 t = ch.transpose(i);
         if(!ForteNumbersDict.containsKey(t)) {
           ForteNumbersDict.put(t, p.getFirst());
           ForteNumbersRotationDict.put(t, i);
@@ -344,14 +344,14 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
   }
   
   private static void GenerateMaps() throws IOException, CsvException {
-    TreeSet<pitchClassSet12> t = generate();
+    TreeSet<PitchClassSet12> t = generate();
 
-    TreeMap<String, pitchClassSet12> output = new TreeMap<String, pitchClassSet12>();
-    TreeMap<ImmutableCombination, pitchClassSet12> output2 = new TreeMap<>();
-    Iterator<pitchClassSet12> i = t.iterator();
+    TreeMap<String, PitchClassSet12> output = new TreeMap<String, PitchClassSet12>();
+    TreeMap<ImmutableCombination, PitchClassSet12> output2 = new TreeMap<>();
+    Iterator<PitchClassSet12> i = t.iterator();
 
     while (i.hasNext()) {
-      pitchClassSet12 tmp = i.next();
+      PitchClassSet12 tmp = i.next();
       output.put(tmp.toString(), tmp);
       output2.put(tmp, tmp);
     }
@@ -360,16 +360,16 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
     fillForteNumbersDict();
   }
 
-  public static pitchClassSet12 empty() {
-    return new pitchClassSet12(new TreeSet<Integer>(), 1, 0);
+  public static PitchClassSet12 empty() {
+    return new PitchClassSet12(new TreeSet<Integer>(), 1, 0);
   }
-  public static pitchClassSet12 identify(Combination input) {
+  public static PitchClassSet12 identify(Combination input) {
     return identify(ImmutableCombination.fromCombination(input));
   }
-  public static pitchClassSet12 identify(ImmutableCombination input) {
+  public static PitchClassSet12 identify(ImmutableCombination input) {
     if (input.getN() != 12) {
       throw new IllegalArgumentException(
-          "pitchClassSet12::IdentifyChord the combination is not bounded by 12");
+          "PitchClassSet12::IdentifyChord the combination is not bounded by 12");
     }
 
     if (input.isEmpty()) { return empty(); }
@@ -377,9 +377,9 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
     return ChordCombinationDict.get(input);
   }
 
-  public static pitchClassSet12 identify(Sequence input) { return pitchClassSet12.identify(new TreeSet<Integer>(input));}
-  public static pitchClassSet12 identify(Set<Integer> input) {
-    if (input.isEmpty()) { return pitchClassSet12.empty();}
+  public static PitchClassSet12 identify(Sequence input) { return PitchClassSet12.identify(new TreeSet<Integer>(input));}
+  public static PitchClassSet12 identify(Set<Integer> input) {
+    if (input.isEmpty()) { return PitchClassSet12.empty();}
 
     boolean ex = false;
     Iterator<Integer> i = input.iterator();
@@ -394,7 +394,7 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
       ex = true;
     }
     if (ex) {
-      throw new IllegalArgumentException("pitchClassSet12::IdentifyChord Provided set is not a valid chord.");
+      throw new IllegalArgumentException("PitchClassSet12::IdentifyChord Provided set is not a valid chord.");
     }
 
     return identify(new ImmutableCombination(12, input));
@@ -402,7 +402,7 @@ public class pitchClassSet12 extends ImmutableCombination implements Serializabl
   
   public static String[] CommonScales() {
     ArrayList<String> o = new ArrayList<>();
-    for(pitchClassSet12 ch : getChords()) {
+    for(PitchClassSet12 ch : getChords()) {
       if(ch.getK() == 7) {
         if( ch.getOrder() == 26 || // "07-26.04", Major Locrian
             ch.getOrder() == 28 || // "07-28.11", Persian

@@ -10,7 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
 
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class PCS12IntersectionAndUnion {
+public class PitchClassSet12PairIntersectionAndUnion {
 
   private JFrame frmPCS12IntersectionAndUnion;
 
@@ -31,7 +31,7 @@ public class PCS12IntersectionAndUnion {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          PCS12IntersectionAndUnion window = new PCS12IntersectionAndUnion();
+          PitchClassSet12PairIntersectionAndUnion window = new PitchClassSet12PairIntersectionAndUnion();
           window.frmPCS12IntersectionAndUnion.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -43,7 +43,7 @@ public class PCS12IntersectionAndUnion {
   /**
    * Create the application.
    */
-  public PCS12IntersectionAndUnion() {
+  public PitchClassSet12PairIntersectionAndUnion() {
     initialize();
     refresh();
   }
@@ -55,23 +55,23 @@ public class PCS12IntersectionAndUnion {
   private JTextField textUnionPitches = new JTextField();
   
   private void refresh() {
-    pitchClassSet12 s1 = pitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
-    pitchClassSet12 s2 = pitchClassSet12.parseForte(cboScale_1.getSelectedItem().toString());
+    PitchClassSet12 s1 = PitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
+    PitchClassSet12 s2 = PitchClassSet12.parseForte(cboScale_1.getSelectedItem().toString());
     
-    pitchClassSet12 inter = s1.intersect(s2);
+    PitchClassSet12 inter = s1.intersect(s2);
     textInter.setText(inter.toForteNumberString());
     textIntersectionPitches.setText(inter.asSequence().toString());
     
-    pitchClassSet12 union = s1.combineWith(s2);
+    PitchClassSet12 union = s1.combineWith(s2);
     textUnion.setText(union.toForteNumberString());
     textUnionPitches.setText(union.asSequence().toString());
     
   }
-  private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   private void initialize() {
     frmPCS12IntersectionAndUnion = new JFrame();
     frmPCS12IntersectionAndUnion.setResizable(false);
-    frmPCS12IntersectionAndUnion.setTitle("pitchClassSet12 Intersection and Union");
+    frmPCS12IntersectionAndUnion.setTitle("PitchClassSet12 Pair Intersection and Union");
     frmPCS12IntersectionAndUnion.setBounds(100, 100, 373, 197);
     frmPCS12IntersectionAndUnion.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmPCS12IntersectionAndUnion.getContentPane().setLayout(null);
@@ -96,7 +96,7 @@ public class PCS12IntersectionAndUnion {
       }
     });
     
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
     List<String> cs0 = new ArrayList<String>();
     for(var x : cs) cs0.add(x);
     cs0.sort(comparator);

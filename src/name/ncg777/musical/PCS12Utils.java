@@ -12,17 +12,17 @@ import name.ncg777.musical.pitchClassSet12Relations.NNotesDifference;
 
 public class PCS12Utils {
 
-  public static JaggedList<pitchClassSet12> randomChordTree(TreeSet<pitchClassSet12> t, Integer[] n, int nb) {
-    pitchClassSet12 i = CollectionUtils.chooseAtRandom(t);
+  public static JaggedList<PitchClassSet12> randomChordTree(TreeSet<PitchClassSet12> t, Integer[] n, int nb) {
+    PitchClassSet12 i = CollectionUtils.chooseAtRandom(t);
     
-    Predicate<pitchClassSet12> p = Relation.bindFirst(i, new NNotesDifference(1));
+    Predicate<PitchClassSet12> p = Relation.bindFirst(i, new NNotesDifference(1));
     return randomChordTreeSub(null, i, n, t, p, nb);
 
   }
 
-  private static JaggedList<pitchClassSet12> randomChordTreeSub(JaggedList<pitchClassSet12> parent, pitchClassSet12 z, Integer[] n,
-      TreeSet<pitchClassSet12> t0, Predicate<pitchClassSet12> p, int nb) {
-    JaggedList<pitchClassSet12> o = new JaggedList<pitchClassSet12>(z, parent);
+  private static JaggedList<PitchClassSet12> randomChordTreeSub(JaggedList<PitchClassSet12> parent, PitchClassSet12 z, Integer[] n,
+      TreeSet<PitchClassSet12> t0, Predicate<PitchClassSet12> p, int nb) {
+    JaggedList<PitchClassSet12> o = new JaggedList<PitchClassSet12>(z, parent);
 
     int x = 0;
     Integer[] n2 = new Integer[0];
@@ -35,19 +35,19 @@ public class PCS12Utils {
       }
     }
 
-    TreeSet<pitchClassSet12> t = new TreeSet<pitchClassSet12>();
+    TreeSet<PitchClassSet12> t = new TreeSet<PitchClassSet12>();
     t.addAll(t0);
     CollectionUtils.filter(t, p);
     t.remove(z);
 
-    pitchClassSet12[] cs = new pitchClassSet12[x];
+    PitchClassSet12[] cs = new PitchClassSet12[x];
 
     for (int i = 0; i < x; i++) {
       if (t.isEmpty()) {
         throw new RuntimeException("Ran out of chords.");
       }
 
-      pitchClassSet12 c = CollectionUtils.chooseAtRandom(t);
+      PitchClassSet12 c = CollectionUtils.chooseAtRandom(t);
       t.remove(c);
       cs[i] = c;
 

@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 import com.google.common.base.Joiner;
 
 import name.ncg777.mathematics.objects.Sequence;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -49,7 +49,7 @@ public class ChordSorter {
   public ChordSorter() {
     initialize();
   }
-  //private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  //private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   /**
    * Initialize the contents of the frame.
    */
@@ -89,10 +89,10 @@ public class ChordSorter {
     btnSort.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var chstr = textChords.getText().trim().split("\\s+");
-        var chlist = new ArrayList<pitchClassSet12>();
-        for(int i = 0;i<chstr.length;i++) {chlist.add(pitchClassSet12.parseForte(chstr[i]));}
+        var chlist = new ArrayList<PitchClassSet12>();
+        for(int i = 0;i<chstr.length;i++) {chlist.add(PitchClassSet12.parseForte(chstr[i]));}
         
-        ArrayList<pitchClassSet12> orig = new ArrayList<pitchClassSet12>();
+        ArrayList<PitchClassSet12> orig = new ArrayList<PitchClassSet12>();
         for(var c : chlist) orig.add(c);
         int r = (Integer)spinnerRotation.getValue();
         chlist.sort((a,b) -> a.rotatedCompareTo(b,r));

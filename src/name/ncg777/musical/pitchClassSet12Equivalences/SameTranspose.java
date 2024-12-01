@@ -4,12 +4,12 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.Equivalence;
 
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
-public class SameTranspose extends Equivalence<pitchClassSet12> {
+public class SameTranspose extends Equivalence<PitchClassSet12> {
 
   @Override
-  protected boolean doEquivalent(@Nonnull pitchClassSet12 a, @Nonnull pitchClassSet12 b) {
+  protected boolean doEquivalent(@Nonnull PitchClassSet12 a, @Nonnull PitchClassSet12 b) {
     if (a == null || b == null) {
       return false;
     }
@@ -17,7 +17,7 @@ public class SameTranspose extends Equivalence<pitchClassSet12> {
   }
 
   @Override
-  protected int doHash(@Nonnull pitchClassSet12 t) {
+  protected int doHash(@Nonnull PitchClassSet12 t) {
     return t.getTranspose().hashCode();
   }
 

@@ -2,7 +2,7 @@ package name.ncg777.musical.pitchClassSet12ListPrinters;
 
 import com.google.common.base.Function;
 
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-public class CSVPrinter implements Function<List<pitchClassSet12>, Void> {
+public class CSVPrinter implements Function<List<PitchClassSet12>, Void> {
   PrintWriter o;
 
   public CSVPrinter(PrintWriter o) {
@@ -23,14 +23,14 @@ public class CSVPrinter implements Function<List<pitchClassSet12>, Void> {
   }
 
   @Override
-  public Void apply(List<pitchClassSet12> input) {
+  public Void apply(List<PitchClassSet12> input) {
     TreeSet<String> I = new TreeSet<String>();
 
-    pitchClassSet12 combined = pitchClassSet12.identify(new TreeSet<Integer>());
-    for (pitchClassSet12 ch : input) {
+    PitchClassSet12 combined = PitchClassSet12.identify(new TreeSet<Integer>());
+    for (PitchClassSet12 ch : input) {
       combined = combined.combineWith(ch);
     }
-    ArrayList<pitchClassSet12> input2 = new ArrayList<pitchClassSet12>(); input2.addAll(input);
+    ArrayList<PitchClassSet12> input2 = new ArrayList<PitchClassSet12>(); input2.addAll(input);
     Collections.sort(input2);
     boolean same = true;
     for(int i=0;i<input.size();i++){
@@ -38,7 +38,7 @@ public class CSVPrinter implements Function<List<pitchClassSet12>, Void> {
     if(!same){return null;}
 
     {
-      TreeSet<pitchClassSet12> tmp = new TreeSet<pitchClassSet12>();
+      TreeSet<PitchClassSet12> tmp = new TreeSet<PitchClassSet12>();
       tmp.addAll(input);
       if(tmp.size()!=input.size()) {return null;}
     }
@@ -47,7 +47,7 @@ public class CSVPrinter implements Function<List<pitchClassSet12>, Void> {
     int sz = input.size();
     int i = 0;
     o.printf("\"");
-    for (pitchClassSet12 ch : input) {
+    for (PitchClassSet12 ch : input) {
       
       o.printf(ch.toString());
       I.add(String.format("%02d",ch.getK()) + "-" + String.format("%02d",ch.getOrder()));

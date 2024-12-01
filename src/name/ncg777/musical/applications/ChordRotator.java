@@ -12,7 +12,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.mathematics.Numbers;
 import name.ncg777.mathematics.objects.Sequence;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -47,20 +47,20 @@ public class ChordRotator {
       }
     });
   }
-  private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   /**
    * Create the application.
    */
   public ChordRotator() {
     initialize();
   }
-  private pitchClassSet12 getSelectedChord() {
+  private PitchClassSet12 getSelectedChord() {
     if(cboScale.getSelectedIndex() < 0) return null;
-    return pitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
+    return PitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
   }
   private void refreshPitches() {
     if(cboScale.getSelectedIndex() < 0 || textPitches == null) return;
-    pitchClassSet12 ch = getSelectedChord();
+    PitchClassSet12 ch = getSelectedChord();
     Sequence s = ch.asSequence();
     textPitches.setText(s.toString());
   }
@@ -75,7 +75,7 @@ public class ChordRotator {
   private void initialize() {
     frmChordRotator = new JFrame();
     frmChordRotator.setResizable(false);
-    frmChordRotator.setTitle("pitchClassSet12 Rotator");
+    frmChordRotator.setTitle("PitchClassSet12 Rotator");
     frmChordRotator.setBounds(100, 100, 321, 410);
     frmChordRotator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmChordRotator.getContentPane().setLayout(null);
@@ -95,7 +95,7 @@ public class ChordRotator {
     });
     
     
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
     List<String> cs0 = new ArrayList<String>();
     for(var s: cs) cs0.add(s);
     cs0.sort(comparator);
@@ -119,7 +119,7 @@ public class ChordRotator {
     JButton btnNewButton = new JButton("Generate");
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        pitchClassSet12 ch = getSelectedChord();
+        PitchClassSet12 ch = getSelectedChord();
         Sequence chs = ch.asSequence();
 
         int n = ch.getK();
@@ -127,13 +127,13 @@ public class ChordRotator {
         Sequence s = Sequence.parse(textField.getText().trim());
         int k = s.size();
         StringBuilder sb = new StringBuilder();
-        ArrayList<pitchClassSet12> chords = new ArrayList<>();
+        ArrayList<PitchClassSet12> chords = new ArrayList<>();
         for(int i=0;i<n;i++) {
           TreeSet<Integer> si = new TreeSet<>();
           for(int j=0; j<k;j++) {
             si.add(chs.get(Numbers.correctMod((s.get(j)+(i*inc)),n)));
           }
-          pitchClassSet12 chx = pitchClassSet12.identify(si);
+          PitchClassSet12 chx = PitchClassSet12.identify(si);
           if(chords.contains(chx)) {break;}
           chords.add(chx);
           sb.append(chx.toForteNumberString()+ "\n");

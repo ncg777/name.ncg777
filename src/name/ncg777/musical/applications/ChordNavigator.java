@@ -33,7 +33,7 @@ import com.google.common.base.Predicates;
 import name.ncg777.computerScience.Utils;
 import name.ncg777.mathematics.objects.Sequence;
 import name.ncg777.mathematics.relations.Relation;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 import name.ncg777.musical.pitchClassSet12Predicates.Consonant;
 import name.ncg777.musical.pitchClassSet12Predicates.SubsetOf;
 import name.ncg777.musical.pitchClassSet12Predicates.SupersetOf;
@@ -78,31 +78,31 @@ public class ChordNavigator {
     refreshAvailable();
     refreshButtons();
   }
-  private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   private void refreshAvailable() {
     
-    TreeSet<pitchClassSet12> pitchClassSet12s = pitchClassSet12.getChords();
-    pitchClassSet12 scale = pitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
+    TreeSet<PitchClassSet12> PitchClassSet12s = PitchClassSet12.getChords();
+    PitchClassSet12 scale = PitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
     DefaultListModel<String> modelIncl = (DefaultListModel<String>) included.getModel();
     
     TreeSet<String> incl = new TreeSet<String>();
     for(int i=0;i<modelIncl.size();i++) incl.add(modelIncl.elementAt(i));
-    TreeSet<pitchClassSet12> inclCh = new TreeSet<pitchClassSet12>();
-    for(String s : incl) inclCh.add(pitchClassSet12.parseForte(s));
-    pitchClassSet12 union = null;
-    for(pitchClassSet12 ch : inclCh) {
+    TreeSet<PitchClassSet12> inclCh = new TreeSet<PitchClassSet12>();
+    for(String s : incl) inclCh.add(PitchClassSet12.parseForte(s));
+    PitchClassSet12 union = null;
+    for(PitchClassSet12 ch : inclCh) {
       if(union == null) union = ch;
       else {
         union = union.combineWith(ch);
       }
     }
           
-    Predicate<pitchClassSet12> pred = new SubsetOf(scale);
+    Predicate<PitchClassSet12> pred = new SubsetOf(scale);
     if(chckbxNoMinorSecond.isSelected()) pred = Predicates.and(pred, new Consonant());
     if(union != null) pred = Relation.bindFirst(union, new PredicatedUnion(pred));
     
     ArrayList<String> filtered = new ArrayList<String>();
-    for(pitchClassSet12 ch : pitchClassSet12s) {
+    for(PitchClassSet12 ch : PitchClassSet12s) {
       if(pred.apply(ch) && !incl.contains(ch.toForteNumberString())) {
         filtered.add(ch.toForteNumberString());
       }
@@ -135,12 +135,12 @@ public class ChordNavigator {
   JButton btnAllSubchords = new JButton("All subchords");
   JButton btnAllSuperchords = new JButton("All superchords");
   private JTextField textIV;
-  private pitchClassSet12 current = null;
+  private PitchClassSet12 current = null;
   /**
    * Initialize the contents of the frame.
    */
   
-  private void setCurrent(pitchClassSet12 ch) {
+  private void setCurrent(PitchClassSet12 ch) {
     if(ch == null) {
       textCurrent.setText(""); 
       textPitches.setText("");
@@ -154,7 +154,7 @@ public class ChordNavigator {
       textCurrent.setText(ch.toForteNumberString());
       textPitches.setText(ch.combinationString().replaceAll("[,}{]", "").trim()); 
       textIV.setText(ch.getIntervalVector().toString().replaceAll("[,})({]", ""));
-      pitchClassSet12 scale = pitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
+      PitchClassSet12 scale = PitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
       textComplement.setText(scale.minus(ch).toForteNumberString());
       textSymmetries.setText(Joiner.on(", ").join(ch.getSymmetries()));
       var commonName = ch.getCommonName();
@@ -166,17 +166,17 @@ public class ChordNavigator {
     }
     
   }
-  private pitchClassSet12 union = null;
+  private PitchClassSet12 union = null;
   
   private void refreshUnion() {
     DefaultListModel<String> modelIncl = (DefaultListModel<String>) included.getModel();
     
     TreeSet<String> incl = new TreeSet<String>();
     for(int i=0;i<modelIncl.size();i++) incl.add(modelIncl.elementAt(i));
-    TreeSet<pitchClassSet12> inclCh = new TreeSet<pitchClassSet12>();
-    for(String s : incl) inclCh.add(pitchClassSet12.parseForte(s));
-    pitchClassSet12 union = null;
-    for(pitchClassSet12 ch : inclCh) {
+    TreeSet<PitchClassSet12> inclCh = new TreeSet<PitchClassSet12>();
+    for(String s : incl) inclCh.add(PitchClassSet12.parseForte(s));
+    PitchClassSet12 union = null;
+    for(PitchClassSet12 ch : inclCh) {
       if(union == null) union = ch;
       else {
         union = union.combineWith(ch);
@@ -215,12 +215,12 @@ public class ChordNavigator {
   
   private void addAllSubchords() {
     if(included.isSelectionEmpty()) return;
-    pitchClassSet12 selected = pitchClassSet12.parseForte(included.getSelectedValue());
-    Predicate<pitchClassSet12> pred = new SubsetOf(selected);
+    PitchClassSet12 selected = PitchClassSet12.parseForte(included.getSelectedValue());
+    Predicate<PitchClassSet12> pred = new SubsetOf(selected);
     DefaultListModel<String> modelAvailable = (DefaultListModel<String>) available.getModel();
     DefaultListModel<String> modelIncl = (DefaultListModel<String>) included.getModel();
     for(int i=0;i<modelAvailable.size();i++) {
-      pitchClassSet12 tmp = pitchClassSet12.parseForte(modelAvailable.get(i));
+      PitchClassSet12 tmp = PitchClassSet12.parseForte(modelAvailable.get(i));
       if(pred.apply(tmp)) modelIncl.add(modelIncl.size(), tmp.toForteNumberString());
     }
     refreshAvailable();
@@ -230,12 +230,12 @@ public class ChordNavigator {
   
   private void addAllSuperchords() {
     if(included.isSelectionEmpty()) return;
-    pitchClassSet12 selected = pitchClassSet12.parseForte(included.getSelectedValue());
-    Predicate<pitchClassSet12> pred = new SupersetOf(selected);
+    PitchClassSet12 selected = PitchClassSet12.parseForte(included.getSelectedValue());
+    Predicate<PitchClassSet12> pred = new SupersetOf(selected);
     DefaultListModel<String> modelAvailable = (DefaultListModel<String>) available.getModel();
     DefaultListModel<String> modelIncl = (DefaultListModel<String>) included.getModel();
     for(int i=0;i<modelAvailable.size();i++) {
-      pitchClassSet12 tmp = pitchClassSet12.parseForte(modelAvailable.get(i));
+      PitchClassSet12 tmp = PitchClassSet12.parseForte(modelAvailable.get(i));
       if(pred.apply(tmp)) modelIncl.add(modelIncl.size(), tmp.toForteNumberString());
     }
     refreshAvailable();
@@ -261,7 +261,7 @@ public class ChordNavigator {
 
     }
   }
-  private void playChord(pitchClassSet12 chord) {
+  private void playChord(PitchClassSet12 chord) {
     if(chord == null) return;
     Utils.copyStringToClipboard(chord.toForteNumberString());
     Thread t = new Thread(new Runnable() {
@@ -362,7 +362,7 @@ public class ChordNavigator {
     included.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     included.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        pitchClassSet12 ch = included.isSelectionEmpty() ? null : pitchClassSet12.parseForte(included.getSelectedValue());
+        PitchClassSet12 ch = included.isSelectionEmpty() ? null : PitchClassSet12.parseForte(included.getSelectedValue());
         setCurrent(ch);
         refreshButtons();
       }
@@ -383,7 +383,7 @@ public class ChordNavigator {
     available.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     available.addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
-        pitchClassSet12 ch = available.isSelectionEmpty() ? null : pitchClassSet12.parseForte(available.getSelectedValue());
+        PitchClassSet12 ch = available.isSelectionEmpty() ? null : PitchClassSet12.parseForte(available.getSelectedValue());
         setCurrent(ch);
         refreshButtons();
       }
@@ -423,7 +423,7 @@ public class ChordNavigator {
         refreshUnion();
       }
     });
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
     Arrays.sort(cs);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
     cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
@@ -560,7 +560,7 @@ public class ChordNavigator {
     textComplement.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent e) {
-        playChord(pitchClassSet12.parseForte(textComplement.getText()));
+        playChord(PitchClassSet12.parseForte(textComplement.getText()));
       }
     });
     textComplement.setHorizontalAlignment(SwingConstants.CENTER);

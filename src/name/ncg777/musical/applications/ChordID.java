@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 import javax.swing.JButton;
 
@@ -53,7 +53,7 @@ public class ChordID {
   private void initialize() {
     frmChordId = new JFrame();
     frmChordId.getContentPane().setBackground(Color.DARK_GRAY);
-    frmChordId.setTitle("pitchClassSet12 identifier");
+    frmChordId.setTitle("PitchClassSet12 identifier");
     frmChordId.setBounds(100, 100, 556, 146);
     frmChordId.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -83,7 +83,7 @@ public class ChordID {
           p.add(Integer.parseInt(s));
           
         }
-        lblChord_1.setText(pitchClassSet12.identify(p).toForteNumberString());
+        lblChord_1.setText(PitchClassSet12.identify(p).toForteNumberString());
       }
     });
     
@@ -94,7 +94,7 @@ public class ChordID {
     final JLabel lblPitches_1 = new JLabel(" ");
     lblPitches_1.setForeground(Color.WHITE);
     lblPitches_1.setBackground(Color.BLACK);
-    JLabel lblChord_2 = new JLabel("pitchClassSet12 :");
+    JLabel lblChord_2 = new JLabel("PitchClassSet12 :");
     lblChord_2.setForeground(Color.WHITE);
     
     JButton btnNewButton = new JButton("Forte number -> Pitches");
@@ -103,7 +103,7 @@ public class ChordID {
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent arg0) {
         lblPitches_1.setText(
-          pitchClassSet12.parseForte(textField_1.getText())
+          PitchClassSet12.parseForte(textField_1.getText())
           .combinationString().replace("{", "").replace("}","").replace(",", ""));
       }
     });

@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.mathematics.objects.Sequence;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
@@ -49,14 +49,14 @@ public class ChordPermutator {
   public ChordPermutator() {
     initialize();
   }
-  private pitchClassSet12 getSelectedChord() {
+  private PitchClassSet12 getSelectedChord() {
     if(cboScale.getSelectedIndex() < 0) return null;
-    return pitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
+    return PitchClassSet12.parseForte(cboScale.getSelectedItem().toString());
   }
-  private Comparator<String> comparator = pitchClassSet12.ForteStringComparator.reversed();
+  private Comparator<String> comparator = PitchClassSet12.ForteStringComparator.reversed();
   private void refreshPitches() {
     if(cboScale.getSelectedIndex() < 0 || textPitches == null) return;
-    pitchClassSet12 ch = getSelectedChord();
+    PitchClassSet12 ch = getSelectedChord();
     Sequence s = ch.asSequence();
     textPitches.setText(s.toString());
   }
@@ -70,12 +70,12 @@ public class ChordPermutator {
   private void initialize() {
     frmChordPermutator = new JFrame();
     frmChordPermutator.setResizable(false);
-    frmChordPermutator.setTitle("pitchClassSet12 Permutator");
+    frmChordPermutator.setTitle("PitchClassSet12 Permutator");
     frmChordPermutator.setBounds(100, 100, 321, 410);
     frmChordPermutator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmChordPermutator.getContentPane().setLayout(null);
     
-    JLabel lblNewLabel = new JLabel("pitchClassSet12:");
+    JLabel lblNewLabel = new JLabel("PitchClassSet12:");
     lblNewLabel.setToolTipText("<html>\r\n07-26.04 Major Locrian<br/>\r\n07-28.11 Persian<br/>\r\n07-29.06 Hungarian<br/>\r\n07-38.11 Harmonic minor<br/>\r\n07-39.11 Melodic minor<br/>\r\n07-42.11 Harmonic major<br/>\r\n07-43.11 Major<br/>\r\n08-35.00 Octatonic<br/>\r\n</html>");
     lblNewLabel.setBounds(10, 15, 114, 14);
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -91,7 +91,7 @@ public class ChordPermutator {
     });
     
     
-    String[] cs = pitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
+    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
     List<String> cs0 = new ArrayList<String>();
     for(var s:cs) cs0.add(s);
     cs0.sort(comparator);
@@ -116,8 +116,8 @@ public class ChordPermutator {
     btnNewButton.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          pitchClassSet12 ch = getSelectedChord();
-          pitchClassSet12 initialChord = ch;
+          PitchClassSet12 ch = getSelectedChord();
+          PitchClassSet12 initialChord = ch;
           Sequence s = Sequence.parse(textField.getText().trim());
           
           StringBuilder sb = new StringBuilder();

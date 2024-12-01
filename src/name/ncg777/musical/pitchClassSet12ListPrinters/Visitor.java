@@ -5,26 +5,26 @@ import java.util.TreeSet;
 
 import com.google.common.base.Function;
 
-import name.ncg777.musical.pitchClassSet12;
-import name.ncg777.musical.pitchClassSet12Sequence;
+import name.ncg777.musical.PitchClassSet12;
+import name.ncg777.musical.PitchClassSet12Sequence;
 
-public class Visitor implements Function<List<pitchClassSet12>, Void> {
+public class Visitor implements Function<List<PitchClassSet12>, Void> {
 
-  TreeSet<pitchClassSet12Sequence> t;
+  TreeSet<PitchClassSet12Sequence> t;
 
   public Visitor() {
-    t = new TreeSet<pitchClassSet12Sequence>();
+    t = new TreeSet<PitchClassSet12Sequence>();
   }
 
   @Override
-  public Void apply(List<pitchClassSet12> input) {
-    pitchClassSet12Sequence cs = new pitchClassSet12Sequence();
+  public Void apply(List<PitchClassSet12> input) {
+    PitchClassSet12Sequence cs = new PitchClassSet12Sequence();
     cs.addAll(input);
     t.add(cs);
     return null;
   }
 
-  public TreeSet<pitchClassSet12Sequence> getSet() {
+  public TreeSet<PitchClassSet12Sequence> getSet() {
     return t;
   }
 

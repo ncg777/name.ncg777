@@ -14,7 +14,7 @@ import name.ncg777.mathematics.objects.Vector;
 import name.ncg777.mathematics.objects.VectorOfBooleans;
 import name.ncg777.mathematics.objects.VectorOfDoubles;
 import name.ncg777.mathematics.objects.VectorOfIntegers;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 public class Parsers {
   public static Function<String, String> stringParser = (s) -> s;
@@ -62,7 +62,7 @@ public class Parsers {
     };
   }
   public static Function<String, Sequence> sequenceParser  = (s) -> Sequence.parse(s);
-  public static Function<String, pitchClassSet12> PCS12parser = (s) -> pitchClassSet12.parseForte(s);
+  public static Function<String, PitchClassSet12> PCS12parser = (s) -> PitchClassSet12.parseForte(s);
   public static Function<String, HomoPair<Integer>> intPairParser = (s) -> {
     Sequence ss = Sequence.parse(s);
     return HomoPair.makeHomoPair(ss.get(0), ss.get(1));

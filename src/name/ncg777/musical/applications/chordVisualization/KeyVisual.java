@@ -6,14 +6,14 @@ import javax.swing.SwingConstants;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 public class KeyVisual extends JPanel {
   /**
    * 
    */
   private static final long serialVersionUID = -2303640931691547468L;
-  pitchClassSet12 chord = null;
+  PitchClassSet12 chord = null;
   JLabel lbl00 = new JLabel("");
   JLabel lbl01 = new JLabel("");
   JLabel lbl02 = new JLabel("");
@@ -28,8 +28,8 @@ public class KeyVisual extends JPanel {
   JLabel lbl11 = new JLabel("");
   private final JLabel lblName = new JLabel("");
   private final JLabel lblIV = new JLabel("");
-  public void setChord(String chord) {this.setChord(pitchClassSet12.parseForte(chord));}
-  public void setChord(pitchClassSet12 chord) {
+  public void setChord(String chord) {this.setChord(PitchClassSet12.parseForte(chord));}
+  public void setChord(PitchClassSet12 chord) {
     this.chord = chord;
     lbl00.setText(chord.get(0) ? "X":"");
     lbl01.setText(chord.get(1) ? "X":"");

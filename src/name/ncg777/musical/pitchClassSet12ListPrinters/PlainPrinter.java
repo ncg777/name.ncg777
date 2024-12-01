@@ -2,13 +2,13 @@ package name.ncg777.musical.pitchClassSet12ListPrinters;
 
 import com.google.common.base.Function;
 
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
 import java.io.PrintWriter;
 import java.util.List;
 
 
-public class PlainPrinter implements Function<List<pitchClassSet12>, Void> {
+public class PlainPrinter implements Function<List<PitchClassSet12>, Void> {
   PrintWriter o;
 
   public PlainPrinter(PrintWriter o) {
@@ -19,9 +19,9 @@ public class PlainPrinter implements Function<List<pitchClassSet12>, Void> {
     o.close();
   }
 
-  public Void apply(List<pitchClassSet12> input) {
+  public Void apply(List<PitchClassSet12> input) {
 
-    for (pitchClassSet12 ch : input) {
+    for (PitchClassSet12 ch : input) {
       o.printf(ch.toString());
       o.printf(" ");
     }

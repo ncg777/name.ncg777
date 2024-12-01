@@ -3,17 +3,17 @@ package name.ncg777.musical.pitchClassSet12Predicates;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
-import name.ncg777.musical.pitchClassSet12;
+import name.ncg777.musical.PitchClassSet12;
 
-public class SubsetOf implements StandardAndGuavaPredicate<pitchClassSet12>  {
+public class SubsetOf implements StandardAndGuavaPredicate<PitchClassSet12>  {
 
-  private pitchClassSet12 pitchClassSet12;
-  public SubsetOf(pitchClassSet12 pitchClassSet12) {
-    this.pitchClassSet12 = pitchClassSet12;
+  private PitchClassSet12 PitchClassSet12;
+  public SubsetOf(PitchClassSet12 PitchClassSet12) {
+    this.PitchClassSet12 = PitchClassSet12;
   }
   @Override
-  public boolean apply(@Nonnull pitchClassSet12 input) {
-    return pitchClassSet12.intersect(input).getK() == input.getK();
+  public boolean apply(@Nonnull PitchClassSet12 input) {
+    return PitchClassSet12.intersect(input).getK() == input.getK();
   }
 
 }
