@@ -22,7 +22,6 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.TreeSet;
 
@@ -423,10 +422,11 @@ public class ChordNavigator {
         refreshUnion();
       }
     });
-    String[] cs = PitchClassSet12.getForteChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs);
-    cboScale.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
+    ArrayList<String> cs = new ArrayList<String>();
+    cs.addAll(PitchClassSet12.getForteChordDict().keySet());
+    cs.sort(PitchClassSet12.ForteStringComparator.reversed());
+    cboScale.setModel(new DefaultComboBoxModel<String>(cs.toArray(new String[0])));
+    cboScale.setSelectedIndex(cs.indexOf("12-1.00"));
     frmChordNavigator.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_1 = new JLabel("Included");
