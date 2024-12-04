@@ -34,7 +34,7 @@ public class SequenceRelations {
    * @author Nicolas Couture-Grenier
    * 
    */
-  public static Equivalence<Sequence> UpToIsomorphismAndRotation = new Equivalence<Sequence>() {
+  public static Equivalence<Sequence> upToIsomorphismAndRotation = new Equivalence<Sequence>() {
     @Override
     protected boolean doEquivalent(@Nonnull Sequence a, @Nonnull Sequence b) {
       if (a.size() != b.size() || a.distinct().size() != b.distinct().size()) {
