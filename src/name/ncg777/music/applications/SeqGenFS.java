@@ -111,7 +111,7 @@ public class SeqGenFS {
                   R = r.asBinaryWord();
                 }
                 if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                  OctalSentence r = OctalSentence.parseOctalWord(str_R);
+                  OctalSentence r = OctalSentence.parse(str_R);
                   R = r.asBinary();
                 }
                 

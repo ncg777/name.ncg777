@@ -11,7 +11,7 @@ import name.ncg777.maths.objects.Sequence;
 import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.objects.words.HexadecimalWord;
 
-public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements Comparable<HexadecimalSentence>{
+public class HexadecimalSentence extends ArrayList<HexadecimalWord> implements Comparable<HexadecimalSentence>{
   private static final long serialVersionUID = 1L;
 
   public HexadecimalSentence(List<HexadecimalWord> m_l) {
@@ -44,7 +44,7 @@ public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements 
 //    return false;
 //  }
   
-  public static ArrayList<HexadecimalSentence> fromRhythmArray(ArrayList<BinaryWord> list) {
+  public static ArrayList<HexadecimalSentence> fromBinarySentence(ArrayList<BinaryWord> list) {
     ArrayList<HexadecimalSentence> o = new ArrayList<>();
     
     for(BinaryWord r : list) {
@@ -144,7 +144,7 @@ public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements 
     for (int i = 0; i < s.length() / 4; i++) {
       String tmp = s.substring(i * 4, (i + 1) * 4);
       tmp = tmp.substring(0, 2) + " " + tmp.substring(2, 4);
-      output.add(HexadecimalWord.parseRhythmHexa(tmp));
+      output.add(HexadecimalWord.parse(tmp));
     }
     return new HexadecimalSentence(output);
 
@@ -179,7 +179,7 @@ public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements 
         }
         k++;
       }
-      output.add(HexadecimalWord.identifyRhythm16(t));
+      output.add(HexadecimalWord.tryConvert(t));
     }
     return output;
   }
@@ -316,7 +316,7 @@ public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements 
           t.add(j);
         }
       }
-      output.add(HexadecimalWord.identifyRhythm16(t));
+      output.add(HexadecimalWord.tryConvert(t));
     }
     return output;
 
@@ -359,7 +359,7 @@ public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements 
     List<HexadecimalWord> oo = new ArrayList<HexadecimalWord>();
     
     for(int i=0;i<rsz;i++) {
-      oo.add(HexadecimalWord.convert(new Combination(b[i],16)));
+      oo.add(HexadecimalWord.tryConvert(new Combination(b[i],16)));
     }
     return new HexadecimalSentence(oo);
   }
@@ -388,7 +388,7 @@ public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements 
           t.add(j);
         }
       }
-      output.add(HexadecimalWord.identifyRhythm16(t));
+      output.add(HexadecimalWord.tryConvert(t));
     }
     return output;
   }

@@ -109,7 +109,7 @@ public class SeqGenContourFollow {
                 C = r.asBinaryWord().getComposition().asSequence();
               }
               if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                OctalSentence r = OctalSentence.parseOctalWord(str_R);
+                OctalSentence r = OctalSentence.parse(str_R);
                 C = r.asBinary().getComposition().asSequence();
               }
               @SuppressWarnings("null")

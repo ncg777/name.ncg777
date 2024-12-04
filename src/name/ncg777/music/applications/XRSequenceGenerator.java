@@ -91,7 +91,7 @@ public class XRSequenceGenerator {
           comp = HexadecimalSentence.parseHexadecimalWord(textRhythm.getText()).asBinaryWord().getComposition().asSequence();
         }
         if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          comp = OctalSentence.parseOctalWord(textRhythm.getText()).asBinary().getComposition().asSequence();
+          comp = OctalSentence.parse(textRhythm.getText()).asBinary().getComposition().asSequence();
         }
         
         ArrayList<Double> output = new ArrayList<Double>();

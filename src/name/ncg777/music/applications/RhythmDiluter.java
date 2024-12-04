@@ -139,7 +139,7 @@ public class RhythmDiluter {
       r = HexadecimalSentence.parseHexadecimalWord(textRhythm.getText()).asBinaryWord();
     }
     if(comboBox.getSelectedItem() == Alphabet.Octal) {
-      r = OctalSentence.parseOctalWord(textRhythm.getText()).asBinary();
+      r = OctalSentence.parse(textRhythm.getText()).asBinary();
     }
     
     @SuppressWarnings("null")

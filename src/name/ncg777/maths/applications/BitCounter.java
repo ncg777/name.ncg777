@@ -68,7 +68,7 @@ public class BitCounter {
           if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
             lblCount.setText(Integer.toString(HexadecimalSentence.parseHexadecimalWord(str).asBinaryWord().getK()));
           } else if(comboBox.getSelectedItem() == Alphabet.Octal) {
-            lblCount.setText(Integer.toString(OctalSentence.parseOctalWord(str).asBinary().getK()));
+            lblCount.setText(Integer.toString(OctalSentence.parse(str).asBinary().getK()));
           }
           
         }

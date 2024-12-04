@@ -130,7 +130,7 @@ public class SeqGenFixedSum {
                 n = HexadecimalSentence.parseHexadecimalWord(str_R).asBinaryWord().getK();
               }
               if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                n = OctalSentence.parseOctalWord(str_R).asBinary().getK();
+                n = OctalSentence.parse(str_R).asBinary().getK();
               }
               if(n < 2) {
                 throw new RuntimeException("rhythm is empty or too small");

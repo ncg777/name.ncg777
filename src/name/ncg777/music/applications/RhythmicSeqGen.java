@@ -83,7 +83,7 @@ public class RhythmicSeqGen {
             return;
           }
           if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) binaryWords.add(HexadecimalSentence.parseHexadecimalWord(l[0].trim()).asBinaryWord());
-          if(comboBox.getSelectedItem() == Alphabet.Octal) binaryWords.add(OctalSentence.parseOctalWord(l[0].trim()).asBinary());
+          if(comboBox.getSelectedItem() == Alphabet.Octal) binaryWords.add(OctalSentence.parse(l[0].trim()).asBinary());
           muls.add(Integer.valueOf(l[1].trim()));
         }
         

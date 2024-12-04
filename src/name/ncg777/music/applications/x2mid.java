@@ -118,7 +118,7 @@ public class x2mid {
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(HexadecimalWord.identifyRhythm16(t));
+          o.add(HexadecimalWord.tryConvert(t));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }

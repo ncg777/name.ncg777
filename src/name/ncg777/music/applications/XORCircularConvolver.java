@@ -86,8 +86,8 @@ public class XORCircularConvolver {
           impulse = HexadecimalSentence.parseHexadecimalWord(txtImpulse.getText()).asBinaryWord();
         }
         if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          carrier = OctalSentence.parseOctalWord(txtCarrier.getText()).asBinary();
-          impulse = OctalSentence.parseOctalWord(txtImpulse.getText()).asBinary();
+          carrier = OctalSentence.parse(txtCarrier.getText()).asBinary();
+          impulse = OctalSentence.parse(txtImpulse.getText()).asBinary();
         }
         BitSet bs = new BitSet(carrier.getN());
         

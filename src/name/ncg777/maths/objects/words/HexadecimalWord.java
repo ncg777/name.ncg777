@@ -8,17 +8,15 @@ import name.ncg777.maths.objects.Combination;
 
 import static com.google.common.math.IntMath.checkedPow;
 
-public class HexadecimalWord extends BinaryWord implements Serializable{
-
+public class HexadecimalWord extends Combination implements Serializable{
   private static final long serialVersionUID = 1L;
-
   String m_str;
 
   public static HexadecimalWord rotate(HexadecimalWord r, int t) {
-    return convert(BinaryWord.rotate(r, t));
+    return tryConvert(r.rotate(t));
   }
 
-  public static HexadecimalWord parseRhythmHexa(String input) {
+  public static HexadecimalWord parse(String input) {
     String binstr = Integer.toBinaryString(Integer.parseInt(input, 16));
 
     BitSet b = new BitSet(binstr.length()*4);
@@ -44,11 +42,11 @@ public class HexadecimalWord extends BinaryWord implements Serializable{
     return new BinaryWord(b, 16);
   }
 
-  public static HexadecimalWord fromRhythm(BinaryWord r) {
+  public static HexadecimalWord fromBinary(BinaryWord r) {
     if(r.getN()!=16) throw new RuntimeException();
     Combination c = new Combination(16);
     c.or(r);
-    return convert(c);
+    return tryConvert(c);
   }
   
   @Override
@@ -74,35 +72,35 @@ public class HexadecimalWord extends BinaryWord implements Serializable{
   }
 
   public static HexadecimalWord getZeroRhythm(){
-    return parseRhythmHexa("00 00");
+    return parse("00 00");
   }
 
   public static HexadecimalWord and(HexadecimalWord a, HexadecimalWord b) {
     BitSet x = new BitSet(16);
     x.or(a);
     x.and(b);
-    return convert(new Combination(x, 16));
+    return tryConvert(new Combination(x, 16));
   }
 
   public static HexadecimalWord or(HexadecimalWord a, HexadecimalWord b) {
     BitSet x = new BitSet(16);
     x.or(a);
     x.or(b);
-    return convert(new Combination(x, 16));
+    return tryConvert(new Combination(x, 16));
   }
 
   public static HexadecimalWord not(HexadecimalWord a) {
     BitSet x = new BitSet(16);
     x.set(0, 16);
     x.andNot(a);
-    return convert(new Combination(x, 16));
+    return tryConvert(new Combination(x, 16));
   }
 
   public static HexadecimalWord xor(HexadecimalWord a, HexadecimalWord b) {
     BitSet x = new BitSet(16);
     x.or(a);
     x.xor(b);
-    return convert(new Combination(x, 16));
+    return tryConvert(new Combination(x, 16));
 
   }
 
@@ -110,15 +108,15 @@ public class HexadecimalWord extends BinaryWord implements Serializable{
     BitSet x = new BitSet(16);
     x.or(a);
     x.and(not(b));
-    return convert(new Combination(x, 16));
+    return tryConvert(new Combination(x, 16));
 
   }
 
-  public static HexadecimalWord identifyRhythm16(Set<Integer> input) {
+  public static HexadecimalWord tryConvert(Set<Integer> input) {
     return new HexadecimalWord(input);
   }
 
-  public static HexadecimalWord convert(Combination input) {
+  public static HexadecimalWord tryConvert(Combination input) {
     return new HexadecimalWord(input);
   }
 }

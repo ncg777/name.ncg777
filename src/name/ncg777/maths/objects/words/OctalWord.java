@@ -9,17 +9,16 @@ import name.ncg777.maths.objects.Combination;
 import static com.google.common.math.IntMath.checkedPow;
 //import static name.ncg777.maths.objects.Sequence.ReverseComparator;
 
-public class OctalWord extends BinaryWord implements Serializable{
+public class OctalWord extends Combination implements Serializable{
 
   private static final long serialVersionUID = 1L;
-  
   String m_str;
 
   public static OctalWord rotate(OctalWord r, int t) {
-    return tryConvert(BinaryWord.rotate(r, t));
+    return tryConvert(r.rotate(t));
   }
 
-  public static OctalWord parseOctalWord(String input) {    
+  public static OctalWord parse(String input) {    
     String binstr = Integer.toBinaryString(Integer.parseInt(input, 8));
     
     BitSet b = new BitSet(binstr.length()*3);
@@ -44,7 +43,7 @@ public class OctalWord extends BinaryWord implements Serializable{
     return new BinaryWord(b, 12);
   }
 
-  public static OctalWord fromRhythm(BinaryWord r) {
+  public static OctalWord tryConvert(BinaryWord r) {
     if(r.getN()!=12) throw new RuntimeException();
     Combination c = new Combination(12);
     c.or(r);
@@ -73,9 +72,9 @@ public class OctalWord extends BinaryWord implements Serializable{
     return String.format("%02o %02o", msb, lsb);
   }
 
-  public static OctalWord getZeroRhythm(){
-    return parseOctalWord("00 00");
-  }
+//  public static OctalWord getZeroRhythm(){
+//    return parseOctalWord("00 00");
+//  }
 
 //  public static TreeSet<OctalWord> Generate() {
 //    Integer[] o = new Integer[12];

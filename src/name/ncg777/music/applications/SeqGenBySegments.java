@@ -89,7 +89,7 @@ public class SeqGenBySegments {
             r = HexadecimalSentence.parseHexadecimalWord(str_R).asBinaryWord();
           }
           if(comboBox.getSelectedItem() == Alphabet.Octal) {
-            r = OctalSentence.parseOctalWord(str_R).asBinary();
+            r = OctalSentence.parse(str_R).asBinary();
           }
           @SuppressWarnings("null")
           Sequence C = r.getComposition().asSequence();

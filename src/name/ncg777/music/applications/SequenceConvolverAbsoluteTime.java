@@ -99,7 +99,7 @@ public class SequenceConvolverAbsoluteTime {
         Sequence i = Sequence.parse(txtImpulse.getText());
         BinaryWord r = null;
         if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) r = HexadecimalSentence.parseHexadecimalWord(txtR.getText()).asBinaryWord();
-        if(comboBox.getSelectedItem() == Alphabet.Octal) r = OctalSentence.parseOctalWord(txtR.getText()).asBinary();
+        if(comboBox.getSelectedItem() == Alphabet.Octal) r = OctalSentence.parse(txtR.getText()).asBinary();
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[()]", ""));
       }
     });

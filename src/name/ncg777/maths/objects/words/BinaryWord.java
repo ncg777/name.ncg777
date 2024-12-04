@@ -17,7 +17,6 @@ import name.ncg777.maths.objects.Sequence;
 
 public class BinaryWord extends Combination implements Serializable {
   
-  
   private static final long serialVersionUID = 1L;
   protected BinaryWord(int n, Set<Integer> s) {
     super(n,s);
@@ -25,7 +24,16 @@ public class BinaryWord extends Combination implements Serializable {
   public BinaryWord(BitSet b, int n) {
     super(b, n);
   }
-  
+  public static BinaryWord parse(String input) {    
+    String binstr = Integer.toBinaryString(Integer.parseInt(input, 2));
+    
+    BitSet b = new BitSet(binstr.length()*2);
+    
+    for(int i=0;i<binstr.length();i++) {
+      b.set(i, binstr.charAt(i) == '1');
+    }
+    return new BinaryWord(b, binstr.length());
+  }
   public ArrayList<BinaryWord> partitionByEquality() {
     ArrayList<BinaryWord> o = new ArrayList<BinaryWord>();
     Sequence seq = this.asSequence();
@@ -255,5 +263,5 @@ public class BinaryWord extends Combination implements Serializable {
     for(int i=0;i<newsz;i++) {b.set(i,r.get(i%r.size()).get((i/r.size())%r.get(i%r.size()).getN()));}
     return new BinaryWord(b, newsz);
   }
-    
+
 }

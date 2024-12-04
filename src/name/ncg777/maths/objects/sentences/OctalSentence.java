@@ -8,12 +8,11 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import name.ncg777.computerScience.dataStructures.CollectionUtils;
-import name.ncg777.maths.objects.Combination;
 import name.ncg777.maths.objects.Sequence;
 import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.objects.words.OctalWord;
 
-public class OctalSentence extends LinkedList<OctalWord>  implements Comparable<OctalSentence>{
+public class OctalSentence extends ArrayList<OctalWord>  implements Comparable<OctalSentence>{
   private static final long serialVersionUID = 1L;
 
   public OctalSentence(List<OctalWord> m_l) {
@@ -40,13 +39,11 @@ public class OctalSentence extends LinkedList<OctalWord>  implements Comparable<
     }
     return new BinaryWord(b,n);
   }
-  static public OctalSentence parseOctalWord(String str) {
-    String s = str.replace(" ", "");
+  static public OctalSentence parse(String str) {
+    String[] strs = str.split("\\s+");
     LinkedList<OctalWord> output = new LinkedList<OctalWord>();
-    for (int i = 0; i < s.length() / 4; i++) {
-      String tmp = s.substring(i * 4, (i + 1) * 4);
-      tmp = tmp.substring(0, 2) + " " + tmp.substring(2, 4);
-      output.add(OctalWord.parseOctalWord(tmp));
+    for (var s : strs) {
+      output.add(OctalWord.parse(s));
     }
     return new OctalSentence(output);
 
@@ -325,76 +322,76 @@ public class OctalSentence extends LinkedList<OctalWord>  implements Comparable<
 
   }
 
-  public OctalSentence decimate(){
-    Sequence S = this.asBinary().getComposition().segment().get(0).asSequence();
-    
-    int rsz = this.size();
-    BitSet[] b = new BitSet[rsz];
-    for(int i=0;i<rsz;i++) {
-      b[i] = new BitSet();
-      b[i].or(this.get(i));
-    }
-    
-    int t=0;
-    int k=0;
-    boolean keep = false;
-    for(int i=0;i<rsz*12;i++) {
-      if(t==0) {
-        try{
-          t = S.get(k++);
-        } catch(IndexOutOfBoundsException ex) {
-          break;
-        }
-        keep = true;
-      }
-      int rd = i/12;
-      int rr = i%12;
-      
-      if(this.get(rd).get(rr)) {
-        t--;
-        if(keep) {
-          keep = false;
-        } else {
-          b[rd].set(rr,false);
-        }
-      }
-    }
-    List<OctalWord> oo = new ArrayList<OctalWord>();
-    
-    for(int i=0;i<rsz;i++) {
-      oo.add(OctalWord.tryConvert(new Combination(b[i],12)));
-    }
-    return new OctalSentence(oo);
-  }
-  public static OctalSentence expand(OctalSentence a, int x, boolean fill) {
-    int n = x;
-    Boolean[] b = OctalSentence.toBooleanArray(a);
-    Boolean[] o = new Boolean[n * b.length];
-    for (int i = 0; i < o.length; i++) {
-      o[i] = false;
-    }
-    for (int i = 0; i < b.length; i++) {
-      o[i * n] = b[i];
-      if(fill) {
-        for(int j=1; j<n;j++) {
-          o[(i * n) + j] = b[i];
-        }
-      }
-    }
-    OctalSentence output = new OctalSentence();
-
-    for (int i = 0; i < o.length / 12; i++) {
-      TreeSet<Integer> t = new TreeSet<Integer>();
-
-      for (int j = 0; j < 12; j++) {
-        if (o[(i * 12) + j]) {
-          t.add(j);
-        }
-      }
-      output.add(OctalWord.tryConvert(t));
-    }
-    return output;
-  }
+//  public OctalSentence decimate(){
+//    Sequence S = this.asBinary().getComposition().segment().get(0).asSequence();
+//    
+//    int rsz = this.size();
+//    BitSet[] b = new BitSet[rsz];
+//    for(int i=0;i<rsz;i++) {
+//      b[i] = new BitSet();
+//      b[i].or(this.get(i));
+//    }
+//    
+//    int t=0;
+//    int k=0;
+//    boolean keep = false;
+//    for(int i=0;i<rsz*12;i++) {
+//      if(t==0) {
+//        try{
+//          t = S.get(k++);
+//        } catch(IndexOutOfBoundsException ex) {
+//          break;
+//        }
+//        keep = true;
+//      }
+//      int rd = i/12;
+//      int rr = i%12;
+//      
+//      if(this.get(rd).get(rr)) {
+//        t--;
+//        if(keep) {
+//          keep = false;
+//        } else {
+//          b[rd].set(rr,false);
+//        }
+//      }
+//    }
+//    List<OctalWord> oo = new ArrayList<OctalWord>();
+//    
+//    for(int i=0;i<rsz;i++) {
+//      oo.add(OctalWord.tryConvert(new Combination(b[i],12)));
+//    }
+//    return new OctalSentence(oo);
+//  }
+//  public static OctalSentence expand(OctalSentence a, int x, boolean fill) {
+//    int n = x;
+//    Boolean[] b = OctalSentence.toBooleanArray(a);
+//    Boolean[] o = new Boolean[n * b.length];
+//    for (int i = 0; i < o.length; i++) {
+//      o[i] = false;
+//    }
+//    for (int i = 0; i < b.length; i++) {
+//      o[i * n] = b[i];
+//      if(fill) {
+//        for(int j=1; j<n;j++) {
+//          o[(i * n) + j] = b[i];
+//        }
+//      }
+//    }
+//    OctalSentence output = new OctalSentence();
+//
+//    for (int i = 0; i < o.length / 12; i++) {
+//      TreeSet<Integer> t = new TreeSet<Integer>();
+//
+//      for (int j = 0; j < 12; j++) {
+//        if (o[(i * 12) + j]) {
+//          t.add(j);
+//        }
+//      }
+//      output.add(OctalWord.tryConvert(t));
+//    }
+//    return output;
+//  }
 
   public static Boolean[] toBooleanArray(OctalSentence a) {
 
