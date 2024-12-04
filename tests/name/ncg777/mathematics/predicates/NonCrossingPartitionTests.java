@@ -1,4 +1,4 @@
-package name.ncg777.mathematics.Predicates;
+package name.ncg777.mathematics.predicates;
 
 import org.junit.After;
 import org.junit.Before;
