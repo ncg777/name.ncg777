@@ -1,1 +1,1 @@
-java name.ncg777.computerScience.graphicalUserInterfaces.MainMenuGUI
+java name.ncg777.MainMenuGUI

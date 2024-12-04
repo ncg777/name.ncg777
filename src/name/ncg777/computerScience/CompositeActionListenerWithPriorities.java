@@ -1,4 +1,4 @@
-package name.ncg777.computerScience.graphicalUserInterfaces;
+package name.ncg777.computerScience;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,4 +1,4 @@
-package name.ncg777.computerScience.graphicalUserInterfaces;
+package name.ncg777;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
