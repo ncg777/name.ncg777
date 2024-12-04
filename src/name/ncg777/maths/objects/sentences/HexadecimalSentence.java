@@ -1,4 +1,4 @@
-package name.ncg777.maths.objects;
+package name.ncg777.maths.objects.sentences;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -6,27 +6,32 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
-public class WordHexaList extends LinkedList<WordHexa> implements Comparable<WordHexaList>{
+import name.ncg777.maths.objects.Combination;
+import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.objects.words.BinaryWord;
+import name.ncg777.maths.objects.words.HexadecimalWord;
+
+public class HexadecimalSentence extends LinkedList<HexadecimalWord> implements Comparable<HexadecimalSentence>{
   private static final long serialVersionUID = 1L;
 
-  public WordHexaList(List<WordHexa> m_l) {
+  public HexadecimalSentence(List<HexadecimalWord> m_l) {
     super();
-    for (WordHexa i : m_l) {
+    for (HexadecimalWord i : m_l) {
       this.add(i);
     }
   }
 
-  public WordHexaList() {
+  public HexadecimalSentence() {
     super();
   }
   
-//  public boolean isEquivalentUnderSyncronizedRotation(WordHexaList other) {
+//  public boolean isEquivalentUnderSyncronizedRotation(HexadecimalSentence other) {
 //    if(other == null) return false;
 //    if(this.size() != other.size()) return false;
 //    
 //    for(int i=0;i<this.size();i++) {
 //      
-//      WordHexaList rot = WordHexaList.rotate(other, i*16);
+//      HexadecimalSentence rot = HexadecimalSentence.rotate(other, i*16);
 //      boolean eq = true;
 //      for(int j=0;j<rot.size();j++) {
 //        if(!this.get(j).toString().equals(rot.get(j).toString())) {
@@ -39,19 +44,19 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
 //    return false;
 //  }
   
-  public static ArrayList<WordHexaList> fromRhythmArray(ArrayList<WordBinary> list) {
-    ArrayList<WordHexaList> o = new ArrayList<>();
+  public static ArrayList<HexadecimalSentence> fromRhythmArray(ArrayList<BinaryWord> list) {
+    ArrayList<HexadecimalSentence> o = new ArrayList<>();
     
-    for(WordBinary r : list) {
-      o.add(WordHexaList.fromRhythm(r));
+    for(BinaryWord r : list) {
+      o.add(HexadecimalSentence.fromRhythm(r));
     }
     return o;
   }
   
 //  public Sequence clusterPartition() {
-//    ArrayList<WordHexaList> clusters = WordHexaList.clusterRhythmPartition(this.asRhythm().partitionByEquality());
-//    ArrayList<WordBinary> rs= new ArrayList<>();
-//    for(WordHexaList r : clusters) rs.add(r.asRhythm());
+//    ArrayList<HexadecimalSentence> clusters = HexadecimalSentence.clusterRhythmPartition(this.asRhythm().partitionByEquality());
+//    ArrayList<BinaryWord> rs= new ArrayList<>();
+//    for(HexadecimalSentence r : clusters) rs.add(r.asRhythm());
 //    
 //    Sequence o = new Sequence();
 //    
@@ -69,50 +74,50 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
   
 //  private static class RhythmHexaListUnionSet {
 //
-//    ArrayList<WordHexaList> representants = new ArrayList<>();
-//    TreeMap<String,TreeSet<WordHexaList>> instances = new TreeMap<>();
+//    ArrayList<HexadecimalSentence> representants = new ArrayList<>();
+//    TreeMap<String,TreeSet<HexadecimalSentence>> instances = new TreeMap<>();
 //    
-//    public void add(WordHexaList item) {
+//    public void add(HexadecimalSentence item) {
 //      boolean found = false;
-//      for(WordHexaList r : representants) {
+//      for(HexadecimalSentence r : representants) {
 //        if(r.isEquivalentUnderSyncronizedRotation(item)) {
 //          found=true;
 //          instances.get(r.toString()).add(item);
 //        }
 //      }
 //      if(!found) {
-//        TreeSet<WordHexaList> inst = new TreeSet<>();
+//        TreeSet<HexadecimalSentence> inst = new TreeSet<>();
 //        inst.add(item);
 //        instances.put(item.toString(),inst);
 //        representants.add(item);
 //      }
 //    }
-//    public ArrayList<TreeSet<WordHexaList>> getTreeSets() {
-//      ArrayList<TreeSet<WordHexaList>> o = new ArrayList<>();
+//    public ArrayList<TreeSet<HexadecimalSentence>> getTreeSets() {
+//      ArrayList<TreeSet<HexadecimalSentence>> o = new ArrayList<>();
 //      o.addAll(instances.values());
 //      return o;
 //    }
 //  }
   
-//  public static ArrayList<WordHexaList> clusterRhythmPartition(ArrayList<WordBinary> _partition) {
+//  public static ArrayList<HexadecimalSentence> clusterRhythmPartition(ArrayList<BinaryWord> _partition) {
 //    if(_partition == null) throw new RuntimeException("clusterRhythmPartition:: partition is null.");
-//    ArrayList<WordHexaList> partition = WordHexaList.fromRhythmArray(_partition);
+//    ArrayList<HexadecimalSentence> partition = HexadecimalSentence.fromRhythmArray(_partition);
 //    if(partition.size()==1) {
-//      ArrayList<WordHexaList> f = new ArrayList<>();
+//      ArrayList<HexadecimalSentence> f = new ArrayList<>();
 //      f.add(partition.get(0));
 //      return f;
 //    }
 //    
 //    
 //    RhythmHexaListUnionSet us = new RhythmHexaListUnionSet();
-//    for(WordHexaList r: partition) {us.add(r);}
-//    ArrayList<WordHexaList> o = new ArrayList<WordHexaList>();
+//    for(HexadecimalSentence r: partition) {us.add(r);}
+//    ArrayList<HexadecimalSentence> o = new ArrayList<HexadecimalSentence>();
 //    
-//    for(TreeSet<WordHexaList> t : us.getTreeSets()) {
-//      WordHexaList s = null;
-//      for(WordHexaList l : t) {
-//        if(s==null) {s = (WordHexaList)l.clone();}
-//        s = WordHexaList.or(s, l);
+//    for(TreeSet<HexadecimalSentence> t : us.getTreeSets()) {
+//      HexadecimalSentence s = null;
+//      for(HexadecimalSentence l : t) {
+//        if(s==null) {s = (HexadecimalSentence)l.clone();}
+//        s = HexadecimalSentence.or(s, l);
 //      }
 //      o.add(s);
 //    }
@@ -120,7 +125,7 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
 //    return CollectionUtils.reverse(o);
 //  }
   
-  public WordBinary asBinaryWord(){
+  public BinaryWord asBinaryWord(){
     int n = size()*16;
     BitSet b = new BitSet(n);
     for(int i=0;i<n;i++){
@@ -131,17 +136,17 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
         System.out.println("???");
       }
     }
-    return new WordBinary(b,n);
+    return new BinaryWord(b,n);
   }
-  static public WordHexaList parseHexadecimalWord(String str) {
+  static public HexadecimalSentence parseHexadecimalWord(String str) {
     String s = str.replace(" ", "");
-    LinkedList<WordHexa> output = new LinkedList<WordHexa>();
+    LinkedList<HexadecimalWord> output = new LinkedList<HexadecimalWord>();
     for (int i = 0; i < s.length() / 4; i++) {
       String tmp = s.substring(i * 4, (i + 1) * 4);
       tmp = tmp.substring(0, 2) + " " + tmp.substring(2, 4);
-      output.add(WordHexa.parseRhythmHexa(tmp));
+      output.add(HexadecimalWord.parseRhythmHexa(tmp));
     }
-    return new WordHexaList(output);
+    return new HexadecimalSentence(output);
 
   }
 
@@ -160,10 +165,10 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
   }
   
   
-  public static WordHexaList fromRhythm(WordBinary r){
-    WordHexaList output = new WordHexaList();
+  public static HexadecimalSentence fromRhythm(BinaryWord r){
+    HexadecimalSentence output = new HexadecimalSentence();
     if(r.getN() % 16 != 0) {
-      throw new RuntimeException("WordBinary's size is not divisible by 16.");
+      throw new RuntimeException("BinaryWord's size is not divisible by 16.");
     }
     int k = 0;
     while(k<r.getN()) {
@@ -174,21 +179,21 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
         }
         k++;
       }
-      output.add(WordHexa.identifyRhythm16(t));
+      output.add(HexadecimalWord.identifyRhythm16(t));
     }
     return output;
   }
 
-  public static WordHexaList not(WordHexaList a) {
-    WordHexaList output = new WordHexaList(a);
+  public static HexadecimalSentence not(HexadecimalSentence a) {
+    HexadecimalSentence output = new HexadecimalSentence(a);
 
     for (int i = 0; i < output.size(); i++) {
-      output.set(i, WordHexa.not(output.get(i)));
+      output.set(i, HexadecimalWord.not(output.get(i)));
     }
     return output;
   }
 
-  public static WordHexaList and(WordHexaList a, WordHexaList b) {
+  public static HexadecimalSentence and(HexadecimalSentence a, HexadecimalSentence b) {
     int n = (a.size() > b.size()) ? a.size() : b.size();
     int sza = a.size();
     int szb = b.size();
@@ -202,14 +207,14 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
       }
     }
 
-    WordHexaList output = new WordHexaList();
+    HexadecimalSentence output = new HexadecimalSentence();
     for (int i = 0; i < n; i++) {
-      output.add(WordHexa.and(a.get(i), b.get(i)));
+      output.add(HexadecimalWord.and(a.get(i), b.get(i)));
     }
     return output;
   }
 
-  public static WordHexaList or(WordHexaList a, WordHexaList b) {
+  public static HexadecimalSentence or(HexadecimalSentence a, HexadecimalSentence b) {
     int n = (a.size() > b.size()) ? a.size() : b.size();
     int sza = a.size();
     int szb = b.size();
@@ -223,14 +228,14 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
       }
     }
 
-    WordHexaList output = new WordHexaList();
+    HexadecimalSentence output = new HexadecimalSentence();
     for (int i = 0; i < n; i++) {
-      output.add(WordHexa.or(a.get(i), b.get(i)));
+      output.add(HexadecimalWord.or(a.get(i), b.get(i)));
     }
     return output;
   }
 
-  public static WordHexaList xor(WordHexaList a, WordHexaList b) {
+  public static HexadecimalSentence xor(HexadecimalSentence a, HexadecimalSentence b) {
     int n = (a.size() > b.size()) ? a.size() : b.size();
     int sza = a.size();
     int szb = b.size();
@@ -244,14 +249,14 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
       }
     }
 
-    WordHexaList output = new WordHexaList();
+    HexadecimalSentence output = new HexadecimalSentence();
     for (int i = 0; i < n; i++) {
-      output.add(WordHexa.xor(a.get(i), b.get(i)));
+      output.add(HexadecimalWord.xor(a.get(i), b.get(i)));
     }
     return output;
   }
 
-  public static WordHexaList minus(WordHexaList a, WordHexaList b) {
+  public static HexadecimalSentence minus(HexadecimalSentence a, HexadecimalSentence b) {
     int n = (a.size() > b.size()) ? a.size() : b.size();
     int sza = a.size();
     int szb = b.size();
@@ -265,9 +270,9 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
       }
     }
 
-    WordHexaList output = new WordHexaList();
+    HexadecimalSentence output = new HexadecimalSentence();
     for (int i = 0; i < n; i++) {
-      output.add(WordHexa.minus(a.get(i), b.get(i)));
+      output.add(HexadecimalWord.minus(a.get(i), b.get(i)));
     }
     return output;
   }
@@ -281,10 +286,10 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
   }
 
 
-  public static WordHexaList convolve(WordHexaList a, WordHexaList b) {
+  public static HexadecimalSentence convolve(HexadecimalSentence a, HexadecimalSentence b) {
     
-    WordHexaList carrier = a;
-    WordHexaList impulse = b;
+    HexadecimalSentence carrier = a;
+    HexadecimalSentence impulse = b;
     
     Boolean[] b_carrier = toBooleanArray(carrier);
     Boolean[] b_impulse = toBooleanArray(impulse);
@@ -301,7 +306,7 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
       }
     }
 
-    WordHexaList output = new WordHexaList();
+    HexadecimalSentence output = new HexadecimalSentence();
 
     for (int i = 0; i < carrier.size(); i++) {
       TreeSet<Integer> t = new TreeSet<Integer>();
@@ -311,13 +316,13 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
           t.add(j);
         }
       }
-      output.add(WordHexa.identifyRhythm16(t));
+      output.add(HexadecimalWord.identifyRhythm16(t));
     }
     return output;
 
   }
 
-  public WordHexaList decimate(){
+  public HexadecimalSentence decimate(){
     Sequence S = this.asBinaryWord().getComposition().segment().get(0).asSequence();
     
     int rsz = this.size();
@@ -351,16 +356,16 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
         }
       }
     }
-    List<WordHexa> oo = new ArrayList<WordHexa>();
+    List<HexadecimalWord> oo = new ArrayList<HexadecimalWord>();
     
     for(int i=0;i<rsz;i++) {
-      oo.add(WordHexa.identifyRhythmHexa(new Combination(b[i],16)));
+      oo.add(HexadecimalWord.convert(new Combination(b[i],16)));
     }
-    return new WordHexaList(oo);
+    return new HexadecimalSentence(oo);
   }
-  public static WordHexaList expand(WordHexaList a, int x, boolean fill) {
+  public static HexadecimalSentence expand(HexadecimalSentence a, int x, boolean fill) {
     int n = x;
-    Boolean[] b = WordHexaList.toBooleanArray(a);
+    Boolean[] b = HexadecimalSentence.toBooleanArray(a);
     Boolean[] o = new Boolean[n * b.length];
     for (int i = 0; i < o.length; i++) {
       o[i] = false;
@@ -373,7 +378,7 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
         }
       }
     }
-    WordHexaList output = new WordHexaList();
+    HexadecimalSentence output = new HexadecimalSentence();
 
     for (int i = 0; i < o.length / 16; i++) {
       TreeSet<Integer> t = new TreeSet<Integer>();
@@ -383,12 +388,12 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
           t.add(j);
         }
       }
-      output.add(WordHexa.identifyRhythm16(t));
+      output.add(HexadecimalWord.identifyRhythm16(t));
     }
     return output;
   }
 
-  public static Boolean[] toBooleanArray(WordHexaList a) {
+  public static Boolean[] toBooleanArray(HexadecimalSentence a) {
 
     Boolean output[] = new Boolean[a.size() * 16];
     for (int i = 0; i < a.size() * 16; i++) {
@@ -396,7 +401,7 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
     }
 
     for (int i = 0; i < a.size(); i++) {
-      WordHexa x = a.get(i);
+      HexadecimalWord x = a.get(i);
 
       for (int j = x.nextSetBit(0); j >= 0; j = x.nextSetBit(j + 1)) {
         output[j + (i * 16)] = true;
@@ -405,8 +410,8 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
     return output;
   }
 
-  public static WordHexaList juxt(WordHexaList a, WordHexaList b) {
-    WordHexaList output = new WordHexaList();
+  public static HexadecimalSentence juxt(HexadecimalSentence a, HexadecimalSentence b) {
+    HexadecimalSentence output = new HexadecimalSentence();
 
     for (int i = 0; i < a.size(); i++) {
       output.add(a.get(i));
@@ -417,14 +422,14 @@ public class WordHexaList extends LinkedList<WordHexa> implements Comparable<Wor
     return output;
   }
 
-  public void append(WordHexaList a) {
+  public void append(HexadecimalSentence a) {
     for (int i = 0; i < a.size(); i++) {
       this.add(a.get(i));
     }
   }
 
   @Override
-  public int compareTo(WordHexaList o) {
+  public int compareTo(HexadecimalSentence o) {
     return o.toString().compareTo(this.toString());
   }
 

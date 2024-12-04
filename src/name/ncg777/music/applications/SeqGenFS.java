@@ -12,9 +12,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.predicates.PredicatedSeqRhythms;
 import name.ncg777.maths.words.predicates.LowEntropy;
 
@@ -105,13 +105,13 @@ public class SeqGenFS {
               {
                 String str_R = txtRhythm.getText().trim();
                 
-                WordBinary R = null;
+                BinaryWord R = null;
                 if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-                  WordHexaList r = WordHexaList.parseHexadecimalWord(str_R);
+                  HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(str_R);
                   R = r.asBinaryWord();
                 }
                 if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                  WordOctalList r = WordOctalList.parseOctalWord(str_R);
+                  OctalSentence r = OctalSentence.parseOctalWord(str_R);
                   R = r.asBinary();
                 }
                 
@@ -144,7 +144,7 @@ public class SeqGenFS {
         }
       });
     
-    JLabel lblRhythm = new JLabel("WordBinary :");
+    JLabel lblRhythm = new JLabel("BinaryWord :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JLabel lblXsMod = new JLabel("Sequence:");

@@ -11,8 +11,8 @@ package name.ncg777.music.applications;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
 //import name.ncg777.maths.objects.Sequence;
-//import name.ncg777.maths.objects.WordBinary;
-//import name.ncg777.maths.objects.WordHexaList;
+//import name.ncg777.maths.objects.BinaryWord;
+//import name.ncg777.maths.objects.HexadecimalSentence;
 //
 //import javax.swing.JButton;
 //import java.awt.event.ActionListener;
@@ -57,7 +57,7 @@ package name.ncg777.music.applications;
 //   */
 //  private void initialize() {
 //    frmRseq = new JFrame();
-//    frmRseq.setTitle("WordBinary Matrix Seq");
+//    frmRseq.setTitle("BinaryWord Matrix Seq");
 //    frmRseq.setBounds(100, 100, 471, 587);
 //    frmRseq.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    
@@ -79,9 +79,9 @@ package name.ncg777.music.applications;
 //        if(comboBox.getSelectedItem().equals(Alphabet.Hexadecimal) || comboBox.getSelectedItem().equals(Alphabet.Octal)) {
 //          String[] rstr = textR16List.getText().split("\n+"); 
 //          int m = rstr.length;
-//          WordHexaList[] r16s = new WordHexaList[rstr.length];
+//          HexadecimalSentence[] r16s = new HexadecimalSentence[rstr.length];
 //          for(int i=0;i<m;i++) {
-//            r16s[i] = WordHexaList.parseHexadecimalWord(rstr[i]);
+//            r16s[i] = HexadecimalSentence.parseHexadecimalWord(rstr[i]);
 //          }
 //          
 //          Sequence s = Sequence.parse(textSequence.getText());

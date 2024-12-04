@@ -12,8 +12,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 import javax.swing.SpinnerNumberModel;
@@ -105,11 +105,11 @@ public class SeqGenContourFollow {
               
               Sequence C = null;
               if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-                WordHexaList r = WordHexaList.parseHexadecimalWord(str_R);
+                HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(str_R);
                 C = r.asBinaryWord().getComposition().asSequence();
               }
               if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                WordOctalList r = WordOctalList.parseOctalWord(str_R);
+                OctalSentence r = OctalSentence.parseOctalWord(str_R);
                 C = r.asBinary().getComposition().asSequence();
               }
               @SuppressWarnings("null")
@@ -166,7 +166,7 @@ public class SeqGenContourFollow {
     
     
     
-    JLabel lblRhythm = new JLabel("WordBinary :");
+    JLabel lblRhythm = new JLabel("BinaryWord :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JLabel lblXsMod = new JLabel("Sequence:");

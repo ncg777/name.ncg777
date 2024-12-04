@@ -12,9 +12,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -75,38 +75,38 @@ public class RhythmicSeqGen {
         String[] lines = txtrAaBb.getText().split("\n+");
         
         Sequence muls = new Sequence();
-        List<WordBinary> wordBinaries = new ArrayList<WordBinary>();
+        List<BinaryWord> binaryWords = new ArrayList<BinaryWord>();
         for(int i=0; i<lines.length; i++) {
           String[] l = lines[i].split(",");
           if(l.length != 2) {
             textField.setText("ERROR on line" + " " + i);
             return;
           }
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) wordBinaries.add(WordHexaList.parseHexadecimalWord(l[0].trim()).asBinaryWord());
-          if(comboBox.getSelectedItem() == Alphabet.Octal) wordBinaries.add(WordOctalList.parseOctalWord(l[0].trim()).asBinary());
+          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) binaryWords.add(HexadecimalSentence.parseHexadecimalWord(l[0].trim()).asBinaryWord());
+          if(comboBox.getSelectedItem() == Alphabet.Octal) binaryWords.add(OctalSentence.parseOctalWord(l[0].trim()).asBinary());
           muls.add(Integer.valueOf(l[1].trim()));
         }
         
-        if(wordBinaries.size() != muls.size()) {
+        if(binaryWords.size() != muls.size()) {
           textField.setText("ERROR");
           return;
         }
         
-        for(int i=0;i<wordBinaries.size();i++) {
-          if(wordBinaries.get(i).size() != wordBinaries.get(0).size()) {
+        for(int i=0;i<binaryWords.size();i++) {
+          if(binaryWords.get(i).size() != binaryWords.get(0).size()) {
             textField.setText("ERROR");
             return;
           }
         }
         
-        int n = wordBinaries.size();
-        int size = wordBinaries.get(0).getN();
+        int n = binaryWords.size();
+        int size = binaryWords.get(0).getN();
         Sequence output = new Sequence();
         for(int i=0;i<size;i++) {
           int t = 0;
           
           for(int j=0;j<n;j++) {
-            if(wordBinaries.get(j).get(i)) t += muls.get(j);
+            if(binaryWords.get(j).get(i)) t += muls.get(j);
           }
           
           output.add(t);

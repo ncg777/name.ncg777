@@ -13,8 +13,8 @@ package name.ncg777.music.applications;
 //import name.ncg777.computerScience.dataStructures.CollectionUtils;
 //import name.ncg777.computerScience.dataStructures.HomoPair;
 //import name.ncg777.maths.objects.Sequence;
-//import name.ncg777.maths.objects.WordBinary;
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.BinaryWord;
+//import name.ncg777.maths.objects.OctalSentence;
 //import name.ncg777.music.WordHexaList;
 //import name.ncg777.music.Rn;
 //
@@ -109,14 +109,14 @@ package name.ncg777.music.applications;
 //        }
 //        int len = nbBars*mult;
 //        
-//        WordBinary r = null;
+//        BinaryWord r = null;
 //        
 //        switch((Rn)comboBox.getSelectedItem()) {
 //          case Hex:
-//            r = WordHexaList.parseRhythmHexaSeq(textRex.getText()).asRhythm();
+//            r = HexadecimalSentence.parseRhythmHexaSeq(textRex.getText()).asRhythm();
 //            break;
 //          case Octal:
-//            r = WordOctalList.parseOctal(textRex.getText()).asRhythm();
+//            r = OctalSentence.parseOctal(textRex.getText()).asRhythm();
 //            break;
 //        }
 //        
@@ -167,10 +167,10 @@ package name.ncg777.music.applications;
 //        String ns = "";
 //        switch((Rn)comboBox.getSelectedItem()) {
 //          case Hex:
-//            ns = WordHexaList.fromRhythm(WordBinary.buildRhythm(len, newRhythm)).toString();
+//            ns = HexadecimalSentence.fromRhythm(BinaryWord.buildRhythm(len, newRhythm)).toString();
 //            break;
 //          case Octal:
-//            ns = WordOctalList.fromRhythm(WordBinary.buildRhythm(len, newRhythm)).toString();
+//            ns = OctalSentence.fromRhythm(BinaryWord.buildRhythm(len, newRhythm)).toString();
 //            break;
 //        }
 //        

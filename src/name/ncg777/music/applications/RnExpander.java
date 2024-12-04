@@ -9,9 +9,9 @@ package name.ncg777.music.applications;
 //import javax.swing.JTextField;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
-//import name.ncg777.maths.objects.WordBinary;
-//import name.ncg777.maths.objects.WordHexaList;
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.BinaryWord;
+//import name.ncg777.maths.objects.HexadecimalSentence;
+//import name.ncg777.maths.objects.OctalSentence;
 //
 //import javax.swing.JSpinner;
 //import javax.swing.SpinnerNumberModel;
@@ -63,7 +63,7 @@ package name.ncg777.music.applications;
 //    frmRExpander.setBounds(100, 100, 542, 209);
 //    frmRExpander.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    
-//    JLabel lblRhythm = new JLabel("WordBinary :");
+//    JLabel lblRhythm = new JLabel("BinaryWord :");
 //    
 //    txtRhythm = new JTextField();
 //    txtRhythm.setColumns(10);
@@ -85,13 +85,13 @@ package name.ncg777.music.applications;
 //    btnExpand.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
 //        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-//          WordHexaList o = WordHexaList.rotate(WordHexaList.expand(WordHexaList.parseRhythmHexaSeq(txtRhythm.getText()), (int)spinner.getValue(), chckbxFill.isSelected()), (int)rot.getValue());
+//          HexadecimalSentence o = HexadecimalSentence.rotate(HexadecimalSentence.expand(HexadecimalSentence.parseRhythmHexaSeq(txtRhythm.getText()), (int)spinner.getValue(), chckbxFill.isSelected()), (int)rot.getValue());
 //          txtResult.setText(o.toString());
-//          txtNot.setText(WordHexaList.not(o).toString());
+//          txtNot.setText(HexadecimalSentence.not(o).toString());
 //        } else if(comboBox.getSelectedItem() == Alphabet.Octal) {
-//          WordOctalList o = WordOctalList.rotate(WordOctalList.expand(WordOctalList.parseOctal(txtRhythm.getText()), (int)spinner.getValue(), chckbxFill.isSelected()), (int)rot.getValue());
+//          OctalSentence o = OctalSentence.rotate(OctalSentence.expand(OctalSentence.parseOctal(txtRhythm.getText()), (int)spinner.getValue(), chckbxFill.isSelected()), (int)rot.getValue());
 //          txtResult.setText(o.toString());
-//          txtNot.setText(WordOctalList.not(o).toString());
+//          txtNot.setText(OctalSentence.not(o).toString());
 //        }
 //      }
 //    });

@@ -3,12 +3,12 @@ package name.ncg777.maths.words.printers;
 
 import com.google.common.base.Function;
 
-import name.ncg777.maths.objects.WordHexa;
+import name.ncg777.maths.objects.words.HexadecimalWord;
 
 import java.io.PrintWriter;
 import java.util.List;
 
-public class WordHexadecimalCSVPrinter implements Function<List<WordHexa>, Void> {
+public class WordHexadecimalCSVPrinter implements Function<List<HexadecimalWord>, Void> {
   PrintWriter o;
 
   public WordHexadecimalCSVPrinter(PrintWriter o) {
@@ -24,7 +24,7 @@ public class WordHexadecimalCSVPrinter implements Function<List<WordHexa>, Void>
   }
 
   @Override
-  public Void apply(List<WordHexa> input) {
+  public Void apply(List<HexadecimalWord> input) {
     int x = 0;
 
     for (int i = input.size() - 1; i >= 0; i--) {

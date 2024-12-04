@@ -78,11 +78,11 @@ package name.ncg777.music.applications;
 //  public RhythmMatrix() {
 //    initialize();
 //  }
-//  private double[] adjustWeights(List<WordBinary> row, ArrayList<WordBinary> possibles, int j, Double[] weights) {
+//  private double[] adjustWeights(List<BinaryWord> row, ArrayList<BinaryWord> possibles, int j, Double[] weights) {
 //    double[] o = new double[possibles.size()];
 //    for(int i=0;i<possibles.size();i++) {
 //      int count = 0;
-//      WordBinary r = possibles.get(i);
+//      BinaryWord r = possibles.get(i);
 //      for(int k=0;k<j;k++) {
 //        if(row.get(k).equals(r)) count++;
 //      }
@@ -102,7 +102,7 @@ package name.ncg777.music.applications;
 //  private void initialize() {
 //    frmRhythmMatrix = new JFrame();
 //    frmRhythmMatrix.setResizable(false);
-//    frmRhythmMatrix.setTitle("WordBinary Matrix");
+//    frmRhythmMatrix.setTitle("BinaryWord Matrix");
 //    frmRhythmMatrix.setBounds(100, 100, 711, 541);
 //    frmRhythmMatrix.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    
@@ -137,10 +137,10 @@ package name.ncg777.music.applications;
 //              
 //              String[] strFixed = textArea_1.getText().split("\n+");
 //        
-//              Predicate<WordBinary> pred = new Bypass();
+//              Predicate<BinaryWord> pred = new Bypass();
 //              for(int i=0;i<filterModes.size();i++) {
 //                int filterMode = filterModes.get(i);
-//                Predicate<WordBinary> pred0 = null;
+//                Predicate<BinaryWord> pred0 = null;
 //                switch(filterMode) {
 //                  case 1:
 //                    pred0 = new Bypass();
@@ -167,28 +167,28 @@ package name.ncg777.music.applications;
 //                pred = pred.and(pred0);
 //              }
 //              
-//              TreeSet<WordBinary> t = new TreeSet<WordBinary>();
-//              TreeSet<WordBinary> t0 = new TreeSet<WordBinary>();
+//              TreeSet<BinaryWord> t = new TreeSet<BinaryWord>();
+//              TreeSet<BinaryWord> t0 = new TreeSet<BinaryWord>();
 //              if(comboBox.getSelectedItem() == Rn.Hex) {
-//                for(WordHexa r : rhexaset) t0.add(r.asRhythm());
+//                for(HexadecimalWord r : rhexaset) t0.add(r.asRhythm());
 //              }
 //              if(comboBox.getSelectedItem() == Rn.Octal) {
-//                for(WordOctal r : roctalset) t0.add(r.asRhythm());
+//                for(OctalWord r : roctalset) t0.add(r.asRhythm());
 //              }
 //              
-//              for(WordBinary r : t0){
+//              for(BinaryWord r : t0){
 //                if(pred.test(r)) {
 //                  t.add(r);
 //                }
 //              }
-//              Relation<WordBinary, WordBinary> relHoriz = new PredicatedJuxtaposition(pred);
+//              Relation<BinaryWord, BinaryWord> relHoriz = new PredicatedJuxtaposition(pred);
 //              
-//              Relation<WordBinary, WordBinary> relSimul = null;
+//              Relation<BinaryWord, BinaryWord> relSimul = null;
 //              relSimul = new name.ncg777.music.wordRelations.Bypass();
 //              
 //              for(int i=0;i<diffModes.size();i++) {
 //                int diffMode = diffModes.get(i);
-//                Relation<WordBinary, WordBinary> relSimul0 = null;
+//                Relation<BinaryWord, BinaryWord> relSimul0 = null;
 //                switch(diffMode) {
 //                  case 1:
 //                    relSimul0 = new PredicatedDifferences(new Bypass());
@@ -218,19 +218,19 @@ package name.ncg777.music.applications;
 //              int n = (int)spinner_1.getValue();
 //              int m = (int)spinner.getValue();
 //              
-//              Matrix<WordBinary> output = new Matrix<>(m,n);
+//              Matrix<BinaryWord> output = new Matrix<>(m,n);
 //              
 //              for(int i=0;i<strFixed.length;i++) {
 //                if(strFixed[i].trim().length() == 0) continue;
 //                if(comboBox.getSelectedItem() == Rn.Hex) {
 //                  output.insertRow(fixedSize);
-//                  WordHexaList r = WordHexaList.parseR16Seq(strFixed[i].trim());
+//                  HexadecimalSentence r = HexadecimalSentence.parseR16Seq(strFixed[i].trim());
 //                  for(int j=0;j<n;j++) {
 //                    output.set(i, j, r.get(j%r.size()));
 //                  } 
 //                } else if(comboBox.getSelectedItem() == Rn.Octal) {
 //                  output.insertRow(fixedSize);
-//                  WordOctalList r = WordOctalList.parseR12Seq(strFixed[i].trim());
+//                  OctalSentence r = OctalSentence.parseR12Seq(strFixed[i].trim());
 //                  for(int j=0;j<n;j++) {
 //                    output.set(i, j, r.get(j%r.size()));
 //                  }
@@ -238,12 +238,12 @@ package name.ncg777.music.applications;
 //                fixedSize++;
 //              }
 //              m += fixedSize;
-//              Function<String, ArrayList<WordBinary>> possibles = (String str) -> {
-//                WordBinary r = null;
-//                ArrayList<WordBinary> p = new ArrayList<>();
-//                if(comboBox.getSelectedItem() == Rn.Hex) r = WordHexa.parseRhythmHexa(str).asRhythm();
-//                if(comboBox.getSelectedItem() == Rn.Octal) r = WordOctal.parseRhythm12Octal(str).asRhythm();
-//                for(WordBinary s : t) {
+//              Function<String, ArrayList<BinaryWord>> possibles = (String str) -> {
+//                BinaryWord r = null;
+//                ArrayList<BinaryWord> p = new ArrayList<>();
+//                if(comboBox.getSelectedItem() == Rn.Hex) r = HexadecimalWord.parseRhythmHexa(str).asRhythm();
+//                if(comboBox.getSelectedItem() == Rn.Octal) r = OctalWord.parseRhythm12Octal(str).asRhythm();
+//                for(BinaryWord s : t) {
 //                  if(relHoriz.apply(r, s)) { 
 //                      p.add(s); 
 //                   }
@@ -252,8 +252,8 @@ package name.ncg777.music.applications;
 //                return p;
 //              };
 //              
-//              BiFunction<WordBinary, List<WordBinary>, Double[]> calcWeights =
-//                  (WordBinary r, List<WordBinary> p) -> {
+//              BiFunction<BinaryWord, List<BinaryWord>, Double[]> calcWeights =
+//                  (BinaryWord r, List<BinaryWord> p) -> {
 //                    Double weights[] = new Double[p.size()];
 //  
 //                    for (int i = 0; i < p.size(); i++) {
@@ -275,17 +275,17 @@ package name.ncg777.music.applications;
 //                      break outside;
 //                    }
 //                    //failures++;
-//                    ArrayList<WordBinary> p = null;
+//                    ArrayList<BinaryWord> p = null;
 //                    if(j>0) {
 //                      if(comboBox.getSelectedItem() == Rn.Hex) {
-//                        p = possibles.apply(WordHexa.fromRhythm(output.get(i, j-1)).toString());
+//                        p = possibles.apply(HexadecimalWord.fromRhythm(output.get(i, j-1)).toString());
 //                      } else if(comboBox.getSelectedItem() == Rn.Octal) {
-//                        p = possibles.apply(WordOctal.fromRhythm(output.get(i, j-1)).toString());
+//                        p = possibles.apply(OctalWord.fromRhythm(output.get(i, j-1)).toString());
 //                      }
 //                    }
 //                    
 //                    
-//                    WordBinary r = null;
+//                    BinaryWord r = null;
 //                    
 //                    if(j > 0) {
 //                      r = CollectionUtils.chooseAtRandomWithWeights(p, adjustWeights(output.getRow(i), p, j, calcWeights.apply(output.get(i, j-1), p)));  
@@ -327,23 +327,23 @@ package name.ncg777.music.applications;
 //              if(running) {
 //                if(comboBox.getSelectedItem() == Rn.Hex) {
 //                  
-//                  Matrix<WordHexa> tmpMat = new Matrix<WordHexa>(m,n);
-//                  Matrix<WordHexa> tmpMatNot = new Matrix<WordHexa>(m,n);
+//                  Matrix<HexadecimalWord> tmpMat = new Matrix<HexadecimalWord>(m,n);
+//                  Matrix<HexadecimalWord> tmpMatNot = new Matrix<HexadecimalWord>(m,n);
 //                  for(int i=0;i<m;i++) {
 //                    for(int j=0;j<n;j++) {
-//                      tmpMat.set(i, j, WordHexa.fromRhythm(output.get(i, j)));
-//                      tmpMatNot.set(i, j, WordHexa.not(WordHexa.fromRhythm(output.get(i, j))));
+//                      tmpMat.set(i, j, HexadecimalWord.fromRhythm(output.get(i, j)));
+//                      tmpMatNot.set(i, j, HexadecimalWord.not(HexadecimalWord.fromRhythm(output.get(i, j))));
 //                    }
 //                  }
 //                  textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
 //                } else if(comboBox.getSelectedItem() == Rn.Octal) {
 //                  
-//                  Matrix<WordOctal> tmpMat = new Matrix<WordOctal>(m,n);
-//                  Matrix<WordOctal> tmpMatNot = new Matrix<WordOctal>(m,n);
+//                  Matrix<OctalWord> tmpMat = new Matrix<OctalWord>(m,n);
+//                  Matrix<OctalWord> tmpMatNot = new Matrix<OctalWord>(m,n);
 //                  for(int i=0;i<m;i++) {
 //                    for(int j=0;j<n;j++) {
-//                      tmpMat.set(i, j, WordOctal.fromRhythm(output.get(i, j)));
-//                      tmpMatNot.set(i, j, WordOctal.not(WordOctal.fromRhythm(output.get(i, j))));
+//                      tmpMat.set(i, j, OctalWord.fromRhythm(output.get(i, j)));
+//                      tmpMatNot.set(i, j, OctalWord.not(OctalWord.fromRhythm(output.get(i, j))));
 //                    }
 //                  }
 //                  textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());

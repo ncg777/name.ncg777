@@ -5,13 +5,13 @@ import javax.annotation.Nonnull;
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 
-public class RelativelyFlat implements StandardAndGuavaPredicate<WordBinary> {
+public class RelativelyFlat implements StandardAndGuavaPredicate<BinaryWord> {
   HasNoGaps h = new HasNoGaps();
 
   @Override
-  public boolean apply(@Nonnull WordBinary input) {
+  public boolean apply(@Nonnull BinaryWord input) {
     if (!h.apply(input)) {
       return false;
     }

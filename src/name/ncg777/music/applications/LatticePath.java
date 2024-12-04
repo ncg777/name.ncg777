@@ -12,8 +12,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Composition;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
@@ -85,7 +85,7 @@ public class LatticePath {
           c.set(m-1);
           if((total % 16) == 0) {
             r16 = true;
-            o += WordHexaList.fromRhythm(WordBinary.buildRhythm(c.asCombination(), total)).toString() + " ";
+            o += HexadecimalSentence.fromRhythm(BinaryWord.buildRhythm(c.asCombination(), total)).toString() + " ";
           }
           o+= Integer.valueOf(i+2).toString() + " : ";
           for(Integer j : c.asSequence()){o+=j.toString() + " ";}

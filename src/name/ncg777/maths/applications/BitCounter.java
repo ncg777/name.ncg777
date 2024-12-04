@@ -11,8 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Alphabet;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -66,9 +66,9 @@ public class BitCounter {
         if(e.getKeyCode()==KeyEvent.VK_ENTER){
           String str = textField.getText().trim();
           if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-            lblCount.setText(Integer.toString(WordHexaList.parseHexadecimalWord(str).asBinaryWord().getK()));
+            lblCount.setText(Integer.toString(HexadecimalSentence.parseHexadecimalWord(str).asBinaryWord().getK()));
           } else if(comboBox.getSelectedItem() == Alphabet.Octal) {
-            lblCount.setText(Integer.toString(WordOctalList.parseOctalWord(str).asBinary().getK()));
+            lblCount.setText(Integer.toString(OctalSentence.parseOctalWord(str).asBinary().getK()));
           }
           
         }

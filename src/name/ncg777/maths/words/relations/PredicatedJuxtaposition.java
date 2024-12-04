@@ -3,25 +3,25 @@ package name.ncg777.maths.words.relations;
 import java.util.BitSet;
 import java.util.function.Predicate;
 
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.relations.Relation;
 
 
 public class PredicatedJuxtaposition implements 
-Relation<WordBinary, WordBinary>   {
+Relation<BinaryWord, BinaryWord>   {
   
-  public PredicatedJuxtaposition(Predicate<WordBinary> pred){
+  public PredicatedJuxtaposition(Predicate<BinaryWord> pred){
     ld = pred;
   }
   
-  private Predicate<WordBinary> ld;
+  private Predicate<BinaryWord> ld;
   @Override
-  public boolean apply(WordBinary a, WordBinary b) {
+  public boolean apply(BinaryWord a, BinaryWord b) {
     int ns = a.getN()+b.getN();
     BitSet bs = new BitSet(ns);
     for(int i=0;i<a.getN();i++){bs.set(i,a.get(i));}
     for(int i=0;i<b.getN();i++){bs.set(i+a.getN(),b.get(i));}
-    WordBinary r = WordBinary.buildRhythm(bs, ns);
+    BinaryWord r = BinaryWord.buildRhythm(bs, ns);
     
     return ld.test(r);
   }

@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.objects.WordHexaList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
 
 public class ScaleModulo {
 
@@ -53,7 +53,7 @@ public class ScaleModulo {
     frmScaleModulo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmScaleModulo.getContentPane().setLayout(null);
     
-    JLabel lblRhythm = new JLabel("WordBinary :");
+    JLabel lblRhythm = new JLabel("BinaryWord :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     lblRhythm.setBounds(1, 10, 54, 23);
     frmScaleModulo.getContentPane().add(lblRhythm);
@@ -88,8 +88,8 @@ public class ScaleModulo {
     txtOutput.setColumns(10);
     btnGo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        txtOutput.setText(WordHexaList.fromRhythm(
-          WordHexaList.parseHexadecimalWord(textField.getText().trim()).asBinaryWord().scaleModulo(
+        txtOutput.setText(HexadecimalSentence.fromRhythm(
+          HexadecimalSentence.parseHexadecimalWord(textField.getText().trim()).asBinaryWord().scaleModulo(
             (int)k.getValue(), 
             (int)n.getValue())).toString());
         }

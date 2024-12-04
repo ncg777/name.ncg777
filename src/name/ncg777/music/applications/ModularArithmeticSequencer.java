@@ -8,8 +8,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -106,20 +106,20 @@ public class ModularArithmeticSequencer {
         
         var distinct = o.distinct();
         
-        ArrayList<WordHexaList> rs = new ArrayList<>();
+        ArrayList<HexadecimalSentence> rs = new ArrayList<>();
         
         for(int i: distinct) {
-          WordBinary r = WordBinary.buildRhythm(new BitSet(), n);
+          BinaryWord r = BinaryWord.buildRhythm(new BitSet(), n);
           
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}
           }
-          rs.add(WordHexaList.fromRhythm(r));
+          rs.add(HexadecimalSentence.fromRhythm(r));
         }
         
         StringBuilder sb = new StringBuilder();
         sb.append(o.toString() + "\n");
-        for(WordHexaList rl : rs) {
+        for(HexadecimalSentence rl : rs) {
           sb.append(rl.toString() + "\n");
         }
         

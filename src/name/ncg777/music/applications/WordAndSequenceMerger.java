@@ -9,8 +9,8 @@ package name.ncg777.music.applications;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
 //import name.ncg777.maths.objects.Sequence;
-//import name.ncg777.maths.objects.WordBinary;
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.BinaryWord;
+//import name.ncg777.maths.objects.OctalSentence;
 //import name.ncg777.music.WordHexaList;
 //import name.ncg777.music.Rn;
 //
@@ -62,7 +62,7 @@ package name.ncg777.music.applications;
 //  private void initialize() {
 //    frmRhythmAndSequenceMerger = new JFrame();
 //    frmRhythmAndSequenceMerger.setResizable(false);
-//    frmRhythmAndSequenceMerger.setTitle("WordBinary and Sequence Merger");
+//    frmRhythmAndSequenceMerger.setTitle("BinaryWord and Sequence Merger");
 //    frmRhythmAndSequenceMerger.setBounds(100, 100, 450, 293);
 //    frmRhythmAndSequenceMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    
@@ -70,7 +70,7 @@ package name.ncg777.music.applications;
 //    btnMerge.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
 //        String[] lines = txtArea.getText().trim().split("\n+");
-//        ArrayList<WordBinary> arr = new ArrayList<WordBinary>();
+//        ArrayList<BinaryWord> arr = new ArrayList<BinaryWord>();
 //        ArrayList<Sequence> sequences = new ArrayList<>();
 //        for(int i=0; i<lines.length;i++) {
 //          String[] parts = lines[i].split(",");
@@ -78,18 +78,18 @@ package name.ncg777.music.applications;
 //          if(parts.length > 1) {s = Sequence.parse(parts[1].trim());}
 //          sequences.add(s);
 //          if(comboBox.getSelectedItem()==Rn.Hex) {
-//            arr.add(WordHexaList.parseRhythmHexaSeq(parts[0].trim()).asRhythm());
+//            arr.add(HexadecimalSentence.parseRhythmHexaSeq(parts[0].trim()).asRhythm());
 //          } else if(comboBox.getSelectedItem()==Rn.Octal) {
-//            arr.add(WordOctalList.parseOctal(parts[0].trim()).asRhythm());
+//            arr.add(OctalSentence.parseOctal(parts[0].trim()).asRhythm());
 //          }
 //        }
 //        
-//        WordBinary result = WordBinary.merge(arr);
+//        BinaryWord result = BinaryWord.merge(arr);
 //          
 //        if(comboBox.getSelectedItem()==Rn.Hex) {
-//          txtResult.setText(WordHexaList.fromRhythm(result).toString());
+//          txtResult.setText(HexadecimalSentence.fromRhythm(result).toString());
 //        } else if(comboBox.getSelectedItem()==Rn.Octal) {
-//          txtResult.setText(WordOctalList.fromRhythm(result).toString());
+//          txtResult.setText(OctalSentence.fromRhythm(result).toString());
 //        }
 //        
 //        Sequence s = new Sequence();

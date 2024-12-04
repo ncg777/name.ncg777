@@ -9,12 +9,12 @@ import java.util.TreeSet;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 
-public class CoprimeIntervals implements StandardAndGuavaPredicate<WordBinary> {
+public class CoprimeIntervals implements StandardAndGuavaPredicate<BinaryWord> {
 
   @Override
-  public boolean apply(@Nonnull WordBinary input) {
+  public boolean apply(@Nonnull BinaryWord input) {
     int n = input.getN();
     if (input.getK() <= 1) {
       return false;

@@ -11,9 +11,9 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import javax.swing.JTextField;
 
@@ -64,7 +64,7 @@ public class SeqGenBySegments {
     frmSeqGen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmSeqGen.getContentPane().setLayout(null);
     
-    JLabel lblRhythm = new JLabel("WordBinary");
+    JLabel lblRhythm = new JLabel("BinaryWord");
     lblRhythm.setForeground(Color.WHITE);
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     lblRhythm.setBounds(10, 11, 46, 14);
@@ -84,12 +84,12 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          WordBinary r = null;
+          BinaryWord r = null;
           if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-            r = WordHexaList.parseHexadecimalWord(str_R).asBinaryWord();
+            r = HexadecimalSentence.parseHexadecimalWord(str_R).asBinaryWord();
           }
           if(comboBox.getSelectedItem() == Alphabet.Octal) {
-            r = WordOctalList.parseOctalWord(str_R).asBinary();
+            r = OctalSentence.parseOctalWord(str_R).asBinary();
           }
           @SuppressWarnings("null")
           Sequence C = r.getComposition().asSequence();

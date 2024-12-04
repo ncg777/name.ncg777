@@ -20,9 +20,9 @@ package name.ncg777.music.applications;
 //import javax.swing.border.LineBorder;
 //
 //import name.ncg777.maths.objects.Sequence;
-//import name.ncg777.maths.objects.WordBinary;
-//import name.ncg777.maths.objects.WordHexaList;
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.BinaryWord;
+//import name.ncg777.maths.objects.HexadecimalSentence;
+//import name.ncg777.maths.objects.OctalSentence;
 //
 //import java.awt.Color;
 //import java.awt.Font;
@@ -71,11 +71,11 @@ package name.ncg777.music.applications;
 //  private void initialize() {
 //    frmRhythmContours = new JFrame();
 //    frmRhythmContours.setResizable(false);
-//    frmRhythmContours.setTitle("WordBinary Contours");
+//    frmRhythmContours.setTitle("BinaryWord Contours");
 //    frmRhythmContours.setBounds(100, 100, 480, 444);
 //    frmRhythmContours.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    
-//    JLabel lblRhythm = new JLabel("WordBinary :");
+//    JLabel lblRhythm = new JLabel("BinaryWord :");
 //    lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
 //    
 //    textField = new JTextField();
@@ -85,7 +85,7 @@ package name.ncg777.music.applications;
 //    btnCalccontours.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
 //        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-//          WordHexaList r4 = WordHexaList.parseRhythmHexaSeq(textField.getText());
+//          HexadecimalSentence r4 = HexadecimalSentence.parseRhythmHexaSeq(textField.getText());
 //          
 //          txtContour.setText(r4.asWord().getContour().toString());
 //          txtShadowContour.setText(r4.asWord().getShadowContour().toString());
@@ -94,8 +94,8 @@ package name.ncg777.music.applications;
 //          textCompositionPartition.setText(r4.clusterPartition().toString());
 //          String o = "";
 //          
-//          ArrayList<WordHexaList> clusters = WordHexaList.clusterRhythmPartition(r4.asWord().partitionByEquality());
-//          for(WordHexaList r : clusters) {
+//          ArrayList<HexadecimalSentence> clusters = HexadecimalSentence.clusterRhythmPartition(r4.asWord().partitionByEquality());
+//          for(HexadecimalSentence r : clusters) {
 //            o += r.toString() + "\n";
 //          }
 //          textAreaPartitions.setText(o);
@@ -105,7 +105,7 @@ package name.ncg777.music.applications;
 //          textContourSeq.setText(contourseq.toString());
 //          lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
 //        } else if(comboBox.getSelectedItem() == Alphabet.Octal) {
-//          WordOctalList r12 = WordOctalList.parseOctal(textField.getText());
+//          OctalSentence r12 = OctalSentence.parseOctal(textField.getText());
 //          
 //          txtContour.setText(r12.asRhythm().getContour().toString());
 //          txtShadowContour.setText(r12.asRhythm().getShadowContour().toString());
@@ -114,8 +114,8 @@ package name.ncg777.music.applications;
 //          textCompositionPartition.setText(r12.clusterPartition().toString());
 //          String o = "";
 //          
-//          ArrayList<WordOctalList> clusters = WordOctalList.clusterRhythmPartition(r12.asRhythm().partitionByEquality());
-//          for(WordOctalList r : clusters) {
+//          ArrayList<OctalSentence> clusters = OctalSentence.clusterRhythmPartition(r12.asRhythm().partitionByEquality());
+//          for(OctalSentence r : clusters) {
 //            o += r.toString() + "\n";
 //          }
 //          textAreaPartitions.setText(o);

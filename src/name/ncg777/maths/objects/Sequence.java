@@ -24,6 +24,7 @@ import name.ncg777.computerScience.dataStructures.HomoPair;
 import name.ncg777.computerScience.dataStructures.IterableComparator;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.enumerations.PermutationEnumeration;
+import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 /**
@@ -226,7 +227,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     }
   }
   
-  public Sequence hold(WordBinary r) {
+  public Sequence hold(BinaryWord r) {
     int n = r.getN();
     int k = r.getK();
     
@@ -241,7 +242,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return o;
   }
   
-  public Sequence extract(WordBinary r) {
+  public Sequence extract(BinaryWord r) {
     Sequence o = new Sequence();
     
     for(int i=0; i<r.getN();i++) {
@@ -250,7 +251,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return o;
   }
   
-  public Sequence absoluteTimeConvolve(WordBinary r, Sequence impulse) {
+  public Sequence absoluteTimeConvolve(BinaryWord r, Sequence impulse) {
     return this.hold(r).convolveWith(impulse).extract(r);
   }
   
@@ -908,9 +909,9 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return CollectionUtils.calcIntervalVector(this);
   }
 
-  public TreeMap<Integer, WordBinary> getRhythms() {
+  public TreeMap<Integer, BinaryWord> getRhythms() {
 
-    TreeMap<Integer, WordBinary> output = new TreeMap<Integer, WordBinary>();
+    TreeMap<Integer, BinaryWord> output = new TreeMap<Integer, BinaryWord>();
     TreeSet<Integer> t = new TreeSet<Integer>();
 
     t.addAll(this);
@@ -923,7 +924,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       for (int j = 0; j < this.size(); j++) {
         b[j] = this.get(j).equals(v);
       }
-      output.put(v, WordBinary.buildRhythm(b));
+      output.put(v, BinaryWord.buildRhythm(b));
     }
     return output;
   }
@@ -1199,7 +1200,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
    * @param addS
    * @return
    */
-  public static Sequence genRndOnRhythm(WordBinary R, int amp, int maxamp, boolean addF, boolean addS) {
+  public static Sequence genRndOnRhythm(BinaryWord R, int amp, int maxamp, boolean addF, boolean addS) {
     Sequence o = new Sequence();
     int n = R.getN();
     Sequence rhythmCompositionSequence = R.getComposition().asSequence();

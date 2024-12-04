@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 import name.ncg777.computerScience.dataStructures.HomoPair;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.music.applications.kernelValuator.kernels.Dummy;
 import name.ncg777.music.applications.kernelValuator.kernels.ModsRecycle;
 import name.ncg777.music.applications.kernelValuator.kernels.Recycle;
@@ -54,11 +54,11 @@ public class Engine {
     this.generatesDeltas = generatesDeltas;
   }
 
-  public HomoPair<Sequence> evaluate(WordBinary wordBinary, final String _parameters, String kernel) {
-    return evaluate(wordBinary, _parameters, KernelsByName.get(kernel));
+  public HomoPair<Sequence> evaluate(BinaryWord binaryWord, final String _parameters, String kernel) {
+    return evaluate(binaryWord, _parameters, KernelsByName.get(kernel));
   }
   
-  public HomoPair<Sequence> evaluate(WordBinary wordBinary, final String _parameters, Kernel kernel) {
+  public HomoPair<Sequence> evaluate(BinaryWord binaryWord, final String _parameters, Kernel kernel) {
 
     final String lines[] = _parameters.split("\n");
     final TreeMap<String, String> tokens = new TreeMap<String, String>();
@@ -97,7 +97,7 @@ public class Engine {
     
     Sequence o = new Sequence();
     
-    for(int hit : wordBinary.asSequence()) {
+    for(int hit : binaryWord.asSequence()) {
       o.add(kernel.getValue(parameters, hit));
     }
     

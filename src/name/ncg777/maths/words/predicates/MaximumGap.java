@@ -3,9 +3,9 @@ package name.ncg777.maths.words.predicates;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 
-public class MaximumGap implements StandardAndGuavaPredicate<WordBinary> {
+public class MaximumGap implements StandardAndGuavaPredicate<BinaryWord> {
   
   private int n = -1;
   public MaximumGap(int n) {
@@ -13,7 +13,7 @@ public class MaximumGap implements StandardAndGuavaPredicate<WordBinary> {
     this.n = n;
   }
   @Override
-  public boolean apply(@Nonnull WordBinary input) {
+  public boolean apply(@Nonnull BinaryWord input) {
     return input.getComposition().asSequence().getMax() <= this.n;
   }
 

@@ -3,18 +3,18 @@ package name.ncg777.maths.words.relations;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.ncg777.maths.objects.WordHexa;
+import name.ncg777.maths.objects.words.HexadecimalWord;
 import name.ncg777.maths.relations.Relation;
 
-public class SpectrumProximity implements Relation<WordHexa, WordHexa> {
+public class SpectrumProximity implements Relation<HexadecimalWord, HexadecimalWord> {
 
   private double max = 0;
   public SpectrumProximity(double max) { this.max = max; }
   
   @Override
-  public boolean apply(WordHexa a, WordHexa b) {
-    List<Double> da = calcDistribution(WordHexa.calcSpectrum(a));
-    List<Double> db = calcDistribution(WordHexa.calcSpectrum(b));
+  public boolean apply(HexadecimalWord a, HexadecimalWord b) {
+    List<Double> da = calcDistribution(HexadecimalWord.calcSpectrum(a));
+    List<Double> db = calcDistribution(HexadecimalWord.calcSpectrum(b));
     
     double dist = 0.0;
     for(int i=0;i<8;i++) {

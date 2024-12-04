@@ -6,9 +6,9 @@ import javax.annotation.Nonnull;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 
-public class HasNoGaps implements StandardAndGuavaPredicate<WordBinary> {
+public class HasNoGaps implements StandardAndGuavaPredicate<BinaryWord> {
 
   public HasNoGaps() {
 
@@ -16,7 +16,7 @@ public class HasNoGaps implements StandardAndGuavaPredicate<WordBinary> {
 
 
   @Override
-  public boolean apply(@Nonnull WordBinary input) {
+  public boolean apply(@Nonnull BinaryWord input) {
     Sequence s = input.getIntervalVector();
     LinkedList<Integer> l = new LinkedList<Integer>();
 

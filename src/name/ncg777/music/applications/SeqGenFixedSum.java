@@ -12,8 +12,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
 import name.ncg777.maths.predicates.PredicatedSeqRhythms;
 import name.ncg777.maths.words.predicates.EntropicDispersion;
 
@@ -102,7 +102,7 @@ public class SeqGenFixedSum {
     
     
     
-    JLabel lblRhythm = new JLabel("WordBinary :");
+    JLabel lblRhythm = new JLabel("BinaryWord :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JLabel lblXsMod = new JLabel("Sequence:");
@@ -127,10 +127,10 @@ public class SeqGenFixedSum {
                          
               int n = -1;
               if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-                n = WordHexaList.parseHexadecimalWord(str_R).asBinaryWord().getK();
+                n = HexadecimalSentence.parseHexadecimalWord(str_R).asBinaryWord().getK();
               }
               if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                n = WordOctalList.parseOctalWord(str_R).asBinary().getK();
+                n = OctalSentence.parseOctalWord(str_R).asBinary().getK();
               }
               if(n < 2) {
                 throw new RuntimeException("rhythm is empty or too small");

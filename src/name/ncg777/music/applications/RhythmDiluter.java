@@ -10,9 +10,9 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.objects.Alphabet;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -59,7 +59,7 @@ public class RhythmDiluter {
   private void initialize() {
     frmRhythmDiluter = new JFrame();
     frmRhythmDiluter.setResizable(false);
-    frmRhythmDiluter.setTitle("WordBinary Diluter");
+    frmRhythmDiluter.setTitle("BinaryWord Diluter");
     frmRhythmDiluter.setBounds(100, 100, 644, 203);
     frmRhythmDiluter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmRhythmDiluter.getContentPane().setLayout(null);
@@ -69,7 +69,7 @@ public class RhythmDiluter {
     comboBox.setBounds(129, 6, 114, 20);
     frmRhythmDiluter.getContentPane().add(comboBox);
     
-    JLabel lblNewLabel = new JLabel("WordBinary:");
+    JLabel lblNewLabel = new JLabel("BinaryWord:");
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setBounds(10, 37, 114, 20);
@@ -134,12 +134,12 @@ public class RhythmDiluter {
   }
   
   private void dilute() {
-    WordBinary r = null;
+    BinaryWord r = null;
     if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-      r = WordHexaList.parseHexadecimalWord(textRhythm.getText()).asBinaryWord();
+      r = HexadecimalSentence.parseHexadecimalWord(textRhythm.getText()).asBinaryWord();
     }
     if(comboBox.getSelectedItem() == Alphabet.Octal) {
-      r = WordOctalList.parseOctalWord(textRhythm.getText()).asBinary();
+      r = OctalSentence.parseOctalWord(textRhythm.getText()).asBinary();
     }
     
     @SuppressWarnings("null")
@@ -172,7 +172,7 @@ public class RhythmDiluter {
     
     int newLength = n * (to/from);
     
-    WordBinary o = WordBinary.buildRhythm(new BitSet(), newLength);
+    BinaryWord o = BinaryWord.buildRhythm(new BitSet(), newLength);
     for(int i=0; i<(n/from);i++) {
       
       for(int j=0;j<from;j++) {
@@ -181,10 +181,10 @@ public class RhythmDiluter {
     }
     
     if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-      textResult.setText(WordHexaList.fromRhythm(o).toString());
+      textResult.setText(HexadecimalSentence.fromRhythm(o).toString());
     }
     if(comboBox.getSelectedItem() == Alphabet.Octal) {
-      textResult.setText(WordOctalList.fromRhythm(o).toString());
+      textResult.setText(OctalSentence.fromRhythm(o).toString());
     }
   }
 }

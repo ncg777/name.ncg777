@@ -9,8 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -78,8 +78,8 @@ public class R16Divider {
     spinner.setFont(new Font("Unifont", Font.PLAIN, 11));
     btnDivide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        WordHexaList r = WordHexaList.parseHexadecimalWord(txtR.getText().trim());
-        WordBinary r1 = r.asBinaryWord();
+        HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(txtR.getText().trim());
+        BinaryWord r1 = r.asBinaryWord();
         int div = (int)spinner.getValue();
         int len = r.getN();
         int d = len/div;
@@ -89,8 +89,8 @@ public class R16Divider {
         } else if(d < 16) {
           txtResult.setText("too few bytes");  
         }else {
-          ArrayList<WordBinary> o = new ArrayList<WordBinary>();
-          for(int i=0;i<div;i++) {o.add(WordBinary.buildRhythm(new BitSet(), d));}
+          ArrayList<BinaryWord> o = new ArrayList<BinaryWord>();
+          for(int i=0;i<div;i++) {o.add(BinaryWord.buildRhythm(new BitSet(), d));}
           
           for(int i=0;i<d;i++) {
             
@@ -102,7 +102,7 @@ public class R16Divider {
           String output = "";
           
           for(int i=0;i<div;i++) {
-            output += WordHexaList.fromRhythm(o.get(i)) + "\n";
+            output += HexadecimalSentence.fromRhythm(o.get(i)) + "\n";
           }
           txtResult.setText(output);
         }

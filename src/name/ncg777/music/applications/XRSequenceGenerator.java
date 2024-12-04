@@ -11,8 +11,8 @@ import name.ncg777.computerScience.dataStructures.CollectionUtils;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
 
 import javax.swing.SpringLayout;
 import javax.swing.JTextField;
@@ -65,7 +65,7 @@ public class XRSequenceGenerator {
     SpringLayout springLayout = new SpringLayout();
     frmXrSequenceGenerator.getContentPane().setLayout(springLayout);
     
-    JLabel lblNewLabel = new JLabel("WordBinary:");
+    JLabel lblNewLabel = new JLabel("BinaryWord:");
     springLayout.putConstraint(SpringLayout.WEST, lblNewLabel, 10, SpringLayout.WEST, frmXrSequenceGenerator.getContentPane());
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -88,10 +88,10 @@ public class XRSequenceGenerator {
         Sequence comp = null;
         boolean useHalf = true;
         if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-          comp = WordHexaList.parseHexadecimalWord(textRhythm.getText()).asBinaryWord().getComposition().asSequence();
+          comp = HexadecimalSentence.parseHexadecimalWord(textRhythm.getText()).asBinaryWord().getComposition().asSequence();
         }
         if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          comp = WordOctalList.parseOctalWord(textRhythm.getText()).asBinary().getComposition().asSequence();
+          comp = OctalSentence.parseOctalWord(textRhythm.getText()).asBinary().getComposition().asSequence();
         }
         
         ArrayList<Double> output = new ArrayList<Double>();

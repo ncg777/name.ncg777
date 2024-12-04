@@ -8,9 +8,9 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -141,7 +141,7 @@ public class RhythmicPulsations {
             }
           }
           
-          WordBinary rh = WordBinary.buildRhythm(new BitSet(scompo_sum), scompo_sum);
+          BinaryWord rh = BinaryWord.buildRhythm(new BitSet(scompo_sum), scompo_sum);
           int acc = 0;
           
           for(int i=0; i<scompo.size(); i++) {
@@ -162,8 +162,8 @@ public class RhythmicPulsations {
             
             acc+=c;
           }
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) result.setText(WordHexaList.fromRhythm(rh).toString());
-          if(comboBox.getSelectedItem() == Alphabet.Octal) result.setText(WordOctalList.fromRhythm(rh).toString());
+          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) result.setText(HexadecimalSentence.fromRhythm(rh).toString());
+          if(comboBox.getSelectedItem() == Alphabet.Octal) result.setText(OctalSentence.fromRhythm(rh).toString());
         } catch(Exception ex) {
           result.setText(ex.getMessage());
         }

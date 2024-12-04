@@ -3,9 +3,9 @@ package name.ncg777.maths.words.predicates;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 
-public class ScaleModuloIsomorphic implements StandardAndGuavaPredicate<WordBinary>  {
+public class ScaleModuloIsomorphic implements StandardAndGuavaPredicate<BinaryWord>  {
 
   private int n;
   private int k;
@@ -14,7 +14,7 @@ public class ScaleModuloIsomorphic implements StandardAndGuavaPredicate<WordBina
     this.k = k;
   }
   @Override
-  public boolean apply(@Nonnull WordBinary input) {
+  public boolean apply(@Nonnull BinaryWord input) {
     return input.equals(input.scaleModulo(k, n));
   }
 

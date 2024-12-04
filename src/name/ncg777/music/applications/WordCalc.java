@@ -9,7 +9,7 @@ package name.ncg777.music.applications;
 //import javax.swing.JLabel;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.OctalSentence;
 //import name.ncg777.music.WordHexaList;
 //import name.ncg777.music.Rn;
 //
@@ -62,15 +62,15 @@ package name.ncg777.music.applications;
 //   */
 //  private void initialize() {
 //    frmRhythmCalc = new JFrame();
-//    frmRhythmCalc.setTitle("WordBinary Calc");
+//    frmRhythmCalc.setTitle("BinaryWord Calc");
 //    frmRhythmCalc.setBounds(100, 100, 450, 325);
 //    frmRhythmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    
-//    JLabel lblRhythmA = new JLabel("WordBinary A :");
+//    JLabel lblRhythmA = new JLabel("BinaryWord A :");
 //    lblRhythmA.setFont(new Font("Unifont", Font.PLAIN, 12));
 //    lblRhythmA.setHorizontalAlignment(SwingConstants.RIGHT);
 //    
-//    JLabel lblRhythmB = new JLabel("WordBinary B :");
+//    JLabel lblRhythmB = new JLabel("BinaryWord B :");
 //    lblRhythmB.setFont(new Font("Unifont", Font.PLAIN, 12));
 //    lblRhythmB.setHorizontalAlignment(SwingConstants.RIGHT);
 //    
@@ -94,47 +94,47 @@ package name.ncg777.music.applications;
 //    btnCalc.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
 //        if(comboBox.getSelectedItem() == Rn.Hex) {
-//          WordHexaList a = WordHexaList.parseRhythmHexaSeq(rhA.getText());
-//          WordHexaList b = WordHexaList.parseRhythmHexaSeq(rhB.getText());
+//          HexadecimalSentence a = HexadecimalSentence.parseRhythmHexaSeq(rhA.getText());
+//          HexadecimalSentence b = HexadecimalSentence.parseRhythmHexaSeq(rhB.getText());
 //          String o = "";
 //          
 //          switch((Operation) operation.getSelectedItem()) {
 //            case And:
-//              o = WordHexaList.and(a, b).toString();
+//              o = HexadecimalSentence.and(a, b).toString();
 //              break;
 //            case Convolve:
-//              o = WordHexaList.convolve(a, b).toString();
+//              o = HexadecimalSentence.convolve(a, b).toString();
 //              break;
 //            case Or:
-//              o = WordHexaList.or(a, b).toString();
+//              o = HexadecimalSentence.or(a, b).toString();
 //              break;
 //            case Xor:
-//              o = WordHexaList.xor(a, b).toString();
+//              o = HexadecimalSentence.xor(a, b).toString();
 //              break;
 //            case Minus:
-//              o = WordHexaList.minus(a, b).toString();
+//              o = HexadecimalSentence.minus(a, b).toString();
 //          }
 //          output.setText(o);
 //        } else if(comboBox.getSelectedItem() == Rn.Octal) {
-//          WordOctalList a = WordOctalList.parseOctal(rhA.getText());
-//          WordOctalList b = WordOctalList.parseOctal(rhB.getText());
+//          OctalSentence a = OctalSentence.parseOctal(rhA.getText());
+//          OctalSentence b = OctalSentence.parseOctal(rhB.getText());
 //          String o = "";
 //          
 //          switch((Operation) operation.getSelectedItem()) {
 //            case And:
-//              o = WordOctalList.and(a, b).toString();
+//              o = OctalSentence.and(a, b).toString();
 //              break;
 //            case Convolve:
-//              o = WordOctalList.convolve(a, b).toString();
+//              o = OctalSentence.convolve(a, b).toString();
 //              break;
 //            case Or:
-//              o = WordOctalList.or(a, b).toString();
+//              o = OctalSentence.or(a, b).toString();
 //              break;
 //            case Xor:
-//              o = WordOctalList.xor(a, b).toString();
+//              o = OctalSentence.xor(a, b).toString();
 //              break;
 //            case Minus:
-//              o = WordOctalList.minus(a, b).toString();
+//              o = OctalSentence.minus(a, b).toString();
 //          }
 //          output.setText(o);
 //        }
@@ -153,9 +153,9 @@ package name.ncg777.music.applications;
 //    btnFlipBits.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
 //        if(comboBox.getSelectedItem() == Rn.Hex) {
-//          output.setText(WordHexaList.not(WordHexaList.parseRhythmHexaSeq(output.getText())).toString());
+//          output.setText(HexadecimalSentence.not(HexadecimalSentence.parseRhythmHexaSeq(output.getText())).toString());
 //        } else if(comboBox.getSelectedItem() == Rn.Octal) {
-//          output.setText(WordOctalList.not(WordOctalList.parseOctal(output.getText())).toString());
+//          output.setText(OctalSentence.not(OctalSentence.parseOctal(output.getText())).toString());
 //        }
 //      }
 //    });

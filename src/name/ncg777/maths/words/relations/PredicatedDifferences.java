@@ -2,23 +2,23 @@ package name.ncg777.maths.words.relations;
 
 import java.util.function.Predicate;
 
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.relations.Relation;
 
 
 public class PredicatedDifferences implements 
-Relation<WordBinary, WordBinary>   {
+Relation<BinaryWord, BinaryWord>   {
   
-  public PredicatedDifferences(Predicate<WordBinary> pred){
+  public PredicatedDifferences(Predicate<BinaryWord> pred){
     ld = pred;
   }
   
-  private Predicate<WordBinary> ld;
+  private Predicate<BinaryWord> ld;
   @Override
-  public boolean apply(WordBinary a, WordBinary b) {
+  public boolean apply(BinaryWord a, BinaryWord b) {
 
-    WordBinary d1 = WordBinary.buildRhythm(a.minus(b));
-    WordBinary d2 = WordBinary.buildRhythm(b.minus(a));
+    BinaryWord d1 = BinaryWord.buildRhythm(a.minus(b));
+    BinaryWord d2 = BinaryWord.buildRhythm(b.minus(a));
     
     return ld.test(d1) && ld.test(d2); 
     

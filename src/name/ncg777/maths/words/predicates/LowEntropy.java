@@ -6,12 +6,12 @@ import javax.annotation.Nonnull;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.objects.WordBinary;
+import name.ncg777.maths.objects.words.BinaryWord;
 
-public class LowEntropy implements StandardAndGuavaPredicate<WordBinary> {
+public class LowEntropy implements StandardAndGuavaPredicate<BinaryWord> {
   private static TreeMap<Integer,Double> _cache = new TreeMap<Integer,Double>();
   @Override
-  public boolean apply(@Nonnull WordBinary arg0) {
+  public boolean apply(@Nonnull BinaryWord arg0) {
     Double bound = null;
     if(!_cache.containsKey(arg0.getN())) {
       bound = Math.log((double)Numbers.reverseTriangularNumber(arg0.getN())*0.5);

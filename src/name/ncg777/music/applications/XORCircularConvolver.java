@@ -9,9 +9,9 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Alphabet;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -79,15 +79,15 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
-        WordBinary carrier = null; WordHexaList.parseHexadecimalWord(txtCarrier.getText()).asBinaryWord();
-        WordBinary impulse = null; WordHexaList.parseHexadecimalWord(txtImpulse.getText()).asBinaryWord();
+        BinaryWord carrier = null; HexadecimalSentence.parseHexadecimalWord(txtCarrier.getText()).asBinaryWord();
+        BinaryWord impulse = null; HexadecimalSentence.parseHexadecimalWord(txtImpulse.getText()).asBinaryWord();
         if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-          carrier = WordHexaList.parseHexadecimalWord(txtCarrier.getText()).asBinaryWord();
-          impulse = WordHexaList.parseHexadecimalWord(txtImpulse.getText()).asBinaryWord();
+          carrier = HexadecimalSentence.parseHexadecimalWord(txtCarrier.getText()).asBinaryWord();
+          impulse = HexadecimalSentence.parseHexadecimalWord(txtImpulse.getText()).asBinaryWord();
         }
         if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          carrier = WordOctalList.parseOctalWord(txtCarrier.getText()).asBinary();
-          impulse = WordOctalList.parseOctalWord(txtImpulse.getText()).asBinary();
+          carrier = OctalSentence.parseOctalWord(txtCarrier.getText()).asBinary();
+          impulse = OctalSentence.parseOctalWord(txtImpulse.getText()).asBinary();
         }
         BitSet bs = new BitSet(carrier.getN());
         
@@ -100,10 +100,10 @@ public class XORCircularConvolver {
           }
         }
         if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-          txtResult.setText(WordHexaList.fromRhythm(WordBinary.buildRhythm(bs,carrier.getN())).toString());
+          txtResult.setText(HexadecimalSentence.fromRhythm(BinaryWord.buildRhythm(bs,carrier.getN())).toString());
         }
         if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          txtResult.setText(WordOctalList.fromRhythm(WordBinary.buildRhythm(bs,carrier.getN())).toString());
+          txtResult.setText(OctalSentence.fromRhythm(BinaryWord.buildRhythm(bs,carrier.getN())).toString());
         }
       }
     });

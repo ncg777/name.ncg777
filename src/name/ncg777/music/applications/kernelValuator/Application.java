@@ -11,8 +11,8 @@ package name.ncg777.music.applications.kernelValuator;
 //
 //import name.ncg777.computerScience.dataStructures.HomoPair;
 //import name.ncg777.maths.objects.Sequence;
-//import name.ncg777.maths.objects.WordHexaList;
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.HexadecimalSentence;
+//import name.ncg777.maths.objects.OctalSentence;
 //import name.ncg777.music.Rn;
 //
 //import javax.swing.SwingConstants;
@@ -120,13 +120,13 @@ package name.ncg777.music.applications.kernelValuator;
 //          HomoPair<Sequence> result = null;
 //          if(comboBox_1.getSelectedItem() == Rn.Hex) {
 //            result = engine.evaluate(
-//              WordHexaList.parseRhythmHexaSeq(rhythm.getText()).asWord(), 
+//              HexadecimalSentence.parseRhythmHexaSeq(rhythm.getText()).asWord(), 
 //              params.getText(), 
 //              getSelectedKernel());
 //          }
 //          if(comboBox_1.getSelectedItem() == Rn.Octal) {
 //            result = engine.evaluate(
-//              WordOctalList.parseOctal(rhythm.getText()).asRhythm(), 
+//              OctalSentence.parseOctal(rhythm.getText()).asRhythm(), 
 //              params.getText(), 
 //              getSelectedKernel());
 //          }
@@ -143,7 +143,7 @@ package name.ncg777.music.applications.kernelValuator;
 //      }
 //    });
 //    
-//    JLabel lblRhythm = new JLabel("WordBinary :");
+//    JLabel lblRhythm = new JLabel("BinaryWord :");
 //    lblRhythm.setFont(new Font("Unifont", Font.PLAIN, 11));
 //    lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
 //    

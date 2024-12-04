@@ -11,9 +11,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.WordBinary;
-import name.ncg777.maths.objects.WordHexaList;
-import name.ncg777.maths.objects.WordOctalList;
+import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.objects.sentences.OctalSentence;
+import name.ncg777.maths.objects.words.BinaryWord;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -71,7 +71,7 @@ public class SequenceConvolverAbsoluteTime {
     lblSequenceB.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblSequenceB.setHorizontalAlignment(SwingConstants.RIGHT);
     
-    JLabel lblSmoothingKernel = new JLabel("WordBinary:");
+    JLabel lblSmoothingKernel = new JLabel("BinaryWord:");
     lblSmoothingKernel.setFont(new Font("Unifont", Font.PLAIN, 11));
     lblSmoothingKernel.setHorizontalAlignment(SwingConstants.RIGHT);
     
@@ -97,9 +97,9 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        WordBinary r = null;
-        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) r = WordHexaList.parseHexadecimalWord(txtR.getText()).asBinaryWord();
-        if(comboBox.getSelectedItem() == Alphabet.Octal) r = WordOctalList.parseOctalWord(txtR.getText()).asBinary();
+        BinaryWord r = null;
+        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) r = HexadecimalSentence.parseHexadecimalWord(txtR.getText()).asBinaryWord();
+        if(comboBox.getSelectedItem() == Alphabet.Octal) r = OctalSentence.parseOctalWord(txtR.getText()).asBinary();
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[()]", ""));
       }
     });

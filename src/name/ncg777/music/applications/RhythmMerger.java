@@ -8,9 +8,9 @@ package name.ncg777.music.applications;
 //import javax.swing.JLabel;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
-//import name.ncg777.maths.objects.WordBinary;
-//import name.ncg777.maths.objects.WordHexaList;
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.BinaryWord;
+//import name.ncg777.maths.objects.HexadecimalSentence;
+//import name.ncg777.maths.objects.OctalSentence;
 //
 //import javax.swing.JTextField;
 //import javax.swing.JButton;
@@ -59,7 +59,7 @@ package name.ncg777.music.applications;
 //  private void initialize() {
 //    frmRhythmMerger = new JFrame();
 //    frmRhythmMerger.setResizable(false);
-//    frmRhythmMerger.setTitle("WordBinary Merger");
+//    frmRhythmMerger.setTitle("BinaryWord Merger");
 //    frmRhythmMerger.setBounds(100, 100, 450, 273);
 //    frmRhythmMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    
@@ -67,21 +67,21 @@ package name.ncg777.music.applications;
 //    btnMerge.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
 //        String[] lines = txtArea.getText().trim().split("\n+");
-//        ArrayList<WordBinary> arr = new ArrayList<WordBinary>();
+//        ArrayList<BinaryWord> arr = new ArrayList<BinaryWord>();
 //        for(int i=0; i<lines.length;i++) {
 //          if(comboBox.getSelectedItem()==Alphabet.Hexadecimal) {
-//            arr.add(WordHexaList.parseHexadecimalWord(lines[i].trim()).asBinaryWord());
+//            arr.add(HexadecimalSentence.parseHexadecimalWord(lines[i].trim()).asBinaryWord());
 //          } else if(comboBox.getSelectedItem()==Alphabet.Octal) {
-//            arr.add(WordOctalList.parseOctalWord(lines[i].trim()).asBinary());
+//            arr.add(OctalSentence.parseOctalWord(lines[i].trim()).asBinary());
 //          }
 //        }
 //        
-//        WordBinary result = WordBinary.merge(arr);
+//        BinaryWord result = BinaryWord.merge(arr);
 //          
 //        if(comboBox.getSelectedItem()==Alphabet.Hexadecimal) {
-//          txtResult.setText(WordHexaList.fromRhythm(result).toString());
+//          txtResult.setText(HexadecimalSentence.fromRhythm(result).toString());
 //        } else if(comboBox.getSelectedItem()==Alphabet.Octal) {
-//          txtResult.setText(WordOctalList.fromRhythm(result).toString());
+//          txtResult.setText(OctalSentence.fromRhythm(result).toString());
 //        }
 //      }
 //    });

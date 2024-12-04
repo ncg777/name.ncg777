@@ -23,9 +23,9 @@ package name.ncg777.music.applications;
 //import javax.swing.border.LineBorder;
 //
 //import name.ncg777.maths.objects.Sequence;
-//import name.ncg777.maths.objects.WordBinary;
-//import name.ncg777.maths.objects.WordHexaList;
-//import name.ncg777.maths.objects.WordOctalList;
+//import name.ncg777.maths.objects.BinaryWord;
+//import name.ncg777.maths.objects.HexadecimalSentence;
+//import name.ncg777.maths.objects.OctalSentence;
 //
 //import java.awt.Color;
 //import javax.swing.JScrollPane;
@@ -93,51 +93,51 @@ package name.ncg777.music.applications;
 //    btnPartition.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
 //        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-//          WordHexaList r = WordHexaList.parseHexadecimalWord(txtR.getText().trim());
-//          WordBinary r1 = r.asWord();
+//          HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(txtR.getText().trim());
+//          BinaryWord r1 = r.asWord();
 //          Sequence p0 = Sequence.parse(txtPartition.getText());
 //          Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
 //          int k = p.size();
 //          int pdistinct = p.distinct().size();
 //          int n= r1.getN();
-//          ArrayList<WordBinary> output = new ArrayList<WordBinary>();
+//          ArrayList<BinaryWord> output = new ArrayList<BinaryWord>();
 //          
-//          for(int i=0;i<pdistinct;i++) output.add(WordBinary.buildRhythm(new BitSet(), n));
+//          for(int i=0;i<pdistinct;i++) output.add(BinaryWord.buildRhythm(new BitSet(), n));
 //          for(int i=0;i<n;i++) {
 //            output.get(p.get(i%k)).set(i, r1.get(i));
 //          }
 //          
 //          String strOut = "";
 //          for(int i=0; i<output.size();i++) {
-//            strOut += WordHexaList.expand(WordHexaList.fromRhythm(output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
+//            strOut += HexadecimalSentence.expand(HexadecimalSentence.fromRhythm(output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
 //          }
 //          txtResult.setText(strOut);
 //        } else if(comboBox.getSelectedItem() == Alphabet.Octal) {
-//          WordOctalList r = WordOctalList.parseOctalWord(txtR.getText().trim());
-//          WordBinary r1 = r.asRhythm();
+//          OctalSentence r = OctalSentence.parseOctalWord(txtR.getText().trim());
+//          BinaryWord r1 = r.asRhythm();
 //          Sequence p0 = Sequence.parse(txtPartition.getText());
 //          Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
 //          int k = p.size();
 //          int pdistinct = p.distinct().size();
 //          int n= r1.getN();
-//          ArrayList<WordBinary> output = new ArrayList<WordBinary>();
+//          ArrayList<BinaryWord> output = new ArrayList<BinaryWord>();
 //          
-//          for(int i=0;i<pdistinct;i++) output.add(WordBinary.buildRhythm(new BitSet(), n));
+//          for(int i=0;i<pdistinct;i++) output.add(BinaryWord.buildRhythm(new BitSet(), n));
 //          for(int i=0;i<n;i++) {
 //            output.get(p.get(i%k)).set(i, r1.get(i));
 //          }
 //          
 //          String strOut = "";
 //          for(int i=0; i<output.size();i++) {
-//            strOut += WordOctalList.expand(WordOctalList.fromRhythm(output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
+//            strOut += OctalSentence.expand(OctalSentence.fromRhythm(output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
 //          }
 //          txtResult.setText(strOut);
 //        }
 //        
 //        
 //        /* 
-//        WordHexaList r = WordHexaList.parseR16Seq(txtR.getText().trim());
-//        WordBinary r1 = r.asRhythm();
+//        HexadecimalSentence r = HexadecimalSentence.parseR16Seq(txtR.getText().trim());
+//        BinaryWord r1 = r.asRhythm();
 //        Sequence p0 = Sequence.parse(txtPartition.getText());
 //        Sequence p = new Sequence();
 //        for(int i=0; i <r1.getK();i++) {
@@ -147,7 +147,7 @@ package name.ncg777.music.applications;
 //        Combination[] c = r1.partition(p);
 //        String output = "";
 //        for(Combination x : c) {
-//          output += WordHexaList.expand(WordHexaList.fromRhythm(WordBinary.buildRhythm(x, r.size()*16)), (int)spinner.getValue(), true) + "\n";
+//          output += HexadecimalSentence.expand(HexadecimalSentence.fromRhythm(BinaryWord.buildRhythm(x, r.size()*16)), (int)spinner.getValue(), true) + "\n";
 //        }
 //        
 //        txtResult.setText(output);
