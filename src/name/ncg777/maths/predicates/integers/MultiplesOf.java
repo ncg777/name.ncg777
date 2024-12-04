@@ -1,4 +1,4 @@
-package name.ncg777.maths.predicates;
+package name.ncg777.maths.predicates.integers;
 
 import java.util.Iterator;
 import java.util.TreeSet;

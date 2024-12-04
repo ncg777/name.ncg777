@@ -1,4 +1,4 @@
-package name.ncg777.maths.predicates;
+package name.ncg777.maths.predicates.sequences;
 
 import static name.ncg777.computerScience.dataStructures.CollectionUtils.*;
 
@@ -9,10 +9,10 @@ import java.util.TreeMap;
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.objects.Sequence;
 
-public class SeqSpecHasNoGaps implements StandardAndGuavaPredicate<Integer[]> {
+public class SeqSpecHasNoGaps implements StandardAndGuavaPredicate<Sequence> {
 
   @Override
-  public boolean apply(@SuppressWarnings("null") Integer[] input) {
+  public boolean apply(@SuppressWarnings("null") Sequence input) {
 
     TreeMap<Integer, Sequence> t = calcIntervalVector(input);
     Iterator<Integer> j = t.keySet().iterator();

@@ -1,4 +1,4 @@
-package name.ncg777.maths.words.predicates;
+package name.ncg777.maths.predicates.words;
 
 import java.util.Set;
 

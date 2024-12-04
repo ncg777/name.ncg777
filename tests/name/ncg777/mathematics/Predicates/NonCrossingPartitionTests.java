@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.enumerations.SetPartitionEnumeration;
 import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.predicates.NonCrossingPartition;
+import name.ncg777.maths.predicates.sequences.NonCrossingPartition;
 
 public class NonCrossingPartitionTests extends TestCase  {
 
@@ -35,7 +35,7 @@ public class NonCrossingPartitionTests extends TestCase  {
         int[] el1 = new int[el.length];
         for(int j=0;j<el.length;j++) el1[j] = el[j];
         System.out.println(new Sequence(el));
-        if(pred.test(el1)) {
+        if(pred.test(new Sequence(el1))) {
           cntnc++;
         } else {
           cntc++;

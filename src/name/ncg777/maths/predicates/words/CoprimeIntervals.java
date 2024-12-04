@@ -1,4 +1,4 @@
-package name.ncg777.maths.words.predicates;
+package name.ncg777.maths.predicates.words;
 
 import static name.ncg777.computerScience.dataStructures.CollectionUtils.*;
 

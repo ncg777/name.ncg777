@@ -14,8 +14,8 @@ import name.ncg777.maths.objects.Alphabet;
 import name.ncg777.maths.objects.Sequence;
 import name.ncg777.maths.objects.sentences.HexadecimalSentence;
 import name.ncg777.maths.objects.sentences.OctalSentence;
-import name.ncg777.maths.predicates.PredicatedSeqRhythms;
-import name.ncg777.maths.words.predicates.EntropicDispersion;
+import name.ncg777.maths.predicates.sequences.PredicatedSeqRhythms;
+import name.ncg777.maths.predicates.words.EntropicDispersion;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;

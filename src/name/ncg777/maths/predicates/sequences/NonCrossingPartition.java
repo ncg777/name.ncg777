@@ -1,16 +1,17 @@
-package name.ncg777.maths.predicates;
+package name.ncg777.maths.predicates.sequences;
 
 import java.util.function.Predicate;
 
 import name.ncg777.maths.enumerations.CombinationEnumeration;
+import name.ncg777.maths.objects.Sequence;
 
 import java.util.List;
 
-public class NonCrossingPartition implements Predicate<int[]> {
+public class NonCrossingPartition implements Predicate<Sequence> {
 
     @Override
-    public boolean test(int[] partition) {
-        int n = partition.length;
+    public boolean test(Sequence partition) {
+        int n = partition.size();
 
         // If n is less than 4, the partition is trivially non-crossing
         if (n < 4) {
@@ -28,10 +29,10 @@ public class NonCrossingPartition implements Predicate<int[]> {
             int c = quad.get(2);
             int d = quad.get(3);
 
-            // Check if p[a] = p[c] and p[b] = p[d] and p[a] != p[b]
-            if (partition[a] == partition[c] &&
-                partition[b] == partition[d] &&
-                partition[a] != partition[b]) {
+            // Check if p.get(a) = p.get(c) and p.get(b) = p.get(d) and p.get(a) != p.get(b)
+            if (partition.get(a) == partition.get(c) &&
+                partition.get(b) == partition.get(d) &&
+                partition.get(a) != partition.get(b)) {
                 return false; // Found a crossing
             }
         }

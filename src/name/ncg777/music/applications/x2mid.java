@@ -21,7 +21,7 @@ import javax.swing.border.LineBorder;
 import name.ncg777.maths.objects.Sequence;
 import name.ncg777.maths.objects.sentences.HexadecimalSentence;
 import name.ncg777.maths.objects.words.HexadecimalWord;
-import name.ncg777.maths.words.predicates.Even;
+import name.ncg777.maths.predicates.words.Even;
 
 import javax.swing.SwingConstants;
 

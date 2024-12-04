@@ -1,4 +1,4 @@
-package name.ncg777.maths.predicates;
+package name.ncg777.maths.predicates.sequences;
 
 import java.util.Collection;
 
@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.objects.Sequence;
 import name.ncg777.maths.objects.words.BinaryWord;
-import name.ncg777.maths.words.predicates.ShadowContourIsomorphic;
+import name.ncg777.maths.predicates.words.ShadowContourIsomorphic;
 
 public class SeqAllRhythmsSCI implements StandardAndGuavaPredicate<Sequence> {
   ShadowContourIsomorphic sci = new ShadowContourIsomorphic();

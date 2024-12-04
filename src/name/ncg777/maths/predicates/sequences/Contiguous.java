@@ -1,4 +1,4 @@
-package name.ncg777.maths.predicates;
+package name.ncg777.maths.predicates.sequences;
 
 import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.objects.Sequence;

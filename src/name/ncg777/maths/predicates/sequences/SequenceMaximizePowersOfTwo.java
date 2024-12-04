@@ -1,4 +1,4 @@
-package name.ncg777.maths.predicates;
+package name.ncg777.maths.predicates.sequences;
 
 import java.util.TreeMap;
 
