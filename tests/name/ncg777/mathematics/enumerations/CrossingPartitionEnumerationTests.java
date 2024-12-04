@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import name.ncg777.mathematics.Numbers;
+import name.ncg777.maths.Numbers;
+import name.ncg777.maths.enumerations.CrossingPartitionEnumeration;
 
 public class CrossingPartitionEnumerationTests {
 

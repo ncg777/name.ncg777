@@ -9,14 +9,14 @@ import com.google.common.base.Joiner;
 import name.ncg777.computerScience.dataStructures.HeteroPair;
 import name.ncg777.computerScience.dataStructures.HomoPair;
 import name.ncg777.computerScience.dataStructures.JaggedList;
-import name.ncg777.mathematics.objects.Combination;
-import name.ncg777.mathematics.objects.Composition;
-import name.ncg777.mathematics.objects.Sequence;
-import name.ncg777.mathematics.objects.Vector;
-import name.ncg777.mathematics.objects.VectorOfBooleans;
-import name.ncg777.mathematics.objects.VectorOfDoubles;
-import name.ncg777.mathematics.objects.VectorOfIntegers;
-import name.ncg777.musical.PitchClassSet12;
+import name.ncg777.maths.objects.Combination;
+import name.ncg777.maths.objects.Composition;
+import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.objects.Vector;
+import name.ncg777.maths.objects.VectorOfBooleans;
+import name.ncg777.maths.objects.VectorOfDoubles;
+import name.ncg777.maths.objects.VectorOfIntegers;
+import name.ncg777.music.PitchClassSet12;
 
 import java.util.List;
 

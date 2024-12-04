@@ -2,7 +2,7 @@ package name.ncg777.computerScience.dataStructures;
 
 import java.util.TreeMap;
 
-import name.ncg777.mathematics.Trit;
+import name.ncg777.maths.Trit;
 
 /**
  * A class representing a word of 32 trits.

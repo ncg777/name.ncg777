@@ -1,7 +1,8 @@
 package name.ncg777.mathematics.enumerations;
 
 import junit.framework.TestCase;
-import name.ncg777.mathematics.Numbers;
+import name.ncg777.maths.Numbers;
+import name.ncg777.maths.enumerations.DyckWordEnumeration;
 
 public class DyckWordEnumerationTests extends TestCase {
 

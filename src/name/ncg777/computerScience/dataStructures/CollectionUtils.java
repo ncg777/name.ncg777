@@ -18,11 +18,11 @@ import java.util.function.Function;
 import com.google.common.base.Equivalence;
 import com.google.common.base.Predicate;
 
-import name.ncg777.mathematics.Numbers;
-import name.ncg777.mathematics.objects.Composition;
-import name.ncg777.mathematics.objects.Matrix;
-import name.ncg777.mathematics.objects.Sequence;
-import name.ncg777.statistical.RandomNumberGenerator;
+import name.ncg777.maths.Numbers;
+import name.ncg777.maths.objects.Composition;
+import name.ncg777.maths.objects.Matrix;
+import name.ncg777.maths.objects.Sequence;
+import name.ncg777.statistics.RandomNumberGenerator;
 
 public class CollectionUtils {
 

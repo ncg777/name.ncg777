@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.Map;
 import java.util.TreeMap;
 
-import name.ncg777.mathematics.enumerations.MixedRadixEnumeration;
+import name.ncg777.maths.enumerations.MixedRadixEnumeration;
 
 public class ColorSequence {
   final static public int MAX_RGB = 255;

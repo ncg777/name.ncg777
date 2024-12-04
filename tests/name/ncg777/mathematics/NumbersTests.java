@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.TestCase;
+import name.ncg777.maths.Numbers;
 
 public class NumbersTests extends TestCase {
 

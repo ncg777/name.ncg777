@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
-import name.ncg777.mathematics.objects.Sequence;
+import name.ncg777.maths.objects.Sequence;
 
 @Command(name = "enum-printer", mixinStandardHelpOptions = true, 
          description = "Print elements of any Enumeration class")

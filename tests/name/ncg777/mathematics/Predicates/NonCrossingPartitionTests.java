@@ -5,10 +5,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import name.ncg777.mathematics.Numbers;
-import name.ncg777.mathematics.enumerations.SetPartitionEnumeration;
-import name.ncg777.mathematics.objects.Sequence;
-import name.ncg777.mathematics.predicates.NonCrossingPartition;
+import name.ncg777.maths.Numbers;
+import name.ncg777.maths.enumerations.SetPartitionEnumeration;
+import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.predicates.NonCrossingPartition;
 
 public class NonCrossingPartitionTests extends TestCase  {
 

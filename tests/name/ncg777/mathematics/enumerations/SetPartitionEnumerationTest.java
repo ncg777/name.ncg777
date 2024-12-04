@@ -5,7 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import name.ncg777.mathematics.Numbers;
+import name.ncg777.maths.Numbers;
+import name.ncg777.maths.enumerations.SetPartitionEnumeration;
 
 public class SetPartitionEnumerationTest extends TestCase {
 

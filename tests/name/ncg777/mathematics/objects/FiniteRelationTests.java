@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import com.opencsv.exceptions.CsvException;
 
 import junit.framework.TestCase;
+import name.ncg777.maths.objects.FiniteRelation;
 
 public class FiniteRelationTests extends TestCase {
   FiniteRelation<String,String> r;
