@@ -15,7 +15,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
 import name.ncg777.computerScience.dataStructures.CollectionUtils;
-import name.ncg777.maths.graphTheory.DiGraph;
+import name.ncg777.maths.graphs.MarkableDirectedGraph;
 import name.ncg777.maths.objects.Matrix;
 import name.ncg777.maths.relations.Relation;
 import name.ncg777.music.PitchClassSet12;
@@ -118,7 +118,7 @@ public class PitchClassSet12Matrix {
              
               Relation<PitchClassSet12, PitchClassSet12> rel_horiz = Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1)));
               BiPredicate<PitchClassSet12, PitchClassSet12> rel_vert = new PredicatedUnion(new Consonant());
-              DiGraph<PitchClassSet12> d = new DiGraph<>(t, rel_horiz);
+              MarkableDirectedGraph<PitchClassSet12> d = new MarkableDirectedGraph<>(t, rel_horiz);
               
               Function<PitchClassSet12, List<PitchClassSet12>> possibles = new Function<PitchClassSet12, List<PitchClassSet12>>() {
 

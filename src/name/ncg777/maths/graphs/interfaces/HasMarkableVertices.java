@@ -1,4 +1,4 @@
-package name.ncg777.maths.graphTheory.interfaces;
+package name.ncg777.maths.graphs.interfaces;
 
 public interface HasMarkableVertices<T> {
   public void markVertex(T u);

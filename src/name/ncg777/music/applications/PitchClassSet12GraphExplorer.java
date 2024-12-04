@@ -27,7 +27,7 @@ import com.google.common.base.Predicates;
 
 import name.ncg777.computerScience.Utils;
 import name.ncg777.computerScience.dataStructures.CollectionUtils;
-import name.ncg777.maths.graphTheory.DiGraph;
+import name.ncg777.maths.graphs.MarkableDirectedGraph;
 import name.ncg777.maths.objects.Sequence;
 import name.ncg777.maths.relations.Relation;
 import name.ncg777.music.PitchClassSet12;
@@ -72,7 +72,7 @@ public class PitchClassSet12GraphExplorer {
     });
   }
 
-  DiGraph<PitchClassSet12> d;
+  MarkableDirectedGraph<PitchClassSet12> d;
 
   /**
    * Create the application.
@@ -93,7 +93,7 @@ public class PitchClassSet12GraphExplorer {
     t.addAll(PitchClassSet12.getChords());
     CollectionUtils.filter(t, new SizeIs((int) spinner_1.getValue()));
     CollectionUtils.filter(t, Predicates.and(new SubsetOf(PitchClassSet12.parseForte(cbxScale.getSelectedItem().toString())), new Consonant()));
-    d = new DiGraph<PitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
+    d = new MarkableDirectedGraph<PitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
     CollectionUtils.filter(t, new Predicate<PitchClassSet12> () {
 
       @Override

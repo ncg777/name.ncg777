@@ -1,4 +1,4 @@
-package name.ncg777.maths.graphTheory;
+package name.ncg777.maths.graphs;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 
 import edu.uci.ics.jung.graph.DirectedSparseGraph;
-import name.ncg777.maths.graphTheory.interfaces.HasMarkableEdges;
-import name.ncg777.maths.graphTheory.interfaces.HasMarkableVertices;
+import name.ncg777.maths.graphs.interfaces.HasMarkableEdges;
+import name.ncg777.maths.graphs.interfaces.HasMarkableVertices;
 
-public class DiGraph<T> extends DirectedSparseGraph<T, Long>
+public class MarkableDirectedGraph<T> extends DirectedSparseGraph<T, Long>
     implements
       HasMarkableVertices<T>,
       HasMarkableEdges<T>, Serializable{
@@ -74,7 +74,7 @@ public class DiGraph<T> extends DirectedSparseGraph<T, Long>
   }
 
 
-  public DiGraph(DiGraph<T> g) {
+  public MarkableDirectedGraph(MarkableDirectedGraph<T> g) {
     super();
 
     for (long p : g.getEdges()) {
@@ -85,12 +85,12 @@ public class DiGraph<T> extends DirectedSparseGraph<T, Long>
     edgeMarker = new EdgeMarker(g.edgeMarker);
   }
 
-  public DiGraph() {
+  public MarkableDirectedGraph() {
     super();
 
   }
     
-  public DiGraph(final Set<T> nodes, 
+  public MarkableDirectedGraph(final Set<T> nodes, 
                  final BiPredicate<? super T, ? super T> relation) {
     for (T a : nodes) {
       addVertex(a);
@@ -131,7 +131,7 @@ public class DiGraph<T> extends DirectedSparseGraph<T, Long>
   }
 
   /**
-   * A utility class to mark vertices in a DiGraph.
+   * A utility class to mark vertices in a MarkableDirectedGraph.
    * 
    * @param <T>
    */
@@ -193,7 +193,7 @@ public class DiGraph<T> extends DirectedSparseGraph<T, Long>
   }
 
   /**
-   * A utility class to mark edges in a DiGraph.
+   * A utility class to mark edges in a MarkableDirectedGraph.
    * 
    * @param <T>
    */

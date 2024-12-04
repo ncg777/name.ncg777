@@ -1,4 +1,4 @@
-package name.ncg777.maths.graphTheory;
+package name.ncg777.maths.graphs;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 
 public class CircuitFinder<T extends Comparable<? super T>> {
   private HashMap<T, HashSet<T>> B;
-  private DiGraph<T> c;
+  private MarkableDirectedGraph<T> c;
   private LinkedList<T> stack;
   private T s;
   private Consumer<List<T>> p;
@@ -40,15 +40,15 @@ public class CircuitFinder<T extends Comparable<? super T>> {
     }
   }
 
-  public void setDiGraph(DiGraph<T> p_c) {
+  public void setDiGraph(MarkableDirectedGraph<T> p_c) {
     c = p_c;
   }
 
-  public DiGraph<T> getDiGraph() {
+  public MarkableDirectedGraph<T> getDiGraph() {
     return c;
   }
 
-  public CircuitFinder(DiGraph<T> p_c, Consumer<List<T>> p_p) {
+  public CircuitFinder(MarkableDirectedGraph<T> p_c, Consumer<List<T>> p_p) {
     c = p_c;
     p = p_p;
   }

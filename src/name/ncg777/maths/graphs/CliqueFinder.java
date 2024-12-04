@@ -1,4 +1,4 @@
-package name.ncg777.maths.graphTheory;
+package name.ncg777.maths.graphs;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ public class CliqueFinder<T extends Comparable<? super T>> {
 
   LinkedList<TreeSet<T>> output;
 
-  public CliqueFinder(DiGraph<T> d) {
+  public CliqueFinder(MarkableDirectedGraph<T> d) {
 
     Iterator<T> i = d.getVertices().iterator();
     all = new LinkedList<Short>();

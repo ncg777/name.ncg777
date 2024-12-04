@@ -1,4 +1,4 @@
-package name.ncg777.maths.graphTheory.interfaces;
+package name.ncg777.maths.graphs.interfaces;
 
 public interface HasMarkableEdges<T> {
   public void markEdge(T u, T v);

@@ -1,4 +1,4 @@
-package name.ncg777.maths.graphTheory;
+package name.ncg777.maths.graphs;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -13,16 +13,15 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
-import edu.uci.ics.jung.graph.DirectedGraph;
 import name.ncg777.computerScience.dataStructures.CollectionUtils;
 
 public class GraphUtils {
 
-  public static <T extends Comparable<? super T>> T getRandomNode(DiGraph<T> g) {
+  public static <T extends Comparable<? super T>> T getRandomNode(MarkableDirectedGraph<T> g) {
     return CollectionUtils.chooseAtRandom(g.getVertices().iterator(), g.getVertexCount());
   }
 
-  public static <T extends Comparable<? super T>> T getRandomNode(DiGraph<T> g, T n) {
+  public static <T extends Comparable<? super T>> T getRandomNode(MarkableDirectedGraph<T> g, T n) {
     return CollectionUtils.chooseAtRandom(g.getSuccessors(n).iterator(), g.getSuccessorCount(n));
   }
 
@@ -31,7 +30,7 @@ public class GraphUtils {
    * 
    * @param c
    */
-  public static <T extends Comparable<? super T>> void dfs(DiGraph<T> g, T c) {
+  public static <T extends Comparable<? super T>> void dfs(MarkableDirectedGraph<T> g, T c) {
     g.markVertex(c);
     Iterator<T> i = g.getSuccessors(c).iterator();
     while (i.hasNext()) {
@@ -44,7 +43,7 @@ public class GraphUtils {
 
   
   public static <T extends Comparable<? super T>> List<T> getRandomWalk(
-    DiGraph<T> g, int len){
+    MarkableDirectedGraph<T> g, int len){
     List<T> o = new ArrayList<T>();
     o.add(getRandomNode(g));
     if(len == 1) {
@@ -64,7 +63,7 @@ public class GraphUtils {
    * @return
    */
   public static <T extends Comparable<? super T>> List<T> getRandomCircuit(
-    DiGraph<T> g, int len){
+    MarkableDirectedGraph<T> g, int len){
     List<T> o = new ArrayList<T>();
     o.add(getRandomNode(g));
     if(len == 1) {
@@ -87,8 +86,8 @@ public class GraphUtils {
    * 
    * @return
    */
-  public static <T extends Comparable<? super T>> boolean hasCycle(DiGraph<T> g0) {
-    DiGraph<T> g = new DiGraph<T>(g0);
+  public static <T extends Comparable<? super T>> boolean hasCycle(MarkableDirectedGraph<T> g0) {
+    MarkableDirectedGraph<T> g = new MarkableDirectedGraph<T>(g0);
     TreeSet<T> t = new TreeSet<T>();
 
     while (g.getVertexCount() != 0) {
@@ -110,7 +109,7 @@ public class GraphUtils {
     return false;
   }
 
-  public static <T extends Comparable<? super T>> boolean isStronglyConnected(DiGraph<T> g) {
+  public static <T extends Comparable<? super T>> boolean isStronglyConnected(MarkableDirectedGraph<T> g) {
     g.resetVertexMarkings();
     dfs(g, g.getVertices().iterator().next());
     boolean result = g.areVerticesAllMarked();
@@ -118,14 +117,14 @@ public class GraphUtils {
     return result;
   }
 
-  public static <T extends Comparable<? super T>> ArrayList<DiGraph<T>> stronglyConnectedComponents(
-      DiGraph<T> g) {
+  public static <T extends Comparable<? super T>> ArrayList<MarkableDirectedGraph<T>> stronglyConnectedComponents(
+      MarkableDirectedGraph<T> g) {
     g.resetVertexMarkings();
-    ArrayList<DiGraph<T>> output = new ArrayList<DiGraph<T>>();
+    ArrayList<MarkableDirectedGraph<T>> output = new ArrayList<MarkableDirectedGraph<T>>();
     TreeSet<T> m = new TreeSet<T>();
 
     while (true) {
-      DiGraph<T> d = new DiGraph<T>();
+      MarkableDirectedGraph<T> d = new MarkableDirectedGraph<T>();
       Iterator<T> i = g.getVertices().iterator();
       T root = null;
       while (i.hasNext()) {
@@ -167,7 +166,7 @@ public class GraphUtils {
 
   }
   
-  public static <T extends Comparable<? super T>> void writeToCsv(DiGraph<T> g, String path) throws FileNotFoundException {
+  public static <T extends Comparable<? super T>> void writeToCsv(MarkableDirectedGraph<T> g, String path) throws FileNotFoundException {
     PrintWriter pw = new PrintWriter(path);
     
     for(var x : g.getVertices()) {
@@ -191,7 +190,7 @@ public class GraphUtils {
    * @param graph the directed graph for which to calculate betweenness centrality
    * @return a map where the keys are the vertices and the values are their corresponding betweenness centralities
    */
-  public static Map<Object, Double> calculateBetweennessCentrality(DirectedGraph<Object, Object> graph) {
+  public static Map<Object, Double> calculateBetweennessCentrality(MarkableDirectedGraph<Object> graph) {
     Map<Object, Double> betweennessCentrality = new HashMap<>();
 
     // Initialize betweenness centrality for all vertices to 0
@@ -246,7 +245,7 @@ public class GraphUtils {
    * @param target the target vertex to find shortest paths to
    * @return a list of lists, where each inner list represents a shortest path from the source vertex to the target vertex
    */
-  private static List<List<Object>> bfs(DirectedGraph<Object, Object> graph, Object source, Object target) {
+  private static List<List<Object>> bfs(MarkableDirectedGraph<? super Object> graph, Object source, Object target) {
     List<List<Object>> shortestPaths = new ArrayList<>();
     Queue<Object> queue = new LinkedList<>();
     Set<Object> visited = new HashSet<>();

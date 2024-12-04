@@ -23,7 +23,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 
 import name.ncg777.computerScience.dataStructures.CollectionUtils;
-import name.ncg777.maths.graphTheory.DiGraph;
+import name.ncg777.maths.graphs.MarkableDirectedGraph;
 import name.ncg777.maths.relations.Relation;
 import name.ncg777.music.PitchClassSet12;
 import name.ncg777.music.pitchClassSet12Predicates.SizeIs;
@@ -64,7 +64,7 @@ public class PitchClassSet12Walker {
   }
   
   JTextArea txtrResult = new JTextArea();
-  DiGraph<PitchClassSet12> d;
+  MarkableDirectedGraph<PitchClassSet12> d;
   /**
    * Create the application.
    */
@@ -82,7 +82,7 @@ public class PitchClassSet12Walker {
     TreeSet<PitchClassSet12> t = new TreeSet<PitchClassSet12>(); t.addAll(PitchClassSet12.getChords());
     CollectionUtils.filter(t, new SizeIs((int)spinner_1.getValue()));
     CollectionUtils.filter(t,new SubsetOf(PitchClassSet12.parseForte(cbxScale.getSelectedItem().toString())));
-    d = new DiGraph<PitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
+    d = new MarkableDirectedGraph<PitchClassSet12>(t, Relation.and(new Different(), Relation.and(Relation.or(new CloseIVs(), new IVEQRotOrRev()), new CommonNotesAtLeast(1))));
     CollectionUtils.filter(t, new Predicate<PitchClassSet12> () {
 
       @Override
