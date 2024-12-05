@@ -30,7 +30,7 @@ public class XRSequenceGenerator {
   private JFrame frmXrSequenceGenerator;
   private JTextField textRhythm;
   private JTextField textOutput;
-  private JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
   /**
    * Launch the application.
    */

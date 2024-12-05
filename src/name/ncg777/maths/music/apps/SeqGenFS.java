@@ -34,7 +34,7 @@ public class SeqGenFS {
   private JTextField txtDelta;
   private JTextField txtRhythm;
   private JTextField txtSequence;
-  private JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
   JCheckBox chckbxF = new JCheckBox("F");
   JCheckBox chckbxS = new JCheckBox("S");
   /**

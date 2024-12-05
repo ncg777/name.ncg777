@@ -55,7 +55,7 @@ public class SequenceGenerator {
   
   JTextArea txtrAaBb = new JTextArea();
   JTextField textField = new JTextField();
-  private final JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+  private final JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
   /**
    * Initialize the contents of the frame.
    */

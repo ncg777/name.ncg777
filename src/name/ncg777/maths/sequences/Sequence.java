@@ -61,6 +61,8 @@ import name.ncg777.statistics.RandomNumberGenerator;
 public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>, Serializable {
   private static final long serialVersionUID = 7765339983542999624L;
   
+  public boolean isNatural() { return !this.parallelStream().anyMatch((n) -> n < 0); }
+  
   public static final Equivalence<Sequence> UnderRotationEquivalence = new Equivalence<Sequence>() {
     @SuppressWarnings("null")
     @Override

@@ -23,13 +23,12 @@ import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-
 public class SeqGenBySegments {
 
   private JFrame frmSeqGen;
   private JTextField textField;
   private JTextField textField_1;
-  private JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
   /**
    * Launch the application.
    */

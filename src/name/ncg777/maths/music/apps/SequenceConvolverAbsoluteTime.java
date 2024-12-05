@@ -29,7 +29,7 @@ public class SequenceConvolverAbsoluteTime {
   private JTextField txtImpulse;
   private JTextField txtR;
   private JTextField txtResult;
-  private JComboBox<Alphabet> comboBox;
+  private JComboBox<Alphabet.Names> comboBox;
 
   /**
    * Launch the application.
@@ -98,13 +98,13 @@ public class SequenceConvolverAbsoluteTime {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
         BinaryWord r = null;
-        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) r = HexadecimalSentence.parseHexadecimalWord(txtR.getText()).asBinaryWord();
-        if(comboBox.getSelectedItem() == Alphabet.Octal) r = OctalSentence.parse(txtR.getText()).asBinary();
+        if(comboBox.getSelectedItem() == Alphabet.Names.Hexadecimal) r = HexadecimalSentence.parseHexadecimalWord(txtR.getText()).asBinaryWord();
+        if(comboBox.getSelectedItem() == Alphabet.Names.Octal) r = OctalSentence.parse(txtR.getText()).asBinary();
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[()]", ""));
       }
     });
     
-    comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+    comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
     comboBox.setFont(new Font("Unifont", Font.PLAIN, 11));
     
     GroupLayout groupLayout = new GroupLayout(frmArticulateAndSmooth.getContentPane());

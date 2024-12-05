@@ -32,7 +32,7 @@ public class SeqGenContourFollow {
   private JTextField txtDelta;
   private JTextField txtRhythm;
   private JTextField txtSequence;
-  private JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
   JSpinner spinner_bounce_amp = new JSpinner(new SpinnerNumberModel(12, 1, null, 1));
   JSpinner spinner_bounce_min = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
   /**

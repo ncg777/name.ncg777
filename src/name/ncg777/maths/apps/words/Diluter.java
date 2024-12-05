@@ -28,7 +28,7 @@ public class Diluter {
   private JFrame frmRhythmDiluter;
   private JTextField textRhythm;
   private JTextField textResult;
-  JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+  JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
   JSpinner spinnerFrom = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   JSpinner spinnerOffset = new JSpinner();
   JSpinner spinnerTo = new JSpinner(new SpinnerNumberModel(2, 2, null, 1));

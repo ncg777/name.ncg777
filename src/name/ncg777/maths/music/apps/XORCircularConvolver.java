@@ -29,7 +29,7 @@ public class XORCircularConvolver {
   private JTextField txtCarrier;
   private JTextField txtImpulse;
   private JTextField txtResult;
-  private JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));
+  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
   /**
    * Launch the application.
    */
