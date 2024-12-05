@@ -119,8 +119,8 @@ public class Pulsations {
         try {
           Sequence scompo = Sequence.parse(composition.getText());
           int scompo_sum = scompo.sum();
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal && scompo_sum%4 != 0) throw new Exception("Sum of composition must be a multiple of 4.");
-          if(comboBox.getSelectedItem() == Alphabet.Octal && scompo_sum%3 != 0) throw new Exception("Sum of composition must be a multiple of 3.");
+          if(comboBox.getSelectedItem() == Alphabet.Name.Hexadecimal && scompo_sum%4 != 0) throw new Exception("Sum of composition must be a multiple of 4.");
+          if(comboBox.getSelectedItem() == Alphabet.Name.Octal && scompo_sum%3 != 0) throw new Exception("Sum of composition must be a multiple of 3.");
           
           ArrayList<String> hOrT = new ArrayList<String>();
           String[] hOrTarr = headTails.getText().split("\\s+");

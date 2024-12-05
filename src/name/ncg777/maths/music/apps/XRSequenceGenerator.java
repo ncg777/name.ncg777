@@ -96,10 +96,10 @@ public class XRSequenceGenerator {
           }
           
           int maxPeriod = -1;
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
+          if(comboBox.getSelectedItem() == Alphabet.Name.Hexadecimal) {
             maxPeriod = 8;
           }
-          if(comboBox.getSelectedItem() == Alphabet.Octal) {
+          if(comboBox.getSelectedItem() == Alphabet.Name.Octal) {
             maxPeriod = 6;
           }
           maxPeriod = Math.min(n, maxPeriod);

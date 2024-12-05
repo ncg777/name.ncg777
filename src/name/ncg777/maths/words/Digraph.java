@@ -6,7 +6,7 @@ import java.util.List;
 public class Digraph extends Word {
   private static final long serialVersionUID = 1L;
 
-  public Digraph(Alphabet.Name alphabetName, String[] array) {
+  public Digraph(Alphabet.Name alphabetName, Character[] array) {
     super(alphabetName, array);
   }
   
@@ -15,7 +15,7 @@ public class Digraph extends Word {
     if(string.length() != 2) throw new IllegalArgumentException();
   }
   
-  public Digraph(Alphabet.Name alphabetName, List<String> list) {
+  public Digraph(Alphabet.Name alphabetName, List<Character> list) {
     super(alphabetName, list);
   }
   

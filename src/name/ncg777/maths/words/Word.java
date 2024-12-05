@@ -11,7 +11,7 @@ import java.util.List;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.sequences.Sequence;
 
-public class Word extends ArrayList<String> implements Serializable, Comparable<Word> {
+public class Word extends ArrayList<Character> implements Serializable, Comparable<Word> {
 
   private static final long serialVersionUID = 1L;
 
@@ -30,13 +30,13 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
     this(word.alphabetName, word);
   }
 
-  public Word(Alphabet.Name alphabetName, String[] array) {
+  public Word(Alphabet.Name alphabetName, Character[] array) {
     this(alphabetName);
     for (var c : array)
       this.add(c);
   }
 
-  public Word(Alphabet.Name alphabetName, List<String> list) {
+  public Word(Alphabet.Name alphabetName, List<Character> list) {
     this(alphabetName);
     for (var c : list)
       this.add(c);
@@ -44,8 +44,9 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
 
   public Word(Alphabet.Name alphabetName, String string) {
     this(alphabetName);
+    if(Alphabet.isStringReversed(alphabetName)) string = (new StringBuilder(string)).reverse().toString();
     for (int i = 0; i < string.length(); i++)
-      this.add(string.substring(i, i + 1));
+      this.add(string.charAt(i));
   }
 
   public Word(Alphabet.Name alphabetName, long natural, int length) {

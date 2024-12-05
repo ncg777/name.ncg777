@@ -8,12 +8,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import com.google.common.base.Joiner;
-
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.Word;
+import name.ncg777.maths.words.BinaryWord;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -21,6 +19,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.BitSet;
 import java.awt.event.ActionEvent;
 
 public class Diluter {
@@ -135,12 +134,11 @@ public class Diluter {
     var abc = (Alphabet.Name)comboBox.getSelectedItem();
     var alphabet = Alphabet.getAlphabet(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
-    Word r = new TetragraphSentence(
+    BinaryWord r = new TetragraphSentence(
         abc, 
-        str).toWord();
-    r = new Word(Alphabet.Name.Binary, r.toBitString(Alphabet.Binary, r.toCombination().getN()));
-        
-    int n = r.toCombination().getN();
+        str).toWord().toBinaryWord();
+ 
+    int n = r.getN();
     
     int from = (int)spinnerFrom.getValue();
     int to = (int)spinnerTo.getValue();
@@ -163,7 +161,7 @@ public class Diluter {
     
     int newLength = n * (to/from);
     
-    Word o = new Word(Alphabet.Name.Binary);
+    BinaryWord o = new BinaryWord(new BitSet(), newLength);
     
     for(int i=0; i<(n/from);i++) {
       for(int j=0;j<from;j++) {
@@ -171,9 +169,6 @@ public class Diluter {
       }
     }
     
-    textResult.setText(
-        (new TetragraphSentence(
-            abc, 
-            Word.fromBitString(abc, Joiner.on("").join(o), newLength))).toString());
+    textResult.setText((new TetragraphSentence(abc, o)).toString());
   }
 }
