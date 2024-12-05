@@ -329,11 +329,11 @@ public class TetragraphMatrixGenerator {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li><li>RelativelyFlat</li></ol></html>");
+    lblMode.setToolTipText("<html><ol><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html>\r\n<ol><li>Bypass</li>\r\n\r\n<li>ShadowContourIsomorphic</li>\r\n<li>Oddity</li>\r\n<li>Entropic dispersion</li>\r\n<li>Low entropy</li>\r\n<li>Even</li>\r\n<li>RelativelyFlat</li></ol></html>");
+    lblDiffs.setToolTipText("<html><ol><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {
