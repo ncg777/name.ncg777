@@ -31,19 +31,9 @@ public class BinaryWord extends Combination implements Serializable {
     for(int i=0;i<b.length;i++) this.set(i,b[i]);
   }
   
-  public static BinaryWord parse(String input) {    
-    String binstr = Integer.toBinaryString(Integer.parseInt(input, 2));
-    
-    BitSet b = new BitSet(binstr.length()*2);
-    
-    for(int i=0;i<binstr.length();i++) {
-      b.set(i, binstr.charAt(i) == '1');
-    }
-    return new BinaryWord(b, binstr.length());
-  }
-  
-  public Word toWord(Alphabet.Name alphabet) {
-    return new Word(alphabet, this);
+ 
+  public Word toWord(Alphabet.Name alphabetName) {
+    return new Word(alphabetName, this);
   }
   
   public ArrayList<BinaryWord> partitionByEquality() {
@@ -81,7 +71,11 @@ public class BinaryWord extends Combination implements Serializable {
     return r;
   }
   
-
+  public static BinaryWord build(String input) {
+    var sb = new StringBuilder(input);
+    return build(Combination.fromBinaryString(sb.reverse().toString()));
+  }
+  
   public static BinaryWord build(Combination c) {
     return new BinaryWord(c, c.getN());
   }
@@ -216,14 +210,15 @@ public class BinaryWord extends Combination implements Serializable {
   }
   
   public BinaryWord invert() {
-    var o = new BinaryWord(new BitSet(), this.getN());
-    for(int i = nextClearBit(0); i >= 0; i = nextClearBit(i + 1)) o.set(i); 
+    var o = new BinaryWord(this);
+    for(int i=0;i<o.size();i++) o.set(i,!o.get(i));;
     return o;
   }
   
   @Override
   public String toString() {
-    return this.toBinaryString();
+    var sb = new StringBuilder(this.toBinaryString());
+    return sb.reverse().toString();
   }
 
   public static boolean equivalentUnderRotation(BinaryWord a, BinaryWord b) {
@@ -256,7 +251,6 @@ public class BinaryWord extends Combination implements Serializable {
       specMemo.put(r, s.get(1));
       return s.get(1).copy();
     }
-
   }
   
   public static BinaryWord merge(List<BinaryWord> r) {

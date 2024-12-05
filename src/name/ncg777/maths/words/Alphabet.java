@@ -41,7 +41,7 @@ public class Alphabet extends ArrayList<Character> {
   }
   
   public boolean isBitnessANatural() {
-    return checkedPow(Math.round(bitness()), 2) == size();
+    return checkedPow(2, (int)Math.round(bitness())) == size();
   }
   
   static public Alphabet getAlphabet(Name name) { return Alphabets.get(name); }

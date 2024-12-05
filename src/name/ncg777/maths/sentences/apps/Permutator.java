@@ -46,12 +46,12 @@ public class Permutator {
   private void initialize() {
     frmWordPermutator = new JFrame();
     frmWordPermutator.setResizable(false);
-    frmWordPermutator.setTitle("BinaryWord Permutator");
+    frmWordPermutator.setTitle("WordPermutator");
     frmWordPermutator.setBounds(100, 100, 356, 328);
     frmWordPermutator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmWordPermutator.getContentPane().setLayout(null);
     
-    JLabel lblNewLabel = new JLabel("BinaryWord:");
+    JLabel lblNewLabel = new JLabel("Word:");
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setBounds(10, 11, 46, 14);
     frmWordPermutator.getContentPane().add(lblNewLabel);

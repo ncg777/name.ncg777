@@ -56,13 +56,12 @@ public class TetragraphMatrixGenerator {
   private JTextField textFilterModes;
   private JTextField textDiffFilterModes;
 
-  private TreeMap<Alphabet.Name, TreeSet<Tetragraph>> sets;
+  private static TreeMap<Alphabet.Name, TreeSet<Tetragraph>> sets = new TreeMap<>();
   
   static {
     for(var n : Alphabet.Name.values()) {
-      Tetragraph.generate((Alphabet.Name)n);
+      sets.put(n, Tetragraph.generate((Alphabet.Name)n));
     }
-    
   }
   
   public static void main(String[] args) {
@@ -106,7 +105,7 @@ public class TetragraphMatrixGenerator {
   private void initialize() {
     frmTetragraphMatrixGenerator = new JFrame();
     frmTetragraphMatrixGenerator.setResizable(false);
-    frmTetragraphMatrixGenerator.setTitle("BinaryWord Matrix");
+    frmTetragraphMatrixGenerator.setTitle("Tetragraph Matrix");
     frmTetragraphMatrixGenerator.setBounds(100, 100, 711, 541);
     frmTetragraphMatrixGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -136,6 +135,7 @@ public class TetragraphMatrixGenerator {
             var abc = (Alphabet.Name)comboBox.getSelectedItem();
             
             ArrayList<Predicate<BinaryWord>> filterModes = new ArrayList<>();
+            filterModes.add((a) -> true);
             filterModes.add(new ShadowContourIsomorphic());
             filterModes.add(new Oddity());
             filterModes.add(new EntropicDispersion());
@@ -155,14 +155,14 @@ public class TetragraphMatrixGenerator {
               Predicate<BinaryWord> pred = Sequence.parse(
                   textFilterModes.getText())
                     .stream().map(
-                        (i) -> filterModes.get(i))
+                        (i) -> filterModes.get(i-1))
                           .reduce((r) -> true, (a,b) -> a.and(b));
               
               BiPredicate<BinaryWord, BinaryWord> relHoriz = new PredicatedJuxtaposition(pred);
               
               BiPredicate<BinaryWord, BinaryWord> relSimul = Sequence.parse(
                   textDiffFilterModes.getText()).stream().map(
-                      (i) -> diffModes.get(i)).reduce(
+                      (i) -> diffModes.get(i-1)).reduce(
                           (a, b) -> true, (a,b) -> a.and(b));
               
               TreeSet<BinaryWord> t = new TreeSet<BinaryWord>();
@@ -201,7 +201,7 @@ public class TetragraphMatrixGenerator {
               var possibles = new Function<String, ArrayList<BinaryWord>>() {
                 @Override  
                 public ArrayList<BinaryWord> apply(String str) {
-                  BinaryWord r = (new Tetragraph(abc, str)).toBinaryWord();
+                  BinaryWord r = (BinaryWord.build(str));
                   
                   ArrayList<BinaryWord> p = new ArrayList<>();
                   
@@ -329,11 +329,11 @@ public class TetragraphMatrixGenerator {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html><ol><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
+    lblMode.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html><ol><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
+    lblDiffs.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {

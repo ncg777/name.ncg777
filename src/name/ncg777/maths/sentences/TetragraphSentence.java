@@ -20,7 +20,7 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     this(alphabetName);
     string = string.replaceAll("\\s+", "");
     if(string.length()%4 != 0) throw new IllegalArgumentException();
-    for(int i=0;i<string.length() / 4;i++) this.add(new Tetragraph(alphabetName, string.substring(i*4,(i*4)+4)));
+    for(int i=0;i<string.length() / 4;i++) this.add(new Tetragraph(alphabetName, string.substring(i*4,(i+1)*4)));
   }
   
   public TetragraphSentence(Alphabet.Name alphabetName, Word word) {

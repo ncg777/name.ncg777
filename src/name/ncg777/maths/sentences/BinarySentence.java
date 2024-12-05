@@ -39,7 +39,7 @@ public class BinarySentence extends ArrayList<BinaryWord>  implements Comparable
     
     LinkedList<BinaryWord> output = new LinkedList<BinaryWord>();
     for (var s : strs) {
-      output.add(BinaryWord.parse(s));
+      output.add(BinaryWord.build(s));
     }
     return new BinarySentence(output);
 

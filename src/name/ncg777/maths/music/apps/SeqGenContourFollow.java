@@ -107,7 +107,6 @@ public class SeqGenContourFollow {
                   str_R
               ).toWord().toBinaryWord().getComposition().asSequence();;
               
-              @SuppressWarnings("null")
               Sequence s = C.cyclicalDifference().signs().circularHoldNonZero();
               
               int k=0;

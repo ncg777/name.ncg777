@@ -44,7 +44,7 @@ public class Tetragraph extends Word {
   
   @Override
   public String toString() {
-    return this.toString(false);
+    return this.toString(true);
   }
   
   public String toString(boolean as2Digraphs) {

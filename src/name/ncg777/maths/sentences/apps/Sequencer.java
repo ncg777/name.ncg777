@@ -22,9 +22,6 @@ public class Sequencer {
   private JTextField textSequence;
   private JTextField textOutput;
 
-  /**
-   * Launch the application.
-   */
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -38,16 +35,10 @@ public class Sequencer {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public Sequencer() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     frmWordSequencer = new JFrame();
     frmWordSequencer.setTitle("BinaryWord Sequencer");

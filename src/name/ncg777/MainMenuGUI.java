@@ -4,6 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 import java.awt.GridLayout;
 import java.io.File;
@@ -80,6 +81,7 @@ public class MainMenuGUI {
     button.addActionListener(e -> {
       openApp(appClass);
     });
+    button.setHorizontalAlignment(SwingConstants.LEFT);
     panel.add(button);
   }
 

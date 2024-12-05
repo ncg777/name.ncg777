@@ -51,6 +51,7 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
 
   public Word(Alphabet.Name alphabetName, long natural, int length) {
     super();
+    this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     int n = alphabet.size();
     while (length-- > 0) {
@@ -61,24 +62,48 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
   }
 
   public Word(Alphabet.Name alphabetName, Combination combination) {
+    this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
+    
     if (!alphabet.isBitnessANatural())
       throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
+    
     int b = (int) alphabet.bitness();
     if (combination.getN() % b != 0) throw new UnsupportedOperationException(
         "Combination size must be multiple of bitness of alphabet.");
+    
     int n = combination.getN();
     int length = n / b;
-    String bitstring = new StringBuilder(combination.toBinaryString()).reverse().toString();
-
+    var sb = new StringBuilder(combination.toBinaryString());
+    
+    sb.reverse();
+    ArrayList<Character> tmp = new ArrayList<Character>();
     for (int i = 0; i < length; i++) {
-      this.add(alphabet.get(Integer.parseInt(bitstring.substring((i * b), (i + 1) * b), 2)));
+      tmp.add(
+          alphabet.get(
+              Integer.parseInt(sb.substring(i * b, (i + 1) * b),2)
+          ));
     }
+    
+    this.addAll(tmp);
   }
 
   public BinaryWord toBinaryWord() {
-    var combination = toCombination();
-    return new BinaryWord(combination, combination.getN());
+    var abc = Alphabet.getAlphabet(alphabetName);
+    
+    if (!abc.isBitnessANatural())
+      throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
+    
+    int b = (int)Math.round(abc.bitness());
+    var o = new BinaryWord(new BitSet(), this.size()*b);
+    
+    for(int i=0;i<this.size();i++) {
+      StringBuilder sb = new StringBuilder(Integer.toBinaryString(abc.indexOf(this.get(i))));
+      while(sb.length() < b) sb.insert(0, "0");
+      sb = sb.reverse();
+      for(int j=0;j<b;j++) o.set((i*b)+j,sb.charAt(j) == '1');
+    }
+    return o;
   }
 
   public long toNatural() {
@@ -89,20 +114,20 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     int k = 0;
     var sequence = this.toSequence();
     long sum = 0;
-    while (k++ < sequence.size()) {
-      sum = checkedAdd(sum, (long) (sequence.get(k) * checkedPow(alphabet.size(), k)));
+    while (++k < sequence.size()) {
+      sum = checkedAdd(sum, (long) (sequence.get(k-1) * checkedPow(alphabet.size(), k-1)));
     }
     return sum;
   }
 
   public Sequence getContour() {
-    var combination = toCombination();
-    if (combination.getK() == 0) return new Sequence();
-    return combination.getComposition().asSequence().cyclicalDifference().signs();
+    var bn = toBinaryWord();
+    if (bn.getK() == 0) return new Sequence();
+    return bn.getComposition().asSequence().cyclicalDifference().signs();
   }
 
   public Sequence getShadowContour() {
-    var combination = toCombination();
+    var combination = toBinaryWord();
     if (combination.getK() == 0) return new Sequence();
     Sequence a = combination.getComposition().asSequence();
 
@@ -114,22 +139,22 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     return mid.cyclicalDifference().signs();
   }
 
-  public Combination toCombination() {
-    var alphabet = Alphabet.getAlphabet(alphabetName);
-    if (!alphabet.isBitnessANatural()) throw new UnsupportedOperationException(
-        "Can only convert word to combination if alphabet size is a power of 2.");
-
-    int n = ((int) Math.round(alphabet.bitness())) * this.size();
-    String string = toBitString(alphabet, n);
-    BitSet bs = new BitSet(n);
-    for (int i = 0; i < n; i++) {
-      bs.set(i, string.charAt(-1 + n - i) == '1');
-    }
-    return new Combination(bs, n);
-  }
-
-  public String toBitString(Alphabet alphabet, int length) {
-    return (new Word(Alphabet.Name.Binary, toNatural(), length)).toString();
+  public String toBitString(Alphabet.Name alphabetName) {
+    return toBinaryWord().toString();
+    
+//    var alphabet = Alphabet.getAlphabet(alphabetName);
+//    int b =  ((int) Math.round(alphabet.bitness()));
+//    
+//    StringBuilder sb = new StringBuilder();
+//    
+//    for(int i=0;i<this.size();i++) {
+//      int u = alphabet.indexOf(this.get(i));
+//      var sb1 = new StringBuilder(Integer.toBinaryString(u));
+//      while(sb1.length() < b) sb1.insert(0, "0");
+//      sb.append(sb1.toString());
+//      
+//    }
+//    return sb.toString();
   }
 
   public static Word fromBitString(Alphabet.Name alphabetName, String string, int length) {
@@ -145,6 +170,7 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
 
   public Word(Alphabet.Name alphabetName, Sequence sequence) {
     super();
+    this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     if (!sequence.isNatural() || sequence.getMax() >= alphabet.size())
       throw new IllegalArgumentException();
