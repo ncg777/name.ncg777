@@ -48,6 +48,12 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
   - `n` (int): The size of the set.
   - `k` (int): The size of the permutations.
 
+## metacompositons.sh
+- **Class**: name.ncg777.mathematics.enumerations.MetaCompositionEnumeration
+- **Parameters**: 
+  - `s` (String): The String to metacompose.
+  - [`transform`] (boolean): transform the string (purpose yet unknown).
+  
 ## mixedradices.sh
 - **Class**: name.ncg777.mathematics.enumerations.MixedRadixEnumeration
 - **Parameters**: 
@@ -62,13 +68,7 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 - **Class**: name.ncg777.mathematics.enumerations.NonCrossingPartitionEnumeration
 - **Parameters**: 
   - `n` (int): The size of the partitions.
-  
-## metacompositons.sh
-- **Class**: name.ncg777.mathematics.enumerations.MetaCompositionEnumeration
-- **Parameters**: 
-  - `s` (String): The String to metacompose.
-  - [`transform`] (boolean): transform the string (purpose yet unknown).
-  
+    
 ## permutations.sh
 - **Class**: name.ncg777.mathematics.enumerations.PermutationEnumeration
 - **Parameters**: 
