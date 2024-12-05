@@ -15,8 +15,8 @@ import name.ncg777.maths.Vector;
 import name.ncg777.maths.VectorOfBooleans;
 import name.ncg777.maths.VectorOfDoubles;
 import name.ncg777.maths.VectorOfIntegers;
+import name.ncg777.maths.pitchClassSet12.PitchClassSet12;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.music.pitchClassSet12.PitchClassSet12;
 
 import java.util.List;
 
