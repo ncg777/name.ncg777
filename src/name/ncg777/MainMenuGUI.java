@@ -17,12 +17,13 @@ public class MainMenuGUI {
     mainFrame.setSize(500, 800);
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(0, 1)); // Dynamic vertical layout
-    
+   
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
     addAppButton(panel, "maths.apps.Permutator",name.ncg777.maths.apps.Permutator.class);
     addAppButton(panel, "maths.music.apps.KernelEvaluator", name.ncg777.maths.music.apps.kernelEvaluator.Application.class);
     addAppButton(panel, "maths.music.apps.ModularArithmeticSequencer",name.ncg777.maths.music.apps.ModularArithmeticSequencer.class);
+    addAppButton(panel, "maths.music.apps",name.ncg777.maths.music.apps.RexRandomizer.class);
     addAppButton(panel, "maths.music.apps.SeqGenBySegments",name.ncg777.maths.music.apps.SeqGenBySegments.class);
     addAppButton(panel, "maths.music.apps.SeqGenContourFollow",name.ncg777.maths.music.apps.SeqGenContourFollow.class);
     addAppButton(panel, "maths.music.apps.SeqGenFS",name.ncg777.maths.music.apps.SeqGenFS.class);
@@ -52,6 +53,8 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.sentences.apps.ScaleModulo",name.ncg777.maths.sentences.apps.ScaleModulo.class);
     addAppButton(panel, "maths.sentences.apps.SequenceGenerator",name.ncg777.maths.sentences.apps.SequenceGenerator.class);
     addAppButton(panel, "maths.sentences.apps.Sequencer",name.ncg777.maths.sentences.apps.Sequencer.class);
+    addAppButton(panel, "maths.sentences.apps.TetragraphMatrixGenerator",name.ncg777.maths.sentences.apps.TetragraphMatrixGenerator.class);
+    addAppButton(panel, "maths.sentences.apps.TetragraphMerger",name.ncg777.maths.sentences.apps.TetragraphMerger.class);
     addAppButton(panel, "maths.sequences.apps.Adder",name.ncg777.maths.sequences.apps.Adder.class);
     addAppButton(panel, "maths.sequences.apps.PseudoBase",name.ncg777.maths.sequences.apps.PseudoBase.class);
     addAppButton(panel, "maths.sequences.apps.Range",name.ncg777.maths.sequences.apps.Range.class);
