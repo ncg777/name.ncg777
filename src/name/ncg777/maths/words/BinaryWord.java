@@ -17,12 +17,20 @@ import name.ncg777.maths.sequences.Sequence;
 
 public class BinaryWord extends Combination implements Serializable {
   private static final long serialVersionUID = 1L;
-  public BinaryWord(int n, Set<Integer> s) {
+  public BinaryWord(BinaryWord binaryWord) {
+    super(binaryWord);
+  }
+  public BinaryWord(Set<Integer> s, int n) {
     super(n,s);
   }
   public BinaryWord(BitSet b, int n) {
     super(b, n);
   }
+  public BinaryWord(Boolean[] b) {
+    super(b.length);
+    for(int i=0;i<b.length;i++) this.set(i,b[i]);
+  }
+  
   public static BinaryWord parse(String input) {    
     String binstr = Integer.toBinaryString(Integer.parseInt(input, 2));
     
@@ -34,7 +42,7 @@ public class BinaryWord extends Combination implements Serializable {
     return new BinaryWord(b, binstr.length());
   }
   
-  public Word toWord(Alphabet alphabet) {
+  public Word toWord(Alphabet.Name alphabet) {
     return new Word(alphabet, this);
   }
   
@@ -88,7 +96,7 @@ public class BinaryWord extends Combination implements Serializable {
       }
     }
 
-    return new BinaryWord(l, t);
+    return new BinaryWord(t, l);
   }
   
   public static BinaryWord build(Boolean[] p_arr) {
@@ -101,11 +109,11 @@ public class BinaryWord extends Combination implements Serializable {
       }
     }
 
-    return new BinaryWord(l, t);
+    return new BinaryWord(t, l);
   }
 
   public static BinaryWord build(int p_length, TreeSet<Integer> p_arr) {
-    return new BinaryWord(p_length, p_arr);
+    return new BinaryWord(p_arr, p_length);
   }
 
   public static BinaryWord rotate(BinaryWord r, int t) {
@@ -207,6 +215,12 @@ public class BinaryWord extends Combination implements Serializable {
     return o;
   }
   
+  public BinaryWord invert() {
+    var o = new BinaryWord(new BitSet(), this.getN());
+    for(int i = nextClearBit(0); i >= 0; i = nextClearBit(i + 1)) o.set(i); 
+    return o;
+  }
+  
   @Override
   public String toString() {
     return this.toBinaryString();
@@ -255,5 +269,4 @@ public class BinaryWord extends Combination implements Serializable {
     for(int i=0;i<newsz;i++) {b.set(i,r.get(i%r.size()).get((i/r.size())%r.get(i%r.size()).getN()));}
     return new BinaryWord(b, newsz);
   }
-
 }

@@ -4,16 +4,15 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.words.Word;
+import name.ncg777.maths.words.BinaryWord;
 
-public class LowEntropy implements Predicate<Word> {
+public class LowEntropy implements Predicate<BinaryWord> {
   private static TreeMap<Integer,Double> _cache = new TreeMap<>();
   
-  public LowEntropy() {
-  }
+  public LowEntropy() {}
   @Override
-  public boolean test(Word word) {
-    var combination = word.toBinaryWord();
+  public boolean test(BinaryWord binaryWord) {
+    var combination = binaryWord;
     Double bound = null;
     if(!_cache.containsKey(combination.getN())) {
       bound = Math.log((double)Numbers.reverseTriangularNumber(combination.getN())*0.5);

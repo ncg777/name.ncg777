@@ -7,9 +7,9 @@ import name.ncg777.maths.words.Word;
 
 public class Sentence<T extends Word> extends ArrayList<T> {
   private static final long serialVersionUID = 1L;
-  private Alphabet alphabet;
-  public Alphabet getAlphabet() { return alphabet; }
-  public Sentence(Alphabet alphabet) {
-    this.alphabet = alphabet;
+  private Alphabet.Name alphabetName;
+  public Alphabet getAlphabet() { return Alphabet.getAlphabet(alphabetName); }
+  public Sentence(Alphabet.Name alphabetName) {
+    this.alphabetName = alphabetName;
   }
 }

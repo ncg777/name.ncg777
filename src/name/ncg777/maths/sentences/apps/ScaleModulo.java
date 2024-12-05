@@ -80,9 +80,9 @@ public class ScaleModulo {
     txtOutput.setColumns(10);
     btnGo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        txtOutput.setText(new TetragraphSentence(Alphabet.Hexadecimal,
+        txtOutput.setText(new TetragraphSentence(Alphabet.Name.Hexadecimal,
           (new TetragraphSentence(
-              Alphabet.Hexadecimal, 
+              Alphabet.Name.Hexadecimal, 
               textField.getText().trim()))
             .toWord().toBinaryWord().scaleModulo(
                 (int)k.getValue(), 

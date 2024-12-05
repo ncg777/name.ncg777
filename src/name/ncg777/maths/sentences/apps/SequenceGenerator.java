@@ -47,7 +47,7 @@ public class SequenceGenerator {
   
   JTextArea txtrAaBb = new JTextArea();
   JTextField textField = new JTextField();
-  private final JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  private final JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
 
   private void initialize() {
     comboBox.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -75,7 +75,7 @@ public class SequenceGenerator {
           
           binaryWords.add(
               new TetragraphSentence(
-                  Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem()), 
+                  (Alphabet.Name)comboBox.getSelectedItem(), 
                   l[0].trim()).toWord().toBinaryWord());
           
           muls.add(Integer.valueOf(l[1].trim()));

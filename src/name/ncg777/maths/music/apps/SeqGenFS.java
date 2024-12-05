@@ -34,7 +34,7 @@ public class SeqGenFS {
   private JTextField txtDelta;
   private JTextField txtRhythm;
   private JTextField txtSequence;
-  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
   JCheckBox chckbxF = new JCheckBox("F");
   JCheckBox chckbxS = new JCheckBox("S");
   /**
@@ -99,12 +99,11 @@ public class SeqGenFS {
            new Thread(() -> {
             try {
               btnGenerate.setEnabled(false);
-              var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
               while(true)
               {
                 String str_R = txtRhythm.getText().trim();
                 
-                BinaryWord R = (new TetragraphSentence(abc, str_R)).toWord().toBinaryWord();
+                BinaryWord R = (new TetragraphSentence((Alphabet.Name)comboBox.getSelectedItem(), str_R)).toWord().toBinaryWord();
                 
                 
                 Sequence s;

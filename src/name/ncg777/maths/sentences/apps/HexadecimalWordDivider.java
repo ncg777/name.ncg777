@@ -73,7 +73,7 @@ public class HexadecimalWordDivider {
     btnDivide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var r1 = (new TetragraphSentence(
-            Alphabet.Hexadecimal, txtR.getText().trim()))
+            Alphabet.Name.Hexadecimal, txtR.getText().trim()))
             .toWord()
             .toBinaryWord();
         int div = (int)spinner.getValue();
@@ -98,7 +98,7 @@ public class HexadecimalWordDivider {
           String output = "";
           
           for(int i=0;i<div;i++) {
-            var t = new Tetragraph(Alphabet.Hexadecimal, new Word(Alphabet.Hexadecimal, o.get(i).toString()));
+            var t = new Tetragraph(Alphabet.Name.Hexadecimal, new Word(Alphabet.Name.Hexadecimal, o.get(i).toString()));
             output += t.toString(true) + "\n";
           }
           txtResult.setText(output);

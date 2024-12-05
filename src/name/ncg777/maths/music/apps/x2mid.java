@@ -83,7 +83,7 @@ public class x2mid {
     btnXmid.setForeground(Color.LIGHT_GRAY);
     btnXmid.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        TetragraphSentence r = new TetragraphSentence(Alphabet.Hexadecimal, textField.getText());
+        TetragraphSentence r = new TetragraphSentence(Alphabet.Name.Hexadecimal, textField.getText());
         if(chckbxNewCheckBox.isSelected()) {
           r = TetragraphSentence.expand(r, 2, false);  
         } else {
@@ -106,13 +106,13 @@ public class x2mid {
           int m = a+(d/2);
           mid.add(m%total);
         }
-        TetragraphSentence o = new TetragraphSentence(Alphabet.Hexadecimal);
+        TetragraphSentence o = new TetragraphSentence(Alphabet.Name.Hexadecimal);
         for(int i=0;i<r.size();i++){
           TreeSet<Integer> t = new TreeSet<Integer>();
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(new Tetragraph(Alphabet.Hexadecimal, new BinaryWord(16, t).toWord(Alphabet.Hexadecimal)));
+          o.add(new Tetragraph(Alphabet.Name.Hexadecimal, new BinaryWord(t, 16).toWord(Alphabet.Name.Hexadecimal)));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }

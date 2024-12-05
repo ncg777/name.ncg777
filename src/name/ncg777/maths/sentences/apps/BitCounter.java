@@ -24,7 +24,7 @@ public class BitCounter {
 
   private JFrame frmBitcountermagicHappens;
   private JTextField textField;
-  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
   /**
    * Launch the application.
    */
@@ -64,7 +64,7 @@ public class BitCounter {
       public void keyReleased(KeyEvent e) {
         if(e.getKeyCode()==KeyEvent.VK_ENTER){
           String str = textField.getText().trim();
-          Alphabet abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+          var abc = (Alphabet.Name)comboBox.getSelectedItem();
           lblCount.setText(
               Integer.toString((new Word(abc, str)).toBinaryWord().getK()));
         }

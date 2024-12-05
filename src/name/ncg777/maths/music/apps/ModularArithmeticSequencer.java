@@ -115,7 +115,7 @@ public class ModularArithmeticSequencer {
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}
           }
-          rs.add(new TetragraphSentence(Alphabet.Hexadecimal, r));
+          rs.add(new TetragraphSentence(Alphabet.Name.Hexadecimal, r));
         }
         
         StringBuilder sb = new StringBuilder();

@@ -7,15 +7,15 @@ import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.Digraph;
 
 public class DigraphEnumeration implements Enumeration<Digraph>  {
-  private Alphabet alphabet;
+  private Alphabet.Name alphabetName;
   private MixedRadixEnumeration mre;
-  public DigraphEnumeration(Alphabet alphabet) {
-    this.alphabet = alphabet;
+  public DigraphEnumeration(Alphabet.Name alphabetName) {
+    this.alphabetName = alphabetName;
+    var alphabet = Alphabet.getAlphabet(alphabetName);
     int n = alphabet.size();
     
     int[] base = {n,n};
     mre = new MixedRadixEnumeration(base);
-    
   }
   
   @Override
@@ -25,6 +25,6 @@ public class DigraphEnumeration implements Enumeration<Digraph>  {
 
   @Override
   public Digraph nextElement() {
-    return new Digraph(this.alphabet, new Sequence(mre.nextElement()));
+    return new Digraph(this.alphabetName, new Sequence(mre.nextElement()));
   }
 }

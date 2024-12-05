@@ -32,7 +32,7 @@ public class SeqGenFixedSum {
   private JTextField txtDelta;
   private JTextField txtRhythm;
   private JTextField txtSequence;
-  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
   
   JSpinner spinner_bounce_amp = new JSpinner(new SpinnerNumberModel(12, 1, null, 1));
   JSpinner spinner_bounce_min = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
@@ -122,11 +122,9 @@ public class SeqGenFixedSum {
             btnGenerate.setEnabled(false);
             while(true)
             {
-              String str_R = txtRhythm.getText().trim();
-              Alphabet abc = Alphabet.getAlphabet(
-                  (Alphabet.Names)comboBox.getSelectedItem());        
+              String str_R = txtRhythm.getText().trim();       
               int n = new TetragraphSentence(
-                  abc, 
+                  (Alphabet.Name)comboBox.getSelectedItem(), 
                   str_R).toWord().toBinaryWord().getK();
               
               if(n < 2) {

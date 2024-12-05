@@ -15,41 +15,42 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
 
   private static final long serialVersionUID = 1L;
 
-  private Alphabet alphabet;
+  protected Alphabet.Name alphabetName;
 
   public Alphabet getAlphabet() {
-    return alphabet;
+    return Alphabet.getAlphabet(alphabetName);
   }
 
-  public Word(Alphabet alphabet) {
+  public Word(Alphabet.Name alphabetName) {
     super();
-    this.alphabet = alphabet;
+    this.alphabetName = alphabetName;
   }
 
   public Word(Word word) {
-    this(word.getAlphabet(), word);
+    this(word.alphabetName, word);
   }
 
-  public Word(Alphabet alphabet, String[] array) {
-    this(alphabet);
+  public Word(Alphabet.Name alphabetName, String[] array) {
+    this(alphabetName);
     for (var c : array)
       this.add(c);
   }
 
-  public Word(Alphabet alphabet, List<String> list) {
-    this(alphabet);
+  public Word(Alphabet.Name alphabetName, List<String> list) {
+    this(alphabetName);
     for (var c : list)
       this.add(c);
   }
 
-  public Word(Alphabet alphabet, String string) {
-    this(alphabet);
+  public Word(Alphabet.Name alphabetName, String string) {
+    this(alphabetName);
     for (int i = 0; i < string.length(); i++)
       this.add(string.substring(i, i + 1));
   }
 
-  public Word(Alphabet alphabet, long natural, int length) {
+  public Word(Alphabet.Name alphabetName, long natural, int length) {
     super();
+    var alphabet = Alphabet.getAlphabet(alphabetName);
     int n = alphabet.size();
     while (length-- > 0) {
       long r = natural % n;
@@ -58,7 +59,8 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
     }
   }
 
-  public Word(Alphabet alphabet, Combination combination) {
+  public Word(Alphabet.Name alphabetName, Combination combination) {
+    var alphabet = Alphabet.getAlphabet(alphabetName);
     if (!alphabet.isBitnessANatural())
       throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
     int b = (int) alphabet.bitness();
@@ -79,6 +81,7 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
   }
 
   public long toNatural() {
+    var alphabet = Alphabet.getAlphabet(alphabetName);
     if (!alphabet.isBitnessANatural()) throw new UnsupportedOperationException(
         "Can only convert word to natural number if alphabet size is a power of 2.");
 
@@ -111,6 +114,7 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
   }
 
   public Combination toCombination() {
+    var alphabet = Alphabet.getAlphabet(alphabetName);
     if (!alphabet.isBitnessANatural()) throw new UnsupportedOperationException(
         "Can only convert word to combination if alphabet size is a power of 2.");
 
@@ -124,10 +128,10 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
   }
 
   public String toBitString(Alphabet alphabet, int length) {
-    return (new Word(Alphabet.Binary, toNatural(), length)).toString();
+    return (new Word(Alphabet.Name.Binary, toNatural(), length)).toString();
   }
 
-  public static Word fromBitString(Alphabet alphabet, String string, int length) {
+  public static Word fromBitString(Alphabet.Name alphabetName, String string, int length) {
     var sequence = new Sequence();
     for (int i = string.length() - 1; i >= 0; i--) {
       char c = string.charAt(i);
@@ -135,11 +139,12 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
       sequence.add(c == '1' ? 1 : 0);
     }
 
-    return new Word(alphabet, (new Word(Alphabet.Binary, sequence)).toNatural(), length);
+    return new Word(alphabetName, (new Word(Alphabet.Name.Binary, sequence)).toNatural(), length);
   }
 
-  public Word(Alphabet alphabet, Sequence sequence) {
+  public Word(Alphabet.Name alphabetName, Sequence sequence) {
     super();
+    var alphabet = Alphabet.getAlphabet(alphabetName);
     if (!sequence.isNatural() || sequence.getMax() >= alphabet.size())
       throw new IllegalArgumentException();
     for (var i : sequence)
@@ -147,6 +152,7 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
   }
 
   public Sequence toSequence() {
+    var alphabet = Alphabet.getAlphabet(alphabetName);
     var o = new Sequence();
     for (int i = 0; i < this.size(); i++) {
       o.add(alphabet.indexOf(this.get(i)));
@@ -156,7 +162,7 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
 
   public static Word agglutinate(Word first, Word second) {
     if (!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
-    var o = new Word(first.getAlphabet(), first);
+    var o = new Word(first.alphabetName, first);
     o.addAll(second);
     return o;
   }
@@ -193,17 +199,13 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
 
   @Override
   public String toString() {
-    return toString(true);
-  }
-
-  public String toString(boolean reverse) {
     var w = new Word(this);
-    if (reverse) {
+    if (Alphabet.isStringReversed(alphabetName)) {
       var x = w.toBinaryWord();
       var combination = new Combination(x.getN());
       for (int i = x.nextSetBit(0); i >= 0; i = x.nextSetBit(i + 1))
         combination.set(-1 + x.getN() - i, x.get(i));
-      w = (new BinaryWord(combination, x.getN())).toWord(alphabet);
+      w = (new BinaryWord(combination, x.getN())).toWord(alphabetName);
     }
 
     StringBuilder sb = new StringBuilder();
@@ -224,7 +226,6 @@ public class Word extends ArrayList<String> implements Serializable, Comparable<
 
   @Override
   public int compareTo(Word o) {
-
-    return 0;
+    return this.toSequence().compareTo(o.toSequence());
   }
 }

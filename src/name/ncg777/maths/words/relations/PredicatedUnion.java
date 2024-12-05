@@ -19,7 +19,7 @@ public class PredicatedUnion implements BiPredicate<Tetragraph, Tetragraph> {
   public boolean test(Tetragraph a, Tetragraph b) {
     return predicate.test(
         new Word(
-            Alphabet.Binary,
+            Alphabet.Name.Binary,
             Combination.merge(a.toBinaryWord(), b.toBinaryWord())
             )
         );

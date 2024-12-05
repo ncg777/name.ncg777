@@ -2,24 +2,19 @@ package name.ncg777.maths.words.relations;
 
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.Tetragraph;
-import name.ncg777.maths.words.Word;
+import name.ncg777.maths.words.BinaryWord;
 
-public class PredicatedIntersection implements BiPredicate<Tetragraph, Tetragraph> {
-  private Predicate<Word> predicate;
+public class PredicatedIntersection implements BiPredicate<BinaryWord, BinaryWord> {
+  private Predicate<BinaryWord> predicate;
   
-  public PredicatedIntersection(Alphabet alphabet, Predicate<Word> predicate){
+  public PredicatedIntersection(Predicate<BinaryWord> predicate){
     this.predicate = predicate;
   }
   
   @Override
-  public boolean test(Tetragraph a, Tetragraph b) {
-    return predicate.test(
-        new Word(
-              Alphabet.Binary,
-              a.toBinaryWord().intersect(b.toBinaryWord())
-            )
-        );
+  public boolean test(BinaryWord a, BinaryWord b) {
+    if(a.getN() != b.getN()) throw new IllegalArgumentException();
+    int n = a.getN();
+    return predicate.test(new BinaryWord(a.intersect(b),n));
   }
 }

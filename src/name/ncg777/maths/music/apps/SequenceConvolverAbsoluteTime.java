@@ -28,7 +28,7 @@ public class SequenceConvolverAbsoluteTime {
   private JTextField txtImpulse;
   private JTextField txtR;
   private JTextField txtResult;
-  private JComboBox<Alphabet.Names> comboBox;
+  private JComboBox<Alphabet.Name> comboBox;
 
   /**
    * Launch the application.
@@ -96,14 +96,13 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
-        BinaryWord r = new TetragraphSentence(abc, txtR.getText()).toWord().toBinaryWord();
+        BinaryWord r = new TetragraphSentence((Alphabet.Name)comboBox.getSelectedItem(), txtR.getText()).toWord().toBinaryWord();
         
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[()]", ""));
       }
     });
     
-    comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+    comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
     comboBox.setFont(new Font("Unifont", Font.PLAIN, 11));
     
     GroupLayout groupLayout = new GroupLayout(frmArticulateAndSmooth.getContentPane());

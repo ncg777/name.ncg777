@@ -2,22 +2,19 @@ package name.ncg777.maths.words.relations;
 
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.Tetragraph;
-import name.ncg777.maths.words.Word;
+import name.ncg777.maths.words.BinaryWord;
 
-public class PredicatedIntersectionAndSymmetricDifference implements BiPredicate<Tetragraph, Tetragraph> {
+public class PredicatedIntersectionAndSymmetricDifference implements BiPredicate<BinaryWord, BinaryWord> {
 
   private PredicatedIntersection p1;
   private PredicatedSymmetricDifference p2;
   
-  public PredicatedIntersectionAndSymmetricDifference(
-      Alphabet alphabet, Predicate<Word> predicate) {
-    p1 = new PredicatedIntersection(alphabet, predicate);
-    p2 = new PredicatedSymmetricDifference(alphabet, predicate);
+  public PredicatedIntersectionAndSymmetricDifference(Predicate<BinaryWord> predicate) {
+    p1 = new PredicatedIntersection(predicate);
+    p2 = new PredicatedSymmetricDifference(predicate);
   }
   @Override
-  public boolean test(Tetragraph t, Tetragraph u) {
+  public boolean test(BinaryWord t, BinaryWord u) {
     return p1.test(t, u) && p2.test(t, u);
   }
   

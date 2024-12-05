@@ -28,7 +28,7 @@ public class Diluter {
   private JFrame frmRhythmDiluter;
   private JTextField textRhythm;
   private JTextField textResult;
-  JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
   JSpinner spinnerFrom = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   JSpinner spinnerOffset = new JSpinner();
   JSpinner spinnerTo = new JSpinner(new SpinnerNumberModel(2, 2, null, 1));
@@ -132,12 +132,13 @@ public class Diluter {
   }
   
   private void dilute() {
-    var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+    var abc = (Alphabet.Name)comboBox.getSelectedItem();
+    var alphabet = Alphabet.getAlphabet(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
     Word r = new TetragraphSentence(
         abc, 
         str).toWord();
-    r = new Word(Alphabet.Binary, r.toBitString(Alphabet.Binary, r.toCombination().getN()));
+    r = new Word(Alphabet.Name.Binary, r.toBitString(Alphabet.Binary, r.toCombination().getN()));
         
     int n = r.toCombination().getN();
     
@@ -150,8 +151,8 @@ public class Diluter {
       return;
     }
     
-    if(((n/from)*to)%abc.size()  != 0) {
-      textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of " + abc.size());
+    if(((n/from)*to)% alphabet.size()  != 0) {
+      textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of " + alphabet.size());
       return;
     }
     
@@ -162,7 +163,7 @@ public class Diluter {
     
     int newLength = n * (to/from);
     
-    Word o = new Word(Alphabet.Binary);
+    Word o = new Word(Alphabet.Name.Binary);
     
     for(int i=0; i<(n/from);i++) {
       for(int j=0;j<from;j++) {

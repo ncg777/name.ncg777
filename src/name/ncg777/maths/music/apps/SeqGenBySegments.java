@@ -27,7 +27,7 @@ public class SeqGenBySegments {
   private JFrame frmSeqGen;
   private JTextField textField;
   private JTextField textField_1;
-  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
   /**
    * Launch the application.
    */
@@ -82,7 +82,7 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          BinaryWord r = new TetragraphSentence(Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem()), str_R).toWord().toBinaryWord();
+          BinaryWord r = new TetragraphSentence((Alphabet.Name)comboBox.getSelectedItem(), str_R).toWord().toBinaryWord();
           
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();

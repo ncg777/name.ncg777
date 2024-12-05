@@ -26,9 +26,7 @@ import name.ncg777.maths.FiniteHomoRelation;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.enumerations.PermutationEnumeration;
-import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
-import name.ncg777.maths.words.Word;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 /**
@@ -915,9 +913,9 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return CollectionUtils.calcIntervalVector(this);
   }
 
-  public TreeMap<Integer, Word> getBinaryWords() {
+  public TreeMap<Integer, BinaryWord> getBinaryWords() {
 
-    TreeMap<Integer, Word> output = new TreeMap<>();
+    TreeMap<Integer, BinaryWord> output = new TreeMap<>();
     TreeSet<Integer> t = new TreeSet<Integer>();
 
     t.addAll(this);
@@ -930,9 +928,8 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       for (int j = 0; j < this.size(); j++) {
         b[j] = this.get(j).equals(v);
       }
-      Sequence bin = new Sequence();
-      for(var z : b) bin.add(z ? 1 : 0);
-      output.put(v, new Word(Alphabet.Binary, bin));
+      
+      output.put(v, new BinaryWord(b));
     }
     return output;
   }

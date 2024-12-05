@@ -2,7 +2,6 @@ package name.ncg777.maths.sentences;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.TreeSet;
 
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -11,29 +10,29 @@ import name.ncg777.maths.words.Word;
 
 public class TetragraphSentence extends ArrayList<Tetragraph> {
   private static final long serialVersionUID = 1L;
-  private Alphabet alphabet;
+  private Alphabet.Name alphabetName;
   
-  public TetragraphSentence(Alphabet alphabet) {
-    this.alphabet = alphabet;
+  public TetragraphSentence(Alphabet.Name alphabetName) {
+    this.alphabetName = alphabetName;
   }
   
-  public TetragraphSentence(Alphabet alphabet, String string) {
-    this(alphabet);
+  public TetragraphSentence(Alphabet.Name alphabetName, String string) {
+    this(alphabetName);
     string = string.replaceAll("\\s+", "");
     if(string.length()%4 != 0) throw new IllegalArgumentException();
-    for(int i=0;i<string.length() / 4;i++) this.add(new Tetragraph(alphabet, string.substring(i*4,(i*4)+4)));
+    for(int i=0;i<string.length() / 4;i++) this.add(new Tetragraph(alphabetName, string.substring(i*4,(i*4)+4)));
   }
   
-  public TetragraphSentence(Alphabet alphabet, Word word) {
-    this(alphabet, word.toString());
+  public TetragraphSentence(Alphabet.Name alphabetName, Word word) {
+    this(alphabetName, word.toString());
   }
   
-  public TetragraphSentence(Alphabet alphabet, BinaryWord binaryWord) {
-    this(alphabet, binaryWord.toWord(alphabet));
+  public TetragraphSentence(Alphabet.Name alphabetName, BinaryWord binaryWord) {
+    this(alphabetName, binaryWord.toWord(alphabetName));
   }
   
   public Word toWord() {
-    return new Word(alphabet,toString().replaceAll("\\s", ""));
+    return new Word(alphabetName,toString().replaceAll("\\s", ""));
   }
   
   @Override
@@ -44,36 +43,34 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
   }
   
   public static TetragraphSentence expand(TetragraphSentence a, int x, boolean fill) {
-    int n = x;
+    var abc = Alphabet.getAlphabet(a.alphabetName);
+    var bitness = (int)Math.round(abc.bitness());
+    
     BinaryWord b = a.toWord().toBinaryWord();
-    BinaryWord o = new BinaryWord(new BitSet(), n * b.getN());
-
+    BinaryWord o = new BinaryWord(new BitSet(), x * b.getN());
+    
     for (int i = 0; i < b.getN(); i++) {
-      o.set(i * n, b.get(i));
+      o.set(i * x, b.get(i));
       if(fill) {
-        for(int j=1; j<n;j++) {
-          o.set((i * n) + j, b.get(i));
+        for(int j=1; j<x;j++) {
+          o.set((i * x) + j, b.get(i));
         }
       }
     }
-    TetragraphSentence output = new TetragraphSentence(a.alphabet);
+    TetragraphSentence output = new TetragraphSentence(a.alphabetName);
+    
+    for (int i = 0; i < o.getN() / (bitness*4); i++) {
+      var bn = new BinaryWord(new BitSet(), bitness*4);
 
-    for (int i = 0; i < o.getN() / a.alphabet.size(); i++) {
-      TreeSet<Integer> t = new TreeSet<Integer>();
-
-      for (int j = 0; j < a.alphabet.size(); j++) {
-        if (o.get((i * a.alphabet.size()) + j)) {
-          t.add(j);
+      for (int j = 0; j < (bitness*4); j++) {
+        if (o.get((i *  (bitness*4)) + j)) {
+          bn.set(j);
         }
       }
-      output.add(
-          new Tetragraph(
-              a.alphabet, 
-              (new BinaryWord(a.alphabet.size(), t)).toWord(a.alphabet).toString()));
+      output.add(new Tetragraph(bn.toWord(a.alphabetName)));
     }
     return output;
   }
-  
 //public boolean isEquivalentUnderSyncronizedRotation(HexadecimalSentence other) {
 //  if(other == null) return false;
 //  if(this.size() != other.size()) return false;

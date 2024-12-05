@@ -28,7 +28,7 @@ public class XORCircularConvolver {
   private JTextField txtCarrier;
   private JTextField txtImpulse;
   private JTextField txtResult;
-  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -70,7 +70,7 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
-        var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+        var abc = (Alphabet.Name)comboBox.getSelectedItem();
         BinaryWord carrier = new TetragraphSentence(abc, txtCarrier.getText()).toWord().toBinaryWord();
         BinaryWord impulse = new TetragraphSentence(abc, txtImpulse.getText()).toWord().toBinaryWord();
         

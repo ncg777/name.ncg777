@@ -31,9 +31,6 @@ public class LatticePath {
   private JFrame frmLatticePath;
   private JTextField txtPermutation;
 
-  /**
-   * Launch the application.
-   */
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -86,7 +83,7 @@ public class LatticePath {
           c.set(m-1);
           if((total % 16) == 0) {
             r16 = true;
-            o += new TetragraphSentence(Alphabet.Hexadecimal, (new BinaryWord(c.asCombination(), total))).toString() + " ";
+            o += new TetragraphSentence(Alphabet.Name.Hexadecimal, (new BinaryWord(c.asCombination(), total))).toString() + " ";
           }
           o+= Integer.valueOf(i+2).toString() + " : ";
           for(Integer j : c.asSequence()){o+=j.toString() + " ";}

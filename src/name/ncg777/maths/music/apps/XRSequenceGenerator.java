@@ -29,7 +29,7 @@ public class XRSequenceGenerator {
   private JFrame frmXrSequenceGenerator;
   private JTextField textRhythm;
   private JTextField textOutput;
-  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
+  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -74,9 +74,9 @@ public class XRSequenceGenerator {
     
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.addActionListener(new ActionListener() {
-      @SuppressWarnings("null")
+      
       public void actionPerformed(ActionEvent e) {
-        var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+        var abc = (Alphabet.Name)comboBox.getSelectedItem();
         Sequence comp = (new TetragraphSentence(abc, textRhythm.getText()))
             .toWord().toBinaryWord().getComposition().asSequence();
         boolean useHalf = true;

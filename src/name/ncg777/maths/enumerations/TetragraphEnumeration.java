@@ -7,10 +7,13 @@ import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.Tetragraph;
 
 public class TetragraphEnumeration implements Enumeration<Tetragraph>  {
-  private Alphabet alphabet;
+  private Alphabet.Name alphabetName;
+  
   private MixedRadixEnumeration mre;
-  public TetragraphEnumeration(Alphabet alphabet) {
-    this.alphabet = alphabet;
+  public TetragraphEnumeration(Alphabet.Name alphabetName) {
+    this.alphabetName = alphabetName;
+    var alphabet = Alphabet.getAlphabet(alphabetName);
+    
     int n = alphabet.size();
     
     int[] base = {n,n,n,n};
@@ -24,6 +27,6 @@ public class TetragraphEnumeration implements Enumeration<Tetragraph>  {
 
   @Override
   public Tetragraph nextElement() {
-    return new Tetragraph(alphabet, new Sequence(mre.nextElement()));
+    return new Tetragraph(alphabetName, new Sequence(mre.nextElement()));
   }
 }

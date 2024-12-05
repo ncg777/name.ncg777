@@ -10,24 +10,24 @@ import name.ncg777.maths.words.Digraph;
 public class DigraphSentence extends Sentence<Digraph> {
   private static final long serialVersionUID = 1L;
  
-  public DigraphSentence(Alphabet alphabet, List<Digraph> m_l) {
-    super(alphabet);
+  public DigraphSentence(Alphabet.Name alphabetName, List<Digraph> m_l) {
+    super(alphabetName);
     for (Digraph i : m_l) {
       this.add(i);
     }
   }
 
-  public DigraphSentence(Alphabet alphabet) {
-    super(alphabet);
+  public DigraphSentence(Alphabet.Name alphabetName) {
+    super(alphabetName);
   }
 
-  public DigraphSentence(Alphabet alphabet, String string) {
-    super(alphabet);
+  public DigraphSentence(Alphabet.Name alphabetName, String string) {
+    super(alphabetName);
     string = string.replaceAll("\\s+", string);
     if(string.length()%2!=0) throw new IllegalArgumentException();
     
     for(int i=0;i<string.length()/2;i++) {
-      this.add(new Digraph(alphabet, string.substring(i*2,(i*2)+2)));
+      this.add(new Digraph(alphabetName, string.substring(i*2,(i*2)+2)));
     }
   }
 

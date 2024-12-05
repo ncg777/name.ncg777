@@ -29,7 +29,7 @@ public class Pulsations {
   private JTextField durations;
   private JTextField multiples;
   private JTextField result;
-  private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));;
+  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));;
 
   /**
    * Launch the application.
@@ -163,7 +163,7 @@ public class Pulsations {
           }
           result.setText(
               new TetragraphSentence(
-                  Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem()),
+                  (Alphabet.Name)comboBox.getSelectedItem(),
                   rh).toString());
         } catch(Exception ex) {
           result.setText(ex.getMessage());
