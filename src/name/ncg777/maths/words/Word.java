@@ -2,19 +2,31 @@ package name.ncg777.maths.words;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import name.ncg777.maths.sequences.Sequence;
 
 public class Word extends ArrayList<Character> implements Serializable {
   
   private static final long serialVersionUID = 1L;
+  
   public Word() {
     super();
   }
-
-  public Word(Word other) {
+  
+  public Word(Character[] array) {
     super();
-    for(var c : other) this.add(c);
+    for(var c : array) this.add(c);
+  }
+  
+  public Word(List<Character> list) {
+    super();
+    for(var c : list) this.add(c);
+  }
+  public Word(String string) {
+    super();
+    if(string.length() != 2) throw new IllegalArgumentException();
+    for(int i=0; i<string.length();i++) this.add(string.charAt(i));
   }
   
   public Word(Sequence sequence, Alphabet alphabet) {
@@ -28,17 +40,10 @@ public class Word extends ArrayList<Character> implements Serializable {
     for(int i=0;i<this.size();i++) {o.add(alphabet.indexOf(this.get(i)));}
     return o;
   }
-  
-  
-  public static Word parse(String input) {
-    var o = new Word();
-    for(int i=0; i<input.length();i++) o.add(input.charAt(i));
-    return o;
-  }
-  
-  public Word agglutinate(Word other) {
-    var o = new Word(this);
-    o.addAll(other);
+    
+  public static Word agglutinate(Word first, Word second) {
+    var o = new Word(first);
+    o.addAll(second);
     return o;
   }
 
