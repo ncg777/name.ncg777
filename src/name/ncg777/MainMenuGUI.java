@@ -21,6 +21,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
+    addAppButton(panel, "maths.apps.Permutator",name.ncg777.maths.apps.Permutator.class);
     addAppButton(panel, "maths.apps.sequences.Adder",name.ncg777.maths.apps.sequences.Adder.class);
     addAppButton(panel, "maths.apps.sequences.PseudoBase",name.ncg777.maths.apps.sequences.PseudoBase.class);
     addAppButton(panel, "maths.apps.sequences.Range",name.ncg777.maths.apps.sequences.Range.class);
@@ -39,6 +40,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.apps.words.Permutator",name.ncg777.maths.apps.words.Permutator.class);
     addAppButton(panel, "maths.apps.words.Permutator",name.ncg777.maths.apps.words.Permutator.class);
     addAppButton(panel, "maths.apps.words.Pulsations",name.ncg777.maths.apps.words.Pulsations.class);
+    addAppButton(panel, "maths.apps.words.ScaleModulo",name.ncg777.maths.apps.words.ScaleModulo.class);
     addAppButton(panel, "maths.apps.words.SequenceGenerator",name.ncg777.maths.apps.words.SequenceGenerator.class);
     addAppButton(panel, "maths.apps.words.Sequencer",name.ncg777.maths.apps.words.Sequencer.class);
     addAppButton(panel, "maths.music.apps.ModularArithmeticSequencer",name.ncg777.maths.music.apps.ModularArithmeticSequencer.class);
