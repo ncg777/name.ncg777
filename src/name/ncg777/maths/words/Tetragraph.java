@@ -7,7 +7,7 @@ import name.ncg777.maths.sequences.Sequence;
 public class Tetragraph extends Word {
   private static final long serialVersionUID = 1L;
 
-  public Tetragraph(Alphabet alphabet, Character[] array) {
+  public Tetragraph(Alphabet alphabet, String[] array) {
     super(alphabet, array);
   }
   
@@ -16,7 +16,7 @@ public class Tetragraph extends Word {
     if(string.length() != 4) throw new IllegalArgumentException();
   }
   
-  public Tetragraph(Alphabet alphabet, List<Character> list) {
+  public Tetragraph(Alphabet alphabet, List<String> list) {
     super(alphabet, list);
   }
   
