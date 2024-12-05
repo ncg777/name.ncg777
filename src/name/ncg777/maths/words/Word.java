@@ -19,9 +19,7 @@ public class Word extends ArrayList<Character> implements Serializable {
   
   public Word(Sequence sequence, Alphabet alphabet) {
     super();
-    
     if(!sequence.isNatural() || sequence.getMax() >= alphabet.size()) throw new IllegalArgumentException();
-    
     for(var i : sequence) this.add(alphabet.get(i));
   }
   
