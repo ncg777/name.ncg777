@@ -8,8 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
@@ -30,9 +29,7 @@ public class XORCircularConvolver {
   private JTextField txtImpulse;
   private JTextField txtResult;
   private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
-  /**
-   * Launch the application.
-   */
+
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -46,16 +43,10 @@ public class XORCircularConvolver {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public XORCircularConvolver() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     frmXorCircularConvolver = new JFrame();
     frmXorCircularConvolver.setResizable(false);
@@ -79,16 +70,10 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
-        BinaryWord carrier = null; HexadecimalSentence.parseHexadecimalWord(txtCarrier.getText()).asBinaryWord();
-        BinaryWord impulse = null; HexadecimalSentence.parseHexadecimalWord(txtImpulse.getText()).asBinaryWord();
-        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-          carrier = HexadecimalSentence.parseHexadecimalWord(txtCarrier.getText()).asBinaryWord();
-          impulse = HexadecimalSentence.parseHexadecimalWord(txtImpulse.getText()).asBinaryWord();
-        }
-        if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          carrier = OctalSentence.parse(txtCarrier.getText()).asBinary();
-          impulse = OctalSentence.parse(txtImpulse.getText()).asBinary();
-        }
+        var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+        BinaryWord carrier = new TetragraphSentence(abc, txtCarrier.getText()).toWord().toBinaryWord();
+        BinaryWord impulse = new TetragraphSentence(abc, txtImpulse.getText()).toWord().toBinaryWord();
+        
         BitSet bs = new BitSet(carrier.getN());
         
         for(int i=0;i<carrier.getN();i++) {
@@ -99,12 +84,11 @@ public class XORCircularConvolver {
             }  
           }
         }
-        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-          txtResult.setText(HexadecimalSentence.fromRhythm(BinaryWord.buildRhythm(bs,carrier.getN())).toString());
-        }
-        if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          txtResult.setText(OctalSentence.fromRhythm(BinaryWord.buildRhythm(bs,carrier.getN())).toString());
-        }
+        txtResult.setText(
+            (new TetragraphSentence(
+                abc,
+                new BinaryWord(bs, carrier.getN())
+            )).toString());
       }
     });
     

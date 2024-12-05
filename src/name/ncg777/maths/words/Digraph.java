@@ -6,21 +6,21 @@ import java.util.List;
 public class Digraph extends Word {
   private static final long serialVersionUID = 1L;
 
-  public Digraph(Character[] array) {
-    super(array);
+  public Digraph(Alphabet alphabet, Character[] array) {
+    super(alphabet, array);
   }
   
-  public Digraph(String string) {
-    super(string);
+  public Digraph(Alphabet alphabet, String string) {
+    super(alphabet, string);
     if(string.length() != 2) throw new IllegalArgumentException();
   }
   
-  public Digraph(List<Character> list) {
-    super(list);
+  public Digraph(Alphabet alphabet, List<Character> list) {
+    super(alphabet, list);
   }
   
-  public Digraph(Sequence sequence, Alphabet alphabet) {
-    super(sequence, alphabet);
+  public Digraph(Alphabet alphabet, Sequence sequence) {
+    super(alphabet, sequence);
     if(sequence.size()!= 2) throw new IllegalArgumentException();
   }
 }

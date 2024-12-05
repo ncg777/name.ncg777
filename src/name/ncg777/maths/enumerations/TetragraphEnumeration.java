@@ -24,6 +24,6 @@ public class TetragraphEnumeration implements Enumeration<Tetragraph>  {
 
   @Override
   public Tetragraph nextElement() {
-    return new Tetragraph(new Sequence(mre.nextElement()), alphabet);
+    return new Tetragraph(alphabet, new Sequence(mre.nextElement()));
   }
 }

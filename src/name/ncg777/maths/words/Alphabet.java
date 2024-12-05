@@ -1,10 +1,13 @@
 package name.ncg777.maths.words;
 
+import static com.google.common.math.LongMath.checkedPow;
+
+import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class Alphabet extends Word {
+public class Alphabet extends ArrayList<Character> {
   private static final long serialVersionUID = 1L;
- 
+
   public static enum Names {
     Binary,
     Octal,
@@ -28,8 +31,22 @@ public class Alphabet extends Word {
     Alphabets.put(Names.Hexadecimal, Hexadecimal);
   }
   
+  public double bitness() {
+    return Math.log((double)this.size())/Math.log(2.0);
+  }
+  
+  public boolean isBitnessANatural() {
+    return checkedPow(Math.round(bitness()), 2) == size();
+  }
+  
+  static public Alphabet getAlphabet(Names name) { return Alphabets.get(name); }
+  
   public Alphabet(Character[] characters) {
     for(Character c : characters) this.add(c);
+  }
+  
+  public Word toWord() {
+    return new Word(this, this);
   }
 
   @Override

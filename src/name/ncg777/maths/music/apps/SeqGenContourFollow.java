@@ -10,8 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.statistics.RandomNumberGenerator;
@@ -103,15 +102,11 @@ public class SeqGenContourFollow {
             {
               String str_R = txtRhythm.getText().trim();
               
-              Sequence C = null;
-              if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-                HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(str_R);
-                C = r.asBinaryWord().getComposition().asSequence();
-              }
-              if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                OctalSentence r = OctalSentence.parse(str_R);
-                C = r.asBinary().getComposition().asSequence();
-              }
+              Sequence C = new TetragraphSentence(
+                  Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem()), 
+                  str_R
+              ).toWord().toBinaryWord().getComposition().asSequence();;
+              
               @SuppressWarnings("null")
               Sequence s = C.cyclicalDifference().signs().circularHoldNonZero();
               

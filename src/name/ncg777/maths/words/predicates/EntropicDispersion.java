@@ -1,17 +1,18 @@
 package name.ncg777.maths.words.predicates;
 
-import javax.annotation.Nonnull;
+import java.util.function.Predicate;
 
-import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.fuzzy.valuationFunctions.CombinationDispersion;
-import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.words.Word;
 
-public class EntropicDispersion implements StandardAndGuavaPredicate<BinaryWord> {
+public class EntropicDispersion implements Predicate<Word> {
   private CombinationDispersion cd = new CombinationDispersion();
-  
+
+  public EntropicDispersion() {
+  }
   @Override
-  public boolean apply(@Nonnull BinaryWord arg0) {
-    return cd.apply(arg0).isEntropic(0.025);
+  public boolean test(Word arg0) {
+    return cd.apply(arg0.toBinaryWord()).isEntropic(0.025);
   }
 
 }

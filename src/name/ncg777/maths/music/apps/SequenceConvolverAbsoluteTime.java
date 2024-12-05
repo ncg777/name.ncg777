@@ -9,8 +9,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -97,9 +96,9 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        BinaryWord r = null;
-        if(comboBox.getSelectedItem() == Alphabet.Names.Hexadecimal) r = HexadecimalSentence.parseHexadecimalWord(txtR.getText()).asBinaryWord();
-        if(comboBox.getSelectedItem() == Alphabet.Names.Octal) r = OctalSentence.parse(txtR.getText()).asBinary();
+        var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+        BinaryWord r = new TetragraphSentence(abc, txtR.getText()).toWord().toBinaryWord();
+        
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[()]", ""));
       }
     });

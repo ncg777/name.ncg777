@@ -6,8 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -141,7 +140,7 @@ public class Pulsations {
             }
           }
           
-          BinaryWord rh = BinaryWord.buildRhythm(new BitSet(scompo_sum), scompo_sum);
+          BinaryWord rh = BinaryWord.build(new BitSet(scompo_sum), scompo_sum);
           int acc = 0;
           
           for(int i=0; i<scompo.size(); i++) {
@@ -162,8 +161,10 @@ public class Pulsations {
             
             acc+=c;
           }
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) result.setText(HexadecimalSentence.fromRhythm(rh).toString());
-          if(comboBox.getSelectedItem() == Alphabet.Octal) result.setText(OctalSentence.fromRhythm(rh).toString());
+          result.setText(
+              new TetragraphSentence(
+                  Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem()),
+                  rh).toString());
         } catch(Exception ex) {
           result.setText(ex.getMessage());
         }

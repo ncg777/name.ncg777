@@ -7,21 +7,19 @@ import javax.annotation.Nonnull;
 
 import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.words.Word;
 
+public class PredicatedSequenceAsBinaryWords implements StandardAndGuavaPredicate<Sequence> {
+  final private Predicate<Word> pred;
 
-public class PredicatedSeqRhythms implements StandardAndGuavaPredicate<Sequence> {
-  final private Predicate<BinaryWord> pred;
-
-  public PredicatedSeqRhythms(Predicate<BinaryWord> pred) {this.pred = pred;}
+  public PredicatedSequenceAsBinaryWords(Predicate<Word> pred) {this.pred = pred;}
   @Override
   public boolean apply(@Nonnull Sequence input) {
-    Collection<BinaryWord> t = input.getRhythms().values();
+    Collection<Word> t = input.getBinaryWords().values();
     
-    for(BinaryWord r : t) {
+    for(Word r : t) {
       if(!pred.test(r)) return false;
     }
     return true;
   }
-
 }

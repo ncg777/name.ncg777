@@ -7,8 +7,9 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.JTextField;
@@ -106,20 +107,20 @@ public class ModularArithmeticSequencer {
         
         var distinct = o.distinct();
         
-        ArrayList<HexadecimalSentence> rs = new ArrayList<>();
+        ArrayList<TetragraphSentence> rs = new ArrayList<>();
         
         for(int i: distinct) {
-          BinaryWord r = BinaryWord.buildRhythm(new BitSet(), n);
+          BinaryWord r = BinaryWord.build(new BitSet(), n);
           
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}
           }
-          rs.add(HexadecimalSentence.fromRhythm(r));
+          rs.add(new TetragraphSentence(Alphabet.Hexadecimal, r));
         }
         
         StringBuilder sb = new StringBuilder();
         sb.append(o.toString() + "\n");
-        for(HexadecimalSentence rl : rs) {
+        for(TetragraphSentence rl : rs) {
           sb.append(rl.toString() + "\n");
         }
         

@@ -9,8 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -83,14 +82,8 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          BinaryWord r = null;
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-            r = HexadecimalSentence.parseHexadecimalWord(str_R).asBinaryWord();
-          }
-          if(comboBox.getSelectedItem() == Alphabet.Octal) {
-            r = OctalSentence.parse(str_R).asBinary();
-          }
-          @SuppressWarnings("null")
+          BinaryWord r = new TetragraphSentence(Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem()), str_R).toWord().toBinaryWord();
+          
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();
           

@@ -186,7 +186,7 @@ public class Main {
         System.out.println(Integer.toString(len));
         var we = new WordEnumeration(len,8);
         
-        //var pred = new PredicatedSeqRhythms(new LowEntropy());
+        //var pred = new PredicatedSequenceAsBinaryWords(new LowEntropy());
         var printed = new TreeSet<Sequence>();
         PrintWriter pw0 = new PrintWriter("d:/necklaces-N" + Integer.toString(len) + "-K8-norep.csv");
         PrintWriter pw1 = new PrintWriter("d:/necklaces-N" + Integer.toString(len) + "-K8.csv");

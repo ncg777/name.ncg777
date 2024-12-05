@@ -8,11 +8,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import com.google.common.base.Joiner;
+
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.words.Word;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -20,7 +21,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.BitSet;
 import java.awt.event.ActionEvent;
 
 public class Diluter {
@@ -63,8 +63,6 @@ public class Diluter {
     frmRhythmDiluter.setBounds(100, 100, 644, 203);
     frmRhythmDiluter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmRhythmDiluter.getContentPane().setLayout(null);
-    
-    
     
     comboBox.setBounds(129, 6, 114, 20);
     frmRhythmDiluter.getContentPane().add(comboBox);
@@ -134,16 +132,14 @@ public class Diluter {
   }
   
   private void dilute() {
-    BinaryWord r = null;
-    if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-      r = HexadecimalSentence.parseHexadecimalWord(textRhythm.getText()).asBinaryWord();
-    }
-    if(comboBox.getSelectedItem() == Alphabet.Octal) {
-      r = OctalSentence.parse(textRhythm.getText()).asBinary();
-    }
-    
-    @SuppressWarnings("null")
-    int n = r.getN();
+    var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+    var str = textRhythm.getText().replaceAll("\\s+", "");
+    Word r = new TetragraphSentence(
+        abc, 
+        str).toWord();
+    r = new Word(Alphabet.Binary, r.toBitString(Alphabet.Binary, r.toCombination().getN()));
+        
+    int n = r.toCombination().getN();
     
     int from = (int)spinnerFrom.getValue();
     int to = (int)spinnerTo.getValue();
@@ -153,18 +149,12 @@ public class Diluter {
       textResult.setText("'From' must divide the length of the rhythm.");
       return;
     }
-    if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-      if(((n/from)*to)%16 != 0) {
-        textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of 16");
-        return;
-      }
+    
+    if(((n/from)*to)%abc.size()  != 0) {
+      textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of " + abc.size());
+      return;
     }
-    if(comboBox.getSelectedItem() == Alphabet.Octal) {
-      if(((n/from)*to)%12 != 0) {
-        textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of 12");
-        return;
-      }
-    }
+    
     if(offset < 0 || offset > (to-from)) {
       textResult.setText("Offset must be less than 'to' - 'from'");
       return;
@@ -172,19 +162,17 @@ public class Diluter {
     
     int newLength = n * (to/from);
     
-    BinaryWord o = BinaryWord.buildRhythm(new BitSet(), newLength);
+    Word o = new Word(Alphabet.Binary);
+    
     for(int i=0; i<(n/from);i++) {
-      
       for(int j=0;j<from;j++) {
         o.set((i*to) + j + offset, r.get((i*from)+j));
       }
     }
     
-    if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-      textResult.setText(HexadecimalSentence.fromRhythm(o).toString());
-    }
-    if(comboBox.getSelectedItem() == Alphabet.Octal) {
-      textResult.setText(OctalSentence.fromRhythm(o).toString());
-    }
+    textResult.setText(
+        (new TetragraphSentence(
+            abc, 
+            Word.fromBitString(abc, Joiner.on("").join(o), newLength))).toString());
   }
 }

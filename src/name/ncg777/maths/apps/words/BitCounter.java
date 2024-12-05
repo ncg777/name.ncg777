@@ -10,9 +10,8 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
 import name.ncg777.maths.words.Alphabet;
+import name.ncg777.maths.words.Word;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -65,12 +64,9 @@ public class BitCounter {
       public void keyReleased(KeyEvent e) {
         if(e.getKeyCode()==KeyEvent.VK_ENTER){
           String str = textField.getText().trim();
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-            lblCount.setText(Integer.toString(HexadecimalSentence.parseHexadecimalWord(str).asBinaryWord().getK()));
-          } else if(comboBox.getSelectedItem() == Alphabet.Octal) {
-            lblCount.setText(Integer.toString(OctalSentence.parse(str).asBinary().getK()));
-          }
-          
+          Alphabet abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+          lblCount.setText(
+              Integer.toString((new Word(abc, str)).toBinaryWord().getK()));
         }
       }
     });

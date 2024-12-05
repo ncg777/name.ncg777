@@ -1,22 +1,24 @@
 package name.ncg777.maths.sequences.predicates;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
-import javax.annotation.Nonnull;
-
-import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.words.Word;
 import name.ncg777.maths.words.predicates.ShadowContourIsomorphic;
 
-public class SeqAllRhythmsSCI implements StandardAndGuavaPredicate<Sequence> {
-  ShadowContourIsomorphic sci = new ShadowContourIsomorphic();
+public class SeqAllRhythmsSCI implements Predicate<Sequence> {
+  ShadowContourIsomorphic sci;
+  
+  public SeqAllRhythmsSCI() {
+    sci = new ShadowContourIsomorphic();
+  }
   
   @Override
-  public boolean apply(@Nonnull Sequence input) {
-    Collection<BinaryWord> binaryWords = input.getRhythms().values();
+  public boolean test(Sequence input) {
+    Collection<Word> words = input.getBinaryWords().values();
     
-    for(BinaryWord r : binaryWords) {
+    for(Word r : words) {
       if(!sci.apply(r)) return false;
     }
     return true;

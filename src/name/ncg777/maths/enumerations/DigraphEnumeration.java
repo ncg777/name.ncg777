@@ -25,6 +25,6 @@ public class DigraphEnumeration implements Enumeration<Digraph>  {
 
   @Override
   public Digraph nextElement() {
-    return new Digraph(new Sequence(mre.nextElement()),alphabet);
+    return new Digraph(this.alphabet, new Sequence(mre.nextElement()));
   }
 }

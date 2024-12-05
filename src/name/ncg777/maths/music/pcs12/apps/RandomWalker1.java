@@ -11,7 +11,7 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.sequences.predicates.PredicatedSeqRhythms;
+import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
 import name.ncg777.maths.words.predicates.EntropicDispersion;
 
 import javax.swing.SpinnerNumberModel;
@@ -94,16 +94,14 @@ public class RandomWalker1 {
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
  
-        
           new Thread(() -> {
             try {
               btnGenerate.setEnabled(false);
               while(true)
               {
-  
                 int n = (int)spinner_n.getValue();
   
-                var pred = new PredicatedSeqRhythms(new EntropicDispersion());
+                var pred = new PredicatedSequenceAsBinaryWords(new EntropicDispersion());
                 Sequence rnd;
                 while(true) {
                    rnd = Sequence.genRnd(

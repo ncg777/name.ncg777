@@ -10,10 +10,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.sequences.predicates.PredicatedSeqRhythms;
+import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.maths.words.predicates.LowEntropy;
@@ -25,6 +24,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -96,27 +96,19 @@ public class SeqGenFS {
     JButton btnGenerate = new JButton("Generate");
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
- 
-        
-          new Thread(() -> {
+           new Thread(() -> {
             try {
               btnGenerate.setEnabled(false);
+              var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
               while(true)
               {
                 String str_R = txtRhythm.getText().trim();
                 
-                BinaryWord R = null;
-                if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-                  HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(str_R);
-                  R = r.asBinaryWord();
-                }
-                if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                  OctalSentence r = OctalSentence.parse(str_R);
-                  R = r.asBinary();
-                }
+                BinaryWord R = (new TetragraphSentence(abc, str_R)).toWord().toBinaryWord();
+                
                 
                 Sequence s;
-                var pred = new PredicatedSeqRhythms(new LowEntropy());
+                var pred = new PredicatedSequenceAsBinaryWords(new LowEntropy());
                 do {
                   s = Sequence.genRndOnRhythm(R,(int)spinner_amp.getValue(), (int)spinner_maxamp.getValue(), chckbxF.isSelected(), chckbxS.isSelected());
                 } while(!pred.apply(s));

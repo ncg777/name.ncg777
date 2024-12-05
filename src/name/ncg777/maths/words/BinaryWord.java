@@ -16,9 +16,8 @@ import name.ncg777.maths.Composition;
 import name.ncg777.maths.sequences.Sequence;
 
 public class BinaryWord extends Combination implements Serializable {
-  
   private static final long serialVersionUID = 1L;
-  protected BinaryWord(int n, Set<Integer> s) {
+  public BinaryWord(int n, Set<Integer> s) {
     super(n,s);
   }
   public BinaryWord(BitSet b, int n) {
@@ -34,6 +33,11 @@ public class BinaryWord extends Combination implements Serializable {
     }
     return new BinaryWord(b, binstr.length());
   }
+  
+  public Word toWord(Alphabet alphabet) {
+    return new Word(alphabet, this);
+  }
+  
   public ArrayList<BinaryWord> partitionByEquality() {
     ArrayList<BinaryWord> o = new ArrayList<BinaryWord>();
     Sequence seq = this.asSequence();
@@ -65,28 +69,16 @@ public class BinaryWord extends Combination implements Serializable {
     BitSet bs = new BitSet(ns);
     for(int i=0;i<this.getN();i++){bs.set(i,this.get(i));}
     for(int i=0;i<other.getN();i++){bs.set(i+this.getN(),other.get(i));}
-    BinaryWord r = BinaryWord.buildRhythm(bs, ns);
+    BinaryWord r = BinaryWord.build(bs, ns);
     return r;
   }
   
-  public static BinaryWord buildRhythm(String p_str) {
-    int l = p_str.length();
-    TreeSet<Integer> t = new TreeSet<Integer>();
 
-    for (int i = 0; i < l; i++) {
-      if (!p_str.substring(i, i + 1).equals("0")) {
-        t.add(i);
-      }
-    }
-
-    return new BinaryWord(l, t);
-  }
-
-  public static BinaryWord buildRhythm(Combination c) {
+  public static BinaryWord build(Combination c) {
     return new BinaryWord(c, c.getN());
   }
   
-  public static BinaryWord buildRhythm(BitSet p_bs, int size) {
+  public static BinaryWord build(BitSet p_bs, int size) {
     int l = size;
     TreeSet<Integer> t = new TreeSet<Integer>();
 
@@ -99,7 +91,7 @@ public class BinaryWord extends Combination implements Serializable {
     return new BinaryWord(l, t);
   }
   
-  public static BinaryWord buildRhythm(Boolean[] p_arr) {
+  public static BinaryWord build(Boolean[] p_arr) {
     int l = p_arr.length;
     TreeSet<Integer> t = new TreeSet<Integer>();
 
@@ -112,7 +104,7 @@ public class BinaryWord extends Combination implements Serializable {
     return new BinaryWord(l, t);
   }
 
-  public static BinaryWord buildRhythm(int p_length, TreeSet<Integer> p_arr) {
+  public static BinaryWord build(int p_length, TreeSet<Integer> p_arr) {
     return new BinaryWord(p_length, p_arr);
   }
 
@@ -131,7 +123,7 @@ public class BinaryWord extends Combination implements Serializable {
     {
       output[i] = r.get((i*k)%n + n*(i/n));
     }
-    return buildRhythm(output);
+    return build(output);
   }
   
   public Sequence getContour() {

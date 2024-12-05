@@ -10,10 +10,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.sequences.predicates.PredicatedSeqRhythms;
+import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.predicates.EntropicDispersion;
 
@@ -124,18 +123,16 @@ public class SeqGenFixedSum {
             while(true)
             {
               String str_R = txtRhythm.getText().trim();
-                         
-              int n = -1;
-              if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-                n = HexadecimalSentence.parseHexadecimalWord(str_R).asBinaryWord().getK();
-              }
-              if(comboBox.getSelectedItem() == Alphabet.Octal) {
-                n = OctalSentence.parse(str_R).asBinary().getK();
-              }
+              Alphabet abc = Alphabet.getAlphabet(
+                  (Alphabet.Names)comboBox.getSelectedItem());        
+              int n = new TetragraphSentence(
+                  abc, 
+                  str_R).toWord().toBinaryWord().getK();
+              
               if(n < 2) {
                 throw new RuntimeException("rhythm is empty or too small");
               };
-              var pred = new PredicatedSeqRhythms(new EntropicDispersion());
+              var pred = new PredicatedSequenceAsBinaryWords(new EntropicDispersion());
               Sequence rnd;
               while(true) {
                  rnd = Sequence.genRnd(

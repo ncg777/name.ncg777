@@ -21,7 +21,6 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
-    addAppButton(panel, "maths.apps.ScaleModulo",name.ncg777.maths.apps.ScaleModulo.class);
     addAppButton(panel, "maths.apps.sequences.Adder",name.ncg777.maths.apps.sequences.Adder.class);
     addAppButton(panel, "maths.apps.sequences.PseudoBase",name.ncg777.maths.apps.sequences.PseudoBase.class);
     addAppButton(panel, "maths.apps.sequences.Range",name.ncg777.maths.apps.sequences.Range.class);

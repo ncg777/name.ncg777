@@ -10,8 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -29,10 +28,6 @@ public class SequenceGenerator {
 
   private JFrame frmRhythmicSeqGen;
   
-
-  /**
-   * Launch the application.
-   */
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -46,9 +41,6 @@ public class SequenceGenerator {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public SequenceGenerator() {
     initialize();
   }
@@ -56,9 +48,7 @@ public class SequenceGenerator {
   JTextArea txtrAaBb = new JTextArea();
   JTextField textField = new JTextField();
   private final JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
-  /**
-   * Initialize the contents of the frame.
-   */
+
   private void initialize() {
     comboBox.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     frmRhythmicSeqGen = new JFrame();
@@ -82,8 +72,12 @@ public class SequenceGenerator {
             textField.setText("ERROR on line" + " " + i);
             return;
           }
-          if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) binaryWords.add(HexadecimalSentence.parseHexadecimalWord(l[0].trim()).asBinaryWord());
-          if(comboBox.getSelectedItem() == Alphabet.Octal) binaryWords.add(OctalSentence.parse(l[0].trim()).asBinary());
+          
+          binaryWords.add(
+              new TetragraphSentence(
+                  Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem()), 
+                  l[0].trim()).toWord().toBinaryWord());
+          
           muls.add(Integer.valueOf(l[1].trim()));
         }
         

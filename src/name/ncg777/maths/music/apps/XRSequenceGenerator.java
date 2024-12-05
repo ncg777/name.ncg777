@@ -9,8 +9,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.sentences.HexadecimalSentence;
-import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 
@@ -31,9 +30,7 @@ public class XRSequenceGenerator {
   private JTextField textRhythm;
   private JTextField textOutput;
   private JComboBox<Alphabet.Names> comboBox = new JComboBox<Alphabet.Names>(new DefaultComboBoxModel<Alphabet.Names>(Alphabet.Names.values()));
-  /**
-   * Launch the application.
-   */
+
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -47,16 +44,10 @@ public class XRSequenceGenerator {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public XRSequenceGenerator() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     frmXrSequenceGenerator = new JFrame();
     frmXrSequenceGenerator.setTitle("XR Sequence Generator");
@@ -85,14 +76,10 @@ public class XRSequenceGenerator {
     btnGenerate.addActionListener(new ActionListener() {
       @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
-        Sequence comp = null;
+        var abc = Alphabet.getAlphabet((Alphabet.Names)comboBox.getSelectedItem());
+        Sequence comp = (new TetragraphSentence(abc, textRhythm.getText()))
+            .toWord().toBinaryWord().getComposition().asSequence();
         boolean useHalf = true;
-        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
-          comp = HexadecimalSentence.parseHexadecimalWord(textRhythm.getText()).asBinaryWord().getComposition().asSequence();
-        }
-        if(comboBox.getSelectedItem() == Alphabet.Octal) {
-          comp = OctalSentence.parse(textRhythm.getText()).asBinary().getComposition().asSequence();
-        }
         
         ArrayList<Double> output = new ArrayList<Double>();
         String o = "";

@@ -7,26 +7,27 @@ import name.ncg777.maths.sequences.Sequence;
 public class Tetragraph extends Word {
   private static final long serialVersionUID = 1L;
 
-  public Tetragraph(Character[] array) {
-    super(array);
+  public Tetragraph(Alphabet alphabet, Character[] array) {
+    super(alphabet, array);
   }
   
-  public Tetragraph(String string) {
-    super(string);
+  public Tetragraph(Alphabet alphabet, String string) {
+    super(alphabet, string);
     if(string.length() != 4) throw new IllegalArgumentException();
   }
   
-  public Tetragraph(List<Character> list) {
-    super(list);
+  public Tetragraph(Alphabet alphabet, List<Character> list) {
+    super(alphabet, list);
   }
   
-  public Tetragraph(Sequence sequence, Alphabet alphabet) {
-    super(sequence, alphabet);
+  public Tetragraph(Alphabet alphabet, Sequence sequence) {
+    super(alphabet, sequence);
     if(sequence.size()!= 4) throw new IllegalArgumentException();
   }
   
   public Tetragraph(Digraph first, Digraph second) {
-    this(first.toString()+second.toString());
+    this(first.getAlphabet(), first.toString()+second.toString());
+    if(!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
   }
   
   @Override

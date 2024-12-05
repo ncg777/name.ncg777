@@ -4,29 +4,30 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 
+import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.Digraph;
 
 public class DigraphSentence extends Sentence<Digraph> {
   private static final long serialVersionUID = 1L;
-
-  public DigraphSentence(List<Digraph> m_l) {
-    super();
+ 
+  public DigraphSentence(Alphabet alphabet, List<Digraph> m_l) {
+    super(alphabet);
     for (Digraph i : m_l) {
       this.add(i);
     }
   }
 
-  public DigraphSentence() {
-    super();
+  public DigraphSentence(Alphabet alphabet) {
+    super(alphabet);
   }
 
-  public DigraphSentence(String string) {
-    super();
+  public DigraphSentence(Alphabet alphabet, String string) {
+    super(alphabet);
     string = string.replaceAll("\\s+", string);
     if(string.length()%2!=0) throw new IllegalArgumentException();
     
     for(int i=0;i<string.length()/2;i++) {
-      this.add(new Digraph(string.substring(i*2,(i*2)+2)));
+      this.add(new Digraph(alphabet, string.substring(i*2,(i*2)+2)));
     }
   }
 

@@ -9,8 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.words.Word;
+import name.ncg777.maths.words.Tetragraph;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -24,14 +27,11 @@ import java.awt.Font;
 import javax.swing.SpinnerNumberModel;
 
 public class HexadecimalWordDivider {
-
   private JFrame frmDivider;
   private JTextField txtR;
   private JTextArea txtResult;
   private JSpinner spinner;
-  /**
-   * Launch the application.
-   */
+
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -45,16 +45,10 @@ public class HexadecimalWordDivider {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public HexadecimalWordDivider() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     frmDivider = new JFrame();
     frmDivider.setTitle("R16 Divider");
@@ -78,22 +72,24 @@ public class HexadecimalWordDivider {
     spinner.setFont(new Font("Unifont", Font.PLAIN, 11));
     btnDivide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(txtR.getText().trim());
-        BinaryWord r1 = r.asBinaryWord();
+        var r1 = (new TetragraphSentence(
+            Alphabet.Hexadecimal, txtR.getText().trim()))
+            .toWord()
+            .toBinaryWord();
         int div = (int)spinner.getValue();
-        int len = r.getN();
+        int len = r1.getN();
         int d = len/div;
         
         if(len%div != 0) {
-          txtResult.setText("Div does not divide length of rhythm");
+          txtResult.setText("Divisor does not divide length of rhythm");
         } else if(d < 16) {
           txtResult.setText("too few bytes");  
         }else {
           ArrayList<BinaryWord> o = new ArrayList<BinaryWord>();
-          for(int i=0;i<div;i++) {o.add(BinaryWord.buildRhythm(new BitSet(), d));}
+          for(int i=0;i<div;i++) {
+            o.add(BinaryWord.build(new BitSet(), d));}
           
           for(int i=0;i<d;i++) {
-            
             for(int j=0;j<div;j++) {
               o.get(j).set(i, r1.get((i*div)+j));
             }
@@ -102,7 +98,8 @@ public class HexadecimalWordDivider {
           String output = "";
           
           for(int i=0;i<div;i++) {
-            output += HexadecimalSentence.fromRhythm(o.get(i)) + "\n";
+            var t = new Tetragraph(Alphabet.Hexadecimal, new Word(Alphabet.Hexadecimal, o.get(i).toString()));
+            output += t.toString(true) + "\n";
           }
           txtResult.setText(output);
         }

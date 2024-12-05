@@ -11,8 +11,9 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Composition;
-import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.JButton;
@@ -85,7 +86,7 @@ public class LatticePath {
           c.set(m-1);
           if((total % 16) == 0) {
             r16 = true;
-            o += HexadecimalSentence.fromRhythm(BinaryWord.buildRhythm(c.asCombination(), total)).toString() + " ";
+            o += new TetragraphSentence(Alphabet.Hexadecimal, (new BinaryWord(c.asCombination(), total))).toString() + " ";
           }
           o+= Integer.valueOf(i+2).toString() + " : ";
           for(Integer j : c.asSequence()){o+=j.toString() + " ";}

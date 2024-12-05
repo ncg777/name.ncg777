@@ -18,9 +18,11 @@ import javax.swing.JCheckBox;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.HexadecimalWord;
+import name.ncg777.maths.words.Alphabet;
+import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.words.Tetragraph;
 import name.ncg777.maths.words.predicates.Even;
 
 import javax.swing.SwingConstants;
@@ -30,9 +32,7 @@ public class x2mid {
   private JFrame frmXmid;
   private JTextField textField;
   private JCheckBox chckbxNewCheckBox = new JCheckBox("\u00D72");
-  /**
-   * Launch the application.
-   */
+
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -46,16 +46,10 @@ public class x2mid {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public x2mid() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     
     frmXmid = new JFrame();
@@ -89,16 +83,16 @@ public class x2mid {
     btnXmid.setForeground(Color.LIGHT_GRAY);
     btnXmid.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(textField.getText());
+        TetragraphSentence r = new TetragraphSentence(Alphabet.Hexadecimal, textField.getText());
         if(chckbxNewCheckBox.isSelected()) {
-          r = HexadecimalSentence.expand(r, 2, false);  
+          r = TetragraphSentence.expand(r, 2, false);  
         } else {
-          if(!(new Even()).apply(r.asBinaryWord())) {
+          if(!(new Even()).apply(r.toWord().toBinaryWord())) {
             txtrOutput.setText("BinaryWord is not even");
           }
         }
         
-        Sequence s = r.asBinaryWord().asSequence();
+        Sequence s = r.toWord().toBinaryWord().asSequence();
         Sequence mid = new Sequence();
         int total = r.size()*16;
         for(int i=0;i<s.size();i++){
@@ -112,13 +106,13 @@ public class x2mid {
           int m = a+(d/2);
           mid.add(m%total);
         }
-        HexadecimalSentence o = new HexadecimalSentence();
+        TetragraphSentence o = new TetragraphSentence(Alphabet.Hexadecimal);
         for(int i=0;i<r.size();i++){
           TreeSet<Integer> t = new TreeSet<Integer>();
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(HexadecimalWord.tryConvert(t));
+          o.add(new Tetragraph(Alphabet.Hexadecimal, new BinaryWord(16, t).toWord(Alphabet.Hexadecimal)));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }
