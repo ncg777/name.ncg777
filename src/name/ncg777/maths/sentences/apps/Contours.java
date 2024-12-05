@@ -1,4 +1,4 @@
-package name.ncg777.maths.apps.words;
+package name.ncg777.maths.sentences.apps;
 
 //import java.awt.EventQueue;
 //

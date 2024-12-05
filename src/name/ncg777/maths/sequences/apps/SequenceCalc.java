@@ -1,4 +1,4 @@
-package name.ncg777.maths.apps.sequences;
+package name.ncg777.maths.sequences.apps;
 
 import java.awt.EventQueue;
 

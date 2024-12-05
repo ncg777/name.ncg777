@@ -1,4 +1,4 @@
-package name.ncg777.maths.apps.words;
+package name.ncg777.maths.sentences.apps;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -39,16 +39,10 @@ public class Permutator {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public Permutator() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     frmWordPermutator = new JFrame();
     frmWordPermutator.setResizable(false);
