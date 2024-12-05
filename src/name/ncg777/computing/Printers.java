@@ -15,7 +15,7 @@ import name.ncg777.maths.Vector;
 import name.ncg777.maths.VectorOfBooleans;
 import name.ncg777.maths.VectorOfDoubles;
 import name.ncg777.maths.VectorOfIntegers;
-import name.ncg777.maths.pitchClassSet12.PitchClassSet12;
+import name.ncg777.maths.music.pcs12.Pcs12;
 import name.ncg777.maths.sequences.Sequence;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class Printers {
   public static Function<Object[],String> doubleArrayPrinter = arrayDecorator(doublePrinter);
   public static Function<Object[],String> integerArrayPrinter = arrayDecorator(integerPrinter);
   public static Function<Sequence, String> sequencePrinter = (s) -> s.toString();
-  public static Function<PitchClassSet12, String> PCS12Printer = (pcs) -> pcs.toForteNumberString();
+  public static Function<Pcs12, String> PCS12Printer = (pcs) -> pcs.toForteNumberString();
   public static Function<Combination, String> combinationPrinter = (c) -> c.toBinaryString();
   public static Function<Composition, String> compositionPrinter = (c) -> c.toBinaryString();
   public static Function<VectorOfDoubles,String> vectorOfDoublesPrinter = (v) -> v.toString();
