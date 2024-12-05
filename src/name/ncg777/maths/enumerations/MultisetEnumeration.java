@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.collections4.bag.TreeBag;
 
-import name.ncg777.maths.objects.Combination;
+import name.ncg777.maths.Combination;
 
 /**
  * This class enumerates multisets with a fixed size.

@@ -6,11 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
-import name.ncg777.maths.objects.sentences.OctalSentence;
-import name.ncg777.maths.objects.words.Alphabet;
-import name.ncg777.maths.objects.words.BinaryWord;
+import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.Alphabet;
+import name.ncg777.maths.words.BinaryWord;
 
 import java.awt.Font;
 import javax.swing.JTextField;

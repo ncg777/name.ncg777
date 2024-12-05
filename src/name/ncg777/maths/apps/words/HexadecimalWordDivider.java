@@ -9,8 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
-import name.ncg777.maths.objects.words.BinaryWord;
+import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;

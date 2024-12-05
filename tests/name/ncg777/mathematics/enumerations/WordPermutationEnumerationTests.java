@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 import name.ncg777.maths.enumerations.WordPermutationEnumeration;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 public class WordPermutationEnumerationTests extends TestCase {
   

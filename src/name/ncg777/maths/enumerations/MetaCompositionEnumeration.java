@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 
 import com.google.common.base.Joiner;
 
-import name.ncg777.maths.objects.Composition;
+import name.ncg777.maths.Composition;
 /**
  * https://oeis.org/A133494
  */

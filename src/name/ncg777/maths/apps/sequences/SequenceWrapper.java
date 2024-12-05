@@ -10,7 +10,7 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.SwingConstants;
 import javax.swing.JSpinner;

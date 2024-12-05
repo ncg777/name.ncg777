@@ -3,7 +3,7 @@ package name.ncg777.maths.words.printers;
 
 import com.google.common.base.Function;
 
-import name.ncg777.maths.objects.words.HexadecimalWord;
+import name.ncg777.maths.words.HexadecimalWord;
 
 import java.io.PrintWriter;
 import java.util.List;

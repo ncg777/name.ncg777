@@ -10,7 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.music.pitchClassSet12.PitchClassSet12;
 
 import javax.swing.JTextField;

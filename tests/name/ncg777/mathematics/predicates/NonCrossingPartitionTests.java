@@ -7,8 +7,8 @@ import org.junit.Test;
 import junit.framework.TestCase;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.enumerations.SetPartitionEnumeration;
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.predicates.sequences.NonCrossingPartition;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.sequences.predicates.NonCrossingPartition;
 
 public class NonCrossingPartitionTests extends TestCase  {
 

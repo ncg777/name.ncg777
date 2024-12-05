@@ -10,13 +10,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
-import name.ncg777.maths.objects.sentences.OctalSentence;
-import name.ncg777.maths.objects.words.Alphabet;
-import name.ncg777.maths.objects.words.BinaryWord;
-import name.ncg777.maths.predicates.sequences.PredicatedSeqRhythms;
-import name.ncg777.maths.predicates.words.LowEntropy;
+import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.sequences.predicates.PredicatedSeqRhythms;
+import name.ncg777.maths.words.Alphabet;
+import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.words.predicates.LowEntropy;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;

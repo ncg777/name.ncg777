@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.objects.Necklace;
+import name.ncg777.maths.Necklace;
 
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;

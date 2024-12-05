@@ -3,8 +3,8 @@ package name.ncg777.maths.words.relations;
 import java.util.BitSet;
 import java.util.function.Predicate;
 
-import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.relations.Relation;
+import name.ncg777.maths.words.BinaryWord;
 
 public class PredicatedXOR implements 
     Relation<BinaryWord, BinaryWord>   {

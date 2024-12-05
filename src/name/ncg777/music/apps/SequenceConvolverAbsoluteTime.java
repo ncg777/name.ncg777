@@ -9,11 +9,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
-import name.ncg777.maths.objects.sentences.OctalSentence;
-import name.ncg777.maths.objects.words.Alphabet;
-import name.ncg777.maths.objects.words.BinaryWord;
+import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.Alphabet;
+import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;

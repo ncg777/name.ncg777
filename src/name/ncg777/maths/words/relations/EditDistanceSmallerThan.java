@@ -2,8 +2,8 @@ package name.ncg777.maths.words.relations;
 
 import java.util.BitSet;
 
-import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.relations.Relation;
+import name.ncg777.maths.words.BinaryWord;
 
 
 public class EditDistanceSmallerThan implements 

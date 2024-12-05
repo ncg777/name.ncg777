@@ -5,8 +5,6 @@ import java.util.TreeMap;
 // import static com.google.common.math.IntMath.checkedPow;
 import java.util.TreeSet;
 
-import name.ncg777.maths.objects.Matrix;
-
 
 public class Numbers {
 

@@ -7,12 +7,12 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.ncg777.computerScience.dataStructures.CollectionUtils;
+import name.ncg777.computing.dataStructures.CollectionUtils;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
-import name.ncg777.maths.objects.sentences.OctalSentence;
-import name.ncg777.maths.objects.words.Alphabet;
+import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.OctalSentence;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.Alphabet;
 
 import javax.swing.SpringLayout;
 import javax.swing.JTextField;

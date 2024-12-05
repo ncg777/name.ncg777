@@ -2,7 +2,7 @@ package name.ncg777.maths.enumerations;
 
 import java.util.Enumeration;
 
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 /**
  * 

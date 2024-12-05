@@ -3,7 +3,7 @@ package name.ncg777.maths.fuzzy.valuationFunctions;
 import com.google.common.base.Function;
 
 import name.ncg777.maths.fuzzy.FuzzyVariable;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 public class SequenceSymmetry implements Function<Sequence, FuzzyVariable> {
 

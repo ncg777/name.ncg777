@@ -3,7 +3,7 @@ package name.ncg777.maths.enumerations;
 import java.util.BitSet;
 import java.util.Enumeration;
 
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 public class BitSequenceEnumeration implements Enumeration<Sequence> {
   private BitSetEnumeration e;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.music.apps.kernelValuator.Kernel;
 import name.ncg777.music.apps.kernelValuator.ParameterType;
 

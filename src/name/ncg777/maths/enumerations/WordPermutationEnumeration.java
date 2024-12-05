@@ -3,7 +3,7 @@ package name.ncg777.maths.enumerations;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import name.ncg777.maths.objects.Combination;
+import name.ncg777.maths.Combination;
 
 /**
  * Generates the combinatorial objects associated with multinomial coefficients

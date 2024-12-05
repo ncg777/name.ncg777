@@ -7,7 +7,7 @@ import javax.swing.SpringLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.Font;
 import javax.swing.JTextField;

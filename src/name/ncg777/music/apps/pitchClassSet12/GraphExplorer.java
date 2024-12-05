@@ -25,11 +25,11 @@ import javax.swing.SpinnerNumberModel;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import name.ncg777.computerScience.Utils;
-import name.ncg777.computerScience.dataStructures.CollectionUtils;
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.graphs.MarkableDirectedGraph;
+import name.ncg777.computing.Utils;
+import name.ncg777.computing.dataStructures.CollectionUtils;
+import name.ncg777.maths.graphs.MarkableDirectedGraph;
 import name.ncg777.maths.relations.Relation;
+import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.music.pitchClassSet12.PitchClassSet12;
 import name.ncg777.music.pitchClassSet12.predicates.Consonant;
 import name.ncg777.music.pitchClassSet12.predicates.SizeIs;

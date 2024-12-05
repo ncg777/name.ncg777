@@ -2,8 +2,8 @@ package name.ncg777.maths.fuzzy.valuationFunctions;
 
 import com.google.common.base.Function;
 
+import name.ncg777.maths.Composition;
 import name.ncg777.maths.fuzzy.FuzzyVariable;
-import name.ncg777.maths.objects.Composition;
 
 public class CompositionPeriodicity implements Function<Composition, FuzzyVariable> {
 

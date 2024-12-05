@@ -9,7 +9,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

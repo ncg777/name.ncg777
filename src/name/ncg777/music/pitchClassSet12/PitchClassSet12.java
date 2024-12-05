@@ -1,6 +1,6 @@
 package name.ncg777.music.pitchClassSet12;
 
-import static name.ncg777.maths.objects.Sequence.ReverseComparator;
+import static name.ncg777.maths.sequences.Sequence.ReverseComparator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,12 +15,12 @@ import java.util.TreeSet;
 
 import com.opencsv.exceptions.CsvException;
 
-import name.ncg777.computerScience.Parsers;
-import name.ncg777.maths.objects.Combination;
-import name.ncg777.maths.objects.FiniteRelation;
-import name.ncg777.maths.objects.ImmutableCombination;
-import name.ncg777.maths.objects.Necklace;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.computing.Parsers;
+import name.ncg777.maths.Combination;
+import name.ncg777.maths.FiniteRelation;
+import name.ncg777.maths.ImmutableCombination;
+import name.ncg777.maths.Necklace;
+import name.ncg777.maths.sequences.Sequence;
 
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;

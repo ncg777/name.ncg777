@@ -10,7 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.enumerations.BitSetEnumeration;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;

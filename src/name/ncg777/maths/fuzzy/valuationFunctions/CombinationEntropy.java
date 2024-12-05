@@ -4,10 +4,10 @@ import java.util.TreeMap;
 
 import com.google.common.base.Function;
 
+import name.ncg777.maths.Combination;
+import name.ncg777.maths.Interval;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.fuzzy.FuzzyVariable;
-import name.ncg777.maths.objects.Combination;
-import name.ncg777.maths.objects.Interval;
 
 public class CombinationEntropy implements Function<Combination, FuzzyVariable> {
 

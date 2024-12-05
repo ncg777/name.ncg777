@@ -3,7 +3,7 @@ package name.ncg777.maths.predicates.integers;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
+import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
 
 public class MultiplesOf implements StandardAndGuavaPredicate<Integer> {
   TreeSet<Integer> m_t;

@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 import javax.annotation.Nonnull;
 
-import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
+import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
 import name.ncg777.music.pitchClassSet12.PitchClassSet12;
 
 public class OrderIn implements StandardAndGuavaPredicate<PitchClassSet12> {

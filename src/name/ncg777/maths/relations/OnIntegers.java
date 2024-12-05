@@ -6,4 +6,6 @@ public class OnIntegers {
   
   public static Relation<Integer,Integer> divides = 
       Relation.fromBiPredicate((k,n) -> Numbers.divides(k, n));
+  
+  
 }

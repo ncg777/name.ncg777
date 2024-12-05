@@ -1,8 +1,8 @@
 package name.ncg777.music.pitchClassSet12.relations;
 
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.objects.Sequence;
 import name.ncg777.maths.relations.Relation;
+import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.music.pitchClassSet12.PitchClassSet12;
 
 

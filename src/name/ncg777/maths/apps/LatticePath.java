@@ -10,10 +10,10 @@ import javax.swing.JTextPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.objects.Composition;
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
-import name.ncg777.maths.objects.words.BinaryWord;
+import name.ncg777.maths.Composition;
+import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;

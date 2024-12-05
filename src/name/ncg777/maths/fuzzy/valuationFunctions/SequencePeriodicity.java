@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.Set;
 import com.google.common.base.Function;
 
+import name.ncg777.maths.Composition;
 import name.ncg777.maths.fuzzy.FuzzyVariable;
-import name.ncg777.maths.objects.Composition;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 public class SequencePeriodicity implements Function<Sequence, FuzzyVariable> {
   CompositionDispersion ch;

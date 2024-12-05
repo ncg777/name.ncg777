@@ -4,11 +4,11 @@ import java.util.TreeMap;
 
 import com.google.common.base.Function;
 
-import name.ncg777.computerScience.dataStructures.HeteroPair;
+import name.ncg777.computing.dataStructures.HeteroPair;
+import name.ncg777.maths.Composition;
+import name.ncg777.maths.Interval;
 import name.ncg777.maths.fuzzy.FuzzyVariable;
-import name.ncg777.maths.objects.Composition;
-import name.ncg777.maths.objects.Interval;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 public class CompositionDispersion implements Function<Composition, FuzzyVariable> {
 

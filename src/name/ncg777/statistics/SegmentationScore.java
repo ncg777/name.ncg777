@@ -1,7 +1,7 @@
 package name.ncg777.statistics;
 
-import name.ncg777.maths.objects.Composition;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.Composition;
+import name.ncg777.maths.sequences.Sequence;
 
 public class SegmentationScore {
 

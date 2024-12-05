@@ -2,8 +2,8 @@ package name.ncg777.music.pitchClassSet12.predicates;
 
 import javax.annotation.Nonnull;
 
-import name.ncg777.computerScience.Functional.StandardAndGuavaPredicate;
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
+import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.music.pitchClassSet12.PitchClassSet12;
 
 public class PairOdd implements StandardAndGuavaPredicate<PitchClassSet12>   {

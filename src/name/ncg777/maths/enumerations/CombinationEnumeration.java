@@ -2,7 +2,7 @@ package name.ncg777.maths.enumerations;
 
 import java.util.Enumeration;
 
-import name.ncg777.maths.objects.Combination;
+import name.ncg777.maths.Combination;
 
 public class CombinationEnumeration implements Enumeration<Combination> {
   private Combination current;

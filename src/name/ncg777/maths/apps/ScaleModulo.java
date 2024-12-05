@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
+import name.ncg777.maths.sentences.HexadecimalSentence;
 
 public class ScaleModulo {
 

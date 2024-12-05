@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.Equivalence;
 
-import name.ncg777.maths.objects.Sequence;
+import name.ncg777.maths.sequences.Sequence;
 
 public class OnSequences {
   public static Relation<Sequence,Sequence> equivalentUnderRotation = 

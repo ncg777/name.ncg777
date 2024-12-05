@@ -4,8 +4,8 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.predicates.sequences.NonCrossingPartition;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.sequences.predicates.NonCrossingPartition;
 
 public class CrossingPartitionEnumeration implements Enumeration<int[]>  {
   private Predicate<Sequence> ncp = new NonCrossingPartition();

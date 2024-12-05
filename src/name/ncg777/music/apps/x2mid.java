@@ -18,10 +18,10 @@ import javax.swing.JCheckBox;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.objects.Sequence;
-import name.ncg777.maths.objects.sentences.HexadecimalSentence;
-import name.ncg777.maths.objects.words.HexadecimalWord;
-import name.ncg777.maths.predicates.words.Even;
+import name.ncg777.maths.sentences.HexadecimalSentence;
+import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.HexadecimalWord;
+import name.ncg777.maths.words.predicates.Even;
 
 import javax.swing.SwingConstants;
 

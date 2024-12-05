@@ -3,7 +3,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import name.ncg777.computerScience.dataStructures.HomoPair;
+import name.ncg777.computing.dataStructures.HomoPair;
 
 public class  HomogeneousPairEnumeration<
   T extends Comparable<? super T>> implements Enumeration<HomoPair<T>> {

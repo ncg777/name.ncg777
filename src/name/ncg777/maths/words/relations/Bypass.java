@@ -1,7 +1,7 @@
 package name.ncg777.maths.words.relations;
 
-import name.ncg777.maths.objects.words.BinaryWord;
 import name.ncg777.maths.relations.Relation;
+import name.ncg777.maths.words.BinaryWord;
 
 
 public class Bypass implements 
