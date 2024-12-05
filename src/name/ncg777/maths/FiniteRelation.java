@@ -34,10 +34,10 @@ import com.opencsv.exceptions.CsvException;
 import name.ncg777.computing.Functional;
 import name.ncg777.computing.Parsers;
 import name.ncg777.computing.Printers;
-import name.ncg777.computing.dataStructures.CollectionUtils;
-import name.ncg777.computing.dataStructures.HeteroPair;
-import name.ncg777.computing.dataStructures.IterableComparator;
-import name.ncg777.computing.dataStructures.JaggedList;
+import name.ncg777.computing.structures.CollectionUtils;
+import name.ncg777.computing.structures.HeteroPair;
+import name.ncg777.computing.structures.IterableComparator;
+import name.ncg777.computing.structures.JaggedList;
 import name.ncg777.maths.enumerations.HeterogeneousPairEnumeration;
 import name.ncg777.maths.relations.Relation;
 

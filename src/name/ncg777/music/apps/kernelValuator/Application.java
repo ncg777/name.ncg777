@@ -9,7 +9,7 @@ package name.ncg777.music.apps.kernelValuator;
 //import javax.swing.JLabel;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
-//import name.ncg777.computing.dataStructures.HomoPair;
+//import name.ncg777.computing.structures.HomoPair;
 //import name.ncg777.maths.objects.Sequence;
 //import name.ncg777.maths.objects.HexadecimalSentence;
 //import name.ncg777.maths.objects.OctalSentence;

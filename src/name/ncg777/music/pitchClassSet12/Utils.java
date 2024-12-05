@@ -5,8 +5,8 @@ import java.util.TreeSet;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
-import name.ncg777.computing.dataStructures.JaggedList;
+import name.ncg777.computing.structures.CollectionUtils;
+import name.ncg777.computing.structures.JaggedList;
 import name.ncg777.maths.relations.Relation;
 import name.ncg777.music.pitchClassSet12.relations.NNotesDifference;
 

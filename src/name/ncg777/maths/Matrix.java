@@ -19,8 +19,8 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ComparisonChain;
 
 import name.ncg777.computing.Parsers;
-import name.ncg777.computing.dataStructures.HomoPair;
-import name.ncg777.computing.dataStructures.JaggedList;
+import name.ncg777.computing.structures.HomoPair;
+import name.ncg777.computing.structures.JaggedList;
 
 /**
  * Generic mutable Matrix class with basic functionality.

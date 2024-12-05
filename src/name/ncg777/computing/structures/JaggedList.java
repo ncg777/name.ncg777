@@ -1,4 +1,4 @@
-package name.ncg777.computing.dataStructures;
+package name.ncg777.computing.structures;
 
 import java.io.IOException;
 import java.io.PrintWriter;

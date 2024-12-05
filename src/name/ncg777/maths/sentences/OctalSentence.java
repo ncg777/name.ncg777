@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
+import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.maths.words.OctalWord;

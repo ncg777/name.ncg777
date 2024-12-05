@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 import com.google.common.base.Joiner;
 
-import name.ncg777.computing.dataStructures.IterableComparator;
+import name.ncg777.computing.structures.IterableComparator;
 
 public class Vector<T extends Comparable<? super T>> implements Comparable<Vector<T>> {
   protected ArrayList<T> values = new ArrayList<T>();

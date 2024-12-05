@@ -22,7 +22,7 @@ import javax.swing.SpinnerNumberModel;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
+import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.graphs.MarkableDirectedGraph;
 import name.ncg777.maths.relations.Relation;
 import name.ncg777.music.pitchClassSet12.PitchClassSet12;

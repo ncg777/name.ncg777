@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
+import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.sentences.HexadecimalSentence;
 import name.ncg777.maths.sentences.OctalSentence;

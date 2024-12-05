@@ -6,9 +6,9 @@ import java.util.function.IntFunction;
 
 import com.google.common.base.Joiner;
 
-import name.ncg777.computing.dataStructures.HeteroPair;
-import name.ncg777.computing.dataStructures.HomoPair;
-import name.ncg777.computing.dataStructures.JaggedList;
+import name.ncg777.computing.structures.HeteroPair;
+import name.ncg777.computing.structures.HomoPair;
+import name.ncg777.computing.structures.JaggedList;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.Composition;
 import name.ncg777.maths.Vector;

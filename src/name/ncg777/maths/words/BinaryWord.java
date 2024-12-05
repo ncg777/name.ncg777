@@ -1,6 +1,6 @@
 package name.ncg777.maths.words;
 
-import static name.ncg777.computing.dataStructures.CollectionUtils.calcIntervalVector;
+import static name.ncg777.computing.structures.CollectionUtils.calcIntervalVector;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
+import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.Composition;
 import name.ncg777.maths.sequences.Sequence;

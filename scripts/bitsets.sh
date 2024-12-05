@@ -1,1 +1,1 @@
-java name.ncg777.computerScience.ReflectiveEnumerationPrinter name.ncg777.mathematics.enumerations.BitSetEnumeration $@
+java name.ncg777.computing.ReflectiveEnumerationPrinter name.ncg777.maths.enumerations.BitSetEnumeration $@

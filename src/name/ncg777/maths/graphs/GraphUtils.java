@@ -13,7 +13,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.TreeSet;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
+import name.ncg777.computing.structures.CollectionUtils;
 
 public class GraphUtils {
 

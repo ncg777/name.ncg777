@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
+import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.enumerations.CombinationEnumeration;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.statistics.RandomNumberGenerator;

@@ -4,7 +4,7 @@ import java.util.TreeMap;
 
 import com.google.common.base.Function;
 
-import name.ncg777.computing.dataStructures.HeteroPair;
+import name.ncg777.computing.structures.HeteroPair;
 import name.ncg777.maths.Composition;
 import name.ncg777.maths.Interval;
 import name.ncg777.maths.fuzzy.FuzzyVariable;

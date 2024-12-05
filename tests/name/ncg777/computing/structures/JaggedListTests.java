@@ -1,12 +1,10 @@
-package name.ncg777.computerScience.dataStructures;
+package name.ncg777.computing.structures;
 
 import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import name.ncg777.computing.dataStructures.JaggedList;
 
 public class JaggedListTests {
     private JaggedList<String> jaggedList;

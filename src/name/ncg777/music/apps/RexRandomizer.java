@@ -10,8 +10,8 @@ package name.ncg777.music.apps;
 //import javax.swing.JTextField;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
-//import name.ncg777.computing.dataStructures.CollectionUtils;
-//import name.ncg777.computing.dataStructures.HomoPair;
+//import name.ncg777.computing.structures.CollectionUtils;
+//import name.ncg777.computing.structures.HomoPair;
 //import name.ncg777.maths.objects.Sequence;
 //import name.ncg777.maths.objects.BinaryWord;
 //import name.ncg777.maths.objects.OctalSentence;

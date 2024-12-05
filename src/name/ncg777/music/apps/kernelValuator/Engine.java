@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-import name.ncg777.computing.dataStructures.HomoPair;
+import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.music.apps.kernelValuator.kernels.Dummy;

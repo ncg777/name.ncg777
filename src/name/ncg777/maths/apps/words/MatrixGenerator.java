@@ -9,7 +9,7 @@ package name.ncg777.maths.apps.words;
 //import javax.swing.JSpinner;
 //import javax.swing.LayoutStyle.ComponentPlacement;
 //
-//import name.ncg777.computing.dataStructures.CollectionUtils;
+//import name.ncg777.computing.structures.CollectionUtils;
 //import name.ncg777.maths.objects.Matrix;
 //import name.ncg777.maths.objects.Sequence;
 //import name.ncg777.maths.relations.Relation;

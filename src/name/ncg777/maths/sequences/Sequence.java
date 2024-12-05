@@ -19,9 +19,9 @@ import org.apache.commons.collections4.bidimap.TreeBidiMap;
 import com.google.common.base.Equivalence;
 import com.google.common.base.Joiner;
 
-import name.ncg777.computing.dataStructures.CollectionUtils;
-import name.ncg777.computing.dataStructures.HomoPair;
-import name.ncg777.computing.dataStructures.IterableComparator;
+import name.ncg777.computing.structures.CollectionUtils;
+import name.ncg777.computing.structures.HomoPair;
+import name.ncg777.computing.structures.IterableComparator;
 import name.ncg777.maths.FiniteHomoRelation;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.Numbers;

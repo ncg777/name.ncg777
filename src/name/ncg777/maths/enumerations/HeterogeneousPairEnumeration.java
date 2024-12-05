@@ -3,7 +3,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import name.ncg777.computing.dataStructures.HeteroPair;
+import name.ncg777.computing.structures.HeteroPair;
 
 public class  HeterogeneousPairEnumeration<
   T extends Comparable<? super T>, 

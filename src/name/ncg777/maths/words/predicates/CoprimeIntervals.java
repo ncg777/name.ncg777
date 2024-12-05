@@ -1,6 +1,6 @@
 package name.ncg777.maths.words.predicates;
 
-import static name.ncg777.computing.dataStructures.CollectionUtils.*;
+import static name.ncg777.computing.structures.CollectionUtils.*;
 
 import java.util.Arrays;
 import java.util.Iterator;

@@ -10,7 +10,7 @@ import java.util.function.Function;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.opencsv.exceptions.CsvException;
 
-import name.ncg777.computing.dataStructures.JaggedList;
+import name.ncg777.computing.structures.JaggedList;
 import name.ncg777.maths.relations.Relation;
 
 public class FiniteHomoRelation<L extends Comparable<? super L>>

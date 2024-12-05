@@ -1,1 +1,1 @@
-java name.ncg777.computerScience.ReflectiveEnumerationPrinter name.ncg777.mathematics.enumerations.DyckWordEnumeration $@
+java name.ncg777.computing.ReflectiveEnumerationPrinter name.ncg777.maths.enumerations.DyckWordEnumeration $@

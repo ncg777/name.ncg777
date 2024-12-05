@@ -1,4 +1,4 @@
-package name.ncg777.computing.dataStructures;
+package name.ncg777.computing.structures;
 
 
 public class HomoPair<T extends Comparable<? super T>>

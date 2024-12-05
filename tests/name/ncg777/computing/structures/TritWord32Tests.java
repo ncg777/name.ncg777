@@ -1,10 +1,8 @@
-package name.ncg777.computerScience.dataStructures;
+package name.ncg777.computing.structures;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
-import name.ncg777.computing.dataStructures.TritWord32;
 
 public class TritWord32Tests {
 

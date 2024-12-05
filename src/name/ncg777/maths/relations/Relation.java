@@ -4,7 +4,7 @@ import java.util.function.BiPredicate;
 
 import com.google.common.base.Predicate;
 
-import name.ncg777.computing.dataStructures.HeteroPair;
+import name.ncg777.computing.structures.HeteroPair;
 
 public interface Relation<T extends Comparable<? super T>, U extends Comparable<? super U>> extends BiPredicate<T,U>{
   public static <T extends Comparable<? super T>, U extends Comparable<? super U>> Relation<T,U> fromBiPredicate(BiPredicate<T,U> p) {
