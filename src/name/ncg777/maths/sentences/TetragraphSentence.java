@@ -34,7 +34,9 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
   public Word toWord() {
     return new Word(alphabetName,toString().replaceAll("\\s", ""));
   }
-  
+  public BinaryWord toBinaryWord() {
+    return toWord().toBinaryWord();
+  }
   @Override
   public String toString() {
     var sb = new StringBuilder();

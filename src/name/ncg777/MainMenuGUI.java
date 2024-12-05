@@ -11,16 +11,16 @@ import java.net.URISyntaxException;
 
 public class MainMenuGUI {
   public static void main(String[] args) {
-    // Create the main frame
     JFrame mainFrame = new JFrame("Main Menu");
     mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     mainFrame.setSize(500, 800);
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(0, 1)); // Dynamic vertical layout
-
+    
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
     addAppButton(panel, "maths.apps.Permutator",name.ncg777.maths.apps.Permutator.class);
+    addAppButton(panel, "maths.music.apps.KernelEvaluator", name.ncg777.maths.music.apps.kernelEvaluator.Application.class);
     addAppButton(panel, "maths.music.apps.ModularArithmeticSequencer",name.ncg777.maths.music.apps.ModularArithmeticSequencer.class);
     addAppButton(panel, "maths.music.apps.SeqGenBySegments",name.ncg777.maths.music.apps.SeqGenBySegments.class);
     addAppButton(panel, "maths.music.apps.SeqGenContourFollow",name.ncg777.maths.music.apps.SeqGenContourFollow.class);
