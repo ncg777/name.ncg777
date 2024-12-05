@@ -106,7 +106,6 @@ public class Application {
     JButton btnEvaluate = new JButton("Evaluate");
     btnEvaluate.setFont(new Font("Unifont", Font.PLAIN, 11));
     btnEvaluate.addActionListener(new ActionListener() {
-      @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
         try {
           btnEvaluate.setEnabled(false);
