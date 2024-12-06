@@ -101,7 +101,7 @@ public class SeqGenFixedSum {
     
     
     
-    JLabel lblRhythm = new JLabel("FourChars:");
+    JLabel lblRhythm = new JLabel("Rhythm :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JLabel lblXsMod = new JLabel("Sequence:");

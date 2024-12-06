@@ -269,7 +269,7 @@ public class BinaryWord extends Combination implements Serializable {
       var idx = idxs.get(wi);
       idxs.set(wi, (idx+1)%w.size());
       
-      b.set(j, w.get(idx));
+      b.set(-1+newsz-j, w.get(idx));
     }
     return b;
   }

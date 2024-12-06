@@ -151,7 +151,7 @@ public class SequenceVisualizer {
       lbl09.setText(chord.get(9) ? "X" : "");
       lbl10.setText(chord.get(10) ? "X" : "");
       lbl11.setText(chord.get(11) ? "X" : "");
-      lblName.setText(chord.toString());
+      lblName.setText(chord.toForteNumberString());
       lblIV.setText(chord.getIntervalVector().toString());
       this.repaint();
     }

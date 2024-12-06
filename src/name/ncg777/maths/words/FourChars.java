@@ -14,8 +14,8 @@ public class FourChars extends Word {
   }
   
   public FourChars(Alphabet.Name alphabetName, String string) {
-    super(alphabetName, string);
-    if(string.length() != 4) throw new IllegalArgumentException();
+    super(alphabetName, string.replaceAll("\\s+", ""));
+    if(string.replaceAll("\\s+", "").length() != 4) throw new IllegalArgumentException();
   }
   
   public FourChars(Alphabet.Name alphabetName, List<Character> list) {

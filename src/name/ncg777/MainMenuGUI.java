@@ -23,7 +23,8 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.apps.Permutator",name.ncg777.maths.apps.Permutator.class);
     addAppButton(panel, "maths.music.apps.KernelEvaluator", name.ncg777.maths.music.apps.kernelEvaluator.Application.class);
     addAppButton(panel, "maths.music.apps.ModularArithmeticSequencer",name.ncg777.maths.music.apps.ModularArithmeticSequencer.class);
-    addAppButton(panel, "maths.music.apps",name.ncg777.maths.music.apps.RexRandomizer.class);
+    addAppButton(panel, "maths.music.apps.RexRandomizer",name.ncg777.maths.music.apps.RexRandomizer.class);
+    addAppButton(panel, "maths.music.apps.RhythmAndSequenceMerger",name.ncg777.maths.music.apps.RhythmAndSequenceMerger.class);
     addAppButton(panel, "maths.music.apps.SeqGenBySegments",name.ncg777.maths.music.apps.SeqGenBySegments.class);
     addAppButton(panel, "maths.music.apps.SeqGenContourFollow",name.ncg777.maths.music.apps.SeqGenContourFollow.class);
     addAppButton(panel, "maths.music.apps.SeqGenFS",name.ncg777.maths.music.apps.SeqGenFS.class);

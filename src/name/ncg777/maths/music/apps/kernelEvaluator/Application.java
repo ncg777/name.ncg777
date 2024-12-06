@@ -131,7 +131,7 @@ public class Application {
       }
     });
     
-    JLabel lblRhythm = new JLabel("BinaryWord :");
+    JLabel lblRhythm = new JLabel("Rhythm :");
     lblRhythm.setFont(new Font("Unifont", Font.PLAIN, 11));
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     

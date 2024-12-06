@@ -70,7 +70,7 @@ public class SequenceConvolverAbsoluteTime {
     lblSequenceB.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblSequenceB.setHorizontalAlignment(SwingConstants.RIGHT);
     
-    JLabel lblSmoothingKernel = new JLabel("BinaryWord:");
+    JLabel lblSmoothingKernel = new JLabel("Rhythm :");
     lblSmoothingKernel.setFont(new Font("Unifont", Font.PLAIN, 11));
     lblSmoothingKernel.setHorizontalAlignment(SwingConstants.RIGHT);
     

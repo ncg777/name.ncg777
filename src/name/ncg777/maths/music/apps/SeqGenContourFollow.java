@@ -160,7 +160,7 @@ public class SeqGenContourFollow {
     
     
     
-    JLabel lblRhythm = new JLabel("BinaryWord :");
+    JLabel lblRhythm = new JLabel("Rhythm :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JLabel lblXsMod = new JLabel("Sequence:");
@@ -175,13 +175,7 @@ public class SeqGenContourFollow {
     
     JLabel lblDeltaMin = new JLabel("delta^-1 min:");
     lblDeltaMin.setHorizontalAlignment(SwingConstants.RIGHT);
-    
-    
-    
-    
-    
-    
-    
+       
     GroupLayout groupLayout = new GroupLayout(frmSeqgen.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)

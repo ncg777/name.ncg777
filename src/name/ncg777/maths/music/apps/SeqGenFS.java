@@ -135,7 +135,7 @@ public class SeqGenFS {
         }
       });
     
-    JLabel lblRhythm = new JLabel("FourChars :");
+    JLabel lblRhythm = new JLabel("Rhythm  :");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     
     JLabel lblXsMod = new JLabel("Sequence:");
@@ -143,10 +143,7 @@ public class SeqGenFS {
     
     JLabel lblDeltaMin = new JLabel("delta^-1 min:");
     lblDeltaMin.setHorizontalAlignment(SwingConstants.RIGHT);
-    
-    
-    
-    
+        
     JLabel lblDeltaAmp = new JLabel("delta^-1 amp:");
     lblDeltaAmp.setHorizontalAlignment(SwingConstants.RIGHT);
     

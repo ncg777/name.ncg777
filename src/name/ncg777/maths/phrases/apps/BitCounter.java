@@ -10,8 +10,8 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.Word;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -66,7 +66,7 @@ public class BitCounter {
           String str = textField.getText().trim();
           var abc = (Alphabet.Name)comboBox.getSelectedItem();
           lblCount.setText(
-              Integer.toString((new Word(abc, str)).toBinaryWord().getK()));
+              Integer.toString((new FourCharsPhrase(abc, str)).toBinaryWord().getK()));
         }
       }
     });

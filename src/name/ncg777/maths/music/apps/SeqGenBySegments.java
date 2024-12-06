@@ -62,7 +62,7 @@ public class SeqGenBySegments {
     frmSeqGen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmSeqGen.getContentPane().setLayout(null);
     
-    JLabel lblRhythm = new JLabel("FourChars:");
+    JLabel lblRhythm = new JLabel("Rhythm :");
     lblRhythm.setForeground(Color.WHITE);
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     lblRhythm.setBounds(10, 11, 46, 14);
