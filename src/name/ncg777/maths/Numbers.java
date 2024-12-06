@@ -93,6 +93,18 @@ public class Numbers {
       }
   }
   
+  /**
+   * Computes the binary repunit number with the specified length.
+   * A binary repunit is a number consisting only of ones in its binary representation.
+   * 
+   * For example:
+   * - For n = 3, the binary repunit is 111 (which is 7 in decimal).
+   * - For n = 4, the binary repunit is 1111 (which is 15 in decimal).
+   * 
+   * @param n the number of ones in the binary repunit
+   * @return the decimal value of the binary repunit
+   * @throws IllegalArgumentException if n is less than 1
+   */
   public static Function<Integer,Long> repunitBin = (Integer n) -> Numbers.qBinomial(2,n,1);
   
   public static boolean isPowerOfTwo(int n) {
