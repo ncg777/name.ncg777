@@ -32,10 +32,6 @@ public class FourChars extends Word {
     if(word.size()!= 4) throw new IllegalArgumentException();
   }
   
-  public FourChars(Digraph first, Digraph second) {
-    this(first.alphabetName, first.toString()+second.toString());
-    if(!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
-  }
   
   public static TreeSet<FourChars> generate(Alphabet.Name alphabetName) {
     TreeSet<FourChars> o = new TreeSet<FourChars>();
@@ -49,11 +45,11 @@ public class FourChars extends Word {
     return this.toString(true);
   }
   
-  public String toString(boolean as2Digraphs) {
+  public String toString(boolean insertSpace) {
     StringBuilder sb = new StringBuilder();
     sb.append(this.get(3));
     sb.append(this.get(2));
-    if(as2Digraphs) sb.append(" ");
+    if(insertSpace) sb.append(" ");
     sb.append(this.get(1));
     sb.append(this.get(0));
     
