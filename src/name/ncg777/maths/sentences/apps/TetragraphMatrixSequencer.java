@@ -11,13 +11,10 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Matrix;
-import name.ncg777.maths.sentences.TetragraphSentence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.Tetragraph;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -71,7 +68,6 @@ public class TetragraphMatrixSequencer {
     btnGenerate.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
           try {
-            var abc = (Alphabet.Name)comboBox.getSelectedItem();
             Sequence s = Sequence.parse(textSequence.getText());
             int n = s.size();
             String[] lines = textTetragraphList.getText().split("\n+");
@@ -79,7 +75,6 @@ public class TetragraphMatrixSequencer {
             Matrix<String> mat = new Matrix<String>(m, n);
             
             for(int i=0;i<m;i++) {
-              ArrayList<String> cells = new ArrayList<String>();
               String l = lines[i].replaceAll("\\s+", "");
               if(l.length()%4!=0) throw new IllegalArgumentException();
               
