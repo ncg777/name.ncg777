@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import static com.google.common.math.IntMath.checkedPow;
 import java.util.TreeSet;
+import java.util.function.Function;
 
 
 public class Numbers {
@@ -91,6 +92,8 @@ public class Numbers {
           throw new ArithmeticException("Gaussian binomial coefficient computation failed due to overflow or division error.");
       }
   }
+  
+  public static Function<Integer,Long> repunitBin = (Integer n) -> Numbers.qBinomial(2,n,1);
   
   public static boolean isPowerOfTwo(int n) {
     return ((int)Math.round(Math.pow(2.0, Math.round(Math.log(n)/Math.log(2.0)))) == n);
