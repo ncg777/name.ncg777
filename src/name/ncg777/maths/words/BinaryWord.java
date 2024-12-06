@@ -106,7 +106,7 @@ public class BinaryWord extends Combination implements Serializable {
     return new BinaryWord(t, l);
   }
 
-  public static BinaryWord build(int p_length, TreeSet<Integer> p_arr) {
+  public static BinaryWord build(TreeSet<Integer> p_arr, int p_length) {
     return new BinaryWord(p_arr, p_length);
   }
 
@@ -163,7 +163,7 @@ public class BinaryWord extends Combination implements Serializable {
     return this.toString().hashCode();
   }
 
-  protected BinaryWord(Integer p_n, Set<Integer> p_s) {
+  protected BinaryWord(Set<Integer> p_s, Integer p_n) {
     super(p_n, p_s);
   }
 

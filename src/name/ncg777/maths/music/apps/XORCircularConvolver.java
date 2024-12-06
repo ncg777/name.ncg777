@@ -68,7 +68,6 @@ public class XORCircularConvolver {
     
     JButton btnConvolve = new JButton("Convolve");
     btnConvolve.addActionListener(new ActionListener() {
-      @SuppressWarnings("null")
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
         BinaryWord carrier = new TetragraphSentence(abc, txtCarrier.getText()).toWord().toBinaryWord();

@@ -158,7 +158,7 @@ public class RexRandomizer {
         
         String ns = (new TetragraphSentence(
             (Alphabet.Name)comboBox.getSelectedItem(),
-            BinaryWord.build(len, newRhythm))).toString();
+            BinaryWord.build(newRhythm, len))).toString();
         
         String output = "";
         

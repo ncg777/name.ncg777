@@ -36,12 +36,16 @@ public class Alphabet extends ArrayList<Character> {
     reversed.put(Name.Hexadecimal, true);
   }
   
-  public double bitness() {
+  public double information() {
     return Math.log((double)this.size())/Math.log(2.0);
   }
   
-  public boolean isBitnessANatural() {
-    return checkedPow(2, (int)Math.round(bitness())) == size();
+  /***
+   * 
+   * @return True if information is a natural or size is a power of two
+   */
+  public boolean isInformationNatural() {
+    return checkedPow(2, (int)Math.round(information())) == size();
   }
   
   static public Alphabet getAlphabet(Name name) { return Alphabets.get(name); }

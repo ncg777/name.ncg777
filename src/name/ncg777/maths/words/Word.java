@@ -65,10 +65,10 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     
-    if (!alphabet.isBitnessANatural())
+    if (!alphabet.isInformationNatural())
       throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
     
-    int b = (int) alphabet.bitness();
+    int b = (int) alphabet.information();
     if (combination.getN() % b != 0) throw new UnsupportedOperationException(
         "Combination size must be multiple of bitness of alphabet.");
     
@@ -91,10 +91,10 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
   public BinaryWord toBinaryWord() {
     var abc = Alphabet.getAlphabet(alphabetName);
     
-    if (!abc.isBitnessANatural())
+    if (!abc.isInformationNatural())
       throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
     
-    int b = (int)Math.round(abc.bitness());
+    int b = (int)Math.round(abc.information());
     var o = new BinaryWord(new BitSet(), this.size()*b);
     
     for(int i=0;i<this.size();i++) {
@@ -108,7 +108,7 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
 
   public long toNatural() {
     var alphabet = Alphabet.getAlphabet(alphabetName);
-    if (!alphabet.isBitnessANatural()) throw new UnsupportedOperationException(
+    if (!alphabet.isInformationNatural()) throw new UnsupportedOperationException(
         "Can only convert word to natural number if alphabet size is a power of 2.");
 
     int k = 0;
@@ -139,33 +139,12 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     return mid.cyclicalDifference().signs();
   }
 
-  public String toBitString(Alphabet.Name alphabetName) {
+  public String toBitstring() {
     return toBinaryWord().toString();
-    
-//    var alphabet = Alphabet.getAlphabet(alphabetName);
-//    int b =  ((int) Math.round(alphabet.bitness()));
-//    
-//    StringBuilder sb = new StringBuilder();
-//    
-//    for(int i=0;i<this.size();i++) {
-//      int u = alphabet.indexOf(this.get(i));
-//      var sb1 = new StringBuilder(Integer.toBinaryString(u));
-//      while(sb1.length() < b) sb1.insert(0, "0");
-//      sb.append(sb1.toString());
-//      
-//    }
-//    return sb.toString();
   }
 
-  public static Word fromBitString(Alphabet.Name alphabetName, String string, int length) {
-    var sequence = new Sequence();
-    for (int i = string.length() - 1; i >= 0; i--) {
-      char c = string.charAt(i);
-      if (!(c == '0' || c == '1')) throw new IllegalArgumentException();
-      sequence.add(c == '1' ? 1 : 0);
-    }
-
-    return new Word(alphabetName, (new Word(Alphabet.Name.Binary, sequence)).toNatural(), length);
+  public static Word fromBitstring(Alphabet.Name alphabetName, String string) {
+    return BinaryWord.build(string).toWord(alphabetName);
   }
 
   public Word(Alphabet.Name alphabetName, Sequence sequence) {
