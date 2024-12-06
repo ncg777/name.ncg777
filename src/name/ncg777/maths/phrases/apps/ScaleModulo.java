@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.words.Alphabet;
 
 public class ScaleModulo {
@@ -80,8 +80,8 @@ public class ScaleModulo {
     txtOutput.setColumns(10);
     btnGo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        txtOutput.setText(new TetragraphSentence(Alphabet.Name.Hexadecimal,
-          (new TetragraphSentence(
+        txtOutput.setText(new FourCharsPhrase(Alphabet.Name.Hexadecimal,
+          (new FourCharsPhrase(
               Alphabet.Name.Hexadecimal, 
               textField.getText().trim()))
             .toWord().toBinaryWord().scaleModulo(

@@ -62,7 +62,7 @@ package name.ncg777.maths.music.apps;
 //  private void initialize() {
 //    frmRhythmAndSequenceMerger = new JFrame();
 //    frmRhythmAndSequenceMerger.setResizable(false);
-//    frmRhythmAndSequenceMerger.setTitle("BinaryWord and Sequence TetragraphMerger");
+//    frmRhythmAndSequenceMerger.setTitle("BinaryWord and Sequence FourCharsMerger");
 //    frmRhythmAndSequenceMerger.setBounds(100, 100, 450, 293);
 //    frmRhythmAndSequenceMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //    

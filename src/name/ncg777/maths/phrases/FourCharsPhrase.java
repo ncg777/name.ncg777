@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences;
+package name.ncg777.maths.phrases;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -10,34 +10,34 @@ import name.ncg777.maths.Combination;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
-import name.ncg777.maths.words.Tetragraph;
+import name.ncg777.maths.words.FourChars;
 import name.ncg777.maths.words.Word;
 
-public class TetragraphSentence extends ArrayList<Tetragraph> {
+public class FourCharsPhrase extends ArrayList<FourChars> {
   private static final long serialVersionUID = 1L;
   private Alphabet.Name alphabetName;
   
-  public TetragraphSentence(Alphabet.Name alphabetName) {
+  public FourCharsPhrase(Alphabet.Name alphabetName) {
     this.alphabetName = alphabetName;
   }
   
-  public TetragraphSentence(Alphabet.Name alphabetName, String string) {
+  public FourCharsPhrase(Alphabet.Name alphabetName, String string) {
     this(alphabetName);
     string = string.replaceAll("\\s+", "");
 
     if(string.length() % 4 != 0) throw new IllegalArgumentException();
     
     for(int i=(string.length()/4)-1;i>=0;i--) {
-      this.add(new Tetragraph(alphabetName, 
+      this.add(new FourChars(alphabetName, 
           (new StringBuilder(string.substring(i*4,(i+1)*4)).toString())));
     }
   }
   
-  public TetragraphSentence(Alphabet.Name alphabetName, Word word) {
+  public FourCharsPhrase(Alphabet.Name alphabetName, Word word) {
     this(alphabetName, word.toString());
   }
   
-  public TetragraphSentence(Alphabet.Name alphabetName, BinaryWord binaryWord) {
+  public FourCharsPhrase(Alphabet.Name alphabetName, BinaryWord binaryWord) {
     this(alphabetName, binaryWord.toWord(alphabetName));
   }
   
@@ -56,7 +56,7 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     return sb.toString().trim();
   }
   
-  public static TetragraphSentence expand(TetragraphSentence a, int x, boolean fill) {
+  public static FourCharsPhrase expand(FourCharsPhrase a, int x, boolean fill) {
     var abc = Alphabet.getAlphabet(a.alphabetName);
     var bitness = (int)Math.round(abc.information());
     
@@ -71,7 +71,7 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
         }
       }
     }
-    TetragraphSentence output = new TetragraphSentence(a.alphabetName);
+    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
     
     for (int i = 0; i < o.getN() / (bitness*4); i++) {
       var bn = new BinaryWord(new BitSet(), bitness*4);
@@ -81,20 +81,20 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
           bn.set(j);
         }
       }
-      output.add(new Tetragraph(bn.toWord(a.alphabetName)));
+      output.add(new FourChars(bn.toWord(a.alphabetName)));
     }
     return output;
   }
   
-  public static TetragraphSentence rotate(TetragraphSentence r, int t) {
-    return new TetragraphSentence(r.alphabetName, BinaryWord.build(r.toBinaryWord().rotate(t)));
+  public static FourCharsPhrase rotate(FourCharsPhrase r, int t) {
+    return new FourCharsPhrase(r.alphabetName, BinaryWord.build(r.toBinaryWord().rotate(t)));
   }
 
-  public static TetragraphSentence not(TetragraphSentence a) {
-    return new TetragraphSentence(a.alphabetName, a.toBinaryWord().invert());
+  public static FourCharsPhrase not(FourCharsPhrase a) {
+    return new FourCharsPhrase(a.alphabetName, a.toBinaryWord().invert());
   }
 
-  public static TetragraphSentence and(TetragraphSentence a, TetragraphSentence b) {
+  public static FourCharsPhrase and(FourCharsPhrase a, FourCharsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -111,10 +111,10 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
       }
     }
 
-    TetragraphSentence output = new TetragraphSentence(a.alphabetName);
+    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
     for (int i = 0; i < n; i++) {
       output.add(
-          new Tetragraph(
+          new FourChars(
               BinaryWord.build(
                   a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord())
               ).toWord(a.alphabetName)
@@ -124,7 +124,7 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     return output;
   }
 
-  public static TetragraphSentence or(TetragraphSentence a, TetragraphSentence b) {
+  public static FourCharsPhrase or(FourCharsPhrase a, FourCharsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -141,10 +141,10 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
       }
     }
 
-    TetragraphSentence output = new TetragraphSentence(a.alphabetName);
+    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
     
     for (int i = 0; i < n; i++) {
-      output.add(new Tetragraph(
+      output.add(new FourChars(
           BinaryWord.build(
               Combination.merge(
                   a.get(i).toBinaryWord(), 
@@ -154,7 +154,7 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     return output;
   }
 
-  public static TetragraphSentence xor(TetragraphSentence a, TetragraphSentence b) {
+  public static FourCharsPhrase xor(FourCharsPhrase a, FourCharsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -171,10 +171,10 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
       }
     }
 
-    TetragraphSentence output = new TetragraphSentence(a.alphabetName);
+    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
     for (int i = 0; i < n; i++) {
       output.add(
-          new Tetragraph(
+          new FourChars(
               BinaryWord.build(
                   (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord()))
               ).toWord(a.alphabetName)
@@ -184,7 +184,7 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     return output;
   }
 
-  public static TetragraphSentence minus(TetragraphSentence a, TetragraphSentence b) {
+  public static FourCharsPhrase minus(FourCharsPhrase a, FourCharsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -201,10 +201,10 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
       }
     }
 
-    TetragraphSentence output = new TetragraphSentence(a.alphabetName);
+    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
     for (int i = 0; i < n; i++) {
       output.add(
-          new Tetragraph(
+          new FourChars(
               BinaryWord.build(
                   (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord()))
               ).toWord(a.alphabetName)
@@ -214,12 +214,12 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     return output;
   }
 
-  public static TetragraphSentence convolve(TetragraphSentence a, TetragraphSentence b) {
+  public static FourCharsPhrase convolve(FourCharsPhrase a, FourCharsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
-    TetragraphSentence carrier = a;
-    TetragraphSentence impulse = b;
+    FourCharsPhrase carrier = a;
+    FourCharsPhrase impulse = b;
 
     BinaryWord b_carrier = carrier.toBinaryWord();
     BinaryWord b_impulse = impulse.toBinaryWord();
@@ -245,10 +245,10 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
       }
     }
     
-    return new TetragraphSentence(a.alphabetName, output);
+    return new FourCharsPhrase(a.alphabetName, output);
   }
 
-  public boolean isEquivalentUnderSyncronizedRotation(TetragraphSentence other) {
+  public boolean isEquivalentUnderSyncronizedRotation(FourCharsPhrase other) {
     if(this.alphabetName.equals(other.alphabetName))
       throw new IllegalArgumentException();
     var abc = Alphabet.getAlphabet(this.alphabetName);
@@ -256,7 +256,7 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     if (this.size() != other.size()) return false;
 
     for (int i = 0; i < this.size(); i++) {
-      TetragraphSentence rot = TetragraphSentence.rotate(other, i * (4*((int)Math.round(abc.information()))));
+      FourCharsPhrase rot = FourCharsPhrase.rotate(other, i * (4*((int)Math.round(abc.information()))));
       boolean eq = true;
       for (int j = 0; j < rot.size(); j++) {
         if (!this.get(j).toString().equals(rot.get(j).toString())) {
@@ -271,9 +271,9 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
 
   public Sequence clusterPartition(Alphabet.Name alphabetName) {
     var clusters =
-        TetragraphSentence.clusterRhythmPartition(alphabetName, this.toBinaryWord().partitionByEquality());
+        FourCharsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().partitionByEquality());
     ArrayList<BinaryWord> rs = new ArrayList<>();
-    for (TetragraphSentence r : clusters)
+    for (FourCharsPhrase r : clusters)
       rs.add(r.toBinaryWord());
 
     Sequence o = new Sequence();
@@ -291,33 +291,33 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
   }
 
   private static class TetragraphSentenceUnionSet {
-    ArrayList<TetragraphSentence> representants = new ArrayList<>();
-    TreeMap<String, TreeSet<TetragraphSentence>> instances = new TreeMap<>();
+    ArrayList<FourCharsPhrase> representants = new ArrayList<>();
+    TreeMap<String, TreeSet<FourCharsPhrase>> instances = new TreeMap<>();
 
-    public void add(TetragraphSentence item) {
+    public void add(FourCharsPhrase item) {
       boolean found = false;
-      for (TetragraphSentence r : representants) {
+      for (FourCharsPhrase r : representants) {
         if (r.isEquivalentUnderSyncronizedRotation(item)) {
           found = true;
           instances.get(r.toString()).add(item);
         }
       }
       if (!found) {
-        TreeSet<TetragraphSentence> inst = new TreeSet<>();
+        TreeSet<FourCharsPhrase> inst = new TreeSet<>();
         inst.add(item);
         instances.put(item.toString(), inst);
         representants.add(item);
       }
     }
 
-    public ArrayList<TreeSet<TetragraphSentence>> getTreeSets() {
-      ArrayList<TreeSet<TetragraphSentence>> o = new ArrayList<>();
+    public ArrayList<TreeSet<FourCharsPhrase>> getTreeSets() {
+      ArrayList<TreeSet<FourCharsPhrase>> o = new ArrayList<>();
       o.addAll(instances.values());
       return o;
     }
   }
-  public static TetragraphSentence fromBinaryWord(Alphabet.Name alphabetName, BinaryWord r){
-    TetragraphSentence output = new TetragraphSentence(alphabetName);
+  public static FourCharsPhrase fromBinaryWord(Alphabet.Name alphabetName, BinaryWord r){
+    FourCharsPhrase output = new FourCharsPhrase(alphabetName);
     var abc = Alphabet.getAlphabet(alphabetName);
     
     if(!abc.isInformationNatural())
@@ -338,40 +338,40 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
         }
         k++;
       }
-      output.add(new Tetragraph(t.toWord(alphabetName)));
+      output.add(new FourChars(t.toWord(alphabetName)));
     }
     return output;
   }
   
-  public static ArrayList<TetragraphSentence> fromRhythmArray(
+  public static ArrayList<FourCharsPhrase> fromRhythmArray(
       Alphabet.Name alphabetName, ArrayList<BinaryWord> list) {
-    ArrayList<TetragraphSentence> o = new ArrayList<>();
+    ArrayList<FourCharsPhrase> o = new ArrayList<>();
     
     for(BinaryWord r : list) {
-      o.add(TetragraphSentence.fromBinaryWord(alphabetName,r));
+      o.add(FourCharsPhrase.fromBinaryWord(alphabetName,r));
     }
     return o;
   }
   
-  public static ArrayList<TetragraphSentence> clusterRhythmPartition(
+  public static ArrayList<FourCharsPhrase> clusterRhythmPartition(
       Alphabet.Name alphabetName, ArrayList<BinaryWord> _partition) {
     if(_partition == null) throw new RuntimeException("clusterRhythmPartition:: partition is null.");
-    ArrayList<TetragraphSentence> partition = TetragraphSentence.fromRhythmArray(alphabetName, _partition);
+    ArrayList<FourCharsPhrase> partition = FourCharsPhrase.fromRhythmArray(alphabetName, _partition);
     if(partition.size()==1) {
-      ArrayList<TetragraphSentence> f = new ArrayList<>();
+      ArrayList<FourCharsPhrase> f = new ArrayList<>();
       f.add(partition.get(0));
       return f;
     }
     
     TetragraphSentenceUnionSet us = new TetragraphSentenceUnionSet();
-    for(TetragraphSentence r: partition) {us.add(r);}
-    ArrayList<TetragraphSentence> o = new ArrayList<TetragraphSentence>();
+    for(FourCharsPhrase r: partition) {us.add(r);}
+    ArrayList<FourCharsPhrase> o = new ArrayList<FourCharsPhrase>();
     
-    for(TreeSet<TetragraphSentence> t : us.getTreeSets()) {
-      TetragraphSentence s = null;
-      for(TetragraphSentence l : t) {
-        if(s==null) {s = (TetragraphSentence)l.clone();}
-        s = TetragraphSentence.or(s, l);
+    for(TreeSet<FourCharsPhrase> t : us.getTreeSets()) {
+      FourCharsPhrase s = null;
+      for(FourCharsPhrase l : t) {
+        if(s==null) {s = (FourCharsPhrase)l.clone();}
+        s = FourCharsPhrase.or(s, l);
       }
       o.add(s);
     }

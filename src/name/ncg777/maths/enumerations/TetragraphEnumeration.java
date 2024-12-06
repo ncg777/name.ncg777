@@ -4,9 +4,9 @@ import java.util.Enumeration;
 
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.Tetragraph;
+import name.ncg777.maths.words.FourChars;
 
-public class TetragraphEnumeration implements Enumeration<Tetragraph>  {
+public class TetragraphEnumeration implements Enumeration<FourChars>  {
   private Alphabet.Name alphabetName;
   
   private MixedRadixEnumeration mre;
@@ -26,7 +26,7 @@ public class TetragraphEnumeration implements Enumeration<Tetragraph>  {
   }
 
   @Override
-  public Tetragraph nextElement() {
-    return new Tetragraph(alphabetName, new Sequence(mre.nextElement()));
+  public FourChars nextElement() {
+    return new FourChars(alphabetName, new Sequence(mre.nextElement()));
   }
 }

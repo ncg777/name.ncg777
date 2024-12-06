@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences;
+package name.ncg777.maths.phrases;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -7,17 +7,17 @@ import java.util.List;
 
 import name.ncg777.maths.words.BinaryWord;
 
-public class BinarySentence extends ArrayList<BinaryWord>  implements Comparable<BinarySentence>{
+public class BinaryPhrase extends ArrayList<BinaryWord>  implements Comparable<BinaryPhrase>{
   private static final long serialVersionUID = 1L;
 
-  public BinarySentence(List<BinaryWord> m_l) {
+  public BinaryPhrase(List<BinaryWord> m_l) {
     super();
     for (BinaryWord i : m_l) {
       this.add(i);
     }
   }
 
-  public BinarySentence() {
+  public BinaryPhrase() {
     super();
   }
   
@@ -34,14 +34,14 @@ public class BinarySentence extends ArrayList<BinaryWord>  implements Comparable
     }
     return new BinaryWord(b,n);
   }
-  static public BinarySentence parse(String str) {
+  static public BinaryPhrase parse(String str) {
     String[] strs = str.split("\\s+");
     
     LinkedList<BinaryWord> output = new LinkedList<BinaryWord>();
     for (var s : strs) {
       output.add(BinaryWord.build(s));
     }
-    return new BinarySentence(output);
+    return new BinaryPhrase(output);
 
   }
 
@@ -70,7 +70,7 @@ public class BinarySentence extends ArrayList<BinaryWord>  implements Comparable
     return m;
   }
 
-  public static Boolean[] toBooleanArray(BinarySentence a) {
+  public static Boolean[] toBooleanArray(BinaryPhrase a) {
 
     Boolean output[] = new Boolean[a.size() * 2];
     for (int i = 0; i < a.size() * 2; i++) {
@@ -87,8 +87,8 @@ public class BinarySentence extends ArrayList<BinaryWord>  implements Comparable
     return output;
   }
 
-  public static BinarySentence juxtapose(BinarySentence a, BinarySentence b) {
-    BinarySentence output = new BinarySentence();
+  public static BinaryPhrase juxtapose(BinaryPhrase a, BinaryPhrase b) {
+    BinaryPhrase output = new BinaryPhrase();
 
     for (int i = 0; i < a.size(); i++) {
       output.add(a.get(i));
@@ -99,14 +99,14 @@ public class BinarySentence extends ArrayList<BinaryWord>  implements Comparable
     return output;
   }
 
-  public void append(BinarySentence a) {
+  public void append(BinaryPhrase a) {
     for (int i = 0; i < a.size(); i++) {
       this.add(a.get(i));
     }
   }
 
   @Override
-  public int compareTo(BinarySentence o) {
+  public int compareTo(BinaryPhrase o) {
     return o.toString().compareTo(this.toString());
   }
 }

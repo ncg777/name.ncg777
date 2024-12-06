@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
@@ -134,7 +134,7 @@ public class Diluter {
     var abc = (Alphabet.Name)comboBox.getSelectedItem();
     var alphabet = Alphabet.getAlphabet(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
-    BinaryWord r = new TetragraphSentence(
+    BinaryWord r = new FourCharsPhrase(
         abc, 
         str).toWord().toBinaryWord();
  
@@ -169,6 +169,6 @@ public class Diluter {
       }
     }
     
-    textResult.setText((new TetragraphSentence(abc, o)).toString());
+    textResult.setText((new FourCharsPhrase(abc, o)).toString());
   }
 }

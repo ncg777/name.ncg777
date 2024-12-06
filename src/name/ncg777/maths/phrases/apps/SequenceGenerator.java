@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -74,7 +74,7 @@ public class SequenceGenerator {
           }
           
           binaryWords.add(
-              new TetragraphSentence(
+              new FourCharsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
                   l[0].trim()).toWord().toBinaryWord());
           

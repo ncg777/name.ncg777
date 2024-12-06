@@ -18,11 +18,11 @@ import javax.swing.JCheckBox;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
-import name.ncg777.maths.words.Tetragraph;
+import name.ncg777.maths.words.FourChars;
 import name.ncg777.maths.words.predicates.Even;
 
 import javax.swing.SwingConstants;
@@ -83,9 +83,9 @@ public class x2mid {
     btnXmid.setForeground(Color.LIGHT_GRAY);
     btnXmid.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        TetragraphSentence r = new TetragraphSentence(Alphabet.Name.Hexadecimal, textField.getText());
+        FourCharsPhrase r = new FourCharsPhrase(Alphabet.Name.Hexadecimal, textField.getText());
         if(chckbxNewCheckBox.isSelected()) {
-          r = TetragraphSentence.expand(r, 2, false);  
+          r = FourCharsPhrase.expand(r, 2, false);  
         } else {
           if(!(new Even()).apply(r.toWord().toBinaryWord())) {
             txtrOutput.setText("BinaryWord is not even");
@@ -106,13 +106,13 @@ public class x2mid {
           int m = a+(d/2);
           mid.add(m%total);
         }
-        TetragraphSentence o = new TetragraphSentence(Alphabet.Name.Hexadecimal);
+        FourCharsPhrase o = new FourCharsPhrase(Alphabet.Name.Hexadecimal);
         for(int i=0;i<r.size();i++){
           TreeSet<Integer> t = new TreeSet<Integer>();
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(new Tetragraph(Alphabet.Name.Hexadecimal, new BinaryWord(t, 16).toWord(Alphabet.Name.Hexadecimal)));
+          o.add(new FourChars(Alphabet.Name.Hexadecimal, new BinaryWord(t, 16).toWord(Alphabet.Name.Hexadecimal)));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }

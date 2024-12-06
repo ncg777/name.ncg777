@@ -52,7 +52,7 @@ public class SequenceMerger {
    */
   private void initialize() {
     frmSequenceMerger = new JFrame();
-    frmSequenceMerger.setTitle("Sequence TetragraphMerger");
+    frmSequenceMerger.setTitle("Sequence FourCharsMerger");
     frmSequenceMerger.setBounds(100, 100, 450, 373);
     frmSequenceMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

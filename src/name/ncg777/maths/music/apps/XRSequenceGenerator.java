@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 
@@ -77,7 +77,7 @@ public class XRSequenceGenerator {
       
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
-        Sequence comp = (new TetragraphSentence(abc, textRhythm.getText()))
+        Sequence comp = (new FourCharsPhrase(abc, textRhythm.getText()))
             .toWord().toBinaryWord().getComposition().asSequence();
         boolean useHalf = true;
         

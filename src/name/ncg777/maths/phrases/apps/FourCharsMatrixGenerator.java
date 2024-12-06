@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -11,9 +11,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Matrix;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.sentences.TetragraphSentence;
-import name.ncg777.maths.words.Tetragraph;
+import name.ncg777.maths.words.FourChars;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.maths.words.predicates.EntropicDispersion;
@@ -47,20 +47,20 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 
-public class TetragraphMatrixGenerator {
+public class FourCharsMatrixGenerator {
 
-  private JFrame frmTetragraphMatrixGenerator;
+  private JFrame frmFourCharsMatrixGenerator;
   private JTextArea textArea_1 = new JTextArea();
   private JTextArea textArea = new JTextArea();
   private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
   private JTextField textFilterModes;
   private JTextField textDiffFilterModes;
 
-  private static TreeMap<Alphabet.Name, TreeSet<Tetragraph>> sets = new TreeMap<>();
+  private static TreeMap<Alphabet.Name, TreeSet<FourChars>> sets = new TreeMap<>();
   
   static {
     for(var n : Alphabet.Name.values()) {
-      sets.put(n, Tetragraph.generate((Alphabet.Name)n));
+      sets.put(n, FourChars.generate((Alphabet.Name)n));
     }
   }
   
@@ -68,8 +68,8 @@ public class TetragraphMatrixGenerator {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          TetragraphMatrixGenerator window = new TetragraphMatrixGenerator();
-          window.frmTetragraphMatrixGenerator.setVisible(true);
+          FourCharsMatrixGenerator window = new FourCharsMatrixGenerator();
+          window.frmFourCharsMatrixGenerator.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -77,7 +77,7 @@ public class TetragraphMatrixGenerator {
     });
   }
 
-  public TetragraphMatrixGenerator() {
+  public FourCharsMatrixGenerator() {
     initialize();
   }
   
@@ -103,11 +103,11 @@ public class TetragraphMatrixGenerator {
   private boolean running = false;
 
   private void initialize() {
-    frmTetragraphMatrixGenerator = new JFrame();
-    frmTetragraphMatrixGenerator.setResizable(false);
-    frmTetragraphMatrixGenerator.setTitle("Tetragraph Matrix");
-    frmTetragraphMatrixGenerator.setBounds(100, 100, 711, 541);
-    frmTetragraphMatrixGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frmFourCharsMatrixGenerator = new JFrame();
+    frmFourCharsMatrixGenerator.setResizable(false);
+    frmFourCharsMatrixGenerator.setTitle("FourChars Matrix");
+    frmFourCharsMatrixGenerator.setBounds(100, 100, 711, 541);
+    frmFourCharsMatrixGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JSpinner spinner = new JSpinner();
     spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
@@ -168,7 +168,7 @@ public class TetragraphMatrixGenerator {
               TreeSet<BinaryWord> t = new TreeSet<BinaryWord>();
               TreeSet<BinaryWord> t0 = new TreeSet<BinaryWord>();
              
-              for(Tetragraph r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryWord());
+              for(FourChars r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryWord());
               
               for(BinaryWord r : t0){
                 if(pred.test(r)) {
@@ -186,7 +186,7 @@ public class TetragraphMatrixGenerator {
                 if(strFixed[i].trim().length() == 0) continue;
                 
                 output.insertRow(fixedSize);
-                TetragraphSentence r = new TetragraphSentence(
+                FourCharsPhrase r = new FourCharsPhrase(
                     abc, 
                     strFixed[i].trim());
                 for(int j=0;j<n;j++) {
@@ -287,13 +287,13 @@ public class TetragraphMatrixGenerator {
               
               if(running) {
 
-                  Matrix<Tetragraph> tmpMat = new Matrix<Tetragraph>(m,n);
-                  Matrix<Tetragraph> tmpMatNot = new Matrix<Tetragraph>(m,n);
+                  Matrix<FourChars> tmpMat = new Matrix<FourChars>(m,n);
+                  Matrix<FourChars> tmpMatNot = new Matrix<FourChars>(m,n);
                   for(int i=0;i<m;i++) {
                     for(int j=0;j<n;j++) {
-                      tmpMat.set(i, j, new Tetragraph(output.get(i, j).toWord(abc)));
+                      tmpMat.set(i, j, new FourChars(output.get(i, j).toWord(abc)));
                       tmpMatNot.set(i, j, 
-                          new Tetragraph(output.get(i, j).invert().toWord(abc))
+                          new FourChars(output.get(i, j).invert().toWord(abc))
                       );
                     }
                   }
@@ -348,7 +348,7 @@ public class TetragraphMatrixGenerator {
     textDiffFilterModes = new JTextField("1");
     textDiffFilterModes.setColumns(10);
     
-    GroupLayout groupLayout = new GroupLayout(frmTetragraphMatrixGenerator.getContentPane());
+    GroupLayout groupLayout = new GroupLayout(frmFourCharsMatrixGenerator.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
         .addGroup(groupLayout.createSequentialGroup()
@@ -426,6 +426,6 @@ public class TetragraphMatrixGenerator {
     
     scrollPane.setViewportView(textArea);
     textArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-    frmTetragraphMatrixGenerator.getContentPane().setLayout(groupLayout);
+    frmFourCharsMatrixGenerator.getContentPane().setLayout(groupLayout);
   }
 }

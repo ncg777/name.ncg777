@@ -6,39 +6,39 @@ import java.util.TreeSet;
 import name.ncg777.maths.enumerations.TetragraphEnumeration;
 import name.ncg777.maths.sequences.Sequence;
 
-public class Tetragraph extends Word {
+public class FourChars extends Word {
   private static final long serialVersionUID = 1L;
 
-  public Tetragraph(Alphabet.Name alphabetName, Character[] array) {
+  public FourChars(Alphabet.Name alphabetName, Character[] array) {
     super(alphabetName, array);
   }
   
-  public Tetragraph(Alphabet.Name alphabetName, String string) {
+  public FourChars(Alphabet.Name alphabetName, String string) {
     super(alphabetName, string);
     if(string.length() != 4) throw new IllegalArgumentException();
   }
   
-  public Tetragraph(Alphabet.Name alphabetName, List<Character> list) {
+  public FourChars(Alphabet.Name alphabetName, List<Character> list) {
     super(alphabetName, list);
   }
   
-  public Tetragraph(Alphabet.Name alphabetName, Sequence sequence) {
+  public FourChars(Alphabet.Name alphabetName, Sequence sequence) {
     super(alphabetName, sequence);
     if(sequence.size()!= 4) throw new IllegalArgumentException();
   }
  
-  public Tetragraph(Word word) {
+  public FourChars(Word word) {
     super(word);
     if(word.size()!= 4) throw new IllegalArgumentException();
   }
   
-  public Tetragraph(Digraph first, Digraph second) {
+  public FourChars(Digraph first, Digraph second) {
     this(first.alphabetName, first.toString()+second.toString());
     if(!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
   }
   
-  public static TreeSet<Tetragraph> generate(Alphabet.Name alphabetName) {
-    TreeSet<Tetragraph> o = new TreeSet<Tetragraph>();
+  public static TreeSet<FourChars> generate(Alphabet.Name alphabetName) {
+    TreeSet<FourChars> o = new TreeSet<FourChars>();
     var tge = new TetragraphEnumeration(alphabetName);
     while(tge.hasMoreElements()) o.add(tge.nextElement());
     return o;
@@ -60,7 +60,7 @@ public class Tetragraph extends Word {
     return sb.toString();
   }
   
-  public int compareTo(Tetragraph o) {
+  public int compareTo(FourChars o) {
     return this.toSequence().compareTo(o.toSequence());
   }
 }

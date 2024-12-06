@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -9,11 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.maths.words.Word;
-import name.ncg777.maths.words.Tetragraph;
+import name.ncg777.maths.words.FourChars;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -72,7 +72,7 @@ public class HexadecimalWordDivider {
     spinner.setFont(new Font("Unifont", Font.PLAIN, 11));
     btnDivide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var r1 = (new TetragraphSentence(
+        var r1 = (new FourCharsPhrase(
             Alphabet.Name.Hexadecimal, txtR.getText().trim()))
             .toWord()
             .toBinaryWord();
@@ -98,7 +98,7 @@ public class HexadecimalWordDivider {
           String output = "";
           
           for(int i=0;i<div;i++) {
-            var t = new Tetragraph(Alphabet.Name.Hexadecimal, new Word(Alphabet.Name.Hexadecimal, o.get(i).toString()));
+            var t = new FourChars(Alphabet.Name.Hexadecimal, new Word(Alphabet.Name.Hexadecimal, o.get(i).toString()));
             output += t.toString(true) + "\n";
           }
           txtResult.setText(output);

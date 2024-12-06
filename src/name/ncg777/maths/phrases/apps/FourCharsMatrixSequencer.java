@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -21,7 +21,7 @@ import javax.swing.JScrollPane;
 import java.awt.Font;
 import javax.swing.JComboBox;
 
-public class TetragraphMatrixSequencer {
+public class FourCharsMatrixSequencer {
 
   private JFrame frmRseq;
   private JTextArea textTetragraphList;
@@ -33,7 +33,7 @@ public class TetragraphMatrixSequencer {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          TetragraphMatrixSequencer window = new TetragraphMatrixSequencer();
+          FourCharsMatrixSequencer window = new FourCharsMatrixSequencer();
           window.frmRseq.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -42,13 +42,13 @@ public class TetragraphMatrixSequencer {
     });
   }
 
-  public TetragraphMatrixSequencer() {
+  public FourCharsMatrixSequencer() {
     initialize();
   }
 
   private void initialize() {
     frmRseq = new JFrame();
-    frmRseq.setTitle("TetragraphMatrixSequencer");
+    frmRseq.setTitle("FourCharsMatrixSequencer");
     frmRseq.setBounds(100, 100, 471, 587);
     frmRseq.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

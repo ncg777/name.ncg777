@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -14,14 +14,14 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.words.Alphabet;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class TetragraphCalculator {
+public class FourCharsCalculator {
   private enum Operation {
     And,
     Or,
@@ -39,7 +39,7 @@ public class TetragraphCalculator {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          TetragraphCalculator window = new TetragraphCalculator();
+          FourCharsCalculator window = new FourCharsCalculator();
           window.frmRhythmCalc.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -48,13 +48,13 @@ public class TetragraphCalculator {
     });
   }
 
-  public TetragraphCalculator() {
+  public FourCharsCalculator() {
     initialize();
   }
 
   private void initialize() {
     frmRhythmCalc = new JFrame();
-    frmRhythmCalc.setTitle("TetragraphCalculator");
+    frmRhythmCalc.setTitle("FourCharsCalculator");
     frmRhythmCalc.setBounds(100, 100, 450, 325);
     frmRhythmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -86,25 +86,25 @@ public class TetragraphCalculator {
     btnCalc.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = comboBox.getSelectedItem();
-        TetragraphSentence a = new TetragraphSentence((Alphabet.Name)abc, rhA.getText());
-        TetragraphSentence b = new TetragraphSentence((Alphabet.Name)abc, rhB.getText());
+        FourCharsPhrase a = new FourCharsPhrase((Alphabet.Name)abc, rhA.getText());
+        FourCharsPhrase b = new FourCharsPhrase((Alphabet.Name)abc, rhB.getText());
         String o = "";
           
         switch((Operation) operation.getSelectedItem()) {
           case And:
-            o = TetragraphSentence.and(a, b).toString();
+            o = FourCharsPhrase.and(a, b).toString();
             break;
           case Convolve:
-            o = TetragraphSentence.convolve(a, b).toString();
+            o = FourCharsPhrase.convolve(a, b).toString();
             break;
           case Or:
-            o = TetragraphSentence.or(a, b).toString();
+            o = FourCharsPhrase.or(a, b).toString();
             break;
           case Xor:
-            o = TetragraphSentence.xor(a, b).toString();
+            o = FourCharsPhrase.xor(a, b).toString();
             break;
           case Minus:
-            o = TetragraphSentence.minus(a, b).toString();
+            o = FourCharsPhrase.minus(a, b).toString();
             break;
         }
        
@@ -122,8 +122,8 @@ public class TetragraphCalculator {
     JButton btnFlipBits = new JButton("Flip bits");
     btnFlipBits.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var str = TetragraphSentence.not(
-            new TetragraphSentence(
+        var str = FourCharsPhrase.not(
+            new FourCharsPhrase(
                 (Alphabet.Name)comboBox.getSelectedItem(), 
                 output.getText())).toString();
         

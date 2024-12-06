@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.statistics.RandomNumberGenerator;
@@ -102,7 +102,7 @@ public class SeqGenContourFollow {
             {
               String str_R = txtRhythm.getText().trim();
               
-              Sequence C = new TetragraphSentence(
+              Sequence C = new FourCharsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
                   str_R
               ).toWord().toBinaryWord().getComposition().asSequence();;

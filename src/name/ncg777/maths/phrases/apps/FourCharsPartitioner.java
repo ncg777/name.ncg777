@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -22,7 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -30,7 +30,7 @@ import name.ncg777.maths.words.BinaryWord;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 
-public class TetragraphPartitioner {
+public class FourCharsPartitioner {
 
   private JFrame frmRPartitioner;
   private JTextField txtR;
@@ -43,7 +43,7 @@ public class TetragraphPartitioner {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          TetragraphPartitioner window = new TetragraphPartitioner();
+          FourCharsPartitioner window = new FourCharsPartitioner();
           window.frmRPartitioner.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -52,13 +52,13 @@ public class TetragraphPartitioner {
     });
   }
 
-  public TetragraphPartitioner() {
+  public FourCharsPartitioner() {
     initialize();
   }
 
   private void initialize() {
     frmRPartitioner = new JFrame();
-    frmRPartitioner.setTitle("TetragraphPartitioner");
+    frmRPartitioner.setTitle("FourCharsPartitioner");
     frmRPartitioner.setBounds(100, 100, 456, 411);
     frmRPartitioner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -86,7 +86,7 @@ public class TetragraphPartitioner {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
         
-        TetragraphSentence r = new TetragraphSentence(abc, txtR.getText().trim());
+        FourCharsPhrase r = new FourCharsPhrase(abc, txtR.getText().trim());
         BinaryWord r1 = r.toBinaryWord();
         Sequence p0 = Sequence.parse(txtPartition.getText());
         Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
@@ -102,7 +102,7 @@ public class TetragraphPartitioner {
         
         String strOut = "";
         for(int i=0; i<output.size();i++) {
-          strOut += TetragraphSentence.expand(new TetragraphSentence(abc, output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
+          strOut += FourCharsPhrase.expand(new FourCharsPhrase(abc, output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
         }
         txtResult.setText(strOut);       
       }

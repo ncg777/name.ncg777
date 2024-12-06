@@ -1,4 +1,4 @@
-package name.ncg777.maths.sentences.apps;
+package name.ncg777.maths.phrases.apps;
 
 import java.awt.EventQueue;
 
@@ -8,7 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.sentences.TetragraphSentence;
+import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
@@ -24,7 +24,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 
-public class TetragraphMerger {
+public class FourCharsMerger {
 
   private JFrame frmRhythmMerger;
   private JTextField txtResult;
@@ -35,7 +35,7 @@ public class TetragraphMerger {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          TetragraphMerger window = new TetragraphMerger();
+          FourCharsMerger window = new FourCharsMerger();
           window.frmRhythmMerger.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -45,14 +45,14 @@ public class TetragraphMerger {
   }
 
 
-  public TetragraphMerger() {
+  public FourCharsMerger() {
     initialize();
   }
 
   private void initialize() {
     frmRhythmMerger = new JFrame();
     frmRhythmMerger.setResizable(false);
-    frmRhythmMerger.setTitle("TetragraphMerger");
+    frmRhythmMerger.setTitle("FourCharsMerger");
     frmRhythmMerger.setBounds(100, 100, 450, 273);
     frmRhythmMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -63,7 +63,7 @@ public class TetragraphMerger {
         ArrayList<BinaryWord> arr = new ArrayList<BinaryWord>();
         for(int i=0; i<lines.length;i++) {
           arr.add(
-              new TetragraphSentence(
+              new FourCharsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(),
                   lines[i].trim())
           .toBinaryWord());
@@ -72,7 +72,7 @@ public class TetragraphMerger {
         BinaryWord result = BinaryWord.merge(arr);
           
         txtResult.setText(
-            (new TetragraphSentence((Alphabet.Name)comboBox.getSelectedItem(),result)).toString()
+            (new FourCharsPhrase((Alphabet.Name)comboBox.getSelectedItem(),result)).toString()
         );
         
       }
