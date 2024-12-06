@@ -159,6 +159,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return sb.toString();
   }
+  
   public static Combination fromBinaryString(String s) {
     s = s.trim();
     int n = s.length();
@@ -190,6 +191,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return o;
   }
+  
   public Set<Integer> asSet(){
     Set<Integer> o = new TreeSet<Integer>();
     for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
@@ -197,6 +199,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return o;
   }
+  
   public Sequence asBinarySequence() {
     Sequence o = new Sequence();
     for(int i=0;i<getN();i++) {
@@ -297,7 +300,6 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
 
     return new Combination(x, m_n);
-
   }
   
   public Combination intersect(Combination c){
@@ -305,7 +307,6 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     BitSet b = new BitSet(n);
     b.or(this); b.and(c);
     return new Combination(b, n);
-    
   }
   
   public Combination minus(Combination c){
@@ -359,8 +360,8 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
       }
       o[i] = new Combination(b[i],getN());
     }
-    return o;
     
+    return o;
   }
 
   public static Combination genRnd(int n) {
@@ -384,5 +385,4 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return o;
   }
-
 }
