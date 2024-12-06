@@ -28,8 +28,9 @@ public class Numbers {
   /**
    * Computes the q-factorial [n]_q! for given n and q using integer arithmetic.
    *
-   * @param n The integer n for the q-factorial.
    * @param q The base q (must be positive).
+   * @param n The integer n for the q-factorial.
+   * 
    * @return The q-factorial [n]_q! as a long.
    * @throws ArithmeticException if the result overflows a long.
    */
