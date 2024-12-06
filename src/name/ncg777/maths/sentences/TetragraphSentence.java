@@ -24,8 +24,13 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
   public TetragraphSentence(Alphabet.Name alphabetName, String string) {
     this(alphabetName);
     string = string.replaceAll("\\s+", "");
-    if(string.length()%4 != 0) throw new IllegalArgumentException();
-    for(int i=0;i<string.length() / 4;i++) this.add(new Tetragraph(alphabetName, string.substring(i*4,(i+1)*4)));
+
+    if(string.length() % 4 != 0) throw new IllegalArgumentException();
+    
+    for(int i=(string.length()/4)-1;i>=0;i--) {
+      this.add(new Tetragraph(alphabetName, 
+          (new StringBuilder(string.substring(i*4,(i+1)*4)).toString())));
+    }
   }
   
   public TetragraphSentence(Alphabet.Name alphabetName, Word word) {
@@ -39,13 +44,15 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
   public Word toWord() {
     return new Word(alphabetName,toString().replaceAll("\\s", ""));
   }
+  
   public BinaryWord toBinaryWord() {
     return toWord().toBinaryWord();
   }
+  
   @Override
   public String toString() {
     var sb = new StringBuilder();
-    for(var t : this) sb.append(t.toString(true) + " ");
+    for(int i=this.size()-1;i>=0;i--) sb.append(this.get(i).toString(true) + " ");
     return sb.toString().trim();
   }
   
@@ -135,14 +142,14 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
     }
 
     TetragraphSentence output = new TetragraphSentence(a.alphabetName);
+    
     for (int i = 0; i < n; i++) {
-      output.add(
-          new Tetragraph(
-              BinaryWord.build(
-                  Combination.merge(a.get(i).toBinaryWord(), b.get(i).toBinaryWord())
-              ).toWord(a.alphabetName)
-          )
-      );
+      output.add(new Tetragraph(
+          BinaryWord.build(
+              Combination.merge(
+                  a.get(i).toBinaryWord(), 
+                  b.get(i).toBinaryWord()))
+          .toWord(a.alphabetName)));
     }
     return output;
   }

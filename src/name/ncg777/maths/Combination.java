@@ -268,7 +268,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     x.or(b);
     return new Combination(x, Math.max(a.getN(), b.getN()));
   }
-
+ 
   public static Combination[] generate(int n, int k) {
     int cnt = (int)Numbers.binomial(n, k);
     Combination[] o = new Combination[cnt];

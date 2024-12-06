@@ -41,12 +41,13 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     for (var c : list)
       this.add(c);
   }
-
+  
   public Word(Alphabet.Name alphabetName, String string) {
     this(alphabetName);
-    for (int i = 0; i < string.length(); i++)
+
+    for (int i=string.length()-1; i >=0 ; i--)
       this.add(string.charAt(i));
-  }
+   }
 
   public Word(Alphabet.Name alphabetName, long natural, int length) {
     super();
@@ -73,34 +74,31 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     
     int n = combination.getN();
     int length = n / b;
-    var sb = new StringBuilder(combination.toBinaryString());
-    
-    sb.reverse();
+    var sb = new StringBuilder(combination.toBinaryString()).reverse();
     ArrayList<Character> tmp = new ArrayList<Character>();
     for (int i = 0; i < length; i++) {
       tmp.add(
           alphabet.get(
-              Integer.parseInt(sb.substring(i * b, (i + 1) * b),2)
+              Integer.parseInt(sb.substring(i * b, (i + 1) * b), 2)
           ));
     }
     
-    this.addAll(tmp);
+    this.addAll(tmp.reversed());
   }
 
   public BinaryWord toBinaryWord() {
     var abc = Alphabet.getAlphabet(alphabetName);
     
     if (!abc.isInformationNatural())
-      throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
-    
+      throw new UnsupportedOperationException();
+
     int b = (int)Math.round(abc.information());
     var o = new BinaryWord(new BitSet(), this.size()*b);
     
     for(int i=0;i<this.size();i++) {
       StringBuilder sb = new StringBuilder(Integer.toBinaryString(abc.indexOf(this.get(i))));
       while(sb.length() < b) sb.insert(0, "0");
-      sb = sb.reverse();
-      for(int j=0;j<b;j++) o.set((i*b)+j,sb.charAt(j) == '1');
+      for(int j=0;j<b;j++) o.set((i*b)+j, sb.charAt(-1+b-j) == '1');
     }
     return o;
   }
@@ -204,19 +202,11 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
 
   @Override
   public String toString() {
-    var w = new Word(this);
-    if (Alphabet.isStringReversed(alphabetName)) {
-      var x = w.toBinaryWord();
-      var combination = new Combination(x.getN());
-      for (int i = x.nextSetBit(0); i >= 0; i = x.nextSetBit(i + 1))
-        combination.set(-1 + x.getN() - i, x.get(i));
-      w = (new BinaryWord(combination, x.getN())).toWord(alphabetName);
-    }
-
     StringBuilder sb = new StringBuilder();
-    for (var c : w)
+    for (var c : this)
       sb.append(c);
-    return sb.toString();
+    
+    return sb.reverse().toString();
   }
 
   public static boolean equivalentUnderRotation(Word a, Word b) {

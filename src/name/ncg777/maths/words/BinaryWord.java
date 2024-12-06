@@ -17,21 +17,24 @@ import name.ncg777.maths.sequences.Sequence;
 
 public class BinaryWord extends Combination implements Serializable {
   private static final long serialVersionUID = 1L;
+  
   public BinaryWord(BinaryWord binaryWord) {
     super(binaryWord);
   }
+  
   public BinaryWord(Set<Integer> s, int n) {
     super(n,s);
   }
+  
   public BinaryWord(BitSet b, int n) {
     super(b, n);
   }
+  
   public BinaryWord(Boolean[] b) {
     super(b.length);
     for(int i=0;i<b.length;i++) this.set(i,b[i]);
   }
   
- 
   public Word toWord(Alphabet.Name alphabetName) {
     return new Word(alphabetName, this);
   }
@@ -52,10 +55,6 @@ public class BinaryWord extends Combination implements Serializable {
       }
     }
     return o;
-  }
-  
-  public boolean get(int i) {
-    return super.get(i%getN());
   }
   
   public BinaryWord scaleModulo(int k, int n){
@@ -79,7 +78,7 @@ public class BinaryWord extends Combination implements Serializable {
   public static BinaryWord build(Combination c) {
     return new BinaryWord(c, c.getN());
   }
-  
+   
   public static BinaryWord build(BitSet p_bs, int size) {
     int l = size;
     TreeSet<Integer> t = new TreeSet<Integer>();
@@ -145,6 +144,7 @@ public class BinaryWord extends Combination implements Serializable {
     
     return mid.cyclicalDifference().signs();
   }
+  
   @Override
   public boolean equals(Object obj) {
     if (obj == null) {

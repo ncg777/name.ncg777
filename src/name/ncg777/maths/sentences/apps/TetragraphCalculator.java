@@ -107,6 +107,7 @@ public class TetragraphCalculator {
             o = TetragraphSentence.minus(a, b).toString();
             break;
         }
+       
         output.setText(o);
       }});
     

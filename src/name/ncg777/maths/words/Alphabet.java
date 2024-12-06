@@ -14,11 +14,6 @@ public class Alphabet extends ArrayList<Character> {
     Binary
   }
   
-  private static TreeMap<Name,Boolean> reversed = new TreeMap<>();
-  public static boolean isStringReversed(Name name) { 
-    return reversed.get(name); 
-  }
-  
   public static TreeMap<Name, Alphabet> Alphabets;
   
   static {
@@ -30,20 +25,12 @@ public class Alphabet extends ArrayList<Character> {
     Alphabets.put(Name.Binary, new Alphabet(ARR_BINARY));
     Alphabets.put(Name.Octal, new Alphabet(ARR_OCTAL));
     Alphabets.put(Name.Hexadecimal, new Alphabet(ARR_HEXADECIMAL));
-    
-    reversed.put(Name.Binary, true);
-    reversed.put(Name.Octal, true);
-    reversed.put(Name.Hexadecimal, true);
   }
   
   public double information() {
     return Math.log((double)this.size())/Math.log(2.0);
   }
-  
-  /***
-   * 
-   * @return True if information is a natural or size is a power of two
-   */
+ 
   public boolean isInformationNatural() {
     return checkedPow(2, (int)Math.round(information())) == size();
   }

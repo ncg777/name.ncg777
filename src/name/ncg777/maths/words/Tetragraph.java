@@ -26,7 +26,7 @@ public class Tetragraph extends Word {
     super(alphabetName, sequence);
     if(sequence.size()!= 4) throw new IllegalArgumentException();
   }
-  
+ 
   public Tetragraph(Word word) {
     super(word);
     if(word.size()!= 4) throw new IllegalArgumentException();
@@ -56,6 +56,7 @@ public class Tetragraph extends Word {
     if(as2Digraphs) sb.append(" ");
     sb.append(this.get(1));
     sb.append(this.get(0));
+    
     return sb.toString();
   }
   
