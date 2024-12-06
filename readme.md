@@ -31,6 +31,12 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 - **Parameters**: 
   - `n` (int): The integer to be partitioned.
 
+## crossingpartitions.sh
+- **Class**: name.ncg777.mathematics.enumerations.CrossingPartitionEnumeration
+- **Parameters**: 
+  - `n` (int): The size of the crossing partitions.
+   
+
 ## dyckwords.sh
 - **Class**: name.ncg777.mathematics.enumerations.DyckWordEnumeration
 - **Parameters**: 
@@ -67,7 +73,7 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 ## noncrossingpartitions.sh
 - **Class**: name.ncg777.mathematics.enumerations.NonCrossingPartitionEnumeration
 - **Parameters**: 
-  - `n` (int): The size of the partitions.
+  - `n` (int): The size of the non-crossing partitions.
     
 ## permutations.sh
 - **Class**: name.ncg777.mathematics.enumerations.PermutationEnumeration
