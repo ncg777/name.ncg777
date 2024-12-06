@@ -53,6 +53,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.sentences.apps.ScaleModulo",name.ncg777.maths.sentences.apps.ScaleModulo.class);
     addAppButton(panel, "maths.sentences.apps.SequenceGenerator",name.ncg777.maths.sentences.apps.SequenceGenerator.class);
     addAppButton(panel, "maths.sentences.apps.Sequencer",name.ncg777.maths.sentences.apps.Sequencer.class);
+    addAppButton(panel, "maths.sentences.apps.TetragraphCalculator",name.ncg777.maths.sentences.apps.TetragraphCalculator.class);
     addAppButton(panel, "maths.sentences.apps.TetragraphMatrixGenerator",name.ncg777.maths.sentences.apps.TetragraphMatrixGenerator.class);
     addAppButton(panel, "maths.sentences.apps.TetragraphMerger",name.ncg777.maths.sentences.apps.TetragraphMerger.class);
     addAppButton(panel, "maths.sentences.apps.TetragraphPartitioner",name.ncg777.maths.sentences.apps.TetragraphPartitioner.class);
