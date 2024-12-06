@@ -2,7 +2,7 @@ package name.ncg777.maths;
 
 import java.util.Iterator;
 import java.util.TreeMap;
-// import static com.google.common.math.IntMath.checkedPow;
+import static com.google.common.math.IntMath.checkedPow;
 import java.util.TreeSet;
 
 
@@ -24,16 +24,74 @@ public class Numbers {
     }
     return o;
   }
+
+  /**
+   * Computes the q-factorial [n]_q! for given n and q using integer arithmetic.
+   *
+   * @param n The integer n for the q-factorial.
+   * @param q The base q (must be positive).
+   * @return The q-factorial [n]_q! as a long.
+   * @throws ArithmeticException if the result overflows a long.
+   */
+  public static long qFactorial(int q, int n) {
+      if (n < 0 || q <= 0) {
+          throw new IllegalArgumentException("n must be non-negative and q must be positive.");
+      }
+      
+      // Special case for q = 1: q-factorial becomes n!
+      if (q == 1) {
+          return factorial(n);
+      }
+      long qFactorial = 1; // Initialize q-factorial as 1
+
+      for (int i = 1; i <= n; i++) {
+          // Compute [i]_q = (q^i - 1) / (q - 1) using integer arithmetic
+          long qPowerI = checkedPow(q, i); // q^i
+          long numerator = qPowerI - 1; // q^i - 1
+          long denominator = q - 1; // q - 1
+          long qInteger = numerator / denominator; // [i]_q
+
+          // Check for overflow
+          if (qFactorial > Long.MAX_VALUE / qInteger) {
+              throw new ArithmeticException("q-factorial overflows a long for n = " + n + ", q = " + q);
+          }
+
+          // Multiply the current q-integer to the factorial
+          qFactorial *= qInteger;
+      }
+
+      return qFactorial;
+  }
+  
+  /**
+   * Computes the q-binomial (Gaussian binomial coefficient) for given n, k, and q.
+   * 
+   * @param q The base q (must be positive).
+   * @param n The total number of items.
+   * @param k The number of items to choose.
+   * 
+   * @return The Gaussian binomial coefficient as a long.
+   * @throws ArithmeticException if the result overflows a long or if inputs are invalid.
+   */
+  public static long qBinomial(int q, int n, int k) {
+      if (n < 0 || k < 0 || k > n || q <= 0) {
+          throw new IllegalArgumentException("Invalid inputs: ensure n >= 0, 0 <= k <= n, and q > 0.");
+      }
+      
+      // Compute [n]_q!, [k]_q!, and [n-k]_q!
+      long nFactorial = qFactorial(q,n);
+      long kFactorial = qFactorial(q, k);
+      long nMinusKFactorial = qFactorial(q, n - k);
+
+      // Compute Gaussian binomial coefficient
+      if (kFactorial > 0 && nMinusKFactorial > 0 && nFactorial % (kFactorial * nMinusKFactorial) == 0) {
+          return nFactorial / (kFactorial * nMinusKFactorial);
+      } else {
+          throw new ArithmeticException("Gaussian binomial coefficient computation failed due to overflow or division error.");
+      }
+  }
   
   public static boolean isPowerOfTwo(int n) {
-    /*
-    if(n==0) return false;
-    if(n < 0) n*= -1;
-    
-    int pOf2 = 1;
-    while(pOf2 < n) pOf2 *= 2;
-    return pOf2 == n;
-    */
     return ((int)Math.round(Math.pow(2.0, Math.round(Math.log(n)/Math.log(2.0)))) == n);
   }
   
