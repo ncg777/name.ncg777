@@ -44,11 +44,11 @@ public class Alphabet extends ArrayList<Character> {
   }
   
   @Override
-    public boolean equals(Object _other) {
-      if(!(_other instanceof Alphabet)) return false;
-      var other = (Alphabet) _other;
-      if(this.size() != other.size()) return false;
-      for(int i=0;i<this.size();i++) if(this.get(i) != other.get(i)) return false;
-      return true;
-    }
+  public boolean equals(Object _other) {
+    if(!(_other instanceof Alphabet)) return false;
+    var other = (Alphabet) _other;
+    if(this.size() != other.size()) return false;
+    for(int i=0;i<this.size();i++) if(this.get(i) != other.get(i)) return false;
+    return true;
+  }
 }

@@ -58,11 +58,11 @@ public class FourCharsCalculator {
     frmRhythmCalc.setBounds(100, 100, 450, 325);
     frmRhythmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblRhythmA = new JLabel("Tetragraphs A :");
+    JLabel lblRhythmA = new JLabel("FourChars A :");
     lblRhythmA.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblRhythmA.setHorizontalAlignment(SwingConstants.RIGHT);
     
-    JLabel lblRhythmB = new JLabel("Tetragraphs B :");
+    JLabel lblRhythmB = new JLabel("FourChars B :");
     lblRhythmB.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblRhythmB.setHorizontalAlignment(SwingConstants.RIGHT);
     

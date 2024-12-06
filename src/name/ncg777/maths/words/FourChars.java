@@ -3,7 +3,7 @@ package name.ncg777.maths.words;
 import java.util.List;
 import java.util.TreeSet;
 
-import name.ncg777.maths.enumerations.TetragraphEnumeration;
+import name.ncg777.maths.enumerations.FourCharsEnumeration;
 import name.ncg777.maths.sequences.Sequence;
 
 public class FourChars extends Word {
@@ -31,11 +31,10 @@ public class FourChars extends Word {
     super(word);
     if(word.size()!= 4) throw new IllegalArgumentException();
   }
-  
-  
+    
   public static TreeSet<FourChars> generate(Alphabet.Name alphabetName) {
     TreeSet<FourChars> o = new TreeSet<FourChars>();
-    var tge = new TetragraphEnumeration(alphabetName);
+    var tge = new FourCharsEnumeration(alphabetName);
     while(tge.hasMoreElements()) o.add(tge.nextElement());
     return o;
   }

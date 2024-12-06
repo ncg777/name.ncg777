@@ -62,7 +62,7 @@ public class FourCharsPartitioner {
     frmRPartitioner.setBounds(100, 100, 456, 411);
     frmRPartitioner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblR = new JLabel("Tetragraphs:");
+    JLabel lblR = new JLabel("FourChars:");
     lblR.setFont(new Font("Unifont", Font.PLAIN, 11));
     lblR.setHorizontalAlignment(SwingConstants.RIGHT);
     

@@ -290,7 +290,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> {
     return o;
   }
 
-  private static class TetragraphSentenceUnionSet {
+  private static class FourCharsentenceUnionSet {
     ArrayList<FourCharsPhrase> representants = new ArrayList<>();
     TreeMap<String, TreeSet<FourCharsPhrase>> instances = new TreeMap<>();
 
@@ -363,7 +363,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> {
       return f;
     }
     
-    TetragraphSentenceUnionSet us = new TetragraphSentenceUnionSet();
+    FourCharsentenceUnionSet us = new FourCharsentenceUnionSet();
     for(FourCharsPhrase r: partition) {us.add(r);}
     ArrayList<FourCharsPhrase> o = new ArrayList<FourCharsPhrase>();
     

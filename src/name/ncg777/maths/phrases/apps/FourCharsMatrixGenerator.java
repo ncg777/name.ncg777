@@ -98,7 +98,6 @@ public class FourCharsMatrixGenerator {
     if(comboBox.getSelectedItem() == Alphabet.Name.Binary) textArea_1.setText("10 10");
     if(comboBox.getSelectedItem() == Alphabet.Name.Hexadecimal) textArea_1.setText("80 80");
     if(comboBox.getSelectedItem() == Alphabet.Name.Octal) textArea_1.setText("40 40");
-    //if(comboBox.getSelectedItem() == Alphabet.Name.Tribble) textArea_1.setText("40 40");
   }
   private boolean running = false;
 
@@ -151,9 +150,9 @@ public class FourCharsMatrixGenerator {
               running = true;
               
               String[] strFixed = textArea_1.getText().split("\n+");
-        
-              Predicate<BinaryWord> pred = Sequence.parse(
-                  textFilterModes.getText())
+              var _str = textFilterModes.getText();
+              
+              Predicate<BinaryWord> pred = Sequence.parse(_str)
                     .stream().map(
                         (i) -> filterModes.get(i-1))
                           .reduce((r) -> true, (a,b) -> a.and(b));

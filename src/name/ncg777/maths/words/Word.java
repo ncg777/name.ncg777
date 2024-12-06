@@ -165,8 +165,8 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
 
   public static Word agglutinate(Word first, Word second) {
     if (!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
-    var o = new Word(first.alphabetName, first);
-    o.addAll(second);
+    var o = new Word(first.alphabetName, second);
+    o.addAll(first);
     return o;
   }
 

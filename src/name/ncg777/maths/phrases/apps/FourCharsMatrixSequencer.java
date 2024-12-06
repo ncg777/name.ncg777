@@ -24,7 +24,7 @@ import javax.swing.JComboBox;
 public class FourCharsMatrixSequencer {
 
   private JFrame frmRseq;
-  private JTextArea textTetragraphList;
+  private JTextArea textFourCharsList;
   private JTextField textSequence;
   private JTextArea textResult;
   private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(Alphabet.Name.values());
@@ -70,7 +70,7 @@ public class FourCharsMatrixSequencer {
           try {
             Sequence s = Sequence.parse(textSequence.getText());
             int n = s.size();
-            String[] lines = textTetragraphList.getText().split("\n+");
+            String[] lines = textFourCharsList.getText().split("\n+");
             int m = lines.length;
             Matrix<String> mat = new Matrix<String>(m, n);
             
@@ -156,10 +156,10 @@ public class FourCharsMatrixSequencer {
     scrollPane_1.setViewportView(textResult);
     textResult.setColumns(10);
     
-    textTetragraphList = new JTextArea();
-    textTetragraphList.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
-    scrollPane.setViewportView(textTetragraphList);
-    textTetragraphList.setColumns(10);
+    textFourCharsList = new JTextArea();
+    textFourCharsList.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    scrollPane.setViewportView(textFourCharsList);
+    textFourCharsList.setColumns(10);
     frmRseq.getContentPane().setLayout(groupLayout);
   }
 }

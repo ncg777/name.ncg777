@@ -6,11 +6,11 @@ import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.FourChars;
 
-public class TetragraphEnumeration implements Enumeration<FourChars>  {
+public class FourCharsEnumeration implements Enumeration<FourChars>  {
   private Alphabet.Name alphabetName;
   
   private MixedRadixEnumeration mre;
-  public TetragraphEnumeration(Alphabet.Name alphabetName) {
+  public FourCharsEnumeration(Alphabet.Name alphabetName) {
     this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     
