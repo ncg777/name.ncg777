@@ -97,7 +97,7 @@ public class TetragraphPartitioner {
         
         for(int i=0;i<pdistinct;i++) output.add(BinaryWord.build(new BitSet(), n));
         for(int i=0;i<n;i++) {
-          output.get(p.get(i%k)).set(i, r1.get(i));
+          output.get(p.get(i%k)).set(i, r1.get(-1+n-i));
         }
         
         String strOut = "";

@@ -26,10 +26,12 @@ public class Tetragraph extends Word {
     super(alphabetName, sequence);
     if(sequence.size()!= 4) throw new IllegalArgumentException();
   }
+  
   public Tetragraph(Word word) {
     super(word);
     if(word.size()!= 4) throw new IllegalArgumentException();
   }
+  
   public Tetragraph(Digraph first, Digraph second) {
     this(first.alphabetName, first.toString()+second.toString());
     if(!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
@@ -49,11 +51,11 @@ public class Tetragraph extends Word {
   
   public String toString(boolean as2Digraphs) {
     StringBuilder sb = new StringBuilder();
-    sb.append(this.get(0));
-    sb.append(this.get(1));
-    if(as2Digraphs) sb.append(" ");
-    sb.append(this.get(2));
     sb.append(this.get(3));
+    sb.append(this.get(2));
+    if(as2Digraphs) sb.append(" ");
+    sb.append(this.get(1));
+    sb.append(this.get(0));
     return sb.toString();
   }
   

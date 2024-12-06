@@ -45,8 +45,8 @@ public class TetragraphSentence extends ArrayList<Tetragraph> {
   @Override
   public String toString() {
     var sb = new StringBuilder();
-    for(var t : this) sb.append(t.toString(true));
-    return sb.toString();
+    for(var t : this) sb.append(t.toString(true) + " ");
+    return sb.toString().trim();
   }
   
   public static TetragraphSentence expand(TetragraphSentence a, int x, boolean fill) {

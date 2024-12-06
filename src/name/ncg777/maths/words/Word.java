@@ -44,7 +44,6 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
 
   public Word(Alphabet.Name alphabetName, String string) {
     this(alphabetName);
-    if(Alphabet.isStringReversed(alphabetName)) string = (new StringBuilder(string)).reverse().toString();
     for (int i = 0; i < string.length(); i++)
       this.add(string.charAt(i));
   }

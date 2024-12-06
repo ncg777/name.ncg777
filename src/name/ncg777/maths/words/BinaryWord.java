@@ -258,9 +258,19 @@ public class BinaryWord extends Combination implements Serializable {
     for(int i=0;i<r.size();i++) {sizes.add(r.get(i).getN());}
     int max=sizes.getMax();
     int newsz = max*r.size();
-    BitSet b =new BitSet(newsz);
+    BinaryWord b = new BinaryWord(new BitSet(), newsz);
+    var idxs = new Sequence();
+    for(int i=0;i<r.size();i++) idxs.add(0);
     
-    for(int i=0;i<newsz;i++) {b.set(i,r.get(i%r.size()).get((i/r.size())%r.get(i%r.size()).getN()));}
-    return new BinaryWord(b, newsz);
+    for(int i=0;i<newsz;i++) {
+      int j = -1+newsz-i;
+      int wi = j%r.size();
+      var w = r.get(wi);
+      var idx = idxs.get(wi);
+      idxs.set(wi, (idx+1)%w.size());
+      
+      b.set(j, w.get(idx));
+    }
+    return b;
   }
 }
