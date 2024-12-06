@@ -36,7 +36,6 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 - **Parameters**: 
   - `n` (int): The size of the crossing partitions.
    
-
 ## dyckwords.sh
 - **Class**: name.ncg777.mathematics.enumerations.DyckWordEnumeration
 - **Parameters**: 
