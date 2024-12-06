@@ -57,32 +57,22 @@ public class FourCharsPhrase extends ArrayList<FourChars> {
   }
   
   public static FourCharsPhrase expand(FourCharsPhrase a, int x, boolean fill) {
-    var abc = Alphabet.getAlphabet(a.alphabetName);
-    var bitness = (int)Math.round(abc.information());
-    
-    BinaryWord b = a.toWord().toBinaryWord();
+    BinaryWord b = a.toBinaryWord();
     BinaryWord o = new BinaryWord(new BitSet(), x * b.getN());
     
     for (int i = 0; i < b.getN(); i++) {
-      o.set(i * x, b.get(i));
-      if(fill) {
-        for(int j=1; j<x;j++) {
-          o.set((i * x) + j, b.get(i));
-        }
+      if(b.get(-1 + b.getN() - i)) {
+        o.set(-1+ o.getN() - i*x);
+        if(fill) {
+          for(int j=1; j<x;j++) {
+            o.set(-1 + o.getN() -((i * x) + j));
+          }
+        } 
       }
     }
-    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
     
-    for (int i = 0; i < o.getN() / (bitness*4); i++) {
-      var bn = new BinaryWord(new BitSet(), bitness*4);
-
-      for (int j = 0; j < (bitness*4); j++) {
-        if (o.get((i *  (bitness*4)) + j)) {
-          bn.set(j);
-        }
-      }
-      output.add(new FourChars(bn.toWord(a.alphabetName)));
-    }
+    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName, o);
+    
     return output;
   }
   

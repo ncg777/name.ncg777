@@ -285,7 +285,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
   }
 
   public Combination rotate(int t) {
-    int k = t;
+    int k = -t;
     while (k < 0) {
       k += m_n;
     }

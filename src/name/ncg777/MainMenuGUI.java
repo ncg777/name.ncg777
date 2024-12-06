@@ -48,11 +48,12 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.music.pcs12.apps.Walker",name.ncg777.maths.music.pcs12.apps.Walker.class);
     addAppButton(panel, "maths.phrases.apps.BitCounter",name.ncg777.maths.phrases.apps.BitCounter.class);
     addAppButton(panel, "maths.phrases.apps.Diluter",name.ncg777.maths.phrases.apps.Diluter.class);
+    addAppButton(panel, "maths.phrases.apps.Expander",name.ncg777.maths.phrases.apps.Expander.class);
     addAppButton(panel, "maths.phrases.apps.FourCharsCalculator",name.ncg777.maths.phrases.apps.FourCharsCalculator.class);
     addAppButton(panel, "maths.phrases.apps.FourCharsMatrixGenerator",name.ncg777.maths.phrases.apps.FourCharsMatrixGenerator.class);
     addAppButton(panel, "maths.phrases.apps.FourCharsMerger",name.ncg777.maths.phrases.apps.FourCharsMerger.class);
     addAppButton(panel, "maths.phrases.apps.FourCharsPartitioner",name.ncg777.maths.phrases.apps.FourCharsPartitioner.class);
-    addAppButton(panel, "maths.phrases.apps.HexadecimalWordDivider",name.ncg777.maths.phrases.apps.HexadecimalWordDivider.class);
+    //addAppButton(panel, "maths.phrases.apps.HexadecimalWordDivider",name.ncg777.maths.phrases.apps.HexadecimalWordDivider.class);
     addAppButton(panel, "maths.phrases.apps.Permutator",name.ncg777.maths.phrases.apps.Permutator.class);
     addAppButton(panel, "maths.phrases.apps.Pulsations",name.ncg777.maths.phrases.apps.Pulsations.class);
     addAppButton(panel, "maths.phrases.apps.ScaleModulo",name.ncg777.maths.phrases.apps.ScaleModulo.class);

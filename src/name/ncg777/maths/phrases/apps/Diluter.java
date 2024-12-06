@@ -45,20 +45,14 @@ public class Diluter {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public Diluter() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     frmRhythmDiluter = new JFrame();
     frmRhythmDiluter.setResizable(false);
-    frmRhythmDiluter.setTitle("BinaryWord Diluter");
+    frmRhythmDiluter.setTitle("Rhythm Diluter");
     frmRhythmDiluter.setBounds(100, 100, 644, 203);
     frmRhythmDiluter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmRhythmDiluter.getContentPane().setLayout(null);
@@ -66,7 +60,7 @@ public class Diluter {
     comboBox.setBounds(129, 6, 114, 20);
     frmRhythmDiluter.getContentPane().add(comboBox);
     
-    JLabel lblNewLabel = new JLabel("BinaryWord:");
+    JLabel lblNewLabel = new JLabel("Rhythm:");
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setBounds(10, 37, 114, 20);
@@ -136,7 +130,7 @@ public class Diluter {
     var str = textRhythm.getText().replaceAll("\\s+", "");
     BinaryWord r = new FourCharsPhrase(
         abc, 
-        str).toWord().toBinaryWord();
+        str).toBinaryWord();
  
     int n = r.getN();
     
@@ -165,10 +159,10 @@ public class Diluter {
     
     for(int i=0; i<(n/from);i++) {
       for(int j=0;j<from;j++) {
-        o.set((i*to) + j + offset, r.get((i*from)+j));
+        o.set((i*to) + j + offset, r.reverse().get((i*from)+j));
       }
     }
     
-    textResult.setText((new FourCharsPhrase(abc, o)).toString());
+    textResult.setText((new FourCharsPhrase(abc, o.reverse())).toString());
   }
 }

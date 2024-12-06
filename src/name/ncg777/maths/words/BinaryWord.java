@@ -215,6 +215,14 @@ public class BinaryWord extends Combination implements Serializable {
     return o;
   }
   
+  public BinaryWord reverse() {
+    var o = new BinaryWord(new BitSet(), this.getN());
+    for(int i=0;i<o.getN();i++) {
+      if(this.get(i)) o.set(-1+o.getN()-i);
+    }
+    return o;
+  }
+  
   @Override
   public String toString() {
     var sb = new StringBuilder(this.toBinaryString());

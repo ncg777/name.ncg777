@@ -74,7 +74,6 @@ public class HexadecimalWordDivider {
       public void actionPerformed(ActionEvent e) {
         var r1 = (new FourCharsPhrase(
             Alphabet.Name.Hexadecimal, txtR.getText().trim()))
-            .toWord()
             .toBinaryWord();
         int div = (int)spinner.getValue();
         int len = r1.getN();

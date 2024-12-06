@@ -56,7 +56,7 @@ public class XRSequenceGenerator {
     SpringLayout springLayout = new SpringLayout();
     frmXrSequenceGenerator.getContentPane().setLayout(springLayout);
     
-    JLabel lblNewLabel = new JLabel("BinaryWord:");
+    JLabel lblNewLabel = new JLabel("Rhythm:");
     springLayout.putConstraint(SpringLayout.WEST, lblNewLabel, 10, SpringLayout.WEST, frmXrSequenceGenerator.getContentPane());
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
