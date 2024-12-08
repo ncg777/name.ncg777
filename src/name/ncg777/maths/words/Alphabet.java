@@ -19,7 +19,7 @@ public class Alphabet extends ArrayList<Character> {
   
   static {
     Alphabets = new TreeMap<>();
-    Character[] ARR_TERNARY = {'-','0','+'};
+    Character[] ARR_TERNARY = {'T','0','1'};
     Character[] ARR_BINARY = {'0','1'};
     Character[] ARR_OCTAL = {'0','1','2','3','4','5','6','7'};
     Character[] ARR_HEXADECIMAL = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
