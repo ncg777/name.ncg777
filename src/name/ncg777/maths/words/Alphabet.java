@@ -11,20 +11,23 @@ public class Alphabet extends ArrayList<Character> {
   public static enum Name {
     Hexadecimal,
     Octal,
-    Binary
+    Binary,
+    Ternary
   }
   
   public static TreeMap<Name, Alphabet> Alphabets;
   
   static {
     Alphabets = new TreeMap<>();
+    Character[] ARR_TERNARY = {'-','0','+'};
     Character[] ARR_BINARY = {'0','1'};
     Character[] ARR_OCTAL = {'0','1','2','3','4','5','6','7'};
     Character[] ARR_HEXADECIMAL = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     
-    Alphabets.put(Name.Binary, new Alphabet(ARR_BINARY));
-    Alphabets.put(Name.Octal, new Alphabet(ARR_OCTAL));
     Alphabets.put(Name.Hexadecimal, new Alphabet(ARR_HEXADECIMAL));
+    Alphabets.put(Name.Octal, new Alphabet(ARR_OCTAL));
+    Alphabets.put(Name.Binary, new Alphabet(ARR_BINARY));
+    Alphabets.put(Name.Ternary, new Alphabet(ARR_TERNARY));
   }
   
   public double information() {
