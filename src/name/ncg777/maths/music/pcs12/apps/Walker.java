@@ -2,7 +2,6 @@ package name.ncg777.maths.music.pcs12.apps;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -103,16 +102,17 @@ public class Walker {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    String[] cs = Pcs12.getForteChordDict().keySet().toArray(new String[0]);
-    Arrays.sort(cs);
-    
-    cbxScale = new JComboBox<String>(new DefaultComboBoxModel<String>(cs));
+    List<String> cs = new ArrayList<String>();
+    cs.addAll(Pcs12.getForteChordDict().keySet());
+    cs.sort(Pcs12.ForteStringComparator);
+    cs = cs.reversed();
+    cbxScale = new JComboBox<String>(new DefaultComboBoxModel<String>(cs.toArray(new String[0])));
     frmChordPleasure = new JFrame();
     frmChordPleasure.setTitle("Pcs12 Walker");
     frmChordPleasure.getContentPane().setBackground(Color.DARK_GRAY);
     frmChordPleasure.setBounds(100, 100, 639, 311);
     frmChordPleasure.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    cbxScale.setSelectedIndex(Arrays.asList(cs).indexOf("8-23.11"));
+    cbxScale.setSelectedIndex(cs.indexOf("12-1.00"));
     fillChords();
     JButton btnPouf = new JButton("Walk");
     btnPouf.addActionListener(new ActionListener() {

@@ -103,8 +103,8 @@ public class IntersectionAndUnion {
     cs = cs0.toArray(new String[0]);
     cboScale.setModel(new DefaultComboBoxModel<String>(cs));
     cboScale_1.setModel(new DefaultComboBoxModel<String>(cs));
-    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("5-20B.01"));
-    cboScale_1.setSelectedIndex(Arrays.asList(cs).indexOf("6-z26.08"));
+    cboScale.setSelectedIndex(Arrays.asList(cs).indexOf("12-1.00"));
+    cboScale_1.setSelectedIndex(Arrays.asList(cs).indexOf("12-1.00"));
     frmPCS12IntersectionAndUnion.getContentPane().add(cboScale);
     
     JLabel lblNewLabel_5 = new JLabel("Intersection");
