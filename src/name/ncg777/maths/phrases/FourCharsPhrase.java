@@ -310,7 +310,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> {
     FourCharsPhrase output = new FourCharsPhrase(alphabetName);
     var abc = Alphabet.getAlphabet(alphabetName);
     
-    if(!abc.isInformationNatural())
+    if(!abc.isInformationBinary())
       throw new IllegalArgumentException();
     
     var sz_t = (((int)Math.round(abc.information()))*4);

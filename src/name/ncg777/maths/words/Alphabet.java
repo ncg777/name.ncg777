@@ -34,7 +34,7 @@ public class Alphabet extends ArrayList<Character> {
     return Math.log((double)this.size())/Math.log(2.0);
   }
  
-  public boolean isInformationNatural() {
+  public boolean isInformationBinary() {
     return checkedPow(2, (int)Math.round(information())) == size();
   }
   

@@ -65,12 +65,12 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     
-    if (!alphabet.isInformationNatural())
+    if (!alphabet.isInformationBinary())
       throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
     
     int b = (int) alphabet.information();
     if (combination.getN() % b != 0) throw new UnsupportedOperationException(
-        "Combination size must be multiple of bitness of alphabet.");
+        "Combination size must be multiple of information of alphabet.");
     
     int n = combination.getN();
     int length = n / b;
@@ -89,7 +89,7 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
   public BinaryWord toBinaryWord() {
     var abc = Alphabet.getAlphabet(alphabetName);
     
-    if (!abc.isInformationNatural())
+    if (!abc.isInformationBinary())
       throw new UnsupportedOperationException();
 
     int b = (int)Math.round(abc.information());
@@ -105,8 +105,6 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
 
   public long toNatural() {
     var alphabet = Alphabet.getAlphabet(alphabetName);
-    if (!alphabet.isInformationNatural()) throw new UnsupportedOperationException(
-        "Can only convert word to natural number if alphabet size is a power of 2.");
 
     int k = 0;
     var sequence = this.toSequence();
