@@ -118,13 +118,13 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
   public Sequence getContour() {
     var bn = toBinaryWord();
     if (bn.getK() == 0) return new Sequence();
-    return bn.getComposition().asSequence().reverse().rotateLeft().cyclicalDifference().signs();
+    return bn.getComposition().asSequence().reverse().cyclicalDifference().signs();
   }
 
   public Sequence getShadowContour() {
     var combination = toBinaryWord();
     if (combination.getK() == 0) return new Sequence();
-    Sequence a = combination.getComposition().asSequence().reverse().rotateLeft();
+    Sequence a = combination.getComposition().asSequence().reverse();
 
     Sequence mid = new Sequence();
     for (int i = 1; i <= a.size(); i++) {

@@ -50,9 +50,7 @@ public class KComplexExplorer {
   private JFrame frmKComplexExplorer;
   private JTextField textCurrent = new JTextField();;
   private JTextField textPitches = new JTextField();;
-  /**
-   * Launch the application.
-   */
+
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
@@ -66,9 +64,7 @@ public class KComplexExplorer {
     });
   }
 
-  /**
-   * Create the application.
-   */
+
   public KComplexExplorer() {
     initialize();
     refreshPcs();
