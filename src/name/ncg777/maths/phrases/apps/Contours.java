@@ -91,7 +91,7 @@ public class Contours {
         }
         textAreaPartitions.setText(o);
         
-        Sequence contourseq = r4.toBinaryWord().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar().addToAll(-1).reverse();
+        Sequence contourseq = r4.toWord().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar().addToAll(-1);
 
         textContourSeq.setText(contourseq.toString());
         lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());

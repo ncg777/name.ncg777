@@ -540,6 +540,22 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
     return r;
 
   }
+  
+  /**
+   * Reverses a list.
+   * 
+   * @return Another sequence which is the reverse of this one.
+   */
+  public Sequence reverseFixedEnd() {
+    Sequence r = new Sequence();
+
+    for (int i = this.size() - 1; i >= 0; i--) {
+      r.add(this.get(i));
+    }
+
+    return r.rotateLeft();
+
+  }
 
   /**
    * Rotates sequence 1 position to the right.

@@ -280,7 +280,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return o;
   }
 
-  private static class FourCharsentenceUnionSet {
+  private static class FourCharPhraseUnionSet {
     ArrayList<FourCharsPhrase> representants = new ArrayList<>();
     TreeMap<String, TreeSet<FourCharsPhrase>> instances = new TreeMap<>();
 
@@ -353,7 +353,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       return f;
     }
     
-    FourCharsentenceUnionSet us = new FourCharsentenceUnionSet();
+    FourCharPhraseUnionSet us = new FourCharPhraseUnionSet();
     for(FourCharsPhrase r: partition) {us.add(r);}
     ArrayList<FourCharsPhrase> o = new ArrayList<FourCharsPhrase>();
     

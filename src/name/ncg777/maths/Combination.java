@@ -105,7 +105,6 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
       }
       return new Composition(l);  
     }
-    
   }
 
   public double calcNormalizedDistanceWith(Combination other) {

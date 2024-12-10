@@ -150,7 +150,7 @@ public class Composition extends Combination {
       groups.set(i%groups.size(), currentGroup);
       previousValue = v;  
     }
-    return groups;
+    return groups.rotateRight();
   }
   public List<Composition> segment() {
     Backtracker<Composition> b =
