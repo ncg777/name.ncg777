@@ -14,6 +14,7 @@ import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.Composition;
 import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.maths.words.Alphabet.Name;
 
 public class BinaryWord extends Combination implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -128,21 +129,11 @@ public class BinaryWord extends Combination implements Serializable {
   }
   
   public Sequence getContour() {
-    if(getK() == 0) return new Sequence();
-
-    return getComposition().asSequence().cyclicalDifference().signs();
+    return toWord(Name.Binary).getContour();
   }
   
   public Sequence getShadowContour() {
-    if(getK() == 0) return new Sequence();
-    Sequence a = getComposition().asSequence();
-
-    Sequence mid = new Sequence();
-    for(int i=1;i<=a.size();i++) {
-      mid.add(a.get(i-1) + a.get(i%a.size()));
-    }
-    
-    return mid.cyclicalDifference().signs();
+    return toWord(Name.Binary).getShadowContour();
   }
   
   @Override
