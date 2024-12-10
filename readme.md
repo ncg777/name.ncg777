@@ -111,7 +111,7 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 ## wordpermutations.sh
 - **Class**: name.ncg777.maths.enumerations.WordPermutationEnumeration
 - **Parameters**: 
-  - `rk` (int[]) : List of the number of occurences of each element. The sum of this list will be the length of the output lists.
+  - `rk` (int[]) : List of the number of occurrences of each element. The sum of this list will be the length of the output lists.
 
 ---
 This application was compiled with Microsoft's build of OpenJDK 21.
