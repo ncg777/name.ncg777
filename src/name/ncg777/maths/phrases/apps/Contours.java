@@ -80,7 +80,7 @@ public class Contours {
         
         txtContour.setText(r4.toWord().getContour().toString());
         txtShadowContour.setText(r4.toWord().getShadowContour().toString());
-        txtComposition.setText(r4.toBinaryWord().getComposition().asSequence().reversed().toString());
+        txtComposition.setText(r4.toBinaryWord().getComposition().asSequence().reverse().toString());
         textFieldBinary.setText(r4.toBinaryWord().toString());
         textCompositionPartition.setText(r4.clusterPartition(abc).reverse().toString());
         String o = "";

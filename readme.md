@@ -1,5 +1,5 @@
 # name.ncg777
-Some of these apps may be considered experimental or may contain unusual terminology.
+Until further notice, this application is a prototype. Some of these apps may be considered experimental or may contain unusual terminology.
 
 First, you should extract the zip file wherever you want and add the path to the jar file to your CLASSPATH environment variable.
 
