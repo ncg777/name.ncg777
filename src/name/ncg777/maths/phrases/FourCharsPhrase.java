@@ -13,7 +13,7 @@ import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.maths.words.FourChars;
 import name.ncg777.maths.words.Word;
 
-public class FourCharsPhrase extends ArrayList<FourChars> {
+public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<FourCharsPhrase> {
   private static final long serialVersionUID = 1L;
   private Alphabet.Name alphabetName;
   
@@ -239,7 +239,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> {
   }
 
   public boolean isEquivalentUnderSyncronizedRotation(FourCharsPhrase other) {
-    if(this.alphabetName.equals(other.alphabetName))
+    if(!this.alphabetName.equals(other.alphabetName))
       throw new IllegalArgumentException();
     var abc = Alphabet.getAlphabet(this.alphabetName);
     
@@ -367,6 +367,11 @@ public class FourCharsPhrase extends ArrayList<FourChars> {
     }
     
     return CollectionUtils.reverse(o);
+  }
+
+  @Override
+  public int compareTo(FourCharsPhrase o) {
+    return this.toString().compareTo(o.toString());
   }
 
 }
