@@ -138,7 +138,7 @@ public class KComplexExplorer {
       textComplement.setText("");
       textPCS12.setText("");
       textSymmetries.setText("");
-      this.current = null;
+      this.current = null; 
       textIntervals.setText("");
       textTonicDistance.setText("");
     } else {
@@ -152,7 +152,7 @@ public class KComplexExplorer {
       var commonName = ch.getCommonName();
       if(commonName == null) commonName = "";
       textCommonName.setText(commonName);
-      textIntervals.setText(ch.transpose(-ch.getTranspose()).getComposition().asSequence().toString());
+      textIntervals.setText(ch.transpose(ch.getTranspose()).getComposition().asSequence().toString());
       textTonicDistance.setText(Double.toString(ch.calcCenterTuning((int)spinnerCenter.getValue())));
       this.current = ch;
     }

@@ -324,7 +324,7 @@ public class Pcs12 extends ImmutableCombination implements Serializable {
       Pcs12 ch = Pcs12.identify(p.getSecond());
       
       for(int i=0;i<12;i++) {
-        Pcs12 t = ch.transpose(i);
+        Pcs12 t = ch.transpose(-i);
         if(!ForteNumbersDict.containsKey(t)) {
           ForteNumbersDict.put(t, p.getFirst());
           ForteNumbersRotationDict.put(t, i);

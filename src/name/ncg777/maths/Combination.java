@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.common.base.Joiner;
+
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.enumerations.CombinationEnumeration;
 import name.ncg777.maths.sequences.Sequence;
@@ -97,7 +99,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     int nsb = nextSetBit(0);
     if(nsb == -1) {
       return new Composition(m_n);
-    } else{
+    } else { 
       Combination t = rotate(-nsb);
       List<Boolean> l = new ArrayList<Boolean>();
       for(int i=1;i<m_n;i++){ 
@@ -108,7 +110,6 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
   }
 
   public double calcNormalizedDistanceWith(Combination other) {
-    
     int maxn = Math.max(this.getN(), other.getN());
     
     int acc = 0;
@@ -171,16 +172,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
   
   @Override
   public String toString() {
-    String output = "";
-    for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
-      output += Integer.toString(i) + ", ";
-    }
-    
-    if (!output.isEmpty()) {
-      output = output.substring(0, output.length() - 2);
-    }
-
-    return "{" + output + "}";
+    return "{" + Joiner.on(", ").join(this.asSequence()) + "}";
   }
   
   public Sequence asSequence(){

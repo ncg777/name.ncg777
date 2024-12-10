@@ -128,7 +128,9 @@ public class ImmutableCombination implements Serializable, Comparable<ImmutableC
     public Sequence asBinarySequence() {
       return this.combination.asBinarySequence();
     }
+    
     public Composition getComposition() {return this.combination.getComposition();}
+    
     public ImmutableCombination merge(ImmutableCombination other) {
       return new ImmutableCombination(Combination.merge(this.combination, other.combination));
     }
