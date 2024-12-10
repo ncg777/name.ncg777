@@ -550,8 +550,8 @@ public class CollectionUtils {
   public static Integer[] cyclicalDifference(Integer[] p_arr) {
     Integer[] output = new Integer[p_arr.length];
 
-    for (int i = -1; i < p_arr.length-1; i++) {
-      output[(i+1)%p_arr.length] = p_arr[(i + 1)%p_arr.length] - p_arr[(i+p_arr.length)%p_arr.length];
+    for (int i = 0; i < p_arr.length; i++) {
+      output[(i)%p_arr.length] = p_arr[(i + 1)%p_arr.length] - p_arr[(i+p_arr.length)%p_arr.length];
     }
     return output;
   }
