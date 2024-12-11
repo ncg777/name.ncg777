@@ -53,12 +53,22 @@ public class BinaryWord extends Combination implements Serializable {
     return new Word(alphabetName, this);
   }
   
-  public List<? extends Combination> decomposeByHomogeneity() {
-    return super.reverse().decomposeByHomogeneity().stream().map((c) -> BinaryWord.build(c)).toList();
+  public List<? extends Combination> decomposeIntoHomogeneousRegions() {
+    return super.reverse().decomposeIntoHomogeneousRegions().stream().map((c) -> BinaryWord.build(c)).toList();
   }
   
+  
   public BinaryWord scaleModulo(int k, int n){
-    return scaleModulo(this, k, n);
+    if(this.getN() % n != 0){
+      throw new RuntimeException("n does not divide the length of the rhythm.");
+    }
+    
+    var b = new BitSet(this.getN());
+    for(int i=0; i<this.getN();i++)
+    {
+      b.set(i, this.get((i*k)%n + n*(i/n)));
+    }
+    return build(b, this.getN());
   }
   
   public static BinaryWord build(String input) {
@@ -67,55 +77,19 @@ public class BinaryWord extends Combination implements Serializable {
   }
   
   public static BinaryWord build(Combination c) {
-    return new BinaryWord(c, c.getN());
+    return new BinaryWord(c.reverse(), c.getN());
   }
    
   public static BinaryWord build(BitSet p_bs, int size) {
-    int l = size;
-    TreeSet<Integer> t = new TreeSet<Integer>();
-
-    for (int i = 0; i < l; i++) {
-      if (p_bs.get(i)) {
-        t.add(i);
-      }
-    }
-
-    return new BinaryWord(t, l);
+    return new BinaryWord(p_bs, size);
   }
   
-  public static BinaryWord build(Boolean[] p_arr) {
-    int l = p_arr.length;
-    TreeSet<Integer> t = new TreeSet<Integer>();
-
-    for (int i = 0; i < l; i++) {
-      if (p_arr[i]) {
-        t.add(i);
-      }
-    }
-
-    return new BinaryWord(t, l);
-  }
-
   public static BinaryWord build(TreeSet<Integer> p_arr, int p_length) {
     return new BinaryWord(p_arr, p_length);
   }
 
   public static BinaryWord rotate(BinaryWord r, int t) {
     return new BinaryWord(r.rotate(t), r.m_n);
-
-  }
-
-  public static BinaryWord scaleModulo(BinaryWord r, int k, int n) {
-    if(r.getN() % n != 0){
-      throw new RuntimeException("n does not divide the length of the rhythm.");
-    }
-    
-    Boolean[] output = new Boolean[r.getN()];
-    for(int i=0; i<r.getN();i++)
-    {
-      output[i] = r.get((i*k)%n + n*(i/n));
-    }
-    return build(output);
   }
   
   public Sequence getContour() {
@@ -149,9 +123,6 @@ public class BinaryWord extends Combination implements Serializable {
     return new BinaryWord(super.reverse(), this.getN());
   }
   
-  public double compositionEntropy() {
-    return this.getComposition().asSequence().entropy();
-  }
   public Sequence randomSequence(){
     Composition c = getComposition();
     Sequence cs = c.asSequence();
@@ -205,14 +176,6 @@ public class BinaryWord extends Combination implements Serializable {
     return sb.reverse().toString();
   }
 
-  public static boolean equivalentUnderRotation(BinaryWord a, BinaryWord b) {
-    for (int i = 0; i < a.m_n; i++) {
-      if (a.equals(rotate(b, i))) {
-        return true;
-      }
-    }
-    return false;
-  }
   private static TreeMap<BinaryWord, Sequence> specMemo = new TreeMap<>();
   public static Sequence calcSpectrum(BinaryWord r) {
     if(specMemo.containsKey(r)) return specMemo.get(r);
@@ -237,24 +200,5 @@ public class BinaryWord extends Combination implements Serializable {
     }
   }
   
-  public static BinaryWord merge(List<BinaryWord> r) {
-    Sequence sizes = new Sequence();
-    for(int i=0;i<r.size();i++) {sizes.add(r.get(i).getN());}
-    int max=sizes.getMax();
-    int newsz = max*r.size();
-    BinaryWord b = new BinaryWord(new BitSet(), newsz);
-    var idxs = new Sequence();
-    for(int i=0;i<r.size();i++) idxs.add(0);
-    
-    for(int i=0;i<newsz;i++) {
-      int j = -1+newsz-i;
-      int wi = j%r.size();
-      var w = r.get(wi);
-      var idx = idxs.get(wi);
-      idxs.set(wi, (idx+1)%w.size());
-      
-      b.set(-1+newsz-j, w.get(idx));
-    }
-    return b;
-  }
+  
 }

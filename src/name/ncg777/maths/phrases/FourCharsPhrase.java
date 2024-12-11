@@ -106,7 +106,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       output.add(
           new FourChars(
               BinaryWord.build(
-                  a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord())
+                  a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord()).reverse()
               ).toWord(a.alphabetName)
           )
       );
@@ -137,8 +137,8 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       output.add(new FourChars(
           BinaryWord.build(
               Combination.merge(
-                  a.get(i).toBinaryWord(), 
-                  b.get(i).toBinaryWord()))
+                  a.get(i).toBinaryWord().reverse(), 
+                  b.get(i).toBinaryWord().reverse()))
           .toWord(a.alphabetName)));
     }
     return output;
@@ -166,8 +166,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       output.add(
           new FourChars(
               BinaryWord.build(
-                  (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord()))
-              ).toWord(a.alphabetName)
+                  (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord())).reverse()).toWord(a.alphabetName)
           )
       );
     }
@@ -196,7 +195,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       output.add(
           new FourChars(
               BinaryWord.build(
-                  (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord()))
+                  (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord())).reverse()
               ).toWord(a.alphabetName)
           )
       );
@@ -211,31 +210,21 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     FourCharsPhrase carrier = a;
     FourCharsPhrase impulse = b;
 
-    BinaryWord b_carrier = carrier.toBinaryWord();
-    BinaryWord b_impulse = impulse.toBinaryWord();
+    BinaryWord b_carrier = carrier.toBinaryWord().reverse();
+    BinaryWord b_impulse = impulse.toBinaryWord().reverse();
 
-    BinaryWord o = new BinaryWord(new BitSet(), b_carrier.size());
+    BinaryWord o = new BinaryWord(new BitSet(), b_carrier.getN());
 
-    for (int i = 0; i < b_carrier.size(); i++) {
-      for (int j = 0; j < b_impulse.size(); j++) {
+    for (int i = 0; i < b_carrier.getN(); i++) {
+      for (int j = 0; j < b_impulse.getN(); j++) {
         o.set(
-            (i + j) % o.size(), 
-            o.get((i + j) % o.size()) | (b_carrier.get(i) & b_impulse.get(j))
+            (i + j) % o.getN(), 
+            o.get((i + j) % o.getN()) | (b_carrier.get(i) & b_impulse.get(j))
         );
       }
     }
-
-    BinaryWord output = new BinaryWord(new BitSet(), o.size());
-
-    for (int i = 0; i < carrier.size(); i++) {
-      for (int j = 0; j < 12; j++) {
-        if (o.get(((i * 2) + j) % o.size())) {
-          output.set(j,true);
-        }
-      }
-    }
     
-    return new FourCharsPhrase(a.alphabetName, output);
+    return new FourCharsPhrase(a.alphabetName, o.reverse());
   }
 
   public boolean isEquivalentUnderSyncronizedRotation(FourCharsPhrase other) {
@@ -261,7 +250,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
 
   public Sequence clusterPartition(Alphabet.Name alphabetName) {
     var clusters =
-        FourCharsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeByHomogeneity());
+        FourCharsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeIntoHomogeneousRegions());
     var rs = new ArrayList<BinaryWord>();
     for (FourCharsPhrase r : clusters)
       rs.add(r.toBinaryWord());
@@ -338,7 +327,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     List<FourCharsPhrase> o = new ArrayList<>();
     
     for(var r : list) {
-      o.add(FourCharsPhrase.fromCombination(alphabetName,r.reverse()));
+      o.add(FourCharsPhrase.fromCombination(alphabetName,r));
     }
     return o;
   }

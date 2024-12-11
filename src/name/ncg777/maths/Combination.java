@@ -14,6 +14,7 @@ import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 
 /**
  * The {@code Combination} class represents a combination of elements using a 
@@ -177,6 +178,25 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return o;
   }
+  
+  public static Combination mergeAll(List<? extends Combination> r) {
+    Sequence sizes = new Sequence();
+    for(int i=0;i<r.size();i++) {sizes.add(r.get(i).getN());}
+    int max=sizes.getMax();
+    int newsz = max*r.size();
+    Combination b = new Combination(new BitSet(), newsz);
+    var idxs = new Sequence();
+    for(int i=0;i<r.size();i++) idxs.add(0);
+    
+    for(int i=0;i<newsz;i++) {
+      int wi = i%r.size();
+      var w = r.get(wi);
+      b.set(i, w.get(idxs.get(wi)));
+      idxs.set(wi, (idxs.get(wi)+1)%sizes.get(wi));
+    }
+    return b;
+  }
+  
   public Sequence homogeneityRegionsSequence() {
     Sequence s = this.getComposition().asSequence();
     Sequence groups = new Sequence();
@@ -203,7 +223,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     return groups;
   }
   
-  public List<? extends Combination> decomposeByHomogeneity() {
+  public List<? extends Combination> decomposeIntoHomogeneousRegions() {
     var o = new ArrayList<Combination>();
     Sequence seq = this.getComposition().asSequence();
     Sequence partition = this.homogeneityRegionsSequence();
@@ -379,7 +399,32 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return o;
   }
-
+  
+  @SuppressWarnings("unchecked")
+  public <T> T[] applyTo(T[] arr) {
+    if(arr.length != this.getN())
+      throw new IllegalArgumentException();
+    
+    var o = Array.newInstance(Object.class, this.getK());
+    int k=0;
+    for(int i=nextSetBit(0); i > -1; i=nextSetBit(i+1))
+      Array.set(o, k++, arr[i]);
+    return (T[])o;
+  }
+  
+  public <T> List<T> applyTo(List<T> list) {
+    if(list.size() != this.getN())
+      throw new IllegalArgumentException();
+    ArrayList<T> o = new ArrayList<>();
+    for(int i=nextSetBit(0); i > -1; i=nextSetBit(i+1))
+      o.add(list.get(i));
+    return o;
+  }
+  
+  public Sequence applyTo(Sequence seq) {
+   return new Sequence(this.applyTo(seq));
+  }
+  
   public Combination[] partition(Sequence p0){
     Integer[] p = new Integer[p0.size()];
     int k=0;
@@ -388,7 +433,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return partition(p);
   }
-  
+
   public Combination[] partition(Integer[] partition){
     if(partition.length != this.getK()){
       throw new IllegalArgumentException();   
@@ -405,7 +450,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     int[] set = new int[getK()];
     int k=0;
-    for (int i = nextSetBit(0); i >= 0; i = nextSetBit(i + 1)) {
+    for (int i = nextSetBit(0); i > -1; i = nextSetBit(i + 1)) {
       set[k++] = i;
     }
     Combination[] o = new Combination[max+1];

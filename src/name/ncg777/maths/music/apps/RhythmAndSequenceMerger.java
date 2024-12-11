@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
+import name.ncg777.maths.Combination;
 import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
@@ -68,10 +69,10 @@ public class RhythmAndSequenceMerger {
           Sequence s = new Sequence();
           if(parts.length > 1) {s = Sequence.parse(parts[1].trim());}
           sequences.add(s);
-          arr.add(new FourCharsPhrase(abc, parts[0].trim()).toBinaryWord());
+          arr.add(new FourCharsPhrase(abc, parts[0].trim()).toBinaryWord().reverse());
         }
         
-        BinaryWord result = BinaryWord.merge(arr);
+        BinaryWord result = BinaryWord.build(Combination.mergeAll(arr));
         txtResult.setText(new FourCharsPhrase(abc, result).toString());
         
         Sequence s = new Sequence();
@@ -85,7 +86,7 @@ public class RhythmAndSequenceMerger {
             indices.set(ir, (indices.get(ir)+1)%sequences.get(ir).size());
           }
         }
-        textSeq.setText(s.toString());
+        textSeq.setText(s.toString().replaceAll("[\\[\\],]", ""));
       }
     });
     

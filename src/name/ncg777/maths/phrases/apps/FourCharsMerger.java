@@ -8,6 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import name.ncg777.maths.Combination;
 import name.ncg777.maths.phrases.FourCharsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -60,16 +61,16 @@ public class FourCharsMerger {
     btnMerge.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         String[] lines = txtArea.getText().trim().split("\n+");
-        ArrayList<BinaryWord> arr = new ArrayList<BinaryWord>();
+        var arr = new ArrayList<BinaryWord>();
         for(int i=0; i<lines.length;i++) {
           arr.add(
               new FourCharsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(),
                   lines[i].trim())
-          .toBinaryWord());
+          .toBinaryWord().reverse());
         }
         
-        BinaryWord result = BinaryWord.merge(arr);
+        BinaryWord result = BinaryWord.build(Combination.mergeAll(arr));
           
         txtResult.setText(
             (new FourCharsPhrase((Alphabet.Name)comboBox.getSelectedItem(),result)).toString()
