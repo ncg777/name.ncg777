@@ -124,7 +124,7 @@ public class Walker {
 
         while(n>1){
             Pcs12 t = CollectionUtils.chooseAtRandom(d.getNeighbors(Pcs12.parseForte(o.get(o.size()-1))));
-            o.add(t.toString());
+            o.add(t.toForteNumberString());
             n--;
         }
         if(chckbxReverse.isSelected()){Collections.reverse(o);}
