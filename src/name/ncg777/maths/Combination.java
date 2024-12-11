@@ -177,6 +177,67 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     }
     return o;
   }
+  public Sequence homogeneityRegionsSequence() {
+    Sequence s = this.getComposition().asSequence();
+    Sequence groups = new Sequence();
+    for(int i=0;i<s.size();i++) groups.add(0);
+    
+    int k=0;
+    for(int j=s.size()-1;j>=0;j--) {
+      if(s.get(0) == s.get(j)) {k--;}
+      else {break;}
+    }
+    k += s.size();
+    k = k %s.size();
+    int previousValue = s.get(k);
+    int currentGroup = 0;
+    
+    for(int i=k+1; i<s.size() + k;i++) {
+      int v = s.get(i%s.size());
+      if(v != previousValue) {
+        currentGroup++;
+      }
+      groups.set(i%groups.size(), currentGroup);
+      previousValue = v;  
+    }
+    return groups;
+  }
+  
+  public List<? extends Combination> decomposeByHomogeneity() {
+    var o = new ArrayList<Combination>();
+    Sequence seq = this.getComposition().asSequence();
+    Sequence partition = this.homogeneityRegionsSequence();
+    
+    Sequence deduped = new Sequence(); 
+    Integer last = seq.get(0);
+    deduped.add(last);
+    for(var i : seq) {
+      if(!i.equals(last)) {
+        deduped.add(i);
+        last = i;
+      }
+    }
+    
+    int n = partition.getMax()+1;
+    
+    int k = this.nextSetBit(0);
+    int j=0;
+    
+    for(int i=0;i<n;i++) {
+      var comb = new Combination(this.getN());
+      int val = deduped.get(i);
+      while(true) {
+        comb.set(k);
+        k+=val;
+        if(++j == seq.size() || seq.get(j) != val) {
+          break;
+        }
+      }
+      o.add(comb);
+    }
+    
+    return o;
+  }
   
   @Override
   public String toString() {

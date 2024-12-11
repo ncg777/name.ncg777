@@ -127,31 +127,10 @@ public class Composition extends Combination {
     return o;
   }
 
-  public Sequence partitionByEquality() {
-    Sequence s = this.asSequence();
-    Sequence groups = new Sequence();
-    for(int i=0;i<s.size();i++) groups.add(0);
-    
-    int k=0;
-    for(int j=s.size()-1;j>=0;j--) {
-      if(s.get(0) == s.get(j)) {k--;}
-      else {break;}
-    }
-    k += s.size();
-    k = k %s.size();
-    int previousValue = s.get(k);
-    int currentGroup = 0;
-    
-    for(int i=k+1; i<s.size() + k;i++) {
-      int v = s.get(i%s.size());
-      if(v != previousValue) {
-        currentGroup++;
-      }
-      groups.set(i%groups.size(), currentGroup);
-      previousValue = v;  
-    }
-    return groups;
-  }
+  
+  
+  
+  
   public List<Composition> segment() {
     Backtracker<Composition> b =
         Backtracker.Maximizer((c) -> Composition.refinements(c),

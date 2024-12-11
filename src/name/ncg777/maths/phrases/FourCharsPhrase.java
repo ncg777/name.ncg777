@@ -261,7 +261,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
 
   public Sequence clusterPartition(Alphabet.Name alphabetName) {
     var clusters =
-        FourCharsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().partitionByEquality());
+        FourCharsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeByHomogeneity());
     var rs = new ArrayList<BinaryWord>();
     for (FourCharsPhrase r : clusters)
       rs.add(r.toBinaryWord());
@@ -306,7 +306,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       return o;
     }
   }
-  public static FourCharsPhrase fromBinaryWord(Alphabet.Name alphabetName, BinaryWord r){
+  public static FourCharsPhrase fromCombination(Alphabet.Name alphabetName, Combination r){
     FourCharsPhrase output = new FourCharsPhrase(alphabetName);
     var abc = Alphabet.getAlphabet(alphabetName);
     
@@ -333,20 +333,20 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return output;
   }
   
-  public static ArrayList<FourCharsPhrase> fromRhythmList(
-      Alphabet.Name alphabetName, List<BinaryWord> list) {
-    ArrayList<FourCharsPhrase> o = new ArrayList<>();
+  public static List<FourCharsPhrase> fromRhythmList(
+      Alphabet.Name alphabetName, List<? extends Combination> list) {
+    List<FourCharsPhrase> o = new ArrayList<>();
     
-    for(BinaryWord r : list) {
-      o.add(FourCharsPhrase.fromBinaryWord(alphabetName,r));
+    for(var r : list) {
+      o.add(FourCharsPhrase.fromCombination(alphabetName,r.reverse()));
     }
     return o;
   }
   
   public static List<FourCharsPhrase> clusterRhythmPartition(
-      Alphabet.Name alphabetName, List<BinaryWord> _partition) {
+      Alphabet.Name alphabetName, List<? extends Combination> _partition) {
     if(_partition == null) throw new RuntimeException("clusterRhythmPartition:: partition is null.");
-    ArrayList<FourCharsPhrase> partition = FourCharsPhrase.fromRhythmList(alphabetName, _partition);
+    List<FourCharsPhrase> partition = FourCharsPhrase.fromRhythmList(alphabetName, _partition);
     if(partition.size()==1) {
       ArrayList<FourCharsPhrase> f = new ArrayList<>();
       f.add(partition.get(0));

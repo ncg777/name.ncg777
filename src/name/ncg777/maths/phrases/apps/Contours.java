@@ -84,7 +84,7 @@ public class Contours {
         textCompositionPartition.setText(r4.clusterPartition(abc).toString().replaceAll("[\\[\\],]", ""));
         String o = "";
         
-        var clusters = FourCharsPhrase.clusterRhythmPartition(abc, r4.toBinaryWord().partitionByEquality());
+        var clusters = FourCharsPhrase.clusterRhythmPartition(abc, r4.toBinaryWord().decomposeByHomogeneity());
         for(FourCharsPhrase r : clusters) {
           o += r.toString() + "\n";
         }

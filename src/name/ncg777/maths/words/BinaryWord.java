@@ -4,7 +4,6 @@ import static name.ncg777.computing.structures.CollectionUtils.calcIntervalVecto
 import static com.google.common.math.IntMath.checkedPow;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
@@ -54,22 +53,8 @@ public class BinaryWord extends Combination implements Serializable {
     return new Word(alphabetName, this);
   }
   
-  public List<BinaryWord> partitionByEquality() {
-    ArrayList<BinaryWord> o = new ArrayList<BinaryWord>();
-    Sequence seq = this.asSequence();
-    Sequence partition = this.reverse().getComposition().partitionByEquality().reverse();
-    
-    int n = partition.getMax()+1;
-    
-    for(int i=0;i<n;i++) {
-      o.add(new BinaryWord(new BitSet(this.getN()), this.getN()));
-      for(int j=0;j<seq.size();j++) {
-        if(partition.get(j) == i) {
-          o.get(i).set(seq.get(j), true);
-        }
-      }
-    }
-    return o;
+  public List<? extends Combination> decomposeByHomogeneity() {
+    return super.reverse().decomposeByHomogeneity().stream().map((c) -> BinaryWord.build(c)).toList();
   }
   
   public BinaryWord scaleModulo(int k, int n){
