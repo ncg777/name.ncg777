@@ -76,15 +76,6 @@ public class BinaryWord extends Combination implements Serializable {
     return scaleModulo(this, k, n);
   }
   
-  public BinaryWord juxtapose(BinaryWord other) {
-    int ns = this.getN()+other.getN();
-    BitSet bs = new BitSet(ns);
-    for(int i=0;i<this.getN();i++){bs.set(i,this.get(i));}
-    for(int i=0;i<other.getN();i++){bs.set(i+this.getN(),other.get(i));}
-    BinaryWord r = BinaryWord.build(bs, ns);
-    return r;
-  }
-  
   public static BinaryWord build(String input) {
     var sb = new StringBuilder(input);
     return build(Combination.fromBinaryString(sb.reverse().toString()));
@@ -166,10 +157,6 @@ public class BinaryWord extends Combination implements Serializable {
   @Override
   public int hashCode() {
     return this.toString().hashCode();
-  }
-
-  protected BinaryWord(Set<Integer> p_s, Integer p_n) {
-    super(p_n, p_s);
   }
 
   public double compositionEntropy() {
