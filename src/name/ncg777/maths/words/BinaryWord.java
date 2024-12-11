@@ -158,7 +158,12 @@ public class BinaryWord extends Combination implements Serializable {
   public int hashCode() {
     return this.toString().hashCode();
   }
-
+  
+  @Override
+  public BinaryWord reverse() {
+    return new BinaryWord(super.reverse(), this.getN());
+  }
+  
   public double compositionEntropy() {
     return this.getComposition().asSequence().entropy();
   }
@@ -207,13 +212,7 @@ public class BinaryWord extends Combination implements Serializable {
     return o;
   }
   
-  public BinaryWord reverse() {
-    var o = new BinaryWord(new BitSet(), this.getN());
-    for(int i=0;i<o.getN();i++) {
-      if(this.get(i)) o.set(-1+o.getN()-i);
-    }
-    return o;
-  }
+
   
   @Override
   public String toString() {
