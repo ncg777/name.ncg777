@@ -11,7 +11,6 @@ import com.google.common.base.Joiner;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.enumerations.CombinationEnumeration;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 import java.io.Serializable;
