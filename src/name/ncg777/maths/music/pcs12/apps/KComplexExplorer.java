@@ -144,7 +144,7 @@ public class KComplexExplorer {
     } else {
       textCurrent.setText(ch.toForteNumberString());
       textPitches.setText(ch.combinationString().replaceAll("[,}{]", "").trim()); 
-      textIV.setText(ch.getIntervalVector().toString().replaceAll("[,})({]", ""));
+      textIV.setText(ch.getIntervalVector().toString().replaceAll("[\\[\\],]", ""));
       Pcs12 scale = Pcs12.parseForte(cboScale.getSelectedItem().toString());
       textComplement.setText(scale.minus(ch).toForteNumberString());
       textPCS12.setText(ch.toString());
@@ -152,7 +152,7 @@ public class KComplexExplorer {
       var commonName = ch.getCommonName();
       if(commonName == null) commonName = "";
       textCommonName.setText(commonName);
-      textIntervals.setText(ch.transpose(ch.getTranspose()).getComposition().asSequence().toString());
+      textIntervals.setText(ch.transpose(ch.getTranspose()).getComposition().asSequence().toString().replaceAll("[\\[\\],]", ""));
       textTonicDistance.setText(Double.toString(ch.calcCenterTuning((int)spinnerCenter.getValue())));
       this.current = ch;
     }

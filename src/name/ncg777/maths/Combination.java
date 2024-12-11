@@ -100,7 +100,7 @@ public class Combination extends BitSet implements Comparable<Combination>, Seri
     if(nsb == -1) {
       return new Composition(m_n);
     } else { 
-      Combination t = rotate(-nsb);
+      Combination t = rotate(nsb);
       List<Boolean> l = new ArrayList<Boolean>();
       for(int i=1;i<m_n;i++){ 
         l.add(t.get(i));

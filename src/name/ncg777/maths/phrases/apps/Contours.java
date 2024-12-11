@@ -12,7 +12,6 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -78,14 +77,14 @@ public class Contours {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
         FourCharsPhrase r4 = new FourCharsPhrase(abc, textField.getText());
         
-        txtContour.setText(r4.toWord().getContour().toString());
-        txtShadowContour.setText(r4.toWord().getShadowContour().toString());
-        txtComposition.setText(r4.toBinaryWord().getComposition().asSequence().reverse().toString());
+        txtContour.setText(r4.toWord().getContour().toString().replaceAll("[\\[\\],]", ""));
+        txtShadowContour.setText(r4.toWord().getShadowContour().toString().replaceAll("[\\[\\],]", ""));
+        txtComposition.setText(r4.toBinaryWord().reverse().getComposition().asSequence().toString().replaceAll("[\\[\\],]", ""));
         textFieldBinary.setText(r4.toBinaryWord().toString());
-        textCompositionPartition.setText(r4.clusterPartition(abc).reverse().toString());
+        textCompositionPartition.setText(r4.clusterPartition(abc).toString().replaceAll("[\\[\\],]", ""));
         String o = "";
         
-        ArrayList<FourCharsPhrase> clusters = FourCharsPhrase.clusterRhythmPartition(abc, r4.toBinaryWord().partitionByEquality());
+        var clusters = FourCharsPhrase.clusterRhythmPartition(abc, r4.toBinaryWord().partitionByEquality());
         for(FourCharsPhrase r : clusters) {
           o += r.toString() + "\n";
         }
@@ -93,7 +92,7 @@ public class Contours {
         
         Sequence contourseq = r4.toWord().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar().addToAll(-1);
 
-        textContourSeq.setText(contourseq.toString());
+        textContourSeq.setText(contourseq.toString().replaceAll("[\\[\\],]", ""));
         lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
         
       }

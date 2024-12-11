@@ -2,10 +2,10 @@ package name.ncg777.maths.phrases;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
@@ -262,7 +262,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
   public Sequence clusterPartition(Alphabet.Name alphabetName) {
     var clusters =
         FourCharsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().partitionByEquality());
-    ArrayList<BinaryWord> rs = new ArrayList<>();
+    var rs = new ArrayList<BinaryWord>();
     for (FourCharsPhrase r : clusters)
       rs.add(r.toBinaryWord());
 
@@ -277,7 +277,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
         }
       }
     }
-    return o;
+    return o.reverse();
   }
 
   private static class FourCharPhraseUnionSet {
@@ -333,8 +333,8 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return output;
   }
   
-  public static ArrayList<FourCharsPhrase> fromRhythmArray(
-      Alphabet.Name alphabetName, ArrayList<BinaryWord> list) {
+  public static ArrayList<FourCharsPhrase> fromRhythmList(
+      Alphabet.Name alphabetName, List<BinaryWord> list) {
     ArrayList<FourCharsPhrase> o = new ArrayList<>();
     
     for(BinaryWord r : list) {
@@ -343,10 +343,10 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return o;
   }
   
-  public static ArrayList<FourCharsPhrase> clusterRhythmPartition(
-      Alphabet.Name alphabetName, ArrayList<BinaryWord> _partition) {
+  public static List<FourCharsPhrase> clusterRhythmPartition(
+      Alphabet.Name alphabetName, List<BinaryWord> _partition) {
     if(_partition == null) throw new RuntimeException("clusterRhythmPartition:: partition is null.");
-    ArrayList<FourCharsPhrase> partition = FourCharsPhrase.fromRhythmArray(alphabetName, _partition);
+    ArrayList<FourCharsPhrase> partition = FourCharsPhrase.fromRhythmList(alphabetName, _partition);
     if(partition.size()==1) {
       ArrayList<FourCharsPhrase> f = new ArrayList<>();
       f.add(partition.get(0));
@@ -366,7 +366,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       o.add(s);
     }
     
-    return CollectionUtils.reverse(o);
+    return o.reversed();
   }
 
   @Override

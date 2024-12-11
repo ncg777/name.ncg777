@@ -40,10 +40,10 @@ public class BinaryWord extends Combination implements Serializable {
     return new Word(alphabetName, this);
   }
   
-  public ArrayList<BinaryWord> partitionByEquality() {
+  public List<BinaryWord> partitionByEquality() {
     ArrayList<BinaryWord> o = new ArrayList<BinaryWord>();
     Sequence seq = this.asSequence();
-    Sequence partition = this.getComposition().partitionByEquality();
+    Sequence partition = this.reverse().getComposition().partitionByEquality().reverse();
     
     int n = partition.getMax()+1;
     
