@@ -5,7 +5,6 @@ import static com.google.common.math.LongMath.checkedAdd;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 import name.ncg777.maths.Combination;
@@ -54,6 +53,8 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     int n = alphabet.size();
+    if(checkedPow(n, length) < natural)
+      throw new IllegalArgumentException("Not enough bits to encode natural.");
     while (length-- > 0) {
       long r = natural % n;
       this.add(alphabet.get((int) r));
@@ -87,20 +88,16 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
   }
 
   public BinaryWord toBinaryWord() {
-    var abc = Alphabet.getAlphabet(alphabetName);
-    
-    if (!abc.isInformationBinary())
-      throw new UnsupportedOperationException();
-
-    int b = (int)Math.round(abc.information());
-    var o = new BinaryWord(new BitSet(), this.size()*b);
-    
-    for(int i=0;i<this.size();i++) {
-      StringBuilder sb = new StringBuilder(Integer.toBinaryString(abc.indexOf(this.get(i))));
-      while(sb.length() < b) sb.insert(0, "0");
-      for(int j=0;j<b;j++) o.set((i*b)+j, sb.charAt(-1+b-j) == '1');
-    }
-    return o;
+    return new BinaryWord(
+        toNatural(),
+        Long.valueOf(Math.round(
+            Math.log(
+              Long.valueOf(
+                checkedPow(
+                    Integer.valueOf(Alphabet.getAlphabet(alphabetName).size()).longValue(), 
+                    Integer.valueOf(this.size())
+                )).doubleValue()) / Math.log(2.0))).intValue()
+        );
   }
 
   public long toNatural() {
@@ -109,8 +106,9 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     int k = 0;
     var sequence = this.toSequence();
     long sum = 0;
-    while (++k < sequence.size()) {
-      sum = checkedAdd(sum, (long) (sequence.get(k-1) * checkedPow(alphabet.size(), k-1)));
+    while (k++ < sequence.size()) {
+      var p = checkedPow(alphabet.size(), k-1);
+      sum = checkedAdd(sum, (((long)sequence.get(k-1)) * p));
     }
     return sum;
   }

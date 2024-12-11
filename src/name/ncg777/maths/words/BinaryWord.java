@@ -1,6 +1,7 @@
 package name.ncg777.maths.words;
 
 import static name.ncg777.computing.structures.CollectionUtils.calcIntervalVector;
+import static com.google.common.math.IntMath.checkedPow;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,6 +35,19 @@ public class BinaryWord extends Combination implements Serializable {
   public BinaryWord(Boolean[] b) {
     super(b.length);
     for(int i=0;i<b.length;i++) this.set(i,b[i]);
+  }
+  
+  public BinaryWord(long natural, int length) {
+    super(length);
+    if(checkedPow(2, length) < natural)
+      throw new IllegalArgumentException("Not enough bits.");
+    int n = 2;
+    int i=0;
+    while (length-- > 0) {
+      long r = natural % n;
+      this.set(i++, r==1);
+      natural = (natural - r) / n;
+    }
   }
   
   public Word toWord(Alphabet.Name alphabetName) {
