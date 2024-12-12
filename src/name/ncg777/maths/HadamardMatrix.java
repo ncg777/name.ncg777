@@ -17,10 +17,12 @@ public class HadamardMatrix extends MatrixOfIntegers {
   }
   
   public static HadamardMatrix getMatrix(int order) {
-   while(mats.size() < order) {
+   int currentSize = mats.size(); 
+   while(currentSize < order) {
      mats.add(new HadamardMatrix(mats.get(0).kronecker(mats.get(mats.size()-1))));
+     currentSize++;
    }
-   return mats.get(order);
+   return mats.get(order-1);
   };
   
   public int getOrder() {

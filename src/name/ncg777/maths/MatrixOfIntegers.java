@@ -49,7 +49,7 @@ public class MatrixOfIntegers extends Matrix<Integer> {
   }
   
   public MatrixOfIntegers kronecker(MatrixOfIntegers other) {
-    return new MatrixOfIntegers(kronecker(other));
+    return new MatrixOfIntegers(super.kronecker(other, (a,b) -> a*b));
   }
   
   @Override

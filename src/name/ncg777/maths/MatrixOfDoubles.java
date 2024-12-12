@@ -26,7 +26,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
   }
   
   public MatrixOfDoubles kronecker(MatrixOfDoubles other) {
-    return new MatrixOfDoubles(kronecker(other,(a,b) -> a+b, (a,b) -> a*b));
+    return new MatrixOfDoubles(kronecker(other, (a,b) -> a*b));
   }
   
   public MatrixOfDoubles(Double[][] doubles) {

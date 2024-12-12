@@ -8,13 +8,13 @@
 package name.ncg777.maths;
 
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +26,7 @@ import name.ncg777.computing.Parsers;
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.JaggedList;
 import name.ncg777.maths.enumerations.MixedRadixEnumeration;
+import name.ncg777.maths.sequences.Sequence;
 
 /**
  * Generic mutable Matrix class with basic functionality.
@@ -173,7 +174,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * @param product
    * @return
    */
-  public Matrix<T> kronecker(Matrix<T> other, BinaryOperator<T> sum, BinaryOperator<T> product) {
+  public Matrix<T> kronecker(Matrix<T> other, BinaryOperator<T> product) {
       int resultRows = this.m * other.m;
       int resultCols = this.n * other.n;
 
@@ -181,13 +182,20 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
 
       var mre = new MixedRadixEnumeration(Arrays.asList(this.m, this.n, other.m, other.n));
       
-      Set<int[]> t = new HashSet<int[]>();
+      Set<Sequence> t = new TreeSet<Sequence>();
       while(mre.hasMoreElements()) {
-        t.add(mre.nextElement());
+        t.add(new Sequence(mre.nextElement()));
       }
       
-      t.parallelStream().forEach((c) -> {
-        result.set(c[0]*(other.m + c[2]), c[1]*(other.n + c[3]), product.apply(this.get(c[0], c[1]), other.get(c[2], c[3])));
+      t.parallelStream().forEach((s) -> {
+        int i = s.get(0);
+        int j = s.get(1);
+        int k = s.get(2);
+        int l = s.get(3);
+        
+        T value = product.apply(this.get(i, j), other.get(k, l));
+        
+        result.set((i * other.m) + k, (j * other.n) + l, value);
       });
 
       return result;
@@ -219,7 +227,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * @param j
    * @return
    */
-  public T get(int i, int j) {
+  public synchronized T get(int i, int j) {
     var p = HomoPair.makeHomoPair(i, j);
     if (!mat.containsKey(p)) {
       return defaultValue;
@@ -237,7 +245,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * @param j
    * @return The previous value of the element at this position
    */
-  public void set(int i, int j, T val) {
+  public synchronized void set(int i, int j, T val) {
     var p = HomoPair.makeHomoPair(i, j);
     if(isDefaultValue(val)) {mat.remove(p);}
     else  mat.put(p, val);
@@ -374,7 +382,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
 
-  private void shiftColumnsRight(int j) {
+  private synchronized void shiftColumnsRight(int j) {
     n++;
     for(var e : mat.descendingMap().entrySet()) {
       if(e.getKey().getSecond() >= j) {
@@ -386,7 +394,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
 
-  private void shiftRowsDown(int i) {
+  private synchronized void shiftRowsDown(int i) {
     m++;
     for(var e : mat.descendingMap().entrySet()) {
       if(e.getKey().getFirst() >= i) {
@@ -488,8 +496,6 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     for (int j = 0; j < n; j++) {
       set(i, j, v);
     }
-
-
   }
 
   /**
@@ -507,7 +513,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * 
    * @param j
    */
-  public void removeColumn(int j) {
+  public synchronized void removeColumn(int j) {
     n--;
     
     for(var e : mat.descendingMap().entrySet()) {
@@ -526,7 +532,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    * 
    * @param i
    */
-  public void removeRow(int i) {
+  public synchronized void removeRow(int i) {
     m--;
     
     for(var e : mat.descendingMap().entrySet()) {
