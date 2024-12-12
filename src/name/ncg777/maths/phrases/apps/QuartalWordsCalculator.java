@@ -14,14 +14,14 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.words.Alphabet;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class FourCharsCalculator {
+public class QuartalWordsCalculator {
   private enum Operation {
     And,
     Or,
@@ -39,7 +39,7 @@ public class FourCharsCalculator {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          FourCharsCalculator window = new FourCharsCalculator();
+          QuartalWordsCalculator window = new QuartalWordsCalculator();
           window.frmRhythmCalc.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -48,21 +48,21 @@ public class FourCharsCalculator {
     });
   }
 
-  public FourCharsCalculator() {
+  public QuartalWordsCalculator() {
     initialize();
   }
 
   private void initialize() {
     frmRhythmCalc = new JFrame();
-    frmRhythmCalc.setTitle("FourCharsCalculator");
+    frmRhythmCalc.setTitle("QuartalWordsCalculator");
     frmRhythmCalc.setBounds(100, 100, 450, 325);
     frmRhythmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblRhythmA = new JLabel("FourChars A :");
+    JLabel lblRhythmA = new JLabel("QuartalWord A :");
     lblRhythmA.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblRhythmA.setHorizontalAlignment(SwingConstants.RIGHT);
     
-    JLabel lblRhythmB = new JLabel("FourChars B :");
+    JLabel lblRhythmB = new JLabel("QuartalWord B :");
     lblRhythmB.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblRhythmB.setHorizontalAlignment(SwingConstants.RIGHT);
     
@@ -86,25 +86,25 @@ public class FourCharsCalculator {
     btnCalc.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = comboBox.getSelectedItem();
-        FourCharsPhrase a = new FourCharsPhrase((Alphabet.Name)abc, rhA.getText());
-        FourCharsPhrase b = new FourCharsPhrase((Alphabet.Name)abc, rhB.getText());
+        QuartalWordsPhrase a = new QuartalWordsPhrase((Alphabet.Name)abc, rhA.getText());
+        QuartalWordsPhrase b = new QuartalWordsPhrase((Alphabet.Name)abc, rhB.getText());
         String o = "";
           
         switch((Operation) operation.getSelectedItem()) {
           case And:
-            o = FourCharsPhrase.and(a, b).toString();
+            o = QuartalWordsPhrase.and(a, b).toString();
             break;
           case Convolve:
-            o = FourCharsPhrase.convolve(a, b).toString();
+            o = QuartalWordsPhrase.convolve(a, b).toString();
             break;
           case Or:
-            o = FourCharsPhrase.or(a, b).toString();
+            o = QuartalWordsPhrase.or(a, b).toString();
             break;
           case Xor:
-            o = FourCharsPhrase.xor(a, b).toString();
+            o = QuartalWordsPhrase.xor(a, b).toString();
             break;
           case Minus:
-            o = FourCharsPhrase.minus(a, b).toString();
+            o = QuartalWordsPhrase.minus(a, b).toString();
             break;
         }
        
@@ -122,8 +122,8 @@ public class FourCharsCalculator {
     JButton btnFlipBits = new JButton("Flip bits");
     btnFlipBits.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var str = FourCharsPhrase.not(
-            new FourCharsPhrase(
+        var str = QuartalWordsPhrase.not(
+            new QuartalWordsPhrase(
                 (Alphabet.Name)comboBox.getSelectedItem(), 
                 output.getText())).toString();
         

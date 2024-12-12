@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.words.Alphabet;
 
 import javax.swing.JComboBox;
@@ -76,9 +76,9 @@ public class Expander {
     btnExpand.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
-        var o = FourCharsPhrase.rotate(
-            FourCharsPhrase.expand(
-                new FourCharsPhrase(
+        var o = QuartalWordsPhrase.rotate(
+            QuartalWordsPhrase.expand(
+                new QuartalWordsPhrase(
                     abc, 
                     txtRhythm.getText()), 
                     (int)spinner.getValue(), 
@@ -86,7 +86,7 @@ public class Expander {
                     (int)rot.getValue());
         
         txtResult.setText(o.toString());
-        txtNot.setText(FourCharsPhrase.not(o).toString());
+        txtNot.setText(QuartalWordsPhrase.not(o).toString());
       }
     });
     

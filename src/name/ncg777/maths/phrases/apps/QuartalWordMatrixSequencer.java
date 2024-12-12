@@ -21,10 +21,10 @@ import javax.swing.JScrollPane;
 import java.awt.Font;
 import javax.swing.JComboBox;
 
-public class FourCharsMatrixSequencer {
+public class QuartalWordMatrixSequencer {
 
   private JFrame frmRseq;
-  private JTextArea textFourCharsList;
+  private JTextArea textQuartalWordList;
   private JTextField textSequence;
   private JTextArea textResult;
   private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(Alphabet.Name.values());
@@ -33,7 +33,7 @@ public class FourCharsMatrixSequencer {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          FourCharsMatrixSequencer window = new FourCharsMatrixSequencer();
+          QuartalWordMatrixSequencer window = new QuartalWordMatrixSequencer();
           window.frmRseq.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -42,13 +42,13 @@ public class FourCharsMatrixSequencer {
     });
   }
 
-  public FourCharsMatrixSequencer() {
+  public QuartalWordMatrixSequencer() {
     initialize();
   }
 
   private void initialize() {
     frmRseq = new JFrame();
-    frmRseq.setTitle("FourCharsMatrixSequencer");
+    frmRseq.setTitle("QuartalWordMatrixSequencer");
     frmRseq.setBounds(100, 100, 471, 587);
     frmRseq.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -70,7 +70,7 @@ public class FourCharsMatrixSequencer {
           try {
             Sequence s = Sequence.parse(textSequence.getText());
             int n = s.size();
-            String[] lines = textFourCharsList.getText().split("\n+");
+            String[] lines = textQuartalWordList.getText().split("\n+");
             int m = lines.length;
             Matrix<String> mat = new Matrix<String>(m, n);
             
@@ -156,10 +156,10 @@ public class FourCharsMatrixSequencer {
     scrollPane_1.setViewportView(textResult);
     textResult.setColumns(10);
     
-    textFourCharsList = new JTextArea();
-    textFourCharsList.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
-    scrollPane.setViewportView(textFourCharsList);
-    textFourCharsList.setColumns(10);
+    textQuartalWordList = new JTextArea();
+    textQuartalWordList.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    scrollPane.setViewportView(textQuartalWordList);
+    textQuartalWordList.setColumns(10);
     frmRseq.getContentPane().setLayout(groupLayout);
   }
 }

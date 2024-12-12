@@ -11,7 +11,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.SwingConstants;
@@ -112,7 +112,7 @@ public class Application {
           Engine engine = new Engine(chckbxDelta.isSelected());
           HomoPair<Sequence> result = null;
           result = engine.evaluate(
-              (new FourCharsPhrase(
+              (new QuartalWordsPhrase(
                   (Alphabet.Name)comboBox_1.getSelectedItem(), 
                   rhythm.getText()
               )).toBinaryWord(), 

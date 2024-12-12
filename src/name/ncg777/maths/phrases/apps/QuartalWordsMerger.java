@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
@@ -25,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 
-public class FourCharsMerger {
+public class QuartalWordsMerger {
 
   private JFrame frmRhythmMerger;
   private JTextField txtResult;
@@ -36,7 +36,7 @@ public class FourCharsMerger {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          FourCharsMerger window = new FourCharsMerger();
+          QuartalWordsMerger window = new QuartalWordsMerger();
           window.frmRhythmMerger.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -46,14 +46,14 @@ public class FourCharsMerger {
   }
 
 
-  public FourCharsMerger() {
+  public QuartalWordsMerger() {
     initialize();
   }
 
   private void initialize() {
     frmRhythmMerger = new JFrame();
     frmRhythmMerger.setResizable(false);
-    frmRhythmMerger.setTitle("FourCharsMerger");
+    frmRhythmMerger.setTitle("QuartalWordsMerger");
     frmRhythmMerger.setBounds(100, 100, 450, 273);
     frmRhythmMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -64,7 +64,7 @@ public class FourCharsMerger {
         var arr = new ArrayList<BinaryWord>();
         for(int i=0; i<lines.length;i++) {
           arr.add(
-              new FourCharsPhrase(
+              new QuartalWordsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(),
                   lines[i].trim())
           .toBinaryWord().reverse());
@@ -73,7 +73,7 @@ public class FourCharsMerger {
         BinaryWord result = BinaryWord.build(Combination.mergeAll(arr));
           
         txtResult.setText(
-            (new FourCharsPhrase((Alphabet.Name)comboBox.getSelectedItem(),result)).toString()
+            (new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(),result)).toString()
         );
         
       }

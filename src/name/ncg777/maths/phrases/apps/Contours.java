@@ -18,7 +18,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 
@@ -75,7 +75,7 @@ public class Contours {
     btnCalccontours.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
-        FourCharsPhrase r4 = new FourCharsPhrase(abc, textField.getText());
+        QuartalWordsPhrase r4 = new QuartalWordsPhrase(abc, textField.getText());
         
         txtContour.setText(r4.toWord().getContour().toString().replaceAll("[\\[\\],]", ""));
         txtShadowContour.setText(r4.toWord().getShadowContour().toString().replaceAll("[\\[\\],]", ""));
@@ -84,8 +84,8 @@ public class Contours {
         textCompositionPartition.setText(r4.clusterPartition(abc).toString().replaceAll("[\\[\\],]", ""));
         String o = "";
         
-        var clusters = FourCharsPhrase.clusterRhythmPartition(abc, r4.toBinaryWord().decomposeIntoHomogeneousRegions());
-        for(FourCharsPhrase r : clusters) {
+        var clusters = QuartalWordsPhrase.clusterRhythmPartition(abc, r4.toBinaryWord().decomposeIntoHomogeneousRegions());
+        for(QuartalWordsPhrase r : clusters) {
           o += r.toString() + "\n";
         }
         textAreaPartitions.setText(o);

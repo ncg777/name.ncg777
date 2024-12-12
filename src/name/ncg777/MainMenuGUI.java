@@ -18,7 +18,7 @@ public class MainMenuGUI {
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(0, 1)); // Dynamic vertical layout
    
-    addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
+    addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
     addAppButton(panel, "maths.apps.Permutator",name.ncg777.maths.apps.Permutator.class);
     addAppButton(panel, "maths.music.apps.KernelEvaluator", name.ncg777.maths.music.apps.kernelEvaluator.Application.class);
@@ -50,12 +50,12 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.phrases.apps.Contours",name.ncg777.maths.phrases.apps.Contours.class);
     addAppButton(panel, "maths.phrases.apps.Diluter",name.ncg777.maths.phrases.apps.Diluter.class);
     addAppButton(panel, "maths.phrases.apps.Expander",name.ncg777.maths.phrases.apps.Expander.class);
-    addAppButton(panel, "maths.phrases.apps.FourCharsCalculator",name.ncg777.maths.phrases.apps.FourCharsCalculator.class);
-    addAppButton(panel, "maths.phrases.apps.FourCharsMatrixGenerator",name.ncg777.maths.phrases.apps.FourCharsMatrixGenerator.class);
-    addAppButton(panel, "maths.phrases.apps.FourCharsMerger",name.ncg777.maths.phrases.apps.FourCharsMerger.class);
-    addAppButton(panel, "maths.phrases.apps.FourCharsPartitioner",name.ncg777.maths.phrases.apps.FourCharsPartitioner.class);
     addAppButton(panel, "maths.phrases.apps.Permutator",name.ncg777.maths.phrases.apps.Permutator.class);
     addAppButton(panel, "maths.phrases.apps.Pulsations",name.ncg777.maths.phrases.apps.Pulsations.class);
+    addAppButton(panel, "maths.phrases.apps.QuartalWordMatrixGenerator",name.ncg777.maths.phrases.apps.QuartalWordMatrixGenerator.class);
+    addAppButton(panel, "maths.phrases.apps.QuartalWordsCalculator",name.ncg777.maths.phrases.apps.QuartalWordsCalculator.class);
+    addAppButton(panel, "maths.phrases.apps.QuartalWordsMerger",name.ncg777.maths.phrases.apps.QuartalWordsMerger.class);
+    addAppButton(panel, "maths.phrases.apps.QuartalWordsPartitioner",name.ncg777.maths.phrases.apps.QuartalWordsPartitioner.class);
     addAppButton(panel, "maths.phrases.apps.ScaleModulo",name.ncg777.maths.phrases.apps.ScaleModulo.class);
     addAppButton(panel, "maths.phrases.apps.SequenceGenerator",name.ncg777.maths.phrases.apps.SequenceGenerator.class);
     addAppButton(panel, "maths.phrases.apps.Sequencer",name.ncg777.maths.phrases.apps.Sequencer.class);
@@ -71,7 +71,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.sequences.apps.SequenceWrapper",name.ncg777.maths.sequences.apps.SequenceWrapper.class);
     addAppButton(panel, "maths.sequences.apps.SmoothArticulator",name.ncg777.maths.sequences.apps.SmoothArticulator.class);
     addAppButton(panel, "maths.sequences.apps.Tri",name.ncg777.maths.sequences.apps.Tri.class);
-    addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
+    addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     
     JScrollPane scrollPane = new JScrollPane(panel);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);

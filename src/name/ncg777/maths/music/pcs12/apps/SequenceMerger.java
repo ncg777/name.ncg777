@@ -54,7 +54,7 @@ public class SequenceMerger {
   private void initialize() {
     frmChordSequenceMerger = new JFrame();
     frmChordSequenceMerger.setResizable(false);
-    frmChordSequenceMerger.setTitle("Chord Sequence FourCharsMerger");
+    frmChordSequenceMerger.setTitle("Chord Sequence QuartalWordsMerger");
     frmChordSequenceMerger.setBounds(100, 100, 450, 222);
     frmChordSequenceMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

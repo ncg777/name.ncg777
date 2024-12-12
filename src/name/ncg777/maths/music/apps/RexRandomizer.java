@@ -12,7 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.computing.structures.HomoPair;
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -114,7 +114,7 @@ public class RexRandomizer {
         }
         int len = nbBars*mult;
         
-        BinaryWord r = new FourCharsPhrase((Alphabet.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryWord();
+        BinaryWord r = new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryWord();
         
         Sequence c = r.getComposition().asSequence();
         
@@ -159,7 +159,7 @@ public class RexRandomizer {
           
         }
         
-        String ns = (new FourCharsPhrase(
+        String ns = (new QuartalWordsPhrase(
             (Alphabet.Name)comboBox.getSelectedItem(),
             BinaryWord.build(newRhythm, len))).toString();
         

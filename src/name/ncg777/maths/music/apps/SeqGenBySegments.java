@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -82,7 +82,7 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          BinaryWord r = new FourCharsPhrase((Alphabet.Name)comboBox.getSelectedItem(), str_R).toWord().toBinaryWord();
+          BinaryWord r = new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), str_R).toWord().toBinaryWord();
           
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();

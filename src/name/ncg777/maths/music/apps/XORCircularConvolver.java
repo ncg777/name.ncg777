@@ -8,7 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
@@ -70,8 +70,8 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
-        BinaryWord carrier = new FourCharsPhrase(abc, txtCarrier.getText()).toWord().toBinaryWord();
-        BinaryWord impulse = new FourCharsPhrase(abc, txtImpulse.getText()).toWord().toBinaryWord();
+        BinaryWord carrier = new QuartalWordsPhrase(abc, txtCarrier.getText()).toWord().toBinaryWord();
+        BinaryWord impulse = new QuartalWordsPhrase(abc, txtImpulse.getText()).toWord().toBinaryWord();
         
         BitSet bs = new BitSet(carrier.getN());
         
@@ -84,7 +84,7 @@ public class XORCircularConvolver {
           }
         }
         txtResult.setText(
-            (new FourCharsPhrase(
+            (new QuartalWordsPhrase(
                 abc,
                 new BinaryWord(bs, carrier.getN())
             )).toString());

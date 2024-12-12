@@ -22,7 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -30,7 +30,7 @@ import name.ncg777.maths.words.BinaryWord;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 
-public class FourCharsPartitioner {
+public class QuartalWordsPartitioner {
 
   private JFrame frmRPartitioner;
   private JTextField txtR;
@@ -43,7 +43,7 @@ public class FourCharsPartitioner {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          FourCharsPartitioner window = new FourCharsPartitioner();
+          QuartalWordsPartitioner window = new QuartalWordsPartitioner();
           window.frmRPartitioner.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -52,17 +52,17 @@ public class FourCharsPartitioner {
     });
   }
 
-  public FourCharsPartitioner() {
+  public QuartalWordsPartitioner() {
     initialize();
   }
 
   private void initialize() {
     frmRPartitioner = new JFrame();
-    frmRPartitioner.setTitle("FourCharsPartitioner");
+    frmRPartitioner.setTitle("QuartalWordsPartitioner");
     frmRPartitioner.setBounds(100, 100, 456, 411);
     frmRPartitioner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblR = new JLabel("FourChars:");
+    JLabel lblR = new JLabel("QuartalWord:");
     lblR.setFont(new Font("Unifont", Font.PLAIN, 11));
     lblR.setHorizontalAlignment(SwingConstants.RIGHT);
     
@@ -86,7 +86,7 @@ public class FourCharsPartitioner {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
         
-        FourCharsPhrase r = new FourCharsPhrase(abc, txtR.getText().trim());
+        QuartalWordsPhrase r = new QuartalWordsPhrase(abc, txtR.getText().trim());
         BinaryWord r1 = r.toBinaryWord();
         Sequence p0 = Sequence.parse(txtPartition.getText());
         Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
@@ -102,7 +102,7 @@ public class FourCharsPartitioner {
         
         String strOut = "";
         for(int i=0; i<output.size();i++) {
-          strOut += FourCharsPhrase.expand(new FourCharsPhrase(abc, output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
+          strOut += QuartalWordsPhrase.expand(new QuartalWordsPhrase(abc, output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
         }
         txtResult.setText(strOut);       
       }

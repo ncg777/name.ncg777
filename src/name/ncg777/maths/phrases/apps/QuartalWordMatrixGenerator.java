@@ -11,9 +11,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Matrix;
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.FourChars;
+import name.ncg777.maths.words.QuartalWord;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.maths.words.predicates.EntropicDispersion;
@@ -47,20 +47,20 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 
-public class FourCharsMatrixGenerator {
+public class QuartalWordMatrixGenerator {
 
-  private JFrame frmFourCharsMatrixGenerator;
+  private JFrame frmQuartalWordMatrixGenerator;
   private JTextArea textArea_1 = new JTextArea();
   private JTextArea textArea = new JTextArea();
   private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
   private JTextField textFilterModes;
   private JTextField textDiffFilterModes;
 
-  private static TreeMap<Alphabet.Name, TreeSet<FourChars>> sets = new TreeMap<>();
+  private static TreeMap<Alphabet.Name, TreeSet<QuartalWord>> sets = new TreeMap<>();
   
   static {
     for(var n : Alphabet.Name.values()) {
-      sets.put(n, FourChars.generate((Alphabet.Name)n));
+      sets.put(n, QuartalWord.generate((Alphabet.Name)n));
     }
   }
   
@@ -68,8 +68,8 @@ public class FourCharsMatrixGenerator {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          FourCharsMatrixGenerator window = new FourCharsMatrixGenerator();
-          window.frmFourCharsMatrixGenerator.setVisible(true);
+          QuartalWordMatrixGenerator window = new QuartalWordMatrixGenerator();
+          window.frmQuartalWordMatrixGenerator.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -77,7 +77,7 @@ public class FourCharsMatrixGenerator {
     });
   }
 
-  public FourCharsMatrixGenerator() {
+  public QuartalWordMatrixGenerator() {
     initialize();
   }
   
@@ -102,11 +102,11 @@ public class FourCharsMatrixGenerator {
   private boolean running = false;
 
   private void initialize() {
-    frmFourCharsMatrixGenerator = new JFrame();
-    frmFourCharsMatrixGenerator.setResizable(false);
-    frmFourCharsMatrixGenerator.setTitle("FourChars Matrix");
-    frmFourCharsMatrixGenerator.setBounds(100, 100, 711, 541);
-    frmFourCharsMatrixGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frmQuartalWordMatrixGenerator = new JFrame();
+    frmQuartalWordMatrixGenerator.setResizable(false);
+    frmQuartalWordMatrixGenerator.setTitle("QuartalWord Matrix");
+    frmQuartalWordMatrixGenerator.setBounds(100, 100, 711, 541);
+    frmQuartalWordMatrixGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JSpinner spinner = new JSpinner();
     spinner.setModel(new SpinnerNumberModel(1, 1, null, 1));
@@ -167,7 +167,7 @@ public class FourCharsMatrixGenerator {
               TreeSet<BinaryWord> t = new TreeSet<BinaryWord>();
               TreeSet<BinaryWord> t0 = new TreeSet<BinaryWord>();
              
-              for(FourChars r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryWord());
+              for(QuartalWord r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryWord());
               
               for(BinaryWord r : t0){
                 if(pred.test(r)) {
@@ -185,7 +185,7 @@ public class FourCharsMatrixGenerator {
                 if(strFixed[i].trim().length() == 0) continue;
                 
                 output.insertRow(fixedSize);
-                FourCharsPhrase r = new FourCharsPhrase(
+                QuartalWordsPhrase r = new QuartalWordsPhrase(
                     abc, 
                     strFixed[i].trim());
                 for(int j=0;j<n;j++) {
@@ -286,13 +286,13 @@ public class FourCharsMatrixGenerator {
               
               if(running) {
 
-                  Matrix<FourChars> tmpMat = new Matrix<FourChars>(m,n);
-                  Matrix<FourChars> tmpMatNot = new Matrix<FourChars>(m,n);
+                  Matrix<QuartalWord> tmpMat = new Matrix<QuartalWord>(m,n);
+                  Matrix<QuartalWord> tmpMatNot = new Matrix<QuartalWord>(m,n);
                   for(int i=0;i<m;i++) {
                     for(int j=0;j<n;j++) {
-                      tmpMat.set(i, j, new FourChars(output.get(i, j).toWord(abc)));
+                      tmpMat.set(i, j, new QuartalWord(output.get(i, j).toWord(abc)));
                       tmpMatNot.set(i, j, 
-                          new FourChars(output.get(i, j).invert().toWord(abc))
+                          new QuartalWord(output.get(i, j).invert().toWord(abc))
                       );
                     }
                   }
@@ -347,7 +347,7 @@ public class FourCharsMatrixGenerator {
     textDiffFilterModes = new JTextField("1");
     textDiffFilterModes.setColumns(10);
     
-    GroupLayout groupLayout = new GroupLayout(frmFourCharsMatrixGenerator.getContentPane());
+    GroupLayout groupLayout = new GroupLayout(frmQuartalWordMatrixGenerator.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.TRAILING)
         .addGroup(groupLayout.createSequentialGroup()
@@ -425,6 +425,6 @@ public class FourCharsMatrixGenerator {
     
     scrollPane.setViewportView(textArea);
     textArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
-    frmFourCharsMatrixGenerator.getContentPane().setLayout(groupLayout);
+    frmQuartalWordMatrixGenerator.getContentPane().setLayout(groupLayout);
   }
 }

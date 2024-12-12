@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 
@@ -128,7 +128,7 @@ public class Diluter {
     var abc = (Alphabet.Name)comboBox.getSelectedItem();
     var alphabet = Alphabet.getAlphabet(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
-    BinaryWord r = new FourCharsPhrase(
+    BinaryWord r = new QuartalWordsPhrase(
         abc, 
         str).toBinaryWord();
  
@@ -163,6 +163,6 @@ public class Diluter {
       }
     }
     
-    textResult.setText((new FourCharsPhrase(abc, o.reverse())).toString());
+    textResult.setText((new QuartalWordsPhrase(abc, o.reverse())).toString());
   }
 }

@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -162,7 +162,7 @@ public class Pulsations {
             acc+=c;
           }
           result.setText(
-              new FourCharsPhrase(
+              new QuartalWordsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(),
                   rh).toString());
         } catch(Exception ex) {

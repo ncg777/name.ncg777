@@ -10,34 +10,34 @@ import name.ncg777.maths.Combination;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
-import name.ncg777.maths.words.FourChars;
+import name.ncg777.maths.words.QuartalWord;
 import name.ncg777.maths.words.Word;
 
-public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<FourCharsPhrase> {
+public class QuartalWordsPhrase extends ArrayList<QuartalWord> implements Comparable<QuartalWordsPhrase> {
   private static final long serialVersionUID = 1L;
   private Alphabet.Name alphabetName;
   
-  public FourCharsPhrase(Alphabet.Name alphabetName) {
+  public QuartalWordsPhrase(Alphabet.Name alphabetName) {
     this.alphabetName = alphabetName;
   }
   
-  public FourCharsPhrase(Alphabet.Name alphabetName, String string) {
+  public QuartalWordsPhrase(Alphabet.Name alphabetName, String string) {
     this(alphabetName);
     string = string.replaceAll("\\s+", "");
 
     if(string.length() % 4 != 0) throw new IllegalArgumentException();
     
     for(int i=(string.length()/4)-1;i>=0;i--) {
-      this.add(new FourChars(alphabetName, 
+      this.add(new QuartalWord(alphabetName, 
           (new StringBuilder(string.substring(i*4,(i+1)*4)).toString())));
     }
   }
   
-  public FourCharsPhrase(Alphabet.Name alphabetName, Word word) {
+  public QuartalWordsPhrase(Alphabet.Name alphabetName, Word word) {
     this(alphabetName, word.toString());
   }
   
-  public FourCharsPhrase(Alphabet.Name alphabetName, BinaryWord binaryWord) {
+  public QuartalWordsPhrase(Alphabet.Name alphabetName, BinaryWord binaryWord) {
     this(alphabetName, binaryWord.toWord(alphabetName));
   }
   
@@ -56,7 +56,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return sb.toString().trim();
   }
   
-  public static FourCharsPhrase expand(FourCharsPhrase a, int x, boolean fill) {
+  public static QuartalWordsPhrase expand(QuartalWordsPhrase a, int x, boolean fill) {
     BinaryWord b = a.toBinaryWord();
     BinaryWord o = new BinaryWord(new BitSet(), x * b.getN());
     
@@ -71,20 +71,20 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       }
     }
     
-    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName, o);
+    QuartalWordsPhrase output = new QuartalWordsPhrase(a.alphabetName, o);
     
     return output;
   }
   
-  public static FourCharsPhrase rotate(FourCharsPhrase r, int t) {
-    return new FourCharsPhrase(r.alphabetName, BinaryWord.build(r.toBinaryWord().rotate(t)));
+  public static QuartalWordsPhrase rotate(QuartalWordsPhrase r, int t) {
+    return new QuartalWordsPhrase(r.alphabetName, BinaryWord.build(r.toBinaryWord().rotate(t)));
   }
 
-  public static FourCharsPhrase not(FourCharsPhrase a) {
-    return new FourCharsPhrase(a.alphabetName, a.toBinaryWord().invert());
+  public static QuartalWordsPhrase not(QuartalWordsPhrase a) {
+    return new QuartalWordsPhrase(a.alphabetName, a.toBinaryWord().invert());
   }
 
-  public static FourCharsPhrase and(FourCharsPhrase a, FourCharsPhrase b) {
+  public static QuartalWordsPhrase and(QuartalWordsPhrase a, QuartalWordsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -101,10 +101,10 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       }
     }
 
-    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
+    QuartalWordsPhrase output = new QuartalWordsPhrase(a.alphabetName);
     for (int i = 0; i < n; i++) {
       output.add(
-          new FourChars(
+          new QuartalWord(
               BinaryWord.build(
                   a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord()).reverse()
               ).toWord(a.alphabetName)
@@ -114,7 +114,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return output;
   }
 
-  public static FourCharsPhrase or(FourCharsPhrase a, FourCharsPhrase b) {
+  public static QuartalWordsPhrase or(QuartalWordsPhrase a, QuartalWordsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -131,10 +131,10 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       }
     }
 
-    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
+    QuartalWordsPhrase output = new QuartalWordsPhrase(a.alphabetName);
     
     for (int i = 0; i < n; i++) {
-      output.add(new FourChars(
+      output.add(new QuartalWord(
           BinaryWord.build(
               Combination.merge(
                   a.get(i).toBinaryWord().reverse(), 
@@ -144,7 +144,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return output;
   }
 
-  public static FourCharsPhrase xor(FourCharsPhrase a, FourCharsPhrase b) {
+  public static QuartalWordsPhrase xor(QuartalWordsPhrase a, QuartalWordsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -161,10 +161,10 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       }
     }
 
-    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
+    QuartalWordsPhrase output = new QuartalWordsPhrase(a.alphabetName);
     for (int i = 0; i < n; i++) {
       output.add(
-          new FourChars(
+          new QuartalWord(
               BinaryWord.build(
                   (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord())).reverse()).toWord(a.alphabetName)
           )
@@ -173,7 +173,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return output;
   }
 
-  public static FourCharsPhrase minus(FourCharsPhrase a, FourCharsPhrase b) {
+  public static QuartalWordsPhrase minus(QuartalWordsPhrase a, QuartalWordsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
@@ -190,10 +190,10 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       }
     }
 
-    FourCharsPhrase output = new FourCharsPhrase(a.alphabetName);
+    QuartalWordsPhrase output = new QuartalWordsPhrase(a.alphabetName);
     for (int i = 0; i < n; i++) {
       output.add(
-          new FourChars(
+          new QuartalWord(
               BinaryWord.build(
                   (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord())).reverse()
               ).toWord(a.alphabetName)
@@ -203,12 +203,12 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     return output;
   }
 
-  public static FourCharsPhrase convolve(FourCharsPhrase a, FourCharsPhrase b) {
+  public static QuartalWordsPhrase convolve(QuartalWordsPhrase a, QuartalWordsPhrase b) {
     if(!a.alphabetName.equals(b.alphabetName))
       throw new IllegalArgumentException();
     
-    FourCharsPhrase carrier = a;
-    FourCharsPhrase impulse = b;
+    QuartalWordsPhrase carrier = a;
+    QuartalWordsPhrase impulse = b;
 
     BinaryWord b_carrier = carrier.toBinaryWord().reverse();
     BinaryWord b_impulse = impulse.toBinaryWord().reverse();
@@ -224,10 +224,10 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
       }
     }
     
-    return new FourCharsPhrase(a.alphabetName, o.reverse());
+    return new QuartalWordsPhrase(a.alphabetName, o.reverse());
   }
 
-  public boolean isEquivalentUnderSyncronizedRotation(FourCharsPhrase other) {
+  public boolean isEquivalentUnderSyncronizedRotation(QuartalWordsPhrase other) {
     if(!this.alphabetName.equals(other.alphabetName))
       throw new IllegalArgumentException();
     var abc = Alphabet.getAlphabet(this.alphabetName);
@@ -235,7 +235,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
     if (this.size() != other.size()) return false;
 
     for (int i = 0; i < this.size(); i++) {
-      FourCharsPhrase rot = FourCharsPhrase.rotate(other, i * (4*((int)Math.round(abc.information()))));
+      QuartalWordsPhrase rot = QuartalWordsPhrase.rotate(other, i * (4*((int)Math.round(abc.information()))));
       boolean eq = true;
       for (int j = 0; j < rot.size(); j++) {
         if (!this.get(j).toString().equals(rot.get(j).toString())) {
@@ -250,9 +250,9 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
 
   public Sequence clusterPartition(Alphabet.Name alphabetName) {
     var clusters =
-        FourCharsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeIntoHomogeneousRegions());
+        QuartalWordsPhrase.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeIntoHomogeneousRegions());
     var rs = new ArrayList<BinaryWord>();
-    for (FourCharsPhrase r : clusters)
+    for (QuartalWordsPhrase r : clusters)
       rs.add(r.toBinaryWord());
 
     Sequence o = new Sequence();
@@ -270,33 +270,33 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
   }
 
   private static class FourCharPhraseUnionSet {
-    ArrayList<FourCharsPhrase> representants = new ArrayList<>();
-    TreeMap<String, TreeSet<FourCharsPhrase>> instances = new TreeMap<>();
+    ArrayList<QuartalWordsPhrase> representants = new ArrayList<>();
+    TreeMap<String, TreeSet<QuartalWordsPhrase>> instances = new TreeMap<>();
 
-    public void add(FourCharsPhrase item) {
+    public void add(QuartalWordsPhrase item) {
       boolean found = false;
-      for (FourCharsPhrase r : representants) {
+      for (QuartalWordsPhrase r : representants) {
         if (r.isEquivalentUnderSyncronizedRotation(item)) {
           found = true;
           instances.get(r.toString()).add(item);
         }
       }
       if (!found) {
-        TreeSet<FourCharsPhrase> inst = new TreeSet<>();
+        TreeSet<QuartalWordsPhrase> inst = new TreeSet<>();
         inst.add(item);
         instances.put(item.toString(), inst);
         representants.add(item);
       }
     }
 
-    public ArrayList<TreeSet<FourCharsPhrase>> getTreeSets() {
-      ArrayList<TreeSet<FourCharsPhrase>> o = new ArrayList<>();
+    public ArrayList<TreeSet<QuartalWordsPhrase>> getTreeSets() {
+      ArrayList<TreeSet<QuartalWordsPhrase>> o = new ArrayList<>();
       o.addAll(instances.values());
       return o;
     }
   }
-  public static FourCharsPhrase fromCombination(Alphabet.Name alphabetName, Combination r){
-    FourCharsPhrase output = new FourCharsPhrase(alphabetName);
+  public static QuartalWordsPhrase fromCombination(Alphabet.Name alphabetName, Combination r){
+    QuartalWordsPhrase output = new QuartalWordsPhrase(alphabetName);
     var abc = Alphabet.getAlphabet(alphabetName);
     
     if(!abc.isInformationBinary())
@@ -317,40 +317,40 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
         }
         k++;
       }
-      output.add(new FourChars(t.toWord(alphabetName)));
+      output.add(new QuartalWord(t.toWord(alphabetName)));
     }
     return output;
   }
   
-  public static List<FourCharsPhrase> fromRhythmList(
+  public static List<QuartalWordsPhrase> fromRhythmList(
       Alphabet.Name alphabetName, List<? extends Combination> list) {
-    List<FourCharsPhrase> o = new ArrayList<>();
+    List<QuartalWordsPhrase> o = new ArrayList<>();
     
     for(var r : list) {
-      o.add(FourCharsPhrase.fromCombination(alphabetName,r));
+      o.add(QuartalWordsPhrase.fromCombination(alphabetName,r));
     }
     return o;
   }
   
-  public static List<FourCharsPhrase> clusterRhythmPartition(
+  public static List<QuartalWordsPhrase> clusterRhythmPartition(
       Alphabet.Name alphabetName, List<? extends Combination> _partition) {
     if(_partition == null) throw new RuntimeException("clusterRhythmPartition:: partition is null.");
-    List<FourCharsPhrase> partition = FourCharsPhrase.fromRhythmList(alphabetName, _partition);
+    List<QuartalWordsPhrase> partition = QuartalWordsPhrase.fromRhythmList(alphabetName, _partition);
     if(partition.size()==1) {
-      ArrayList<FourCharsPhrase> f = new ArrayList<>();
+      ArrayList<QuartalWordsPhrase> f = new ArrayList<>();
       f.add(partition.get(0));
       return f;
     }
     
     FourCharPhraseUnionSet us = new FourCharPhraseUnionSet();
-    for(FourCharsPhrase r: partition) {us.add(r);}
-    ArrayList<FourCharsPhrase> o = new ArrayList<FourCharsPhrase>();
+    for(QuartalWordsPhrase r: partition) {us.add(r);}
+    ArrayList<QuartalWordsPhrase> o = new ArrayList<QuartalWordsPhrase>();
     
-    for(TreeSet<FourCharsPhrase> t : us.getTreeSets()) {
-      FourCharsPhrase s = null;
-      for(FourCharsPhrase l : t) {
-        if(s==null) {s = (FourCharsPhrase)l.clone();}
-        s = FourCharsPhrase.or(s, l);
+    for(TreeSet<QuartalWordsPhrase> t : us.getTreeSets()) {
+      QuartalWordsPhrase s = null;
+      for(QuartalWordsPhrase l : t) {
+        if(s==null) {s = (QuartalWordsPhrase)l.clone();}
+        s = QuartalWordsPhrase.or(s, l);
       }
       o.add(s);
     }
@@ -359,7 +359,7 @@ public class FourCharsPhrase extends ArrayList<FourChars> implements Comparable<
   }
 
   @Override
-  public int compareTo(FourCharsPhrase o) {
+  public int compareTo(QuartalWordsPhrase o) {
     return this.toString().compareTo(o.toString());
   }
 

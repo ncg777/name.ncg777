@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -107,7 +107,7 @@ public class ModularArithmeticSequencer {
         
         var distinct = o.distinct();
         
-        ArrayList<FourCharsPhrase> rs = new ArrayList<>();
+        ArrayList<QuartalWordsPhrase> rs = new ArrayList<>();
         
         for(int i: distinct) {
           BinaryWord r = BinaryWord.build(new BitSet(), n);
@@ -115,12 +115,12 @@ public class ModularArithmeticSequencer {
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}
           }
-          rs.add(new FourCharsPhrase(Alphabet.Name.Hexadecimal, r));
+          rs.add(new QuartalWordsPhrase(Alphabet.Name.Hexadecimal, r));
         }
         
         StringBuilder sb = new StringBuilder();
         sb.append(o.toString() + "\n");
-        for(FourCharsPhrase rl : rs) {
+        for(QuartalWordsPhrase rl : rs) {
           sb.append(rl.toString() + "\n");
         }
         

@@ -9,11 +9,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
 import name.ncg777.maths.words.Word;
-import name.ncg777.maths.words.FourChars;
+import name.ncg777.maths.words.QuartalWord;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -72,7 +72,7 @@ public class HexadecimalWordDivider {
     spinner.setFont(new Font("Unifont", Font.PLAIN, 11));
     btnDivide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var r1 = (new FourCharsPhrase(
+        var r1 = (new QuartalWordsPhrase(
             Alphabet.Name.Hexadecimal, txtR.getText().trim()))
             .toBinaryWord();
         int div = (int)spinner.getValue();
@@ -97,7 +97,7 @@ public class HexadecimalWordDivider {
           String output = "";
           
           for(int i=0;i<div;i++) {
-            var t = new FourChars(Alphabet.Name.Hexadecimal, new Word(Alphabet.Name.Hexadecimal, o.get(i).toString()));
+            var t = new QuartalWord(Alphabet.Name.Hexadecimal, new Word(Alphabet.Name.Hexadecimal, o.get(i).toString()));
             output += t.toString(true) + "\n";
           }
           txtResult.setText(output);

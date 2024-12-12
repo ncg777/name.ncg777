@@ -4,13 +4,13 @@ import java.util.Enumeration;
 
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.FourChars;
+import name.ncg777.maths.words.QuartalWord;
 
-public class FourCharsEnumeration implements Enumeration<FourChars>  {
+public class QuartalWordEnumeration implements Enumeration<QuartalWord>  {
   private Alphabet.Name alphabetName;
   
   private MixedRadixEnumeration mre;
-  public FourCharsEnumeration(Alphabet.Name alphabetName) {
+  public QuartalWordEnumeration(Alphabet.Name alphabetName) {
     this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     
@@ -26,7 +26,7 @@ public class FourCharsEnumeration implements Enumeration<FourChars>  {
   }
 
   @Override
-  public FourChars nextElement() {
-    return new FourChars(alphabetName, new Sequence(mre.nextElement()));
+  public QuartalWord nextElement() {
+    return new QuartalWord(alphabetName, new Sequence(mre.nextElement()));
   }
 }

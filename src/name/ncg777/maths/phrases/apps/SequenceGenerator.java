@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -74,7 +74,7 @@ public class SequenceGenerator {
           }
           
           binaryWords.add(
-              new FourCharsPhrase(
+              new QuartalWordsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
                   l[0].trim()).toWord().toBinaryWord());
           

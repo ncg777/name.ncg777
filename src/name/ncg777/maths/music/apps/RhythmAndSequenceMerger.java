@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.words.Alphabet;
 import name.ncg777.maths.words.BinaryWord;
@@ -69,11 +69,11 @@ public class RhythmAndSequenceMerger {
           Sequence s = new Sequence();
           if(parts.length > 1) {s = Sequence.parse(parts[1].trim());}
           sequences.add(s);
-          arr.add(new FourCharsPhrase(abc, parts[0].trim()).toBinaryWord().reverse());
+          arr.add(new QuartalWordsPhrase(abc, parts[0].trim()).toBinaryWord().reverse());
         }
         
         BinaryWord result = BinaryWord.build(Combination.mergeAll(arr));
-        txtResult.setText(new FourCharsPhrase(abc, result).toString());
+        txtResult.setText(new QuartalWordsPhrase(abc, result).toString());
         
         Sequence s = new Sequence();
         Sequence indices = new Sequence();

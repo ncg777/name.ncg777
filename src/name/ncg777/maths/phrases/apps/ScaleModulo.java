@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.words.Alphabet;
 
 public class ScaleModulo {
@@ -80,8 +80,8 @@ public class ScaleModulo {
     txtOutput.setColumns(10);
     btnGo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        txtOutput.setText(new FourCharsPhrase(Alphabet.Name.Hexadecimal,
-          (new FourCharsPhrase(
+        txtOutput.setText(new QuartalWordsPhrase(Alphabet.Name.Hexadecimal,
+          (new QuartalWordsPhrase(
               Alphabet.Name.Hexadecimal, 
               textField.getText().trim()))
             .toWord().toBinaryWord().scaleModulo(

@@ -5,10 +5,10 @@ import java.util.function.Predicate;
 
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.FourChars;
+import name.ncg777.maths.words.QuartalWord;
 import name.ncg777.maths.words.Word;
 
-public class PredicatedUnion implements BiPredicate<FourChars, FourChars> {
+public class PredicatedUnion implements BiPredicate<QuartalWord, QuartalWord> {
   private Predicate<Word> predicate;
   
   public PredicatedUnion(Alphabet alphabet, Predicate<Word> predicate){
@@ -16,7 +16,7 @@ public class PredicatedUnion implements BiPredicate<FourChars, FourChars> {
   }
   
   @Override
-  public boolean test(FourChars a, FourChars b) {
+  public boolean test(QuartalWord a, QuartalWord b) {
     return predicate.test(
         new Word(
             Alphabet.Name.Binary,

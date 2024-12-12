@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.FourCharsPhrase;
+import name.ncg777.maths.phrases.QuartalWordsPhrase;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
 import name.ncg777.maths.words.Alphabet;
@@ -123,7 +123,7 @@ public class SeqGenFixedSum {
             while(true)
             {
               String str_R = txtRhythm.getText().trim();       
-              int n = new FourCharsPhrase(
+              int n = new QuartalWordsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
                   str_R).toWord().toBinaryWord().getK();
               
