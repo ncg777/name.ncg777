@@ -21,6 +21,14 @@ public class MatrixOfDoubles extends Matrix<Double> {
     super();
   }
 
+  public MatrixOfDoubles product(MatrixOfDoubles other) {
+    return new MatrixOfDoubles(product(other, 0.0, (a,b) -> a+b, (a,b) -> a*b));
+  }
+  
+  public MatrixOfDoubles(Matrix<Double> other) {
+    super(other);
+  }
+  
   /**
    * Construct a matrix filled with nulls.
    * 

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class VectorOfIntegers extends Vector<Integer> {
   
-  private VectorOfIntegers(Vector<Integer> v) {
+  public VectorOfIntegers(Vector<Integer> v) {
     this.values.addAll(v.values);
   }
   @SafeVarargs

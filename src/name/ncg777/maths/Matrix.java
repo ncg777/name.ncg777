@@ -8,11 +8,15 @@
 package name.ncg777.maths;
 
 import java.util.TreeMap;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.base.Joiner;
@@ -21,6 +25,7 @@ import com.google.common.collect.ComparisonChain;
 import name.ncg777.computing.Parsers;
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.JaggedList;
+import name.ncg777.maths.enumerations.MixedRadixEnumeration;
 
 /**
  * Generic mutable Matrix class with basic functionality.
@@ -132,6 +137,55 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
 
+  
+  public Matrix<T> product(Matrix<T> other, T initValue, BinaryOperator<T> sum, BinaryOperator<T> product) {
+    if (this.n != other.m) {
+      throw new IllegalArgumentException("Matrix dimensions do not match for multiplication");
+    }
+  
+    Matrix<T> result = new Matrix<>(this.m, other.n);
+  
+    mat.keySet().parallelStream().forEach(pos -> {
+        int i = pos.getFirst();
+        int j = pos.getSecond();
+        T total = initValue;
+        for (int k = 0; k < this.n; k++) {
+            total = sum.apply(total, product.apply(this.get(i, k), other.get(k, j)));
+        }
+        result.set(i, j, total);
+    });
+  
+    return result;
+  }
+  
+  /**
+   * Kronecker product.
+   * 
+   * @param other
+   * @param sum
+   * @param product
+   * @return
+   */
+  public Matrix<T> kronecker(Matrix<T> other, BinaryOperator<T> sum, BinaryOperator<T> product) {
+      int resultRows = this.m * other.m;
+      int resultCols = this.n * other.n;
+
+      Matrix<T> result = new Matrix<>(resultRows, resultCols);
+
+      var mre = new MixedRadixEnumeration(Arrays.asList(this.m, this.n, other.m, other.n));
+      
+      Set<int[]> t = new HashSet<int[]>();
+      while(mre.hasMoreElements()) {
+        t.add(mre.nextElement());
+      }
+      
+      t.parallelStream().forEach((c) -> {
+        result.set(c[0]*(other.m + c[2]), c[1]*(other.n + c[3]), product.apply(this.get(c[0], c[1]), other.get(c[2], c[3])));
+      });
+
+      return result;
+  }
+  
   @Override
   public String toString() {
     return toString((t) -> t.toString());
