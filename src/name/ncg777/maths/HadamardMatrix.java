@@ -17,6 +17,7 @@ public class HadamardMatrix extends MatrixOfIntegers {
   }
   
   public static HadamardMatrix getMatrix(int order) {
+   if(order < 1) throw new IllegalArgumentException();
    int currentSize = mats.size(); 
    while(currentSize < order) {
      mats.add(new HadamardMatrix(mats.get(0).kronecker(mats.get(mats.size()-1))));
