@@ -64,9 +64,16 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
         set(i, j, arr[i][j]);
       }
     }
-
   }
 
+  public Matrix(Iterable<T> iterable) {
+    super();
+    var list = new ArrayList<T>();
+    for(var t : iterable) list.add(t);
+    init(list.size(),1,null);
+    setColumn(0, list);
+  }
+  
   /**
    * Copy constructor.
    * 

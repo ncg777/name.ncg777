@@ -18,12 +18,20 @@ public class MatrixOfIntegers extends Matrix<Integer> {
     super();
   }
 
+  public MatrixOfIntegers(Integer[][] ints) {
+    super(ints);
+  }
+  
   public MatrixOfIntegers product(MatrixOfIntegers other) {
     return new MatrixOfIntegers(product(other, 0, (a,b) -> a+b, (a,b) -> a*b));
   }
   
   public MatrixOfIntegers(Matrix<Integer> other) {
     super(other);
+  }
+  
+  public MatrixOfIntegers(Iterable<Integer> iterable) {
+    super(iterable);
   }
   
   /**
@@ -38,6 +46,10 @@ public class MatrixOfIntegers extends Matrix<Integer> {
   
   public MatrixOfIntegers(int m, int n, Integer fill) {
     super(m,n,fill);
+  }
+  
+  public MatrixOfIntegers kronecker(MatrixOfIntegers other) {
+    return new MatrixOfIntegers(kronecker(other));
   }
   
   @Override

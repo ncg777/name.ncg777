@@ -25,6 +25,18 @@ public class MatrixOfDoubles extends Matrix<Double> {
     return new MatrixOfDoubles(product(other, 0.0, (a,b) -> a+b, (a,b) -> a*b));
   }
   
+  public MatrixOfDoubles kronecker(MatrixOfDoubles other) {
+    return new MatrixOfDoubles(kronecker(other,(a,b) -> a+b, (a,b) -> a*b));
+  }
+  
+  public MatrixOfDoubles(Double[][] doubles) {
+    super(doubles);
+  }
+  
+  public MatrixOfDoubles(Iterable<Double> iterable) {
+    super(iterable);
+  }
+  
   public MatrixOfDoubles(Matrix<Double> other) {
     super(other);
   }
