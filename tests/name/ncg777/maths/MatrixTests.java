@@ -142,4 +142,14 @@ public class MatrixTests {
         assertThat(result.get(1, 0), is(-15));
         assertThat(result.get(1, 1), is(-22));
     }
+    
+    @Test
+    public void testKroneckerProduct() {
+      Matrix<Integer> matrix0 = new Matrix<>(new Integer[][]{{1, 2}, {3, 4}});
+      Matrix<Integer> matrix1 = new Matrix<>(new Integer[][]{{0, 5}, {6, 7}});
+      Matrix<Integer> matrixExpected = new Matrix<>(new Integer[][]{{0, 5, 0, 10}, {6, 7, 12, 14},{0, 15, 0, 20},{18, 21, 24, 28}});
+      Matrix<Integer> matrixResult = matrix0.kronecker(matrix1, product);
+      
+      assertThat(matrixExpected.equals(matrixResult), is(true));
+    }
 }
