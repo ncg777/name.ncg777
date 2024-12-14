@@ -203,7 +203,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   
   @Override
   public String toString() {
-    return toString((t) -> t.toString());
+    return toString((t) -> t == null ? "∅" : t.toString());
   }
   /**
    * Only prints each row on a line with values separated by tabs,
