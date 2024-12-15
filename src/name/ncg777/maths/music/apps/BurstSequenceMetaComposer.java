@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 
 public class BurstSequenceMetaComposer {
 
-  private JFrame frame;
+  private JFrame frmBurstSequenceMetacomposer;
   private JTextArea textResult;
   private JTextArea textInput;
 
@@ -31,7 +31,7 @@ public class BurstSequenceMetaComposer {
       public void run() {
         try {
           BurstSequenceMetaComposer window = new BurstSequenceMetaComposer();
-          window.frame.setVisible(true);
+          window.frmBurstSequenceMetacomposer.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -44,9 +44,10 @@ public class BurstSequenceMetaComposer {
   }
 
   private void initialize() {
-    frame = new JFrame();
-    frame.setBounds(100, 100, 514, 302);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frmBurstSequenceMetacomposer = new JFrame();
+    frmBurstSequenceMetacomposer.setTitle("Burst Sequence MetaComposer");
+    frmBurstSequenceMetacomposer.setBounds(100, 100, 514, 302);
+    frmBurstSequenceMetacomposer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JScrollPane scrollPane = new JScrollPane();
     
@@ -69,7 +70,7 @@ public class BurstSequenceMetaComposer {
         textResult.setText(sb.toString());
       }
     });
-    GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+    GroupLayout groupLayout = new GroupLayout(frmBurstSequenceMetacomposer.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
@@ -112,7 +113,7 @@ public class BurstSequenceMetaComposer {
     textResult = new JTextArea();
     textResult.setEditable(false);
     scrollPane_1.setViewportView(textResult);
-    frame.getContentPane().setLayout(groupLayout);
+    frmBurstSequenceMetacomposer.getContentPane().setLayout(groupLayout);
   }
 
 }
