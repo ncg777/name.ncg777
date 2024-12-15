@@ -21,6 +21,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
     addAppButton(panel, "maths.apps.Permutator",name.ncg777.maths.apps.Permutator.class);
+    addAppButton(panel, "maths.music.apps.BurstSequenceMetaComposer",name.ncg777.maths.music.apps.BurstSequenceMetaComposer.class);
     addAppButton(panel, "maths.music.apps.KernelEvaluator", name.ncg777.maths.music.apps.kernelEvaluator.Application.class);
     addAppButton(panel, "maths.music.apps.ModularArithmeticSequencer",name.ncg777.maths.music.apps.ModularArithmeticSequencer.class);
     addAppButton(panel, "maths.music.apps.RexRandomizer",name.ncg777.maths.music.apps.RexRandomizer.class);
