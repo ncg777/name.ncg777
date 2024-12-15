@@ -56,8 +56,14 @@ The int[] type is printed like 1 level JSON integer arrays and can be parsed fro
 ## metacompositons.sh
 - **Class**: name.ncg777.maths.enumerations.MetaCompositionEnumeration
 - **Parameters**: 
-  - `s` (String): The String to metacompose.
-  - [`transform`] (boolean): transform the string (purpose yet unknown).
+  - `s` (String): The String to metacompose (< and > are reserved characters).
+  - [`transform`] (boolean): transform the string.
+
+## metacompositonsoflist.sh
+- **Class**: name.ncg777.maths.enumerations.MetaCompositionOfListEnumeration
+- **Parameters**: 
+  - `s` (String): Space separated word list to metacompose (<, > and - are reserved characters).
+  - [`transform`] (boolean): transform the string.
   
 ## mixedradices.sh
 - **Class**: name.ncg777.maths.enumerations.MixedRadixEnumeration
