@@ -4,6 +4,7 @@ import static name.ncg777.computing.structures.CollectionUtils.calcIntervalVecto
 import static com.google.common.math.IntMath.checkedPow;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Set;
@@ -36,16 +37,16 @@ public class BinaryWord extends Combination implements Serializable {
     for(int i=0;i<b.length;i++) this.set(i,b[i]);
   }
   
-  public BinaryWord(long natural, int length) {
+  public BinaryWord(BigInteger natural, int length) {
     super(length);
-    if(Double.valueOf(Math.pow(2.0, length)).longValue() < natural)
+    if(BigInteger.TWO.pow(length).subtract(BigInteger.ONE).bitLength() < natural.bitLength())
       throw new IllegalArgumentException("Not enough bits.");
-    int n = 2;
+
     int i=0;
     while (length-- > 0) {
-      long r = natural % n;
-      this.set(i++, r==1);
-      natural = (natural - r) / n;
+      BigInteger r = natural.mod(BigInteger.TWO);
+      this.set(i++, r.equals(BigInteger.ONE));
+      natural = natural.subtract(r).divide(BigInteger.TWO);
     }
   }
   

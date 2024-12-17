@@ -99,15 +99,15 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
     );
   }
 
-  public long toNatural() {
+  public BigInteger toNatural() {
     var alphabet = Alphabet.getAlphabet(alphabetName);
 
     int k = 0;
     var sequence = this.toSequence();
-    long sum = 0;
+    BigInteger sum = BigInteger.ZERO;
     while (k++ < sequence.size()) {
-      var p = checkedPow(alphabet.size(), k-1);
-      sum = checkedAdd(sum, (((long)sequence.get(k-1)) * p));
+      var p = BigInteger.valueOf(alphabet.size()).pow(k-1);
+      sum = sum.add(BigInteger.valueOf(sequence.get(k-1)).multiply(p));
     }
     return sum;
   }
