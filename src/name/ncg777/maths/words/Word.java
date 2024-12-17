@@ -4,6 +4,7 @@ import static com.google.common.math.LongMath.checkedPow;
 import static com.google.common.math.LongMath.checkedAdd;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,14 +91,12 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
   public BinaryWord toBinaryWord() {
     return new BinaryWord(
         toNatural(),
-        Long.valueOf(Math.round(
-            Math.log(
-              Long.valueOf(
-                Math.round(Math.pow(
-                    Integer.valueOf(Alphabet.getAlphabet(alphabetName).size()).doubleValue(), 
-                    Integer.valueOf(this.size()).doubleValue()
-                ))).doubleValue()) / Math.log(2.0))).intValue()
-        );
+        BigInteger
+          .valueOf(Alphabet.getAlphabet(alphabetName).size())
+            .pow(this.size())
+            .subtract(BigInteger.ONE)
+            .bitLength()
+    );
   }
 
   public long toNatural() {
