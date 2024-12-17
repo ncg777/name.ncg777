@@ -12,7 +12,8 @@ public class SegmentationScore {
    *    as defined by p and divided by size of block 
    * d := The sum of distances to the mean of the whole of c and divided by
    *    the size of c.
-   * 
+   *
+   * factor = ((double) (n - k)) / ((double) (n - 1))
    * factor = Math.log10((factor*9.0)+1.0); the score is factor * (d - sum(d_i))/d
    * 
    * //TODO name that score or find it somewhere
