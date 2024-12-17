@@ -105,7 +105,7 @@ public class SeqGenContourFollow {
               Sequence C = new QuartalWordsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
                   str_R
-              ).toWord().toBinaryWord().getComposition().asSequence();;
+              ).toBinaryWord().reverse().getComposition().asSequence();;
               
               Sequence s = C.cyclicalDifference().signs().circularHoldNonZero();
               

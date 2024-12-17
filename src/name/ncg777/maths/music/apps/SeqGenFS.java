@@ -103,7 +103,7 @@ public class SeqGenFS {
               {
                 String str_R = txtRhythm.getText().trim();
                 
-                BinaryWord R = (new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), str_R)).toWord().toBinaryWord();
+                BinaryWord R = (new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), str_R)).toBinaryWord().reverse();
                 
                 
                 Sequence s;
@@ -119,11 +119,11 @@ public class SeqGenFS {
                 Sequence t = o.bounceseq(_min, _amp);
                 t.add(0,0);
                 o = t.difference();
-                txtDelta.setText(o.toString());
+                txtDelta.setText(o.toString().replaceAll("[\\[\\],]", ""));
                 
                 Sequence o2 = o.antidifference(0);
                 o2.remove(0);
-                txtSequence.setText(o2.toString());
+                txtSequence.setText(o2.toString().replaceAll("[\\[\\],]", ""));
                 
                 break;
               } 

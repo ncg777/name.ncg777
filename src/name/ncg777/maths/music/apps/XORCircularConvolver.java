@@ -70,8 +70,8 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
-        BinaryWord carrier = new QuartalWordsPhrase(abc, txtCarrier.getText()).toWord().toBinaryWord();
-        BinaryWord impulse = new QuartalWordsPhrase(abc, txtImpulse.getText()).toWord().toBinaryWord();
+        BinaryWord carrier = new QuartalWordsPhrase(abc, txtCarrier.getText()).toBinaryWord().reverse();
+        BinaryWord impulse = new QuartalWordsPhrase(abc, txtImpulse.getText()).toBinaryWord().reverse();
         
         BitSet bs = new BitSet(carrier.getN());
         
@@ -86,7 +86,7 @@ public class XORCircularConvolver {
         txtResult.setText(
             (new QuartalWordsPhrase(
                 abc,
-                new BinaryWord(bs, carrier.getN())
+                (new BinaryWord(bs, carrier.getN())).reverse()
             )).toString());
       }
     });

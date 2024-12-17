@@ -82,7 +82,7 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          BinaryWord r = new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), str_R).toBinaryWord();
+          BinaryWord r = new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), str_R).toBinaryWord().reverse();
           
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();

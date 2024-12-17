@@ -97,7 +97,7 @@ public class Engine {
     
     Sequence o = new Sequence();
     
-    for(int hit : binaryWord.asSequence()) {
+    for(int hit : binaryWord.reverse().asSequence()) {
       o.add(kernel.getValue(parameters, hit));
     }
     
@@ -107,7 +107,4 @@ public class Engine {
       return HomoPair.makeHomoPair(o.cyclicalDifference(), o);
     }
   }
-  
-  
-  
 }

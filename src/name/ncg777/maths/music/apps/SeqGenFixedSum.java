@@ -125,7 +125,7 @@ public class SeqGenFixedSum {
               String str_R = txtRhythm.getText().trim();       
               int n = new QuartalWordsPhrase(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
-                  str_R).toWord().toBinaryWord().getK();
+                  str_R).toBinaryWord().reverse().getK();
               
               if(n < 2) {
                 throw new RuntimeException("rhythm is empty or too small");

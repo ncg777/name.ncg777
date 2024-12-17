@@ -96,9 +96,9 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        BinaryWord r = new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), txtR.getText()).toWord().toBinaryWord();
+        BinaryWord r = new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
         
-        txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[()]", ""));
+        txtResult.setText(s.absoluteTimeConvolve(r, i).toString().replaceAll("[\\[\\],]", ""));
       }
     });
     
