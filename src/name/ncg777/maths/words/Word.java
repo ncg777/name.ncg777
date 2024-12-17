@@ -93,10 +93,10 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
         Long.valueOf(Math.round(
             Math.log(
               Long.valueOf(
-                checkedPow(
-                    Integer.valueOf(Alphabet.getAlphabet(alphabetName).size()).longValue(), 
-                    Integer.valueOf(this.size())
-                )).doubleValue()) / Math.log(2.0))).intValue()
+                Math.round(Math.pow(
+                    Integer.valueOf(Alphabet.getAlphabet(alphabetName).size()).doubleValue(), 
+                    Integer.valueOf(this.size()).doubleValue()
+                ))).doubleValue()) / Math.log(2.0))).intValue()
         );
   }
 

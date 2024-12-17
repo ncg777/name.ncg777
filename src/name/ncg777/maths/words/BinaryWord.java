@@ -38,7 +38,7 @@ public class BinaryWord extends Combination implements Serializable {
   
   public BinaryWord(long natural, int length) {
     super(length);
-    if(checkedPow(2, length) < natural)
+    if(Double.valueOf(Math.pow(2.0, length)).longValue() < natural)
       throw new IllegalArgumentException("Not enough bits.");
     int n = 2;
     int i=0;
