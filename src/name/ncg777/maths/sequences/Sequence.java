@@ -768,7 +768,7 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
 
   @Override
   public String toString() {
-    return this.toString(true);
+    return this.toString(false);
   }
   public String toString(boolean asJson) {
     return asJson ? ("[" + Joiner.on(", ").join(this) + "]") : (Joiner.on(' ').join(this));

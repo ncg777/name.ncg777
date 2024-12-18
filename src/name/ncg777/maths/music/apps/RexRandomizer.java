@@ -165,7 +165,7 @@ public class RexRandomizer {
         
         String output = "";
         
-        output = ns + "\n" + pitchSeq.toString().replaceAll("[\\[\\],]", "");
+        output = ns + "\n" + pitchSeq.toString();
         
         txtrResult.setText(output);
        

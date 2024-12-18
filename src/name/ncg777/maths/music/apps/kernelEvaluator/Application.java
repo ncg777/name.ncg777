@@ -119,8 +119,8 @@ public class Application {
               params.getText(), 
               getSelectedKernel());
           
-          delta.setText(result.getFirst().toString().replaceAll("[\\[\\],]", ""));
-          seq.setText(result.getSecond().toString().replaceAll("[\\[\\],]", ""));  
+          delta.setText(result.getFirst().toString());
+          seq.setText(result.getSecond().toString());  
         } catch(RuntimeException x) {
           String error = "Error!";
           delta.setText(error);

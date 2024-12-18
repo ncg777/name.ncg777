@@ -86,7 +86,7 @@ public class RhythmAndSequenceMerger {
             indices.set(ir, (indices.get(ir)+1)%sequences.get(ir).size());
           }
         }
-        textSeq.setText(s.toString().replaceAll("[\\[\\],]", ""));
+        textSeq.setText(s.toString());
       }
     });
     

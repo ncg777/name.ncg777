@@ -139,8 +139,8 @@ public class SeqGenContourFollow {
               int _amp = (Integer)spinner_bounce_amp.getValue();
               
               Sequence o = s.cyclicalAntidifference(0);
-              txtDelta.setText(o.bounceseq(_min, _amp).cyclicalDifference().toString().replaceAll("[\\[\\],]", ""));
-              txtSequence.setText(o.bounceseq(_min, _amp).toString().replaceAll("[\\[\\],]", ""));
+              txtDelta.setText(o.bounceseq(_min, _amp).cyclicalDifference().toString());
+              txtSequence.setText(o.bounceseq(_min, _amp).toString());
               
               break;
               

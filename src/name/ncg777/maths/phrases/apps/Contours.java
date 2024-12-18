@@ -77,11 +77,11 @@ public class Contours {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
         QuartalWordsPhrase r4 = new QuartalWordsPhrase(abc, textField.getText());
         
-        txtContour.setText(r4.toWord().getContour().toString().replaceAll("[\\[\\],]", ""));
-        txtShadowContour.setText(r4.toWord().getShadowContour().toString().replaceAll("[\\[\\],]", ""));
-        txtComposition.setText(r4.toBinaryWord().reverse().getComposition().asSequence().toString().replaceAll("[\\[\\],]", ""));
+        txtContour.setText(r4.toWord().getContour().toString());
+        txtShadowContour.setText(r4.toWord().getShadowContour().toString());
+        txtComposition.setText(r4.toBinaryWord().reverse().getComposition().asSequence().toString());
         textFieldBinary.setText(r4.toBinaryWord().toString());
-        textCompositionPartition.setText(r4.clusterPartition(abc).toString().replaceAll("[\\[\\],]", ""));
+        textCompositionPartition.setText(r4.clusterPartition(abc).toString());
         String o = "";
         
         var clusters = QuartalWordsPhrase.clusterRhythmPartition(abc, r4.toBinaryWord().decomposeIntoHomogeneousRegions());
@@ -92,7 +92,7 @@ public class Contours {
         
         Sequence contourseq = r4.toWord().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar().addToAll(-1);
 
-        textContourSeq.setText(contourseq.toString().replaceAll("[\\[\\],]", ""));
+        textContourSeq.setText(contourseq.toString());
         lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());
         
       }
