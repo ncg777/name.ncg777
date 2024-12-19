@@ -58,7 +58,7 @@ import name.ncg777.statistics.RandomNumberGenerator;
  *
  * @author Nicolas Couture-Grenier
  */
-public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>, Serializable {
+public class Sequence extends ArrayList<Integer> implements Function<Integer,Integer>, Comparable<Sequence>, Serializable {
   private static final long serialVersionUID = 7765339983542999624L;
   
   public boolean isNatural() { return !this.parallelStream().anyMatch((n) -> n < 0); }
@@ -216,19 +216,9 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
   }
   
   public Sequence composeWith(Sequence s) {
-    var rel = this.toRelation().compose(s.toRelation());
-    
-    var domain = rel.domain();
-    if(domain.first() == 0 && domain.last() == domain.size()-1) {
-      int n = domain.last();
-      Sequence o = new Sequence();
-      for(int i=0;i<=n;i++) {
-        o.add(rel.rightRelata(i).first());
-      }
-      return o;
-    } else {
-      throw new RuntimeException("sequence cannot be composed with other sequence");
-    }
+    Sequence o = new Sequence(s);
+    for(int i=0;i<o.size();i++) o.set(i, apply(s.apply(i)));
+    return o;
   }
   
   public Sequence hold(BinaryWord r) {
@@ -1338,5 +1328,9 @@ public class Sequence extends ArrayList<Integer> implements Comparable<Sequence>
       o.add(v);
     }
     return o;
+  }
+  @Override
+  public Integer apply(Integer t) {
+    return this.get(t);
   }
 }
