@@ -54,6 +54,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.phrases.apps.Permutator",name.ncg777.maths.phrases.apps.Permutator.class);
     addAppButton(panel, "maths.phrases.apps.Pulsations",name.ncg777.maths.phrases.apps.Pulsations.class);
     addAppButton(panel, "maths.phrases.apps.QuartalWordMatrixGenerator",name.ncg777.maths.phrases.apps.QuartalWordMatrixGenerator.class);
+    addAppButton(panel, "maths.phrases.apps.QuartalWordMatrixSequencer",name.ncg777.maths.phrases.apps.QuartalWordMatrixSequencer.class);
     addAppButton(panel, "maths.phrases.apps.QuartalWordsCalculator",name.ncg777.maths.phrases.apps.QuartalWordsCalculator.class);
     addAppButton(panel, "maths.phrases.apps.QuartalWordsMerger",name.ncg777.maths.phrases.apps.QuartalWordsMerger.class);
     addAppButton(panel, "maths.phrases.apps.QuartalWordsPartitioner",name.ncg777.maths.phrases.apps.QuartalWordsPartitioner.class);
