@@ -1,8 +1,5 @@
 package name.ncg777.maths.words;
 
-import static com.google.common.math.LongMath.checkedPow;
-import static com.google.common.math.LongMath.checkedAdd;
-
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -49,17 +46,17 @@ public class Word extends ArrayList<Character> implements Serializable, Comparab
       this.add(string.charAt(i));
    }
 
-  public Word(Alphabet.Name alphabetName, long natural, int length) {
+  public Word(Alphabet.Name alphabetName, BigInteger natural, int length) {
     super();
     this.alphabetName = alphabetName;
     var alphabet = Alphabet.getAlphabet(alphabetName);
     int n = alphabet.size();
-    if(checkedPow(n, length) < natural)
+    if(natural.compareTo(BigInteger.valueOf(n).pow(length)) >= 0)
       throw new IllegalArgumentException("Not enough bits to encode natural.");
     while (length-- > 0) {
-      long r = natural % n;
-      this.add(alphabet.get((int) r));
-      natural = (natural - r) / n;
+      BigInteger r = natural.mod(BigInteger.valueOf(n));
+      this.add(alphabet.get(r.intValue()));
+      natural = natural.subtract(r).divide(BigInteger.valueOf(n));
     }
   }
 

@@ -1,7 +1,6 @@
 package name.ncg777.maths.words;
 
 import static name.ncg777.computing.structures.CollectionUtils.calcIntervalVector;
-import static com.google.common.math.IntMath.checkedPow;
 
 import java.io.Serializable;
 import java.math.BigInteger;

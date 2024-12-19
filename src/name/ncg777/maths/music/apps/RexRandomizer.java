@@ -102,6 +102,9 @@ public class RexRandomizer {
           case Hexadecimal:
             mult = 16;
             break;
+          case Decimal:
+            mult = 10;
+            break;
           case Octal:
             mult = 8;
             break;
