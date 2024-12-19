@@ -458,10 +458,19 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     return s;
   }
 
-  public Sequence addToAll(int n) {
+  public Sequence addToEach(Sequence s) {
+    int n = this.size()*s.size();
+    Sequence o = new Sequence();
+    for(int i=0;i<n;i++) {
+      o.add(get(i%this.size())+s.get(i/this.size()));
+    }
+    return o;
+  }
+  
+  public Sequence addToEach(int k) {
     Sequence output = new Sequence();
     for(Integer i : this) {
-      output.add(i+n);
+      output.add(i+k);
     }
     return output;
   }

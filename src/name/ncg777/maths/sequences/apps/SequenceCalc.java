@@ -32,7 +32,7 @@ public class SequenceCalc {
     Rotate,
     Reverse,
     Flip,
-    AddToAll,
+    AddToEach,
     Multiply,
     ApplyMin,
     ApplyMax,
@@ -136,9 +136,9 @@ public class SequenceCalc {
           case Flip:
             output = input.flip().toString();
             break;
-          case AddToAll:
+          case AddToEach:
             k = (Integer)spinner.getValue();
-            output = input.addToAll(k).toString();
+            output = input.addToEach(k).toString();
             break;
           case Multiply:
             k = (Integer)spinner.getValue();

@@ -89,7 +89,7 @@ public class QuartalWordsPartitioner {
         QuartalWordsPhrase r = new QuartalWordsPhrase(abc, txtR.getText().trim());
         BinaryWord r1 = r.toBinaryWord();
         Sequence p0 = Sequence.parse(txtPartition.getText());
-        Sequence p = p0.asOrdinalsUnipolar().addToAll(-1);
+        Sequence p = p0.asOrdinalsUnipolar().addToEach(-1);
         int k = p.size();
         int pdistinct = p.distinct().size();
         int n= r1.getN();

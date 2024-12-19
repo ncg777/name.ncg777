@@ -37,16 +37,10 @@ public class Adder {
     });
   }
 
-  /**
-   * Create the application.
-   */
   public Adder() {
     initialize();
   }
 
-  /**
-   * Initialize the contents of the frame.
-   */
   private void initialize() {
     frmAddSequences = new JFrame();
     frmAddSequences.setTitle("Add sequences");
@@ -79,12 +73,8 @@ public class Adder {
       public void actionPerformed(ActionEvent e) {
         var x = Sequence.parse(textX.getText());
         var y = Sequence.parse(textY.getText());
-        var lcm = Numbers.lcm(x.size(), y.size());
-        Sequence o = new Sequence();
-        for(int i=0;i<lcm;i++) {
-          o.add(x.get(i%x.size())+y.get(i%y.size()));
-        }
-        textResult.setText(o.toString());
+        
+        textResult.setText(x.addToEach(y).toString());
       }
     });
     btnNewButton.setBounds(80, 53, 344, 23);
