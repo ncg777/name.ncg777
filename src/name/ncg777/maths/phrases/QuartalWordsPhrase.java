@@ -77,7 +77,7 @@ public class QuartalWordsPhrase extends ArrayList<QuartalWord> implements Compar
   }
   
   public static QuartalWordsPhrase rotate(QuartalWordsPhrase r, int t) {
-    return new QuartalWordsPhrase(r.alphabetName, BinaryWord.build(r.toBinaryWord().rotate(t)));
+    return new QuartalWordsPhrase(r.alphabetName, BinaryWord.build(r.toBinaryWord().rotate(t)).reverse());
   }
 
   public static QuartalWordsPhrase not(QuartalWordsPhrase a) {
@@ -106,8 +106,8 @@ public class QuartalWordsPhrase extends ArrayList<QuartalWord> implements Compar
       output.add(
           new QuartalWord(
               BinaryWord.build(
-                  a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord()).reverse()
-              ).toWord(a.alphabetName)
+                  a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord())
+              ).reverse().toWord(a.alphabetName)
           )
       );
     }
@@ -137,8 +137,8 @@ public class QuartalWordsPhrase extends ArrayList<QuartalWord> implements Compar
       output.add(new QuartalWord(
           BinaryWord.build(
               Combination.merge(
-                  a.get(i).toBinaryWord().reverse(), 
-                  b.get(i).toBinaryWord().reverse()))
+                  a.get(i).toBinaryWord(), 
+                  b.get(i).toBinaryWord())).reverse()
           .toWord(a.alphabetName)));
     }
     return output;
@@ -166,7 +166,7 @@ public class QuartalWordsPhrase extends ArrayList<QuartalWord> implements Compar
       output.add(
           new QuartalWord(
               BinaryWord.build(
-                  (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord())).reverse()).toWord(a.alphabetName)
+                  (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord()))).reverse().toWord(a.alphabetName)
           )
       );
     }
@@ -195,8 +195,8 @@ public class QuartalWordsPhrase extends ArrayList<QuartalWord> implements Compar
       output.add(
           new QuartalWord(
               BinaryWord.build(
-                  (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord())).reverse()
-              ).toWord(a.alphabetName)
+                  (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord()))
+              ).reverse().toWord(a.alphabetName)
           )
       );
     }
