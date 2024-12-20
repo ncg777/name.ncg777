@@ -214,13 +214,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     }
     return s;
   }
-  
-  public Sequence composeWith(Sequence s) {
-    Sequence o = new Sequence(s);
-    for(int i=0;i<o.size();i++) o.set(i, apply(s.apply(i)));
-    return o;
-  }
-  
+
   public Sequence hold(BinaryWord r) {
     int n = r.getN();
     int k = r.getK();
