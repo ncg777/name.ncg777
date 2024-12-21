@@ -190,7 +190,7 @@ public class QuartalWordMatrixGenerator {
                     strFixed[i].trim());
                 for(int j=0;j<n;j++) {
                   output.set(i, n-j-1, 
-                      r.get((r.size()-j)%r.size()).toBinaryWord()
+                      r.get((n-j)%r.size()).toBinaryWord()
                   );
                 }
                 
