@@ -70,7 +70,7 @@ public class Permutator {
   private void initialize() {
     frmChordPermutator = new JFrame();
     frmChordPermutator.setResizable(false);
-    frmChordPermutator.setTitle("Pcs12 Permutator");
+    frmChordPermutator.setTitle("Pcs12 WordPermutator");
     frmChordPermutator.setBounds(100, 100, 321, 410);
     frmChordPermutator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmChordPermutator.getContentPane().setLayout(null);

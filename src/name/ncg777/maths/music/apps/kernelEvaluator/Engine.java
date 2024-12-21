@@ -14,8 +14,8 @@ import name.ncg777.maths.music.apps.kernelEvaluator.kernels.Recycle8LevelsHex;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.Recycle8LevelsOctal;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleAdd4;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleByteAdd;
+import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.BinaryWord;
 
 public class Engine {
   public static List<Kernel> Kernels = new ArrayList<Kernel>();
@@ -54,11 +54,11 @@ public class Engine {
     this.generatesDeltas = generatesDeltas;
   }
 
-  public HomoPair<Sequence> evaluate(BinaryWord binaryWord, final String _parameters, String kernel) {
-    return evaluate(binaryWord, _parameters, KernelsByName.get(kernel));
+  public HomoPair<Sequence> evaluate(BinaryNumber binaryNumber, final String _parameters, String kernel) {
+    return evaluate(binaryNumber, _parameters, KernelsByName.get(kernel));
   }
   
-  public HomoPair<Sequence> evaluate(BinaryWord binaryWord, final String _parameters, Kernel kernel) {
+  public HomoPair<Sequence> evaluate(BinaryNumber binaryNumber, final String _parameters, Kernel kernel) {
 
     final String lines[] = _parameters.split("\n");
     final TreeMap<String, String> tokens = new TreeMap<String, String>();
@@ -97,7 +97,7 @@ public class Engine {
     
     Sequence o = new Sequence();
     
-    for(int hit : binaryWord.reverse().asSequence()) {
+    for(int hit : binaryNumber.reverse().asSequence()) {
       o.add(kernel.getValue(parameters, hit));
     }
     

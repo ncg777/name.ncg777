@@ -13,10 +13,10 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.BinaryWord;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -62,18 +62,18 @@ public class RhythmAndSequenceMerger {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
         String[] lines = txtArea.getText().trim().split("\n+");
-        ArrayList<BinaryWord> arr = new ArrayList<BinaryWord>();
+        ArrayList<BinaryNumber> arr = new ArrayList<BinaryNumber>();
         ArrayList<Sequence> sequences = new ArrayList<>();
         for(int i=0; i<lines.length;i++) {
           String[] parts = lines[i].split(",");
           Sequence s = new Sequence();
           if(parts.length > 1) {s = Sequence.parse(parts[1].trim());}
           sequences.add(s);
-          arr.add(new QuartalWordsPhrase(abc, parts[0].trim()).toBinaryWord().reverse());
+          arr.add(new QuartalNumbersSequence(abc, parts[0].trim()).toBinaryWord().reverse());
         }
         
-        BinaryWord result = BinaryWord.build(Combination.mergeAll(arr));
-        txtResult.setText(new QuartalWordsPhrase(abc, result).toString());
+        BinaryNumber result = BinaryNumber.build(Combination.mergeAll(arr));
+        txtResult.setText(new QuartalNumbersSequence(abc, result).toString());
         
         Sequence s = new Sequence();
         Sequence indices = new Sequence();

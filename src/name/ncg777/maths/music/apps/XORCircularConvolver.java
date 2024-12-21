@@ -8,9 +8,9 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.BinaryWord;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -70,8 +70,8 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
-        BinaryWord carrier = new QuartalWordsPhrase(abc, txtCarrier.getText()).toBinaryWord().reverse();
-        BinaryWord impulse = new QuartalWordsPhrase(abc, txtImpulse.getText()).toBinaryWord().reverse();
+        BinaryNumber carrier = new QuartalNumbersSequence(abc, txtCarrier.getText()).toBinaryWord().reverse();
+        BinaryNumber impulse = new QuartalNumbersSequence(abc, txtImpulse.getText()).toBinaryWord().reverse();
         
         BitSet bs = new BitSet(carrier.getN());
         
@@ -84,9 +84,9 @@ public class XORCircularConvolver {
           }
         }
         txtResult.setText(
-            (new QuartalWordsPhrase(
+            (new QuartalNumbersSequence(
                 abc,
-                (new BinaryWord(bs, carrier.getN())).reverse()
+                (new BinaryNumber(bs, carrier.getN())).reverse()
             )).toString());
       }
     });

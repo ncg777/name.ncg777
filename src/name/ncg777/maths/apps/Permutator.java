@@ -54,7 +54,7 @@ public class Permutator {
    */
   private void initialize() {
     frmPermutator = new JFrame();
-    frmPermutator.setTitle("Permutator/Combinator");
+    frmPermutator.setTitle("WordPermutator/Combinator");
     frmPermutator.setBounds(100, 100, 427, 255);
     frmPermutator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

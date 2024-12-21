@@ -10,9 +10,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 import javax.swing.SpinnerNumberModel;
@@ -102,7 +102,7 @@ public class SeqGenContourFollow {
             {
               String str_R = txtRhythm.getText().trim();
               
-              Sequence C = new QuartalWordsPhrase(
+              Sequence C = new QuartalNumbersSequence(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
                   str_R
               ).toBinaryWord().reverse().getComposition().asSequence();;

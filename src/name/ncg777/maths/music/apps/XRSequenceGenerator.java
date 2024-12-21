@@ -9,9 +9,9 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
 
 import javax.swing.SpringLayout;
 import javax.swing.JTextField;
@@ -77,7 +77,7 @@ public class XRSequenceGenerator {
       
       public void actionPerformed(ActionEvent e) {
         var abc = (Alphabet.Name)comboBox.getSelectedItem();
-        Sequence comp = (new QuartalWordsPhrase(abc, textRhythm.getText()))
+        Sequence comp = (new QuartalNumbersSequence(abc, textRhythm.getText()))
             .toBinaryWord().reverse().getComposition().asSequence();
         boolean useHalf = true;
         

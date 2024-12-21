@@ -9,10 +9,10 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -96,7 +96,7 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        BinaryWord r = new QuartalWordsPhrase((Alphabet.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
+        BinaryNumber r = new QuartalNumbersSequence((Alphabet.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
         
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString());
       }

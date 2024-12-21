@@ -2,11 +2,11 @@ package name.ncg777.maths.enumerations;
 
 import java.util.Enumeration;
 
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.QuartalNumber;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.QuartalWord;
 
-public class QuartalWordEnumeration implements Enumeration<QuartalWord>  {
+public class QuartalWordEnumeration implements Enumeration<QuartalNumber>  {
   private Alphabet.Name alphabetName;
   
   private MixedRadixEnumeration mre;
@@ -26,7 +26,7 @@ public class QuartalWordEnumeration implements Enumeration<QuartalWord>  {
   }
 
   @Override
-  public QuartalWord nextElement() {
-    return new QuartalWord(alphabetName, new Sequence(mre.nextElement()));
+  public QuartalNumber nextElement() {
+    return new QuartalNumber(alphabetName, new Sequence(mre.nextElement()));
   }
 }

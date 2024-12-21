@@ -7,10 +7,10 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
@@ -107,20 +107,20 @@ public class ModularArithmeticSequencer {
         
         var distinct = o.distinct();
         
-        ArrayList<QuartalWordsPhrase> rs = new ArrayList<>();
+        ArrayList<QuartalNumbersSequence> rs = new ArrayList<>();
         
         for(int i: distinct) {
-          BinaryWord r = BinaryWord.build(new BitSet(), n);
+          BinaryNumber r = BinaryNumber.build(new BitSet(), n);
           
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}
           }
-          rs.add(new QuartalWordsPhrase(Alphabet.Name.Hexadecimal, r));
+          rs.add(new QuartalNumbersSequence(Alphabet.Name.Hexadecimal, r));
         }
         
         StringBuilder sb = new StringBuilder();
         sb.append(o.toString() + "\n");
-        for(QuartalWordsPhrase rl : rs) {
+        for(QuartalNumbersSequence rl : rs) {
           sb.append(rl.toString() + "\n");
         }
         

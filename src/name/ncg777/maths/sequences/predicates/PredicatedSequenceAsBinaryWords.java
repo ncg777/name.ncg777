@@ -6,18 +6,18 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
+import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.BinaryWord;
 
 public class PredicatedSequenceAsBinaryWords implements StandardAndGuavaPredicate<Sequence> {
-  final private Predicate<BinaryWord> pred;
+  final private Predicate<BinaryNumber> pred;
 
-  public PredicatedSequenceAsBinaryWords(Predicate<BinaryWord> pred) {this.pred = pred;}
+  public PredicatedSequenceAsBinaryWords(Predicate<BinaryNumber> pred) {this.pred = pred;}
   @Override
   public boolean apply(@Nonnull Sequence input) {
-    Collection<BinaryWord> t = input.getBinaryWords().values();
+    Collection<BinaryNumber> t = input.getBinaryWords().values();
     
-    for(BinaryWord r : t) {
+    for(BinaryNumber r : t) {
       if(!pred.test(r)) return false;
     }
     return true;

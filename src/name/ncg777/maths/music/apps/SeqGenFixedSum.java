@@ -10,11 +10,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.predicates.EntropicDispersion;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.predicates.EntropicDispersion;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
@@ -123,7 +123,7 @@ public class SeqGenFixedSum {
             while(true)
             {
               String str_R = txtRhythm.getText().trim();       
-              int n = new QuartalWordsPhrase(
+              int n = new QuartalNumbersSequence(
                   (Alphabet.Name)comboBox.getSelectedItem(), 
                   str_R).toBinaryWord().reverse().getK();
               

@@ -18,12 +18,12 @@ import javax.swing.JCheckBox;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.QuartalNumber;
+import name.ncg777.maths.numbers.predicates.Even;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.BinaryWord;
-import name.ncg777.maths.words.QuartalWord;
-import name.ncg777.maths.words.predicates.Even;
 
 import javax.swing.SwingConstants;
 
@@ -59,7 +59,7 @@ public class x2mid {
     frmXmid.setBounds(100, 100, 434, 198);
     frmXmid.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblRhythm = new JLabel("BinaryWord");
+    JLabel lblRhythm = new JLabel("BinaryNumber");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     lblRhythm.setBackground(Color.BLACK);
     lblRhythm.setForeground(SystemColor.textText);
@@ -83,12 +83,12 @@ public class x2mid {
     btnXmid.setForeground(Color.LIGHT_GRAY);
     btnXmid.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        QuartalWordsPhrase r = new QuartalWordsPhrase(Alphabet.Name.Hexadecimal, textField.getText());
+        QuartalNumbersSequence r = new QuartalNumbersSequence(Alphabet.Name.Hexadecimal, textField.getText());
         if(chckbxNewCheckBox.isSelected()) {
-          r = QuartalWordsPhrase.expand(r, 2, false);  
+          r = QuartalNumbersSequence.expand(r, 2, false);  
         } else {
           if(!(new Even()).apply(r.toWord().toBinaryWord())) {
-            txtrOutput.setText("BinaryWord is not even");
+            txtrOutput.setText("BinaryNumber is not even");
           }
         }
         
@@ -106,13 +106,13 @@ public class x2mid {
           int m = a+(d/2);
           mid.add(m%total);
         }
-        QuartalWordsPhrase o = new QuartalWordsPhrase(Alphabet.Name.Hexadecimal);
+        QuartalNumbersSequence o = new QuartalNumbersSequence(Alphabet.Name.Hexadecimal);
         for(int i=0;i<r.size();i++){
           TreeSet<Integer> t = new TreeSet<Integer>();
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(new QuartalWord(Alphabet.Name.Hexadecimal, new BinaryWord(t, 16).toWord(Alphabet.Name.Hexadecimal)));
+          o.add(new QuartalNumber(Alphabet.Name.Hexadecimal, new BinaryNumber(t, 16).toWord(Alphabet.Name.Hexadecimal)));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }

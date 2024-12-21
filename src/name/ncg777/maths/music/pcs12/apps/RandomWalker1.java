@@ -10,9 +10,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import name.ncg777.maths.numbers.predicates.EntropicDispersion;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
-import name.ncg777.maths.words.predicates.EntropicDispersion;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;

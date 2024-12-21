@@ -11,10 +11,10 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Composition;
-import name.ncg777.maths.phrases.QuartalWordsPhrase;
+import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
-import name.ncg777.maths.words.Alphabet;
-import name.ncg777.maths.words.BinaryWord;
 
 import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
@@ -83,7 +83,7 @@ public class LatticePath {
           c.set(m-1);
           if((total % 16) == 0) {
             r16 = true;
-            o += new QuartalWordsPhrase(Alphabet.Name.Hexadecimal, (new BinaryWord(c.asCombination(), total))).toString() + " ";
+            o += new QuartalNumbersSequence(Alphabet.Name.Hexadecimal, (new BinaryNumber(c.asCombination(), total))).toString() + " ";
           }
           o+= Integer.valueOf(i+2).toString() + " : ";
           for(Integer j : c.asSequence()){o+=j.toString() + " ";}
