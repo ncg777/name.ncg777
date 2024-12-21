@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.HomoPair;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -32,7 +32,7 @@ public class Application {
 
   private JFrame frmKernelEvaluator;
   private JTextField delta;
-  private JComboBox<Alphabet.Name> comboBox_1 = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox_1 = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -113,7 +113,7 @@ public class Application {
           HomoPair<Sequence> result = null;
           result = engine.evaluate(
               (new QuartalNumbersSequence(
-                  (Alphabet.Name)comboBox_1.getSelectedItem(), 
+                  (Cipher.Name)comboBox_1.getSelectedItem(), 
                   rhythm.getText()
               )).toBinaryWord(), 
               params.getText(), 

@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -27,7 +27,7 @@ public class SeqGenBySegments {
   private JFrame frmSeqGen;
   private JTextField textField;
   private JTextField textField_1;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   /**
    * Launch the application.
    */
@@ -82,7 +82,7 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          BinaryNumber r = new QuartalNumbersSequence((Alphabet.Name)comboBox.getSelectedItem(), str_R).toBinaryWord().reverse();
+          BinaryNumber r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R).toBinaryWord().reverse();
           
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();

@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.numbers.QuartalNumber;
 import name.ncg777.maths.numbers.Number;
@@ -15,13 +15,13 @@ import name.ncg777.maths.sequences.Sequence;
 
 public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements Comparable<QuartalNumbersSequence> {
   private static final long serialVersionUID = 1L;
-  private Alphabet.Name alphabetName;
+  private Cipher.Name alphabetName;
   
-  public QuartalNumbersSequence(Alphabet.Name alphabetName) {
+  public QuartalNumbersSequence(Cipher.Name alphabetName) {
     this.alphabetName = alphabetName;
   }
   
-  public QuartalNumbersSequence(Alphabet.Name alphabetName, String string) {
+  public QuartalNumbersSequence(Cipher.Name alphabetName, String string) {
     this(alphabetName);
     string = string.replaceAll("\\s+", "");
 
@@ -33,11 +33,11 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     }
   }
   
-  public QuartalNumbersSequence(Alphabet.Name alphabetName, Number number) {
+  public QuartalNumbersSequence(Cipher.Name alphabetName, Number number) {
     this(alphabetName, number.toString());
   }
   
-  public QuartalNumbersSequence(Alphabet.Name alphabetName, BinaryNumber binaryNumber) {
+  public QuartalNumbersSequence(Cipher.Name alphabetName, BinaryNumber binaryNumber) {
     this(alphabetName, binaryNumber.toWord(alphabetName));
   }
   
@@ -230,7 +230,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   public boolean isEquivalentUnderSyncronizedRotation(QuartalNumbersSequence other) {
     if(!this.alphabetName.equals(other.alphabetName))
       throw new IllegalArgumentException();
-    var abc = Alphabet.getAlphabet(this.alphabetName);
+    var abc = Cipher.getAlphabet(this.alphabetName);
     
     if (this.size() != other.size()) return false;
 
@@ -248,7 +248,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     return false;
   }
 
-  public Sequence clusterPartition(Alphabet.Name alphabetName) {
+  public Sequence clusterPartition(Cipher.Name alphabetName) {
     var clusters =
         QuartalNumbersSequence.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeIntoHomogeneousRegions());
     var rs = new ArrayList<BinaryNumber>();
@@ -295,9 +295,9 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
       return o;
     }
   }
-  public static QuartalNumbersSequence fromCombination(Alphabet.Name alphabetName, Combination r){
+  public static QuartalNumbersSequence fromCombination(Cipher.Name alphabetName, Combination r){
     QuartalNumbersSequence output = new QuartalNumbersSequence(alphabetName);
-    var abc = Alphabet.getAlphabet(alphabetName);
+    var abc = Cipher.getAlphabet(alphabetName);
     
     if(!abc.isInformationBinary())
       throw new IllegalArgumentException();
@@ -323,7 +323,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   }
   
   public static List<QuartalNumbersSequence> fromRhythmList(
-      Alphabet.Name alphabetName, List<? extends Combination> list) {
+      Cipher.Name alphabetName, List<? extends Combination> list) {
     List<QuartalNumbersSequence> o = new ArrayList<>();
     
     for(var r : list) {
@@ -333,7 +333,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   }
   
   public static List<QuartalNumbersSequence> clusterRhythmPartition(
-      Alphabet.Name alphabetName, List<? extends Combination> _partition) {
+      Cipher.Name alphabetName, List<? extends Combination> _partition) {
     if(_partition == null) throw new RuntimeException("clusterRhythmPartition:: partition is null.");
     List<QuartalNumbersSequence> partition = QuartalNumbersSequence.fromRhythmList(alphabetName, _partition);
     if(partition.size()==1) {

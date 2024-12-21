@@ -14,7 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
 import java.awt.event.ActionListener;
@@ -33,7 +33,7 @@ public class QuartalNumbersCalculator {
   private JTextField rhA;
   private JTextField rhB;
   private JTextField output;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -86,8 +86,8 @@ public class QuartalNumbersCalculator {
     btnCalc.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = comboBox.getSelectedItem();
-        QuartalNumbersSequence a = new QuartalNumbersSequence((Alphabet.Name)abc, rhA.getText());
-        QuartalNumbersSequence b = new QuartalNumbersSequence((Alphabet.Name)abc, rhB.getText());
+        QuartalNumbersSequence a = new QuartalNumbersSequence((Cipher.Name)abc, rhA.getText());
+        QuartalNumbersSequence b = new QuartalNumbersSequence((Cipher.Name)abc, rhB.getText());
         String o = "";
           
         switch((Operation) operation.getSelectedItem()) {
@@ -124,7 +124,7 @@ public class QuartalNumbersCalculator {
       public void actionPerformed(ActionEvent e) {
         var str = QuartalNumbersSequence.not(
             new QuartalNumbersSequence(
-                (Alphabet.Name)comboBox.getSelectedItem(), 
+                (Cipher.Name)comboBox.getSelectedItem(), 
                 output.getText())).toString();
         
         output.setText(str);

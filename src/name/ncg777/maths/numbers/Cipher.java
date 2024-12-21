@@ -5,7 +5,7 @@ import static com.google.common.math.LongMath.checkedPow;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class Alphabet extends ArrayList<Character> {
+public class Cipher extends ArrayList<Character> {
   private static final long serialVersionUID = 1L;
 
   public static enum Name {
@@ -16,21 +16,21 @@ public class Alphabet extends ArrayList<Character> {
     Ternary
   }
   
-  public static TreeMap<Name, Alphabet> Alphabets;
+  public static TreeMap<Name, Cipher> Ciphers;
   
   static {
-    Alphabets = new TreeMap<>();
+    Ciphers = new TreeMap<>();
     Character[] ARR_TERNARY = {'T','0','1'};
     Character[] ARR_BINARY = {'0','1'};
     Character[] ARR_OCTAL = {'0','1','2','3','4','5','6','7'};
     Character[] ARR_DECIMAL = {'0','1','2','3','4','5','6','7','8','9'};
     Character[] ARR_HEXADECIMAL = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     
-    Alphabets.put(Name.Hexadecimal, new Alphabet(ARR_HEXADECIMAL));
-    Alphabets.put(Name.Decimal, new Alphabet(ARR_DECIMAL));
-    Alphabets.put(Name.Octal, new Alphabet(ARR_OCTAL));
-    Alphabets.put(Name.Binary, new Alphabet(ARR_BINARY));
-    Alphabets.put(Name.Ternary, new Alphabet(ARR_TERNARY));
+    Ciphers.put(Name.Hexadecimal, new Cipher(ARR_HEXADECIMAL));
+    Ciphers.put(Name.Decimal, new Cipher(ARR_DECIMAL));
+    Ciphers.put(Name.Octal, new Cipher(ARR_OCTAL));
+    Ciphers.put(Name.Binary, new Cipher(ARR_BINARY));
+    Ciphers.put(Name.Ternary, new Cipher(ARR_TERNARY));
   }
   
   public double information() {
@@ -41,9 +41,9 @@ public class Alphabet extends ArrayList<Character> {
     return checkedPow(2, (int)Math.round(information())) == size();
   }
   
-  static public Alphabet getAlphabet(Name name) { return Alphabets.get(name); }
+  static public Cipher getAlphabet(Name name) { return Ciphers.get(name); }
   
-  public Alphabet(Character[] characters) {
+  public Cipher(Character[] characters) {
     for(Character c : characters) {
       this.add(c);
     }
@@ -51,8 +51,8 @@ public class Alphabet extends ArrayList<Character> {
   
   @Override
   public boolean equals(Object _other) {
-    if(!(_other instanceof Alphabet)) return false;
-    var other = (Alphabet) _other;
+    if(!(_other instanceof Cipher)) return false;
+    var other = (Cipher) _other;
     if(this.size() != other.size()) return false;
     for(int i=0;i<this.size();i++) if(this.get(i) != other.get(i)) return false;
     return true;

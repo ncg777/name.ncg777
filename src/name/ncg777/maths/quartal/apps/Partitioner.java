@@ -37,7 +37,7 @@ package name.ncg777.maths.quartal.apps;
 //  private JTextField txtPartition;
 //  private JTextArea txtResult;
 //  private JSpinner spinner;
-//  private JComboBox<Alphabet> comboBox = new JComboBox<Alphabet>(new DefaultComboBoxModel<Alphabet>(Alphabet.values()));;
+//  private JComboBox<Cipher> comboBox = new JComboBox<Cipher>(new DefaultComboBoxModel<Cipher>(Cipher.values()));;
 //  /**
 //   * Launch the application.
 //   */
@@ -92,7 +92,7 @@ package name.ncg777.maths.quartal.apps;
 //    spinner.setFont(new Font("Unifont", Font.PLAIN, 11));
 //    btnPartition.addActionListener(new ActionListener() {
 //      public void actionPerformed(ActionEvent e) {
-//        if(comboBox.getSelectedItem() == Alphabet.Hexadecimal) {
+//        if(comboBox.getSelectedItem() == Cipher.Hexadecimal) {
 //          HexadecimalSentence r = HexadecimalSentence.parseHexadecimalWord(txtR.getText().trim());
 //          BinaryNumber r1 = r.asWord();
 //          Sequence p0 = Sequence.parse(txtPartition.getText());
@@ -112,7 +112,7 @@ package name.ncg777.maths.quartal.apps;
 //            strOut += HexadecimalSentence.expand(HexadecimalSentence.fromRhythm(output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
 //          }
 //          txtResult.setText(strOut);
-//        } else if(comboBox.getSelectedItem() == Alphabet.Octal) {
+//        } else if(comboBox.getSelectedItem() == Cipher.Octal) {
 //          OctalSentence r = OctalSentence.parseOctalWord(txtR.getText().trim());
 //          BinaryNumber r1 = r.asRhythm();
 //          Sequence p0 = Sequence.parse(txtPartition.getText());

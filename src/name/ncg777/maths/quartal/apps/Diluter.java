@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
@@ -27,7 +27,7 @@ public class Diluter {
   private JFrame frmRhythmDiluter;
   private JTextField textRhythm;
   private JTextField textResult;
-  JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   JSpinner spinnerFrom = new JSpinner(new SpinnerNumberModel(1, 1, null, 1));
   JSpinner spinnerOffset = new JSpinner();
   JSpinner spinnerTo = new JSpinner(new SpinnerNumberModel(2, 2, null, 1));
@@ -125,8 +125,8 @@ public class Diluter {
   }
   
   private void dilute() {
-    var abc = (Alphabet.Name)comboBox.getSelectedItem();
-    var alphabet = Alphabet.getAlphabet(abc);
+    var abc = (Cipher.Name)comboBox.getSelectedItem();
+    var alphabet = Cipher.getAlphabet(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
     BinaryNumber r = new QuartalNumbersSequence(
         abc, 

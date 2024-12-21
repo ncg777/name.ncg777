@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
 public class ScaleModulo {
@@ -80,9 +80,9 @@ public class ScaleModulo {
     txtOutput.setColumns(10);
     btnGo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        txtOutput.setText(new QuartalNumbersSequence(Alphabet.Name.Hexadecimal,
+        txtOutput.setText(new QuartalNumbersSequence(Cipher.Name.Hexadecimal,
           (new QuartalNumbersSequence(
-              Alphabet.Name.Hexadecimal, 
+              Cipher.Name.Hexadecimal, 
               textField.getText().trim()))
             .toWord().toBinaryWord().scaleModulo(
                 (int)k.getValue(), 

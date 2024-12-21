@@ -2,17 +2,17 @@ package name.ncg777.maths.enumerations;
 
 import java.util.Enumeration;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.QuartalNumber;
 import name.ncg777.maths.sequences.Sequence;
 
 public class QuartalWordEnumeration implements Enumeration<QuartalNumber>  {
-  private Alphabet.Name alphabetName;
+  private Cipher.Name alphabetName;
   
   private MixedRadixEnumeration mre;
-  public QuartalWordEnumeration(Alphabet.Name alphabetName) {
+  public QuartalWordEnumeration(Cipher.Name alphabetName) {
     this.alphabetName = alphabetName;
-    var alphabet = Alphabet.getAlphabet(alphabetName);
+    var alphabet = Cipher.getAlphabet(alphabetName);
     
     int n = alphabet.size();
     

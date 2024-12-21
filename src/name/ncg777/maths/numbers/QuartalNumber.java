@@ -9,20 +9,20 @@ import name.ncg777.maths.sequences.Sequence;
 public class QuartalNumber extends Number {
   private static final long serialVersionUID = 1L;
 
-  public QuartalNumber(Alphabet.Name alphabetName, Character[] array) {
+  public QuartalNumber(Cipher.Name alphabetName, Character[] array) {
     super(alphabetName, array);
   }
   
-  public QuartalNumber(Alphabet.Name alphabetName, String string) {
+  public QuartalNumber(Cipher.Name alphabetName, String string) {
     super(alphabetName, string.replaceAll("\\s+", ""));
     if(string.replaceAll("\\s+", "").length() != 4) throw new IllegalArgumentException();
   }
   
-  public QuartalNumber(Alphabet.Name alphabetName, List<Character> list) {
+  public QuartalNumber(Cipher.Name alphabetName, List<Character> list) {
     super(alphabetName, list);
   }
   
-  public QuartalNumber(Alphabet.Name alphabetName, Sequence sequence) {
+  public QuartalNumber(Cipher.Name alphabetName, Sequence sequence) {
     super(alphabetName, sequence);
     if(sequence.size()!= 4) throw new IllegalArgumentException();
   }
@@ -32,7 +32,7 @@ public class QuartalNumber extends Number {
     if(number.size()!= 4) throw new IllegalArgumentException();
   }
     
-  public static TreeSet<QuartalNumber> generate(Alphabet.Name alphabetName) {
+  public static TreeSet<QuartalNumber> generate(Cipher.Name alphabetName) {
     TreeSet<QuartalNumber> o = new TreeSet<QuartalNumber>();
     var tge = new QuartalWordEnumeration(alphabetName);
     while(tge.hasMoreElements()) o.add(tge.nextElement());

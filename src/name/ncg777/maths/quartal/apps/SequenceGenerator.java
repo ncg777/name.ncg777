@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -47,7 +47,7 @@ public class SequenceGenerator {
   
   JTextArea txtrAaBb = new JTextArea();
   JTextField textField = new JTextField();
-  private final JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private final JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
 
   private void initialize() {
     comboBox.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -75,7 +75,7 @@ public class SequenceGenerator {
           
           binaryNumbers.add(
               new QuartalNumbersSequence(
-                  (Alphabet.Name)comboBox.getSelectedItem(), 
+                  (Cipher.Name)comboBox.getSelectedItem(), 
                   l[0].trim()).toWord().toBinaryWord());
           
           muls.add(Integer.valueOf(l[1].trim()));

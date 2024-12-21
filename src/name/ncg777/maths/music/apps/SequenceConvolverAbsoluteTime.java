@@ -9,7 +9,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -28,7 +28,7 @@ public class SequenceConvolverAbsoluteTime {
   private JTextField txtImpulse;
   private JTextField txtR;
   private JTextField txtResult;
-  private JComboBox<Alphabet.Name> comboBox;
+  private JComboBox<Cipher.Name> comboBox;
 
   /**
    * Launch the application.
@@ -96,13 +96,13 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        BinaryNumber r = new QuartalNumbersSequence((Alphabet.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
+        BinaryNumber r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
         
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString());
       }
     });
     
-    comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+    comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
     comboBox.setFont(new Font("Unifont", Font.PLAIN, 11));
     
     GroupLayout groupLayout = new GroupLayout(frmArticulateAndSmooth.getContentPane());

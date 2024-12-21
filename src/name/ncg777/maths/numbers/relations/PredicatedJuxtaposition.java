@@ -3,7 +3,7 @@ package name.ncg777.maths.numbers.relations;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.numbers.Number;
 
@@ -18,7 +18,7 @@ public class PredicatedJuxtaposition implements BiPredicate<BinaryNumber, Binary
   public boolean test(BinaryNumber a, BinaryNumber b) {
     return predicate.test(
         Number.agglutinate(
-            a.toWord(Alphabet.Name.Binary), 
-            b.toWord(Alphabet.Name.Binary)).toBinaryWord());
+            a.toWord(Cipher.Name.Binary), 
+            b.toWord(Cipher.Name.Binary)).toBinaryWord());
   }
 }

@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
 import javax.swing.JComboBox;
@@ -28,7 +28,7 @@ public class Expander {
   private JTextField txtRhythm;
   private JTextField txtResult;
   private JTextField txtNot;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -75,7 +75,7 @@ public class Expander {
     JButton btnExpand = new JButton("Expand and Rotate");
     btnExpand.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var abc = (Alphabet.Name)comboBox.getSelectedItem();
+        var abc = (Cipher.Name)comboBox.getSelectedItem();
         var o = QuartalNumbersSequence.rotate(
             QuartalNumbersSequence.expand(
                 new QuartalNumbersSequence(

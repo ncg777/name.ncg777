@@ -8,7 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
@@ -28,7 +28,7 @@ public class XORCircularConvolver {
   private JTextField txtCarrier;
   private JTextField txtImpulse;
   private JTextField txtResult;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -69,7 +69,7 @@ public class XORCircularConvolver {
     JButton btnConvolve = new JButton("Convolve");
     btnConvolve.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var abc = (Alphabet.Name)comboBox.getSelectedItem();
+        var abc = (Cipher.Name)comboBox.getSelectedItem();
         BinaryNumber carrier = new QuartalNumbersSequence(abc, txtCarrier.getText()).toBinaryWord().reverse();
         BinaryNumber impulse = new QuartalNumbersSequence(abc, txtImpulse.getText()).toBinaryWord().reverse();
         

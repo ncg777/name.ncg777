@@ -10,7 +10,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
 import java.awt.Font;
@@ -24,7 +24,7 @@ public class BitCounter {
 
   private JFrame frmBitcountermagicHappens;
   private JTextField textField;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   /**
    * Launch the application.
    */
@@ -64,7 +64,7 @@ public class BitCounter {
       public void keyReleased(KeyEvent e) {
         if(e.getKeyCode()==KeyEvent.VK_ENTER){
           String str = textField.getText().trim();
-          var abc = (Alphabet.Name)comboBox.getSelectedItem();
+          var abc = (Cipher.Name)comboBox.getSelectedItem();
           lblCount.setText(
               Integer.toString((new QuartalNumbersSequence(abc, str)).toBinaryWord().getK()));
         }

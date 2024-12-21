@@ -13,7 +13,7 @@ import java.util.TreeSet;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.Composition;
-import name.ncg777.maths.numbers.Alphabet.Name;
+import name.ncg777.maths.numbers.Cipher.Name;
 import name.ncg777.maths.sequences.Sequence;
 
 public class BinaryNumber extends Combination implements Serializable {
@@ -49,7 +49,7 @@ public class BinaryNumber extends Combination implements Serializable {
     }
   }
   
-  public Number toWord(Alphabet.Name alphabetName) {
+  public Number toWord(Cipher.Name alphabetName) {
     return new Number(alphabetName, this);
   }
   

@@ -22,7 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -37,7 +37,7 @@ public class QuartalNumbersPartitioner {
   private JTextField txtPartition;
   private JTextArea txtResult;
   private JSpinner spinner;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));;
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));;
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -84,7 +84,7 @@ public class QuartalNumbersPartitioner {
     spinner.setFont(new Font("Unifont", Font.PLAIN, 11));
     btnPartition.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var abc = (Alphabet.Name)comboBox.getSelectedItem();
+        var abc = (Cipher.Name)comboBox.getSelectedItem();
         
         QuartalNumbersSequence r = new QuartalNumbersSequence(abc, txtR.getText().trim());
         BinaryNumber r1 = r.toBinaryWord();

@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.statistics.RandomNumberGenerator;
@@ -31,7 +31,7 @@ public class SeqGenContourFollow {
   private JTextField txtDelta;
   private JTextField txtRhythm;
   private JTextField txtSequence;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   JSpinner spinner_bounce_amp = new JSpinner(new SpinnerNumberModel(12, 1, null, 1));
   JSpinner spinner_bounce_min = new JSpinner(new SpinnerNumberModel(0, null, null, 1));
   /**
@@ -103,7 +103,7 @@ public class SeqGenContourFollow {
               String str_R = txtRhythm.getText().trim();
               
               Sequence C = new QuartalNumbersSequence(
-                  (Alphabet.Name)comboBox.getSelectedItem(), 
+                  (Cipher.Name)comboBox.getSelectedItem(), 
                   str_R
               ).toBinaryWord().reverse().getComposition().asSequence();;
               

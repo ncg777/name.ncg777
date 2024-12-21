@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
@@ -30,7 +30,7 @@ public class QuartalNumbersMerger {
   private JFrame frmRhythmMerger;
   private JTextField txtResult;
   private JTextArea txtArea = new JTextArea();
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -65,7 +65,7 @@ public class QuartalNumbersMerger {
         for(int i=0; i<lines.length;i++) {
           arr.add(
               new QuartalNumbersSequence(
-                  (Alphabet.Name)comboBox.getSelectedItem(),
+                  (Cipher.Name)comboBox.getSelectedItem(),
                   lines[i].trim())
           .toBinaryWord().reverse());
         }
@@ -73,7 +73,7 @@ public class QuartalNumbersMerger {
         BinaryNumber result = BinaryNumber.build(Combination.mergeAll(arr));
           
         txtResult.setText(
-            (new QuartalNumbersSequence((Alphabet.Name)comboBox.getSelectedItem(),result)).toString()
+            (new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(),result)).toString()
         );
         
       }

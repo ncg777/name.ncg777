@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -29,7 +29,7 @@ public class XRSequenceGenerator {
   private JFrame frmXrSequenceGenerator;
   private JTextField textRhythm;
   private JTextField textOutput;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -76,7 +76,7 @@ public class XRSequenceGenerator {
     btnGenerate.addActionListener(new ActionListener() {
       
       public void actionPerformed(ActionEvent e) {
-        var abc = (Alphabet.Name)comboBox.getSelectedItem();
+        var abc = (Cipher.Name)comboBox.getSelectedItem();
         Sequence comp = (new QuartalNumbersSequence(abc, textRhythm.getText()))
             .toBinaryWord().reverse().getComposition().asSequence();
         boolean useHalf = true;
@@ -96,10 +96,10 @@ public class XRSequenceGenerator {
           }
           
           int maxPeriod = -1;
-          if(comboBox.getSelectedItem() == Alphabet.Name.Hexadecimal) {
+          if(comboBox.getSelectedItem() == Cipher.Name.Hexadecimal) {
             maxPeriod = 8;
           }
-          if(comboBox.getSelectedItem() == Alphabet.Name.Octal) {
+          if(comboBox.getSelectedItem() == Cipher.Name.Octal) {
             maxPeriod = 6;
           }
           maxPeriod = Math.min(n, maxPeriod);

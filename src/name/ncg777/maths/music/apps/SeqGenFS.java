@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.numbers.predicates.LowEntropy;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
@@ -34,7 +34,7 @@ public class SeqGenFS {
   private JTextField txtDelta;
   private JTextField txtRhythm;
   private JTextField txtSequence;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   JCheckBox chckbxF = new JCheckBox("F");
   JCheckBox chckbxS = new JCheckBox("S");
   /**
@@ -103,7 +103,7 @@ public class SeqGenFS {
               {
                 String str_R = txtRhythm.getText().trim();
                 
-                BinaryNumber R = (new QuartalNumbersSequence((Alphabet.Name)comboBox.getSelectedItem(), str_R)).toBinaryWord().reverse();
+                BinaryNumber R = (new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R)).toBinaryWord().reverse();
                 
                 
                 Sequence s;

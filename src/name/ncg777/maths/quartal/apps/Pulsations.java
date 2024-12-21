@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -29,7 +29,7 @@ public class Pulsations {
   private JTextField durations;
   private JTextField multiples;
   private JTextField result;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));;
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));;
 
   /**
    * Launch the application.
@@ -119,8 +119,8 @@ public class Pulsations {
         try {
           Sequence scompo = Sequence.parse(composition.getText());
           int scompo_sum = scompo.sum();
-          if(comboBox.getSelectedItem() == Alphabet.Name.Hexadecimal && scompo_sum%4 != 0) throw new Exception("Sum of composition must be a multiple of 4.");
-          if(comboBox.getSelectedItem() == Alphabet.Name.Octal && scompo_sum%3 != 0) throw new Exception("Sum of composition must be a multiple of 3.");
+          if(comboBox.getSelectedItem() == Cipher.Name.Hexadecimal && scompo_sum%4 != 0) throw new Exception("Sum of composition must be a multiple of 4.");
+          if(comboBox.getSelectedItem() == Cipher.Name.Octal && scompo_sum%3 != 0) throw new Exception("Sum of composition must be a multiple of 3.");
           
           ArrayList<String> hOrT = new ArrayList<String>();
           String[] hOrTarr = headTails.getText().split("\\s+");
@@ -163,7 +163,7 @@ public class Pulsations {
           }
           result.setText(
               new QuartalNumbersSequence(
-                  (Alphabet.Name)comboBox.getSelectedItem(),
+                  (Cipher.Name)comboBox.getSelectedItem(),
                   rh).toString());
         } catch(Exception ex) {
           result.setText(ex.getMessage());

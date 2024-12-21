@@ -12,13 +12,13 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
 
   private static final long serialVersionUID = 1L;
 
-  protected Alphabet.Name alphabetName;
+  protected Cipher.Name alphabetName;
 
-  public Alphabet getAlphabet() {
-    return Alphabet.getAlphabet(alphabetName);
+  public Cipher getAlphabet() {
+    return Cipher.getAlphabet(alphabetName);
   }
 
-  public Number(Alphabet.Name alphabetName) {
+  public Number(Cipher.Name alphabetName) {
     super();
     this.alphabetName = alphabetName;
   }
@@ -27,29 +27,29 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     this(number.alphabetName, number);
   }
 
-  public Number(Alphabet.Name alphabetName, Character[] array) {
+  public Number(Cipher.Name alphabetName, Character[] array) {
     this(alphabetName);
     for (var c : array)
       this.add(c);
   }
 
-  public Number(Alphabet.Name alphabetName, List<Character> list) {
+  public Number(Cipher.Name alphabetName, List<Character> list) {
     this(alphabetName);
     for (var c : list)
       this.add(c);
   }
   
-  public Number(Alphabet.Name alphabetName, String string) {
+  public Number(Cipher.Name alphabetName, String string) {
     this(alphabetName);
 
     for (int i=string.length()-1; i >=0 ; i--)
       this.add(string.charAt(i));
    }
 
-  public Number(Alphabet.Name alphabetName, BigInteger natural, int length) {
+  public Number(Cipher.Name alphabetName, BigInteger natural, int length) {
     super();
     this.alphabetName = alphabetName;
-    var alphabet = Alphabet.getAlphabet(alphabetName);
+    var alphabet = Cipher.getAlphabet(alphabetName);
     int n = alphabet.size();
     if(natural.compareTo(BigInteger.valueOf(n).pow(length)) >= 0)
       throw new IllegalArgumentException("Not enough bits to encode natural.");
@@ -60,12 +60,12 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     }
   }
 
-  public Number(Alphabet.Name alphabetName, Combination combination) {
+  public Number(Cipher.Name alphabetName, Combination combination) {
     this.alphabetName = alphabetName;
-    var alphabet = Alphabet.getAlphabet(alphabetName);
+    var alphabet = Cipher.getAlphabet(alphabetName);
     
     if (!alphabet.isInformationBinary())
-      throw new UnsupportedOperationException("Alphabet size must be a power of 2.");
+      throw new UnsupportedOperationException("Cipher size must be a power of 2.");
     
     int b = (int) alphabet.information();
     if (combination.getN() % b != 0) throw new UnsupportedOperationException(
@@ -89,7 +89,7 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     return new BinaryNumber(
         toNatural(),
         BigInteger
-          .valueOf(Alphabet.getAlphabet(alphabetName).size())
+          .valueOf(Cipher.getAlphabet(alphabetName).size())
             .pow(this.size())
             .subtract(BigInteger.ONE)
             .bitLength()
@@ -97,7 +97,7 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
   }
 
   public BigInteger toNatural() {
-    var alphabet = Alphabet.getAlphabet(alphabetName);
+    var alphabet = Cipher.getAlphabet(alphabetName);
 
     int k = 0;
     var sequence = this.toSequence();
@@ -132,14 +132,14 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     return toBinaryWord().toString();
   }
 
-  public static Number fromBitstring(Alphabet.Name alphabetName, String string) {
+  public static Number fromBitstring(Cipher.Name alphabetName, String string) {
     return BinaryNumber.build(string).toWord(alphabetName);
   }
 
-  public Number(Alphabet.Name alphabetName, Sequence sequence) {
+  public Number(Cipher.Name alphabetName, Sequence sequence) {
     super();
     this.alphabetName = alphabetName;
-    var alphabet = Alphabet.getAlphabet(alphabetName);
+    var alphabet = Cipher.getAlphabet(alphabetName);
     if (!sequence.isNatural() || sequence.getMax() >= alphabet.size())
       throw new IllegalArgumentException();
     for (var i : sequence)
@@ -147,7 +147,7 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
   }
 
   public Sequence toSequence() {
-    var alphabet = Alphabet.getAlphabet(alphabetName);
+    var alphabet = Cipher.getAlphabet(alphabetName);
     var o = new Sequence();
     for (int i = 0; i < this.size(); i++) {
       o.add(alphabet.indexOf(this.get(i)));

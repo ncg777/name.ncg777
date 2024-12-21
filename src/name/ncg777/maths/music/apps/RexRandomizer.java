@@ -12,7 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.computing.structures.HomoPair;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -36,7 +36,7 @@ public class RexRandomizer {
   private JTextField textRex;
   private JTextField textEQClasses;
   private JTextField textResynth;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   /**
    * Launch the application.
    */
@@ -98,7 +98,7 @@ public class RexRandomizer {
         
         int nbBars = (int)spinner.getValue();
         int mult = -1;
-        switch((Alphabet.Name)comboBox.getSelectedItem()) {
+        switch((Cipher.Name)comboBox.getSelectedItem()) {
           case Hexadecimal:
             mult = 16;
             break;
@@ -117,7 +117,7 @@ public class RexRandomizer {
         }
         int len = nbBars*mult;
         
-        BinaryNumber r = new QuartalNumbersSequence((Alphabet.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryWord();
+        BinaryNumber r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryWord();
         
         Sequence c = r.getComposition().asSequence();
         
@@ -163,7 +163,7 @@ public class RexRandomizer {
         }
         
         String ns = (new QuartalNumbersSequence(
-            (Alphabet.Name)comboBox.getSelectedItem(),
+            (Cipher.Name)comboBox.getSelectedItem(),
             BinaryNumber.build(newRhythm, len))).toString();
         
         String output = "";

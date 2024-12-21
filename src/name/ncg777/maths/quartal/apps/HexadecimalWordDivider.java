@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.numbers.QuartalNumber;
 import name.ncg777.maths.numbers.Number;
@@ -73,7 +73,7 @@ public class HexadecimalWordDivider {
     btnDivide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var r1 = (new QuartalNumbersSequence(
-            Alphabet.Name.Hexadecimal, txtR.getText().trim()))
+            Cipher.Name.Hexadecimal, txtR.getText().trim()))
             .toBinaryWord();
         int div = (int)spinner.getValue();
         int len = r1.getN();
@@ -97,7 +97,7 @@ public class HexadecimalWordDivider {
           String output = "";
           
           for(int i=0;i<div;i++) {
-            var t = new QuartalNumber(Alphabet.Name.Hexadecimal, new Number(Alphabet.Name.Hexadecimal, o.get(i).toString()));
+            var t = new QuartalNumber(Cipher.Name.Hexadecimal, new Number(Cipher.Name.Hexadecimal, o.get(i).toString()));
             output += t.toString(true) + "\n";
           }
           txtResult.setText(output);

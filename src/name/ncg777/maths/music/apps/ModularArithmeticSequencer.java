@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -115,7 +115,7 @@ public class ModularArithmeticSequencer {
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}
           }
-          rs.add(new QuartalNumbersSequence(Alphabet.Name.Hexadecimal, r));
+          rs.add(new QuartalNumbersSequence(Cipher.Name.Hexadecimal, r));
         }
         
         StringBuilder sb = new StringBuilder();

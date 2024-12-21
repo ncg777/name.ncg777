@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Matrix;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.JButton;
@@ -28,7 +28,7 @@ public class QuartalNumbersMatrixSequencer {
   private JTextArea textQuartalWordList;
   private JTextField textSequence;
   private JTextArea textResult;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(Alphabet.Name.values());
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(Cipher.Name.values());
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {

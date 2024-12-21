@@ -18,7 +18,7 @@ import javax.swing.JCheckBox;
 import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.numbers.QuartalNumber;
 import name.ncg777.maths.numbers.predicates.Even;
@@ -83,7 +83,7 @@ public class x2mid {
     btnXmid.setForeground(Color.LIGHT_GRAY);
     btnXmid.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        QuartalNumbersSequence r = new QuartalNumbersSequence(Alphabet.Name.Hexadecimal, textField.getText());
+        QuartalNumbersSequence r = new QuartalNumbersSequence(Cipher.Name.Hexadecimal, textField.getText());
         if(chckbxNewCheckBox.isSelected()) {
           r = QuartalNumbersSequence.expand(r, 2, false);  
         } else {
@@ -106,13 +106,13 @@ public class x2mid {
           int m = a+(d/2);
           mid.add(m%total);
         }
-        QuartalNumbersSequence o = new QuartalNumbersSequence(Alphabet.Name.Hexadecimal);
+        QuartalNumbersSequence o = new QuartalNumbersSequence(Cipher.Name.Hexadecimal);
         for(int i=0;i<r.size();i++){
           TreeSet<Integer> t = new TreeSet<Integer>();
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(new QuartalNumber(Alphabet.Name.Hexadecimal, new BinaryNumber(t, 16).toWord(Alphabet.Name.Hexadecimal)));
+          o.add(new QuartalNumber(Cipher.Name.Hexadecimal, new BinaryNumber(t, 16).toWord(Cipher.Name.Hexadecimal)));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }

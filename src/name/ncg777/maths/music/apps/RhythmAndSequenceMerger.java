@@ -13,7 +13,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -30,7 +30,7 @@ public class RhythmAndSequenceMerger {
   private JFrame frmRhythmAndSequenceMerger;
   private JTextField txtResult;
   private JTextArea txtArea = new JTextArea();
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   private JTextField textSeq;
 
   public static void main(String[] args) {
@@ -60,7 +60,7 @@ public class RhythmAndSequenceMerger {
     JButton btnMerge = new JButton("Merge");
     btnMerge.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var abc = (Alphabet.Name)comboBox.getSelectedItem();
+        var abc = (Cipher.Name)comboBox.getSelectedItem();
         String[] lines = txtArea.getText().trim().split("\n+");
         ArrayList<BinaryNumber> arr = new ArrayList<BinaryNumber>();
         ArrayList<Sequence> sequences = new ArrayList<>();

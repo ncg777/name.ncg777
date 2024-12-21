@@ -18,7 +18,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -33,7 +33,7 @@ public class Contours {
   private JTextField txtContour;
   private JTextField txtShadowContour;
   private JTextField txtComposition;
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   private JTextField textFieldBinary;
   private JTextField textCompositionPartition;;
   private JTextArea textAreaPartitions = new JTextArea();
@@ -74,7 +74,7 @@ public class Contours {
     JButton btnCalccontours = new JButton("Calculate Contours");
     btnCalccontours.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var abc = (Alphabet.Name)comboBox.getSelectedItem();
+        var abc = (Cipher.Name)comboBox.getSelectedItem();
         QuartalNumbersSequence r4 = new QuartalNumbersSequence(abc, textField.getText());
         
         txtContour.setText(r4.toWord().getContour().toString());

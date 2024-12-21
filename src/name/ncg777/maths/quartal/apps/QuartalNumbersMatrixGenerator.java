@@ -11,7 +11,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Matrix;
-import name.ncg777.maths.numbers.Alphabet;
+import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.numbers.QuartalNumber;
 import name.ncg777.maths.numbers.predicates.EntropicDispersion;
@@ -52,15 +52,15 @@ public class QuartalNumbersMatrixGenerator {
   private JFrame frmQuartalWordMatrixGenerator;
   private JTextArea textArea_1 = new JTextArea();
   private JTextArea textArea = new JTextArea();
-  private JComboBox<Alphabet.Name> comboBox = new JComboBox<Alphabet.Name>(new DefaultComboBoxModel<Alphabet.Name>(Alphabet.Name.values()));
+  private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
   private JTextField textFilterModes;
   private JTextField textDiffFilterModes;
 
-  private static TreeMap<Alphabet.Name, TreeSet<QuartalNumber>> sets = new TreeMap<>();
+  private static TreeMap<Cipher.Name, TreeSet<QuartalNumber>> sets = new TreeMap<>();
   
   static {
-    for(var n : Alphabet.Name.values()) {
-      sets.put(n, QuartalNumber.generate((Alphabet.Name)n));
+    for(var n : Cipher.Name.values()) {
+      sets.put(n, QuartalNumber.generate((Cipher.Name)n));
     }
   }
   
@@ -95,9 +95,9 @@ public class QuartalNumbersMatrixGenerator {
     return o;
   }
   private void updateFixed() {
-    if(comboBox.getSelectedItem() == Alphabet.Name.Binary) textArea_1.setText("10 10");
-    if(comboBox.getSelectedItem() == Alphabet.Name.Hexadecimal) textArea_1.setText("80 80");
-    if(comboBox.getSelectedItem() == Alphabet.Name.Octal) textArea_1.setText("40 40");
+    if(comboBox.getSelectedItem() == Cipher.Name.Binary) textArea_1.setText("10 10");
+    if(comboBox.getSelectedItem() == Cipher.Name.Hexadecimal) textArea_1.setText("80 80");
+    if(comboBox.getSelectedItem() == Cipher.Name.Octal) textArea_1.setText("40 40");
   }
   private boolean running = false;
 
@@ -131,7 +131,7 @@ public class QuartalNumbersMatrixGenerator {
 
           @Override
           public void run() {
-            var abc = (Alphabet.Name)comboBox.getSelectedItem();
+            var abc = (Cipher.Name)comboBox.getSelectedItem();
             
             ArrayList<Predicate<BinaryNumber>> filterModes = new ArrayList<>();
             filterModes.add((a) -> true);
