@@ -26,8 +26,8 @@ public class BounceEnumeration implements Enumeration<Integer> {
   
   private boolean hasMoreElements(int direction, int step, int start_inclusive, int current) {
     return !(direction == -1 && 
-        (step > 0 && current <= start_inclusive) || 
-        (step < 0 && current >= start_inclusive));
+        ((step > 0 && current <= start_inclusive) || 
+        (step < 0 && current >= start_inclusive)));
   }
   
   private boolean rangeHasMoreElements(int step, int current, int end_exclusice) {
