@@ -1,4 +1,4 @@
-package name.ncg777.maths.quartal.apps;
+package name.ncg777.maths.numbers.quartal.apps;
 
 import java.awt.EventQueue;
 
@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.phrases.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.QuartalNumbersSequence;
 
 public class ScaleModulo {
 

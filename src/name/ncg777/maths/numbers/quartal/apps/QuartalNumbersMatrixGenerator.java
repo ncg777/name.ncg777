@@ -1,4 +1,4 @@
-package name.ncg777.maths.quartal.apps;
+package name.ncg777.maths.numbers.quartal.apps;
 
 import java.awt.EventQueue;
 
@@ -14,6 +14,7 @@ import name.ncg777.maths.Matrix;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.numbers.QuartalNumber;
+import name.ncg777.maths.numbers.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.predicates.EntropicDispersion;
 import name.ncg777.maths.numbers.predicates.Even;
 import name.ncg777.maths.numbers.predicates.LowEntropy;
@@ -22,7 +23,6 @@ import name.ncg777.maths.numbers.predicates.RelativelyFlat;
 import name.ncg777.maths.numbers.predicates.ShadowContourIsomorphic;
 import name.ncg777.maths.numbers.relations.PredicatedDifferences;
 import name.ncg777.maths.numbers.relations.PredicatedJuxtaposition;
-import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.JLabel;

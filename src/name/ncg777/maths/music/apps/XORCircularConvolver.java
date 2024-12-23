@@ -9,8 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
+import name.ncg777.maths.numbers.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.BinaryNumber;
-import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;

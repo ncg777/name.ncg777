@@ -1,4 +1,4 @@
-package name.ncg777.maths.phrases;
+package name.ncg777.maths.numbers;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -7,10 +7,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.BinaryNumber;
-import name.ncg777.maths.numbers.QuartalNumber;
-import name.ncg777.maths.numbers.Number;
 import name.ncg777.maths.sequences.Sequence;
 
 public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements Comparable<QuartalNumbersSequence> {

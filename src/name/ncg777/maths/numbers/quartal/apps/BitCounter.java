@@ -1,4 +1,4 @@
-package name.ncg777.maths.quartal.apps;
+package name.ncg777.maths.numbers.quartal.apps;
 
 import java.awt.EventQueue;
 
@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.phrases.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.QuartalNumbersSequence;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;

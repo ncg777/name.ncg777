@@ -1,4 +1,4 @@
-package name.ncg777.maths.quartal.apps;
+package name.ncg777.maths.numbers.quartal.apps;
 
 import java.awt.EventQueue;
 
@@ -10,8 +10,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.numbers.Cipher;
+import name.ncg777.maths.numbers.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.BinaryNumber;
-import name.ncg777.maths.phrases.QuartalNumbersSequence;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;

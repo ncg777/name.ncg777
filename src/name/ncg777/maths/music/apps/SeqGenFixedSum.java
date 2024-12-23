@@ -11,8 +11,8 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
+import name.ncg777.maths.numbers.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.predicates.EntropicDispersion;
-import name.ncg777.maths.phrases.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
 
