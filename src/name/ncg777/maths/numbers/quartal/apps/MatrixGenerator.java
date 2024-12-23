@@ -47,7 +47,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 
-public class QuartalNumbersMatrixGenerator {
+public class MatrixGenerator {
 
   private JFrame frmQuartalWordMatrixGenerator;
   private JTextArea textArea_1 = new JTextArea();
@@ -68,7 +68,7 @@ public class QuartalNumbersMatrixGenerator {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          QuartalNumbersMatrixGenerator window = new QuartalNumbersMatrixGenerator();
+          MatrixGenerator window = new MatrixGenerator();
           window.frmQuartalWordMatrixGenerator.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -77,7 +77,7 @@ public class QuartalNumbersMatrixGenerator {
     });
   }
 
-  public QuartalNumbersMatrixGenerator() {
+  public MatrixGenerator() {
     initialize();
   }
   

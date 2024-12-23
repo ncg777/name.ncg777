@@ -19,7 +19,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SequenceScaleModuloPermutation {
+public class ScaleModuloPermutation {
 
   private JFrame frmSequenceScaleModulo;
   private JTextField txtSequence;
@@ -35,7 +35,7 @@ public class SequenceScaleModuloPermutation {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SequenceScaleModuloPermutation window = new SequenceScaleModuloPermutation();
+          ScaleModuloPermutation window = new ScaleModuloPermutation();
           window.frmSequenceScaleModulo.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -47,7 +47,7 @@ public class SequenceScaleModuloPermutation {
   /**
    * Create the application.
    */
-  public SequenceScaleModuloPermutation() {
+  public ScaleModuloPermutation() {
     initialize();
   }
   

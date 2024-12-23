@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.Font;
 
-public class SequenceMerger {
+public class Merger {
 
   private JFrame frmSequenceMerger;
   
@@ -29,7 +29,7 @@ public class SequenceMerger {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SequenceMerger window = new SequenceMerger();
+          Merger window = new Merger();
           window.frmSequenceMerger.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -41,7 +41,7 @@ public class SequenceMerger {
   /**
    * Create the application.
    */
-  public SequenceMerger() {
+  public Merger() {
     initialize();
   }
   
@@ -52,7 +52,7 @@ public class SequenceMerger {
    */
   private void initialize() {
     frmSequenceMerger = new JFrame();
-    frmSequenceMerger.setTitle("Sequence QuartalNumbersMerger");
+    frmSequenceMerger.setTitle("Sequence Merger");
     frmSequenceMerger.setBounds(100, 100, 450, 373);
     frmSequenceMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

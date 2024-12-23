@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
-public class QuartalNumbersCalculator {
+public class Calculator {
   private enum Operation {
     And,
     Or,
@@ -39,7 +39,7 @@ public class QuartalNumbersCalculator {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          QuartalNumbersCalculator window = new QuartalNumbersCalculator();
+          Calculator window = new Calculator();
           window.frmRhythmCalc.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -48,13 +48,13 @@ public class QuartalNumbersCalculator {
     });
   }
 
-  public QuartalNumbersCalculator() {
+  public Calculator() {
     initialize();
   }
 
   private void initialize() {
     frmRhythmCalc = new JFrame();
-    frmRhythmCalc.setTitle("QuartalNumbersCalculator");
+    frmRhythmCalc.setTitle("Calculator");
     frmRhythmCalc.setBounds(100, 100, 450, 325);
     frmRhythmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

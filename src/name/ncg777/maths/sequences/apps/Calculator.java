@@ -20,7 +20,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SequenceCalc {
+public class Calculator {
   private enum Calctype {
     Difference, 
     CyclicalDifference, 
@@ -49,7 +49,7 @@ public class SequenceCalc {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SequenceCalc window = new SequenceCalc();
+          Calculator window = new Calculator();
           window.frmSequenceCalc.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -61,7 +61,7 @@ public class SequenceCalc {
   /**
    * Create the application.
    */
-  public SequenceCalc() {
+  public Calculator() {
     initialize();
   }
   JComboBox<Calctype> comboBox;
@@ -70,7 +70,7 @@ public class SequenceCalc {
    */
   private void initialize() {
     frmSequenceCalc = new JFrame();
-    frmSequenceCalc.setTitle("Sequence Calc");
+    frmSequenceCalc.setTitle("Sequence Calculator");
     frmSequenceCalc.setBounds(100, 100, 450, 231);
     frmSequenceCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

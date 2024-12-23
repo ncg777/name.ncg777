@@ -17,11 +17,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SequenceMap {
+public class Permutator {
 
   private JFrame frmSequenceMap;
-  private JTextField textSequence;
-  private JTextField textMap;
+  private JTextField textA;
+  private JTextField textB;
   private JTextField textResult;
 
   /**
@@ -31,7 +31,7 @@ public class SequenceMap {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SequenceMap window = new SequenceMap();
+          Permutator window = new Permutator();
           window.frmSequenceMap.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -43,7 +43,7 @@ public class SequenceMap {
   /**
    * Create the application.
    */
-  public SequenceMap() {
+  public Permutator() {
     initialize();
   }
 
@@ -52,7 +52,7 @@ public class SequenceMap {
    */
   private void initialize() {
     frmSequenceMap = new JFrame();
-    frmSequenceMap.setTitle("Sequence Map");
+    frmSequenceMap.setTitle("Sequence Permutator");
     frmSequenceMap.setBounds(100, 100, 450, 219);
     frmSequenceMap.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -60,32 +60,32 @@ public class SequenceMap {
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     
-    textSequence = new JTextField();
-    textSequence.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
-    textSequence.setColumns(10);
+    textA = new JTextField();
+    textA.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
+    textA.setColumns(10);
     
-    JLabel lblNewLabel_1 = new JLabel("Map :");
+    JLabel lblNewLabel_1 = new JLabel("Permutation :");
     lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel_1.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     
-    textMap = new JTextField();
-    textMap.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
-    textMap.setColumns(10);
+    textB = new JTextField();
+    textB.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 10));
+    textB.setColumns(10);
     
-    JButton btnMap = new JButton("Map");
-    btnMap.addActionListener(new ActionListener() {
+    JButton btnCompose = new JButton("Permutate");
+    btnCompose.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         try {
-          Sequence s = Sequence.parse(textSequence.getText());
-          Sequence m = Sequence.parse(textMap.getText());       
-          Sequence result = s.map(m);
+          Sequence a = Sequence.parse(textA.getText());
+          Sequence b = Sequence.parse(textB.getText());       
+          Sequence result = a.permutate(b);
           textResult.setText(result.toString().replaceAll("[()]", ""));
         } catch(Exception ex) {
-          textResult.setText("Error");
+          textResult.setText(ex.getMessage());
         }
       }
     });
-    btnMap.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    btnCompose.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     
     JLabel lblNewLabel_2 = new JLabel("Result :");
     lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -98,7 +98,7 @@ public class SequenceMap {
     JButton btnFeedback = new JButton("Feedback");
     btnFeedback.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        textSequence.setText(textResult.getText());
+        textB.setText(textResult.getText());
       }
     });
     btnFeedback.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
@@ -116,9 +116,9 @@ public class SequenceMap {
             .addComponent(lblNewLabel_2, GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
           .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
             .addComponent(textResult, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-            .addComponent(textMap, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-            .addComponent(textSequence, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-            .addComponent(btnMap, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+            .addComponent(textB, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+            .addComponent(textA, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+            .addComponent(btnCompose, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
             .addComponent(btnFeedback, GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
           .addContainerGap())
     );
@@ -127,14 +127,14 @@ public class SequenceMap {
         .addGroup(groupLayout.createSequentialGroup()
           .addContainerGap()
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-            .addComponent(textSequence, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(textA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
             .addComponent(lblNewLabel))
           .addPreferredGap(ComponentPlacement.UNRELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(lblNewLabel_1)
-            .addComponent(textMap, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+            .addComponent(textB, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
           .addPreferredGap(ComponentPlacement.UNRELATED)
-          .addComponent(btnMap)
+          .addComponent(btnCompose)
           .addPreferredGap(ComponentPlacement.UNRELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(lblNewLabel_2)

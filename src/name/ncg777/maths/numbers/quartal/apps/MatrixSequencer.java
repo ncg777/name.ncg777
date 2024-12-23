@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
 import java.awt.Font;
 import javax.swing.JComboBox;
 
-public class QuartalNumbersMatrixSequencer {
+public class MatrixSequencer {
 
   private JFrame frmRseq;
   private JTextArea textQuartalWordList;
@@ -34,7 +34,7 @@ public class QuartalNumbersMatrixSequencer {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          QuartalNumbersMatrixSequencer window = new QuartalNumbersMatrixSequencer();
+          MatrixSequencer window = new MatrixSequencer();
           window.frmRseq.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -43,13 +43,13 @@ public class QuartalNumbersMatrixSequencer {
     });
   }
 
-  public QuartalNumbersMatrixSequencer() {
+  public MatrixSequencer() {
     initialize();
   }
 
   private void initialize() {
     frmRseq = new JFrame();
-    frmRseq.setTitle("QuartalNumbersMatrixSequencer");
+    frmRseq.setTitle("MatrixSequencer");
     frmRseq.setBounds(100, 100, 471, 587);
     frmRseq.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     

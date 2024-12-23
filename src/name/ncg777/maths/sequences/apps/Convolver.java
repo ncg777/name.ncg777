@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SequenceConvolver {
+public class Convolver {
 
   private JFrame frmSequenceConvolver;
   private JTextField txtCarrier;
@@ -31,7 +31,7 @@ public class SequenceConvolver {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          SequenceConvolver window = new SequenceConvolver();
+          Convolver window = new Convolver();
           window.frmSequenceConvolver.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -43,7 +43,7 @@ public class SequenceConvolver {
   /**
    * Create the application.
    */
-  public SequenceConvolver() {
+  public Convolver() {
     initialize();
   }
 

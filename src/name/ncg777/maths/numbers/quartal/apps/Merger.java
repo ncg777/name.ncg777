@@ -25,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 
-public class QuartalNumbersMerger {
+public class Merger {
 
   private JFrame frmRhythmMerger;
   private JTextField txtResult;
@@ -36,7 +36,7 @@ public class QuartalNumbersMerger {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          QuartalNumbersMerger window = new QuartalNumbersMerger();
+          Merger window = new Merger();
           window.frmRhythmMerger.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -46,14 +46,14 @@ public class QuartalNumbersMerger {
   }
 
 
-  public QuartalNumbersMerger() {
+  public Merger() {
     initialize();
   }
 
   private void initialize() {
     frmRhythmMerger = new JFrame();
     frmRhythmMerger.setResizable(false);
-    frmRhythmMerger.setTitle("QuartalNumbersMerger");
+    frmRhythmMerger.setTitle("Merger");
     frmRhythmMerger.setBounds(100, 100, 450, 273);
     frmRhythmMerger.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
