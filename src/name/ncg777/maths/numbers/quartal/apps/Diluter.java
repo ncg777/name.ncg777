@@ -10,7 +10,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.BinaryNumber;
 
 import java.awt.Font;

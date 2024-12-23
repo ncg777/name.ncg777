@@ -19,7 +19,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.Color;

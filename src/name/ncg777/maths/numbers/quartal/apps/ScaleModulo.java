@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 
 public class ScaleModulo {
 

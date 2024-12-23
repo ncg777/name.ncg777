@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;

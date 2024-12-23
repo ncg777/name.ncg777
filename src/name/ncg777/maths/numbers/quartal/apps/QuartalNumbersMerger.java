@@ -10,7 +10,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.BinaryNumber;
 
 import javax.swing.JTextField;

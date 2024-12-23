@@ -5,8 +5,8 @@ import java.util.function.Predicate;
 
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumber;
 import name.ncg777.maths.numbers.Number;
+import name.ncg777.maths.numbers.quartal.QuartalNumber;
 
 public class PredicatedUnion implements BiPredicate<QuartalNumber, QuartalNumber> {
   private Predicate<Number> predicate;

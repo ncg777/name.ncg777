@@ -20,9 +20,9 @@ import javax.swing.border.LineBorder;
 
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNumber;
-import name.ncg777.maths.numbers.QuartalNumber;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.predicates.Even;
+import name.ncg777.maths.numbers.quartal.QuartalNumber;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.SwingConstants;

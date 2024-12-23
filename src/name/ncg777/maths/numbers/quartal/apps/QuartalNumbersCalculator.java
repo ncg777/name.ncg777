@@ -15,7 +15,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

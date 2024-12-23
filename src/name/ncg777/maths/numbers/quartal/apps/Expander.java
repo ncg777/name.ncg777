@@ -18,7 +18,7 @@ import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;

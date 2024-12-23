@@ -13,7 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.BinaryNumber;
 import name.ncg777.maths.sequences.Sequence;
 
