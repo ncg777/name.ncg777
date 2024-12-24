@@ -24,6 +24,7 @@ public class Pixel32Bits implements Comparable<Pixel32Bits> {
   public int toInteger() {
     return (this.A << 24) | (this.R << 16) | (this.G << 8) | this.B;
   }
+  
   public int getA() {return A;}
   public int getR() {return R;}
   public int getG() {return G;}
