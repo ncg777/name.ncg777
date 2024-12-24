@@ -12,7 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.predicates.EntropicDispersion;
 import name.ncg777.maths.numbers.predicates.Even;
 import name.ncg777.maths.numbers.predicates.LowEntropy;
@@ -81,11 +81,11 @@ public class MatrixGenerator {
     initialize();
   }
   
-  private double[] adjustWeights(List<BinaryNumber> row, ArrayList<BinaryNumber> possibles, int j, Double[] weights) {
+  private double[] adjustWeights(List<BinaryNatural> row, ArrayList<BinaryNatural> possibles, int j, Double[] weights) {
     double[] o = new double[possibles.size()];
     for(int i=0;i<possibles.size();i++) {
       int count = 0;
-      BinaryNumber r = possibles.get(i);
+      BinaryNatural r = possibles.get(i);
       for(int k=0;k<j;k++) {
         if(row.get(k).equals(r)) count++;
       }
@@ -133,7 +133,7 @@ public class MatrixGenerator {
           public void run() {
             var abc = (Cipher.Name)comboBox.getSelectedItem();
             
-            ArrayList<Predicate<BinaryNumber>> filterModes = new ArrayList<>();
+            ArrayList<Predicate<BinaryNatural>> filterModes = new ArrayList<>();
             filterModes.add((a) -> true);
             filterModes.add(new ShadowContourIsomorphic());
             filterModes.add(new Oddity());
@@ -142,7 +142,7 @@ public class MatrixGenerator {
             filterModes.add(new Even());
             filterModes.add(new RelativelyFlat());
            
-            ArrayList<BiPredicate<BinaryNumber, BinaryNumber>> diffModes = new ArrayList<>();
+            ArrayList<BiPredicate<BinaryNatural, BinaryNatural>> diffModes = new ArrayList<>();
             for(var predicate : filterModes) diffModes.add(new PredicatedDifferences(predicate));
             
             try {
@@ -152,24 +152,24 @@ public class MatrixGenerator {
               String[] strFixed = textArea_1.getText().split("\n+");
               var _str = textFilterModes.getText();
               
-              Predicate<BinaryNumber> pred = Sequence.parse(_str)
+              Predicate<BinaryNatural> pred = Sequence.parse(_str)
                     .stream().map(
                         (i) -> filterModes.get(i-1))
                           .reduce((r) -> true, (a,b) -> a.and(b));
               
-              BiPredicate<BinaryNumber, BinaryNumber> relHoriz = new PredicatedJuxtaposition(pred);
+              BiPredicate<BinaryNatural, BinaryNatural> relHoriz = new PredicatedJuxtaposition(pred);
               
-              BiPredicate<BinaryNumber, BinaryNumber> relSimul = Sequence.parse(
+              BiPredicate<BinaryNatural, BinaryNatural> relSimul = Sequence.parse(
                   textDiffFilterModes.getText()).stream().map(
                       (i) -> diffModes.get(i-1)).reduce(
                           (a, b) -> true, (a,b) -> a.and(b));
               
-              TreeSet<BinaryNumber> t = new TreeSet<BinaryNumber>();
-              TreeSet<BinaryNumber> t0 = new TreeSet<BinaryNumber>();
+              TreeSet<BinaryNatural> t = new TreeSet<BinaryNatural>();
+              TreeSet<BinaryNatural> t0 = new TreeSet<BinaryNatural>();
              
               for(QuartalNumber r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryWord());
               
-              for(BinaryNumber r : t0){
+              for(BinaryNatural r : t0){
                 if(pred.test(r)) {
                   t.add(r);
                 }
@@ -179,7 +179,7 @@ public class MatrixGenerator {
               int n = (int)spinner_1.getValue();
               int m = (int)spinner.getValue();
               
-              Matrix<BinaryNumber> output = new Matrix<>(m,n);
+              Matrix<BinaryNatural> output = new Matrix<>(m,n);
               
               for(int i=0;i<strFixed.length;i++) {
                 if(strFixed[i].trim().length() == 0) continue;
@@ -197,14 +197,14 @@ public class MatrixGenerator {
                 fixedSize++;
               }
               m += fixedSize;
-              var possibles = new Function<String, ArrayList<BinaryNumber>>() {
+              var possibles = new Function<String, ArrayList<BinaryNatural>>() {
                 @Override  
-                public ArrayList<BinaryNumber> apply(String str) {
-                  BinaryNumber r = (BinaryNumber.build(str));
+                public ArrayList<BinaryNatural> apply(String str) {
+                  BinaryNatural r = (BinaryNatural.build(str));
                   
-                  ArrayList<BinaryNumber> p = new ArrayList<>();
+                  ArrayList<BinaryNatural> p = new ArrayList<>();
                   
-                  for(BinaryNumber s : t) {
+                  for(BinaryNatural s : t) {
                     if(relHoriz.test(r, s)) { 
                         p.add(s); 
                      }
@@ -214,8 +214,8 @@ public class MatrixGenerator {
                 };
               };
               
-              BiFunction<BinaryNumber, List<BinaryNumber>, Double[]> calcWeights =
-                  (BinaryNumber r, List<BinaryNumber> p) -> {
+              BiFunction<BinaryNatural, List<BinaryNatural>, Double[]> calcWeights =
+                  (BinaryNatural r, List<BinaryNatural> p) -> {
                     Double weights[] = new Double[p.size()];
   
                     for (int i = 0; i < p.size(); i++) {
@@ -237,13 +237,13 @@ public class MatrixGenerator {
                       break outside;
                     }
                     //failures++;
-                    ArrayList<BinaryNumber> p = null;
+                    ArrayList<BinaryNatural> p = null;
                     if(j>0) {
                       p = possibles.apply(output.get(i, j-1).toString());
                     }
                     
                     
-                    BinaryNumber r = null;
+                    BinaryNatural r = null;
                     
                     if(j>0) {
                       r = CollectionUtils.chooseAtRandomWithWeights(p, 
@@ -290,9 +290,9 @@ public class MatrixGenerator {
                   Matrix<QuartalNumber> tmpMatNot = new Matrix<QuartalNumber>(m,n);
                   for(int i=0;i<m;i++) {
                     for(int j=0;j<n;j++) {
-                      tmpMat.set(i, j, new QuartalNumber(output.get(i, j).toWord(abc)));
+                      tmpMat.set(i, j, new QuartalNumber(output.get(i, j).toNatural(abc)));
                       tmpMatNot.set(i, j, 
-                          new QuartalNumber(output.get(i, j).invert().toWord(abc))
+                          new QuartalNumber(output.get(i, j).invert().toNatural(abc))
                       );
                     }
                   }

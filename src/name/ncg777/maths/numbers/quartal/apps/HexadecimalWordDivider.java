@@ -10,8 +10,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.BinaryNumber;
-import name.ncg777.maths.numbers.Number;
+import name.ncg777.maths.numbers.BinaryNatural;
+import name.ncg777.maths.numbers.Natural;
 import name.ncg777.maths.numbers.quartal.QuartalNumber;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 
@@ -84,9 +84,9 @@ public class HexadecimalWordDivider {
         } else if(d < 16) {
           txtResult.setText("too few bytes");  
         }else {
-          ArrayList<BinaryNumber> o = new ArrayList<BinaryNumber>();
+          ArrayList<BinaryNatural> o = new ArrayList<BinaryNatural>();
           for(int i=0;i<div;i++) {
-            o.add(BinaryNumber.build(new BitSet(), d));}
+            o.add(BinaryNatural.build(new BitSet(), d));}
           
           for(int i=0;i<d;i++) {
             for(int j=0;j<div;j++) {
@@ -97,7 +97,7 @@ public class HexadecimalWordDivider {
           String output = "";
           
           for(int i=0;i<div;i++) {
-            var t = new QuartalNumber(Cipher.Name.Hexadecimal, new Number(Cipher.Name.Hexadecimal, o.get(i).toString()));
+            var t = new QuartalNumber(Cipher.Name.Hexadecimal, new Natural(Cipher.Name.Hexadecimal, o.get(i).toString()));
             output += t.toString(true) + "\n";
           }
           txtResult.setText(output);

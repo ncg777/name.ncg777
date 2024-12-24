@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.JTextField;
@@ -110,7 +110,7 @@ public class ModularArithmeticSequencer {
         ArrayList<QuartalNumbersSequence> rs = new ArrayList<>();
         
         for(int i: distinct) {
-          BinaryNumber r = BinaryNumber.build(new BitSet(), n);
+          BinaryNatural r = BinaryNatural.build(new BitSet(), n);
           
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}

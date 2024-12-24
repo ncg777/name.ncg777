@@ -1,13 +1,13 @@
 package name.ncg777.maths.numbers.relations;
 
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.relations.Relation;
 
 
-public class Different implements Relation<BinaryNumber, BinaryNumber>  {
+public class Different implements Relation<BinaryNatural, BinaryNatural>  {
 
   @Override
-  public boolean apply(BinaryNumber a, BinaryNumber b) {
+  public boolean apply(BinaryNatural a, BinaryNatural b) {
     return !a.equals(b);
   }
 

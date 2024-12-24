@@ -5,15 +5,15 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 
-public class IsInSet implements StandardAndGuavaPredicate<BinaryNumber> {
-  private Set<BinaryNumber> set;
-  public IsInSet(Set<BinaryNumber> set) {
+public class IsInSet implements StandardAndGuavaPredicate<BinaryNatural> {
+  private Set<BinaryNatural> set;
+  public IsInSet(Set<BinaryNatural> set) {
     this.set = set;
   }
   @Override
-  public boolean apply(@Nonnull BinaryNumber r) {
+  public boolean apply(@Nonnull BinaryNatural r) {
     boolean output = set.contains(r);
     return output;
   }

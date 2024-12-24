@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.event.ActionListener;
@@ -62,7 +62,7 @@ public class RhythmAndSequenceMerger {
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
         String[] lines = txtArea.getText().trim().split("\n+");
-        ArrayList<BinaryNumber> arr = new ArrayList<BinaryNumber>();
+        ArrayList<BinaryNatural> arr = new ArrayList<BinaryNatural>();
         ArrayList<Sequence> sequences = new ArrayList<>();
         for(int i=0; i<lines.length;i++) {
           String[] parts = lines[i].split(",");
@@ -72,7 +72,7 @@ public class RhythmAndSequenceMerger {
           arr.add(new QuartalNumbersSequence(abc, parts[0].trim()).toBinaryWord().reverse());
         }
         
-        BinaryNumber result = BinaryNumber.build(Combination.mergeAll(arr));
+        BinaryNatural result = BinaryNatural.build(Combination.mergeAll(arr));
         txtResult.setText(new QuartalNumbersSequence(abc, result).toString());
         
         Sequence s = new Sequence();

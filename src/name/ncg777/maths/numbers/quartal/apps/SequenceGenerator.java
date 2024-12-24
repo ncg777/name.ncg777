@@ -12,7 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.event.ActionListener;
@@ -65,7 +65,7 @@ public class SequenceGenerator {
         String[] lines = txtrAaBb.getText().split("\n+");
         
         Sequence muls = new Sequence();
-        List<BinaryNumber> binaryNumbers = new ArrayList<BinaryNumber>();
+        List<BinaryNatural> binaryNaturals = new ArrayList<BinaryNatural>();
         for(int i=0; i<lines.length; i++) {
           String[] l = lines[i].split(",");
           if(l.length != 2) {
@@ -73,7 +73,7 @@ public class SequenceGenerator {
             return;
           }
           
-          binaryNumbers.add(
+          binaryNaturals.add(
               new QuartalNumbersSequence(
                   (Cipher.Name)comboBox.getSelectedItem(), 
                   l[0].trim()).toWord().toBinaryWord());
@@ -81,26 +81,26 @@ public class SequenceGenerator {
           muls.add(Integer.valueOf(l[1].trim()));
         }
         
-        if(binaryNumbers.size() != muls.size()) {
+        if(binaryNaturals.size() != muls.size()) {
           textField.setText("ERROR");
           return;
         }
         
-        for(int i=0;i<binaryNumbers.size();i++) {
-          if(binaryNumbers.get(i).size() != binaryNumbers.get(0).size()) {
+        for(int i=0;i<binaryNaturals.size();i++) {
+          if(binaryNaturals.get(i).size() != binaryNaturals.get(0).size()) {
             textField.setText("ERROR");
             return;
           }
         }
         
-        int n = binaryNumbers.size();
-        int size = binaryNumbers.get(0).getN();
+        int n = binaryNaturals.size();
+        int size = binaryNaturals.get(0).getN();
         Sequence output = new Sequence();
         for(int i=0;i<size;i++) {
           int t = 0;
           
           for(int j=0;j<n;j++) {
-            if(binaryNumbers.get(j).get(i)) t += muls.get(j);
+            if(binaryNaturals.get(j).get(i)) t += muls.get(j);
           }
           
           output.add(t);

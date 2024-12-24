@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
-public class HasNoGaps implements StandardAndGuavaPredicate<BinaryNumber> {
+public class HasNoGaps implements StandardAndGuavaPredicate<BinaryNatural> {
 
   public HasNoGaps() {
 
@@ -16,7 +16,7 @@ public class HasNoGaps implements StandardAndGuavaPredicate<BinaryNumber> {
 
 
   @Override
-  public boolean apply(@Nonnull BinaryNumber input) {
+  public boolean apply(@Nonnull BinaryNatural input) {
     Sequence s = input.getIntervalVector();
     LinkedList<Integer> l = new LinkedList<Integer>();
 

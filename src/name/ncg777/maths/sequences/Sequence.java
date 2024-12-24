@@ -26,7 +26,7 @@ import name.ncg777.maths.FiniteHomoRelation;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.enumerations.PermutationEnumeration;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 /**
@@ -215,7 +215,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     return s;
   }
 
-  public Sequence hold(BinaryNumber r) {
+  public Sequence hold(BinaryNatural r) {
     int n = r.getN();
     int k = r.getK();
     
@@ -230,7 +230,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     return o;
   }
   
-  public Sequence extract(BinaryNumber r) {
+  public Sequence extract(BinaryNatural r) {
     Sequence o = new Sequence();
     
     for(int i=0; i<r.getN();i++) {
@@ -239,7 +239,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     return o;
   }
   
-  public Sequence absoluteTimeConvolve(BinaryNumber r, Sequence impulse) {
+  public Sequence absoluteTimeConvolve(BinaryNatural r, Sequence impulse) {
     return this.hold(r).convolveWith(impulse).extract(r);
   }
   
@@ -907,9 +907,9 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     return CollectionUtils.calcIntervalVector(this);
   }
 
-  public TreeMap<Integer, BinaryNumber> getBinaryWords() {
+  public TreeMap<Integer, BinaryNatural> getBinaryWords() {
 
-    TreeMap<Integer, BinaryNumber> output = new TreeMap<>();
+    TreeMap<Integer, BinaryNatural> output = new TreeMap<>();
     TreeSet<Integer> t = new TreeSet<Integer>();
 
     t.addAll(this);
@@ -923,7 +923,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
         b[j] = this.get(j).equals(v);
       }
       
-      output.put(v, new BinaryNumber(b));
+      output.put(v, new BinaryNatural(b));
     }
     return output;
   }
@@ -1199,7 +1199,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    * @param addS
    * @return
    */
-  public static Sequence genRndOnRhythm(BinaryNumber R, int amp, int maxamp, boolean addF, boolean addS) {
+  public static Sequence genRndOnRhythm(BinaryNatural R, int amp, int maxamp, boolean addF, boolean addS) {
     Sequence o = new Sequence();
     int n = R.getN();
     Sequence rhythmCompositionSequence = R.getComposition().asSequence();

@@ -13,7 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.ncg777.maths.Composition;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.JButton;
@@ -83,7 +83,7 @@ public class LatticePath {
           c.set(m-1);
           if((total % 16) == 0) {
             r16 = true;
-            o += new QuartalNumbersSequence(Cipher.Name.Hexadecimal, (new BinaryNumber(c.asCombination(), total))).toString() + " ";
+            o += new QuartalNumbersSequence(Cipher.Name.Hexadecimal, (new BinaryNatural(c.asCombination(), total))).toString() + " ";
           }
           o+= Integer.valueOf(i+2).toString() + " : ";
           for(Integer j : c.asSequence()){o+=j.toString() + " ";}

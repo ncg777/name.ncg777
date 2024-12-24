@@ -4,14 +4,14 @@ import javax.annotation.Nonnull;
 
 import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
-public class RelativelyFlat implements StandardAndGuavaPredicate<BinaryNumber> {
+public class RelativelyFlat implements StandardAndGuavaPredicate<BinaryNatural> {
   HasNoGaps h = new HasNoGaps();
 
   @Override
-  public boolean apply(@Nonnull BinaryNumber input) {
+  public boolean apply(@Nonnull BinaryNatural input) {
     if (!h.apply(input)) {
       return false;
     }

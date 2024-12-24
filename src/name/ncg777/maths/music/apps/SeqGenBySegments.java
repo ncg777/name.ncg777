@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.JTextField;
@@ -82,7 +82,7 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          BinaryNumber r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R).toBinaryWord().reverse();
+          BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R).toBinaryWord().reverse();
           
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();

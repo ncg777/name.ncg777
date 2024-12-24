@@ -24,7 +24,7 @@ import javax.swing.border.LineBorder;
 
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.Color;
@@ -87,15 +87,15 @@ public class Partitioner {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
         
         QuartalNumbersSequence r = new QuartalNumbersSequence(abc, txtR.getText().trim());
-        BinaryNumber r1 = r.toBinaryWord();
+        BinaryNatural r1 = r.toBinaryWord();
         Sequence p0 = Sequence.parse(txtPartition.getText());
         Sequence p = p0.asOrdinalsUnipolar().addToEach(-1);
         int k = p.size();
         int pdistinct = p.distinct().size();
         int n= r1.getN();
-        ArrayList<BinaryNumber> output = new ArrayList<BinaryNumber>();
+        ArrayList<BinaryNatural> output = new ArrayList<BinaryNatural>();
         
-        for(int i=0;i<pdistinct;i++) output.add(BinaryNumber.build(new BitSet(), n));
+        for(int i=0;i<pdistinct;i++) output.add(BinaryNatural.build(new BitSet(), n));
         for(int i=0;i<n;i++) {
           output.get(p.get(i%k)).set(i, r1.get(-1+n-i));
         }

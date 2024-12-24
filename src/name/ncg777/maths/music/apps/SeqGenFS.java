@@ -11,7 +11,7 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.predicates.LowEntropy;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
@@ -103,7 +103,7 @@ public class SeqGenFS {
               {
                 String str_R = txtRhythm.getText().trim();
                 
-                BinaryNumber R = (new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R)).toBinaryWord().reverse();
+                BinaryNatural R = (new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R)).toBinaryWord().reverse();
                 
                 
                 Sequence s;

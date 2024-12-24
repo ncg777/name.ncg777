@@ -37,9 +37,9 @@ import name.ncg777.maths.sequences.Sequence;
  */
 public class Matrix<T extends Comparable<? super T>> implements Comparable<Matrix<? super T>> {
   protected TreeMap<HomoPair<Integer>, T> mat;
-  /** Number of rows */
+  /** Natural of rows */
   protected int m;
-  /** Number of columns */
+  /** Natural of columns */
   protected int n;
   private T defaultValue = null;
 
@@ -111,8 +111,8 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   /**
    * Construct a matrix filled with nulls.
    * 
-   * @param m Number of rows
-   * @param n Number of columns
+   * @param m Natural of rows
+   * @param n Natural of columns
    */
   public Matrix(int m, int n) {
     this();

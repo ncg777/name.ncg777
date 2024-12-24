@@ -121,7 +121,7 @@ public class CollectionUtils {
    * Enumerates all range^n tuples of length n with values in [0 ... range-1] in the rows of a
    * matrix.
    * 
-   * @param n Number of elements
+   * @param n Natural of elements
    * @param range elements are in [0 ... range-1] if range > 0 or [-(range-1) ... 0]
    * @return Matrix<Integer>
    */
@@ -428,7 +428,7 @@ public class CollectionUtils {
   }
 
   /**
-   * Number of distict values in s
+   * Natural of distict values in s
    * 
    * @param s
    * @return

@@ -1,15 +1,15 @@
 package name.ncg777.maths.numbers.relations;
 
 
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.relations.Relation;
 
 
 public class SamePhase implements 
-Relation<BinaryNumber, BinaryNumber>   {
+Relation<BinaryNatural, BinaryNatural>   {
  
   @Override
-  public boolean apply(BinaryNumber a, BinaryNumber b) {
+  public boolean apply(BinaryNatural a, BinaryNatural b) {
     int na = a.nextSetBit(0);
     int nb = b.nextSetBit(0);
     

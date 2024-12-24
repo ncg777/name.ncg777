@@ -8,9 +8,9 @@ import javax.annotation.Nonnull;
 import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.Numbers;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 
-public class Ordinal implements StandardAndGuavaPredicate<BinaryNumber>  {
+public class Ordinal implements StandardAndGuavaPredicate<BinaryNatural>  {
   private int n = -1;
   TreeSet<Combination> words = new TreeSet<Combination>();
   public Ordinal(int n) {
@@ -37,7 +37,7 @@ public class Ordinal implements StandardAndGuavaPredicate<BinaryNumber>  {
   }
   
   @Override
-  public boolean apply(@Nonnull BinaryNumber input) {
+  public boolean apply(@Nonnull BinaryNatural input) {
     if(input.getN() % this.n != 0) throw new RuntimeException("Ordinal:: rhythm is incompatible with n");
     
     int k = input.getN()/this.n;

@@ -41,7 +41,7 @@ public class Sequencer {
 
   private void initialize() {
     frmWordSequencer = new JFrame();
-    frmWordSequencer.setTitle("BinaryNumber Sequencer");
+    frmWordSequencer.setTitle("BinaryNatural Sequencer");
     frmWordSequencer.setBounds(100, 100, 450, 170);
     frmWordSequencer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     SpringLayout springLayout = new SpringLayout();

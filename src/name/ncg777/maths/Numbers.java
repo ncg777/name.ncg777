@@ -120,7 +120,7 @@ public class Numbers {
   }
   
   public static int correctMod(int a, int b) {
-    if(b < 0) throw new RuntimeException("Number.CorrectMod: invalid parameters.");
+    if(b < 0) throw new RuntimeException("Natural.CorrectMod: invalid parameters.");
     if(a >= 0) return a%b;
     
     int a0 = a;

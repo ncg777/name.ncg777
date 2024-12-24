@@ -19,7 +19,7 @@ import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.predicates.Even;
 import name.ncg777.maths.numbers.quartal.QuartalNumber;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
@@ -59,7 +59,7 @@ public class x2mid {
     frmXmid.setBounds(100, 100, 434, 198);
     frmXmid.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblRhythm = new JLabel("BinaryNumber");
+    JLabel lblRhythm = new JLabel("BinaryNatural");
     lblRhythm.setHorizontalAlignment(SwingConstants.RIGHT);
     lblRhythm.setBackground(Color.BLACK);
     lblRhythm.setForeground(SystemColor.textText);
@@ -88,7 +88,7 @@ public class x2mid {
           r = QuartalNumbersSequence.expand(r, 2, false);  
         } else {
           if(!(new Even()).apply(r.toWord().toBinaryWord())) {
-            txtrOutput.setText("BinaryNumber is not even");
+            txtrOutput.setText("BinaryNatural is not even");
           }
         }
         
@@ -112,7 +112,7 @@ public class x2mid {
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(new QuartalNumber(Cipher.Name.Hexadecimal, new BinaryNumber(t, 16).toWord(Cipher.Name.Hexadecimal)));
+          o.add(new QuartalNumber(Cipher.Name.Hexadecimal, new BinaryNatural(t, 16).toNatural(Cipher.Name.Hexadecimal)));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }

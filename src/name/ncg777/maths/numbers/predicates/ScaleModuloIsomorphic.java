@@ -3,9 +3,9 @@ package name.ncg777.maths.numbers.predicates;
 import javax.annotation.Nonnull;
 
 import name.ncg777.computing.Functional.StandardAndGuavaPredicate;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 
-public class ScaleModuloIsomorphic implements StandardAndGuavaPredicate<BinaryNumber>  {
+public class ScaleModuloIsomorphic implements StandardAndGuavaPredicate<BinaryNatural>  {
 
   private int n;
   private int k;
@@ -14,7 +14,7 @@ public class ScaleModuloIsomorphic implements StandardAndGuavaPredicate<BinaryNu
     this.k = k;
   }
   @Override
-  public boolean apply(@Nonnull BinaryNumber input) {
+  public boolean apply(@Nonnull BinaryNatural input) {
     return input.equals(input.scaleModulo(k, n));
   }
 

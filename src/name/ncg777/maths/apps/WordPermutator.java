@@ -51,7 +51,7 @@ public class WordPermutator {
     frmWordPermutator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmWordPermutator.getContentPane().setLayout(null);
     
-    JLabel lblNewLabel = new JLabel("Number:");
+    JLabel lblNewLabel = new JLabel("Natural:");
     lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
     lblNewLabel.setBounds(10, 11, 46, 14);
     frmWordPermutator.getContentPane().add(lblNewLabel);

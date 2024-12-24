@@ -7,9 +7,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.Number;
+import name.ncg777.maths.numbers.Natural;
 import name.ncg777.maths.sequences.Sequence;
 
 public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements Comparable<QuartalNumbersSequence> {
@@ -32,19 +32,19 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     }
   }
   
-  public QuartalNumbersSequence(Cipher.Name alphabetName, Number number) {
-    this(alphabetName, number.toString());
+  public QuartalNumbersSequence(Cipher.Name alphabetName, Natural natural) {
+    this(alphabetName, natural.toString());
   }
   
-  public QuartalNumbersSequence(Cipher.Name alphabetName, BinaryNumber binaryNumber) {
-    this(alphabetName, binaryNumber.toWord(alphabetName));
+  public QuartalNumbersSequence(Cipher.Name alphabetName, BinaryNatural binaryNatural) {
+    this(alphabetName, binaryNatural.toNatural(alphabetName));
   }
   
-  public Number toWord() {
-    return new Number(alphabetName,toString().replaceAll("\\s", ""));
+  public Natural toWord() {
+    return new Natural(alphabetName,toString().replaceAll("\\s", ""));
   }
   
-  public BinaryNumber toBinaryWord() {
+  public BinaryNatural toBinaryWord() {
     return toWord().toBinaryWord();
   }
   
@@ -56,8 +56,8 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   }
   
   public static QuartalNumbersSequence expand(QuartalNumbersSequence a, int x, boolean fill) {
-    BinaryNumber b = a.toBinaryWord();
-    BinaryNumber o = new BinaryNumber(new BitSet(), x * b.getN());
+    BinaryNatural b = a.toBinaryWord();
+    BinaryNatural o = new BinaryNatural(new BitSet(), x * b.getN());
     
     for (int i = 0; i < b.getN(); i++) {
       if(b.get(-1 + b.getN() - i)) {
@@ -76,7 +76,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   }
   
   public static QuartalNumbersSequence rotate(QuartalNumbersSequence r, int t) {
-    return new QuartalNumbersSequence(r.alphabetName, BinaryNumber.build(r.toBinaryWord().rotate(t)).reverse());
+    return new QuartalNumbersSequence(r.alphabetName, BinaryNatural.build(r.toBinaryWord().rotate(t)).reverse());
   }
 
   public static QuartalNumbersSequence not(QuartalNumbersSequence a) {
@@ -104,9 +104,9 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     for (int i = 0; i < n; i++) {
       output.add(
           new QuartalNumber(
-              BinaryNumber.build(
+              BinaryNatural.build(
                   a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord())
-              ).reverse().toWord(a.alphabetName)
+              ).reverse().toNatural(a.alphabetName)
           )
       );
     }
@@ -134,11 +134,11 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     
     for (int i = 0; i < n; i++) {
       output.add(new QuartalNumber(
-          BinaryNumber.build(
+          BinaryNatural.build(
               Combination.merge(
                   a.get(i).toBinaryWord(), 
                   b.get(i).toBinaryWord())).reverse()
-          .toWord(a.alphabetName)));
+          .toNatural(a.alphabetName)));
     }
     return output;
   }
@@ -164,8 +164,8 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     for (int i = 0; i < n; i++) {
       output.add(
           new QuartalNumber(
-              BinaryNumber.build(
-                  (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord()))).reverse().toWord(a.alphabetName)
+              BinaryNatural.build(
+                  (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord()))).reverse().toNatural(a.alphabetName)
           )
       );
     }
@@ -193,9 +193,9 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     for (int i = 0; i < n; i++) {
       output.add(
           new QuartalNumber(
-              BinaryNumber.build(
+              BinaryNatural.build(
                   (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord()))
-              ).reverse().toWord(a.alphabetName)
+              ).reverse().toNatural(a.alphabetName)
           )
       );
     }
@@ -209,10 +209,10 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     QuartalNumbersSequence carrier = a;
     QuartalNumbersSequence impulse = b;
 
-    BinaryNumber b_carrier = carrier.toBinaryWord().reverse();
-    BinaryNumber b_impulse = impulse.toBinaryWord().reverse();
+    BinaryNatural b_carrier = carrier.toBinaryWord().reverse();
+    BinaryNatural b_impulse = impulse.toBinaryWord().reverse();
 
-    BinaryNumber o = new BinaryNumber(new BitSet(), b_carrier.getN());
+    BinaryNatural o = new BinaryNatural(new BitSet(), b_carrier.getN());
 
     for (int i = 0; i < b_carrier.getN(); i++) {
       for (int j = 0; j < b_impulse.getN(); j++) {
@@ -250,7 +250,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   public Sequence clusterPartition(Cipher.Name alphabetName) {
     var clusters =
         QuartalNumbersSequence.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeIntoHomogeneousRegions());
-    var rs = new ArrayList<BinaryNumber>();
+    var rs = new ArrayList<BinaryNatural>();
     for (QuartalNumbersSequence r : clusters)
       rs.add(r.toBinaryWord());
 
@@ -309,14 +309,14 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     int k = 0;
     
     while(k<r.getN()) {
-      var t = new BinaryNumber(new BitSet(),sz_t);
+      var t = new BinaryNatural(new BitSet(),sz_t);
       for(int i=0;i<sz_t;i++) {
         if(r.get(k)) {
           t.set(k%sz_t, true);
         }
         k++;
       }
-      output.add(new QuartalNumber(t.toWord(alphabetName)));
+      output.add(new QuartalNumber(t.toNatural(alphabetName)));
     }
     return output;
   }

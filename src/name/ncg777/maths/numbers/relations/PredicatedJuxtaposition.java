@@ -4,21 +4,21 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.BinaryNumber;
-import name.ncg777.maths.numbers.Number;
+import name.ncg777.maths.numbers.BinaryNatural;
+import name.ncg777.maths.numbers.Natural;
 
-public class PredicatedJuxtaposition implements BiPredicate<BinaryNumber, BinaryNumber>   {
-  private Predicate<BinaryNumber> predicate;
+public class PredicatedJuxtaposition implements BiPredicate<BinaryNatural, BinaryNatural>   {
+  private Predicate<BinaryNatural> predicate;
   
-  public PredicatedJuxtaposition(Predicate<BinaryNumber> predicate){
+  public PredicatedJuxtaposition(Predicate<BinaryNatural> predicate){
     this.predicate = predicate;
   }
   
   @Override
-  public boolean test(BinaryNumber a, BinaryNumber b) {
+  public boolean test(BinaryNatural a, BinaryNatural b) {
     return predicate.test(
-        Number.agglutinate(
-            a.toWord(Cipher.Name.Binary), 
-            b.toWord(Cipher.Name.Binary)).toBinaryWord());
+        Natural.agglutinate(
+            a.toNatural(Cipher.Name.Binary), 
+            b.toNatural(Cipher.Name.Binary)).toBinaryWord());
   }
 }

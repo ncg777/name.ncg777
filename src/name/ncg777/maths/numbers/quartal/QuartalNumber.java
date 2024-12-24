@@ -5,10 +5,10 @@ import java.util.TreeSet;
 
 import name.ncg777.maths.enumerations.QuartalWordEnumeration;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.Number;
+import name.ncg777.maths.numbers.Natural;
 import name.ncg777.maths.sequences.Sequence;
 
-public class QuartalNumber extends Number {
+public class QuartalNumber extends Natural {
   private static final long serialVersionUID = 1L;
 
   public QuartalNumber(Cipher.Name alphabetName, Character[] array) {
@@ -29,9 +29,9 @@ public class QuartalNumber extends Number {
     if(sequence.size()!= 4) throw new IllegalArgumentException();
   }
  
-  public QuartalNumber(Number number) {
-    super(number);
-    if(number.size()!= 4) throw new IllegalArgumentException();
+  public QuartalNumber(Natural natural) {
+    super(natural);
+    if(natural.size()!= 4) throw new IllegalArgumentException();
   }
     
   public static TreeSet<QuartalNumber> generate(Cipher.Name alphabetName) {

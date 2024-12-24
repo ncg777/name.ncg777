@@ -8,7 +8,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.Font;
@@ -140,7 +140,7 @@ public class Pulsations {
             }
           }
           
-          BinaryNumber rh = BinaryNumber.build(new BitSet(scompo_sum), scompo_sum);
+          BinaryNatural rh = BinaryNatural.build(new BitSet(scompo_sum), scompo_sum);
           int acc = 0;
           
           for(int i=0; i<scompo.size(); i++) {

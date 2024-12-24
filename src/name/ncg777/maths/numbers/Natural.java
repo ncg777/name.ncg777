@@ -8,7 +8,7 @@ import java.util.List;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.sequences.Sequence;
 
-public class Number extends ArrayList<Character> implements Serializable, Comparable<Number> {
+public class Natural extends ArrayList<Character> implements Serializable, Comparable<Natural> {
 
   private static final long serialVersionUID = 1L;
 
@@ -18,35 +18,35 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     return Cipher.getAlphabet(alphabetName);
   }
 
-  public Number(Cipher.Name alphabetName) {
+  public Natural(Cipher.Name alphabetName) {
     super();
     this.alphabetName = alphabetName;
   }
 
-  public Number(Number number) {
-    this(number.alphabetName, number);
+  public Natural(Natural natural) {
+    this(natural.alphabetName, natural);
   }
 
-  public Number(Cipher.Name alphabetName, Character[] array) {
+  public Natural(Cipher.Name alphabetName, Character[] array) {
     this(alphabetName);
     for (var c : array)
       this.add(c);
   }
 
-  public Number(Cipher.Name alphabetName, List<Character> list) {
+  public Natural(Cipher.Name alphabetName, List<Character> list) {
     this(alphabetName);
     for (var c : list)
       this.add(c);
   }
   
-  public Number(Cipher.Name alphabetName, String string) {
+  public Natural(Cipher.Name alphabetName, String string) {
     this(alphabetName);
 
     for (int i=string.length()-1; i >=0 ; i--)
       this.add(string.charAt(i));
    }
 
-  public Number(Cipher.Name alphabetName, BigInteger natural, int length) {
+  public Natural(Cipher.Name alphabetName, BigInteger natural, int length) {
     super();
     this.alphabetName = alphabetName;
     var alphabet = Cipher.getAlphabet(alphabetName);
@@ -60,7 +60,7 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     }
   }
 
-  public Number(Cipher.Name alphabetName, Combination combination) {
+  public Natural(Cipher.Name alphabetName, Combination combination) {
     this.alphabetName = alphabetName;
     var alphabet = Cipher.getAlphabet(alphabetName);
     
@@ -85,9 +85,9 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     this.addAll(tmp.reversed());
   }
 
-  public BinaryNumber toBinaryWord() {
-    return new BinaryNumber(
-        toNatural(),
+  public BinaryNatural toBinaryWord() {
+    return new BinaryNatural(
+        toBigInteger(),
         BigInteger
           .valueOf(Cipher.getAlphabet(alphabetName).size())
             .pow(this.size())
@@ -96,7 +96,7 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     );
   }
 
-  public BigInteger toNatural() {
+  public BigInteger toBigInteger() {
     var alphabet = Cipher.getAlphabet(alphabetName);
 
     int k = 0;
@@ -132,11 +132,11 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     return toBinaryWord().toString();
   }
 
-  public static Number fromBitstring(Cipher.Name alphabetName, String string) {
-    return BinaryNumber.build(string).toWord(alphabetName);
+  public static Natural fromBitstring(Cipher.Name alphabetName, String string) {
+    return BinaryNatural.build(string).toNatural(alphabetName);
   }
 
-  public Number(Cipher.Name alphabetName, Sequence sequence) {
+  public Natural(Cipher.Name alphabetName, Sequence sequence) {
     super();
     this.alphabetName = alphabetName;
     var alphabet = Cipher.getAlphabet(alphabetName);
@@ -155,15 +155,15 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     return o;
   }
 
-  public static Number agglutinate(Number first, Number second) {
+  public static Natural agglutinate(Natural first, Natural second) {
     if (!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
-    var o = new Number(first.alphabetName, second);
+    var o = new Natural(first.alphabetName, second);
     o.addAll(first);
     return o;
   }
 
-  public static Number rotate(Number r, int t) {
-    var o = new Number(r);
+  public static Natural rotate(Natural r, int t) {
+    var o = new Natural(r);
     if (t < 0) {
       do {
         o.add(o.remove(0));
@@ -179,8 +179,8 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
 
   @Override
   public boolean equals(Object _other) {
-    if (!(_other instanceof Number)) return false;
-    var other = (Number) _other;
+    if (!(_other instanceof Natural)) return false;
+    var other = (Natural) _other;
     if (this.size() != other.size()) return false;
     for (int i = 0; i < this.size(); i++)
       if (this.get(i) != other.get(i)) return false;
@@ -201,7 +201,7 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
     return sb.reverse().toString();
   }
 
-  public static boolean equivalentUnderRotation(Number a, Number b) {
+  public static boolean equivalentUnderRotation(Natural a, Natural b) {
     if (a.size() != b.size()) return false;
     for (int i = 0; i < a.size(); i++) {
       if (a.equals(rotate(b, i))) {
@@ -212,7 +212,7 @@ public class Number extends ArrayList<Character> implements Serializable, Compar
   }
 
   @Override
-  public int compareTo(Number o) {
+  public int compareTo(Natural o) {
     return this.toSequence().compareTo(o.toSequence());
   }
 }

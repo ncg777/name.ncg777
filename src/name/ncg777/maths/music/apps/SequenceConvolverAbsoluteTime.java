@@ -11,7 +11,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.SwingConstants;
@@ -96,7 +96,7 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        BinaryNumber r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
+        BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
         
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString());
       }

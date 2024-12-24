@@ -11,7 +11,7 @@ import javax.swing.SwingConstants;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
-import name.ncg777.maths.numbers.BinaryNumber;
+import name.ncg777.maths.numbers.BinaryNatural;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -128,7 +128,7 @@ public class Diluter {
     var abc = (Cipher.Name)comboBox.getSelectedItem();
     var alphabet = Cipher.getAlphabet(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
-    BinaryNumber r = new QuartalNumbersSequence(
+    BinaryNatural r = new QuartalNumbersSequence(
         abc, 
         str).toBinaryWord();
  
@@ -155,7 +155,7 @@ public class Diluter {
     
     int newLength = n * (to/from);
     
-    BinaryNumber o = new BinaryNumber(new BitSet(), newLength);
+    BinaryNatural o = new BinaryNatural(new BitSet(), newLength);
     
     for(int i=0; i<(n/from);i++) {
       for(int j=0;j<from;j++) {

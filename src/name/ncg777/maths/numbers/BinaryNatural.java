@@ -16,27 +16,27 @@ import name.ncg777.maths.Composition;
 import name.ncg777.maths.numbers.Cipher.Name;
 import name.ncg777.maths.sequences.Sequence;
 
-public class BinaryNumber extends Combination implements Serializable {
+public class BinaryNatural extends Combination implements Serializable {
   private static final long serialVersionUID = 1L;
   
-  public BinaryNumber(BinaryNumber binaryNumber) {
-    super(binaryNumber);
+  public BinaryNatural(BinaryNatural binaryNatural) {
+    super(binaryNatural);
   }
   
-  public BinaryNumber(Set<Integer> s, int n) {
+  public BinaryNatural(Set<Integer> s, int n) {
     super(n,s);
   }
   
-  public BinaryNumber(BitSet b, int n) {
+  public BinaryNatural(BitSet b, int n) {
     super(b, n);
   }
   
-  public BinaryNumber(Boolean[] b) {
+  public BinaryNatural(Boolean[] b) {
     super(b.length);
     for(int i=0;i<b.length;i++) this.set(i,b[i]);
   }
   
-  public BinaryNumber(BigInteger natural, int length) {
+  public BinaryNatural(BigInteger natural, int length) {
     super(length);
     if(BigInteger.TWO.pow(length).subtract(BigInteger.ONE).bitLength() < natural.bitLength())
       throw new IllegalArgumentException("Not enough bits.");
@@ -49,16 +49,16 @@ public class BinaryNumber extends Combination implements Serializable {
     }
   }
   
-  public Number toWord(Cipher.Name alphabetName) {
-    return new Number(alphabetName, this);
+  public Natural toNatural(Cipher.Name alphabetName) {
+    return new Natural(alphabetName, this);
   }
   
   public List<? extends Combination> decomposeIntoHomogeneousRegions() {
-    return super.reverse().decomposeIntoHomogeneousRegions().stream().map((c) -> BinaryNumber.build(c)).toList();
+    return super.reverse().decomposeIntoHomogeneousRegions().stream().map((c) -> BinaryNatural.build(c)).toList();
   }
   
   
-  public BinaryNumber scaleModulo(int k, int n){
+  public BinaryNatural scaleModulo(int k, int n){
     if(this.getN() % n != 0){
       throw new RuntimeException("n does not divide the length of the rhythm.");
     }
@@ -71,33 +71,33 @@ public class BinaryNumber extends Combination implements Serializable {
     return build(b, this.getN());
   }
   
-  public static BinaryNumber build(String input) {
+  public static BinaryNatural build(String input) {
     var sb = new StringBuilder(input);
     return build(Combination.fromBinaryString(sb.reverse().toString()));
   }
   
-  public static BinaryNumber build(Combination c) {
-    return new BinaryNumber(c.reverse(), c.getN());
+  public static BinaryNatural build(Combination c) {
+    return new BinaryNatural(c.reverse(), c.getN());
   }
    
-  public static BinaryNumber build(BitSet p_bs, int size) {
-    return new BinaryNumber(p_bs, size);
+  public static BinaryNatural build(BitSet p_bs, int size) {
+    return new BinaryNatural(p_bs, size);
   }
   
-  public static BinaryNumber build(TreeSet<Integer> p_arr, int p_length) {
-    return new BinaryNumber(p_arr, p_length);
+  public static BinaryNatural build(TreeSet<Integer> p_arr, int p_length) {
+    return new BinaryNatural(p_arr, p_length);
   }
 
-  public static BinaryNumber rotate(BinaryNumber r, int t) {
-    return new BinaryNumber(r.rotate(t), r.m_n);
+  public static BinaryNatural rotate(BinaryNatural r, int t) {
+    return new BinaryNatural(r.rotate(t), r.m_n);
   }
   
   public Sequence getContour() {
-    return toWord(Name.Binary).getContour();
+    return toNatural(Name.Binary).getContour();
   }
   
   public Sequence getShadowContour() {
-    return toWord(Name.Binary).getShadowContour();
+    return toNatural(Name.Binary).getShadowContour();
   }
   
   @Override
@@ -108,7 +108,7 @@ public class BinaryNumber extends Combination implements Serializable {
     if (getClass() != obj.getClass()) {
       return false;
     }
-    final BinaryNumber other = (BinaryNumber) obj;
+    final BinaryNatural other = (BinaryNatural) obj;
 
     return (super.equals(other)) && (this.m_n == other.m_n);
   }
@@ -119,8 +119,8 @@ public class BinaryNumber extends Combination implements Serializable {
   }
   
   @Override
-  public BinaryNumber reverse() {
-    return new BinaryNumber(super.reverse(), this.getN());
+  public BinaryNatural reverse() {
+    return new BinaryNatural(super.reverse(), this.getN());
   }
   
   public Sequence randomSequence(){
@@ -162,8 +162,8 @@ public class BinaryNumber extends Combination implements Serializable {
     return o;
   }
   
-  public BinaryNumber invert() {
-    var o = new BinaryNumber(this);
+  public BinaryNatural invert() {
+    var o = new BinaryNatural(this);
     for(int i=0;i<o.size();i++) o.set(i,!o.get(i));;
     return o;
   }
@@ -176,8 +176,8 @@ public class BinaryNumber extends Combination implements Serializable {
     return sb.reverse().toString();
   }
 
-  private static TreeMap<BinaryNumber, Sequence> specMemo = new TreeMap<>();
-  public static Sequence calcSpectrum(BinaryNumber r) {
+  private static TreeMap<BinaryNatural, Sequence> specMemo = new TreeMap<>();
+  public static Sequence calcSpectrum(BinaryNatural r) {
     if(specMemo.containsKey(r)) return specMemo.get(r);
     
     Integer[] x = new Integer[r.getN()];
