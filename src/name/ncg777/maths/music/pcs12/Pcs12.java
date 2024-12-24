@@ -3,7 +3,7 @@ package name.ncg777.maths.music.pcs12;
 import static name.ncg777.maths.sequences.Sequence.ReverseComparator;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.StringReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -317,8 +317,10 @@ public class Pcs12 extends ImmutableCombination implements Serializable {
     ForteNumbersDict = new TreeMap<Pcs12, String>();
     ForteNumbersRotationDict = new TreeMap<Pcs12,Integer>();
     ForteNumbersToPCS12Dict = new TreeMap<String, Pcs12>();
-    InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers.csv");
-    FiniteRelation<String,Sequence> r = FiniteRelation.readFromCSV(Parsers.stringParser, Parsers.sequenceParser, is);
+    FiniteRelation<String,Sequence> r = FiniteRelation.readFromCSV(
+        Parsers.stringParser, 
+        Parsers.sequenceParser, 
+        new StringReader(ForteCSV.FORTE_NUMBERS));
     
     for(var p : r) {
       Pcs12 ch = Pcs12.identify(p.getSecond());
@@ -333,14 +335,16 @@ public class Pcs12 extends ImmutableCombination implements Serializable {
         
       }
     }
-    is.close();
-    InputStream is2 = Thread.currentThread().getContextClassLoader().getResourceAsStream("resources/ForteNumbers_CommonNames.csv");
-    FiniteRelation<String,String> r2 = FiniteRelation.readFromCSV(Parsers.stringParser, Parsers.stringParser, is2);
+    
+    FiniteRelation<String,String> r2 = FiniteRelation.readFromCSV(
+        Parsers.stringParser, 
+        Parsers.stringParser, 
+        new StringReader(ForteCSV.COMMON_NAMES));
+    
     ForteNumbersCommonNames = new TreeMap<String, String>();
     for(var p : r2) {
       ForteNumbersCommonNames.put(p.getFirst(), p.getSecond());
     }
-    is2.close();
   }
   
   private static void GenerateMaps() throws IOException, CsvException {
