@@ -1,5 +1,7 @@
 package name.ncg777.computing.structures;
 
+import java.awt.Color;
+
 public class Pixel32Bits implements Comparable<Pixel32Bits> {
   private int A=0;
   private int R=0;
@@ -19,6 +21,13 @@ public class Pixel32Bits implements Comparable<Pixel32Bits> {
     this.R = (color >> 16) & 0xFF;
     this.G = (color >> 8) & 0xFF;
     this.B = color & 0xFF;
+  }
+  
+  public Pixel32Bits(Color color) {
+    this.A = color.getAlpha();
+    this.R = color.getRed();
+    this.G = color.getGreen();
+    this.B = color.getBlue();
   }
   
   public int toInteger() {
