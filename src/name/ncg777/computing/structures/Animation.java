@@ -1,6 +1,5 @@
 package name.ncg777.computing.structures;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 
 import org.jcodec.api.SequenceEncoder;
@@ -34,10 +33,10 @@ public class Animation {
     while(e.hasMoreElements()) {
       var frame = e.nextElement();
       Picture picture = Picture.create(width, height, ColorSpace.RGB);
-      
+      var b = frame.getData().getDataBuffer();
       for(int i=0;i<height;i++) { 
         for(int j=0;j<width;j++) { 
-          var p = new Pixel24Bits(frame.getData().getDataBuffer().getElem(((i*width)+j)));
+          var p = new Pixel24Bits(b.getElem(((i*width)+j)));
           
           picture.getPlaneData(0)[3*((i*width)+j)] = (byte)(p.getR()-128);
           picture.getPlaneData(0)[3*((i*width)+j)+1] = (byte)(p.getG()-128);
