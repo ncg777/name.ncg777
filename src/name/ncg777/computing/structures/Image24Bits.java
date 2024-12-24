@@ -6,32 +6,27 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import name.ncg777.maths.Matrix;
 import name.ncg777.maths.MatrixOfIntegers;
 
-public class Image24Bits extends Matrix<Pixel24Bits> {
-
-  public MatrixOfIntegers toMatrixOfIntegers() {
-    var o = new MatrixOfIntegers(this.m, this.n, 0);
-    for (int i = 0; i < m; i++) {
-      for (int j = 0; j < n; j++) {
-          o.set(j, i,this.get(i,j).toInteger());
-      }
-    }
-    return o;
-    
+public class Image24Bits extends MatrixOfIntegers {
+  public Image24Bits(int width, int height) {
+    super(height, width, 0);
   }
-  
+    
   public BufferedImage toBufferedImage() {
     BufferedImage image = new BufferedImage(n, m, BufferedImage.TYPE_INT_RGB);
 
     for (int y = 0; y < m; y++) {
         for (int x = 0; x < n; x++) {
-            image.setRGB(x, y,this.get(y,x).toInteger());
+            image.setRGB(x, y,this.get(y,x));
         }
     }
 
     return image;
+  }
+  
+  public Pixel24Bits getPixel(int i, int j) {
+    return new Pixel24Bits(this.get(i, j));
   }
   
   public void writeToPNG(String path) throws IOException {
