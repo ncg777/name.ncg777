@@ -10,9 +10,12 @@ import name.ncg777.maths.MatrixOfIntegers;
 
 public class Image24Bits extends MatrixOfIntegers {
   public Image24Bits(int width, int height) {
-    super(height, width, 0);
+    this(height, width, new Pixel24Bits(0));
   }
-    
+  
+  public Image24Bits(int width, int height, Pixel24Bits fill) {
+    super(height, width, fill.toInteger());
+  }
   public BufferedImage toBufferedImage() {
     BufferedImage image = new BufferedImage(n, m, BufferedImage.TYPE_INT_RGB);
 
