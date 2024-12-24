@@ -10,7 +10,7 @@ import name.ncg777.maths.MatrixOfIntegers;
 
 public class Image24Bits extends MatrixOfIntegers {
   public Image24Bits(int width, int height) {
-    this(height, width, new Pixel24Bits(0));
+    this(width, height, new Pixel24Bits(0));
   }
   
   public Image24Bits(int width, int height, Pixel24Bits fill) {
@@ -29,7 +29,7 @@ public class Image24Bits extends MatrixOfIntegers {
   }
   
   public Pixel24Bits getPixel(int i, int j) {
-    return new Pixel24Bits(this.get(i, j));
+    return new Pixel24Bits(this.get(j, i));
   }
   
   public void writeToPNG(String path) throws IOException {
