@@ -1,14 +1,12 @@
 package name.ncg777.computing.structures;
 
 import java.util.Enumeration;
-
-import javax.imageio.ImageIO;
+import java.util.function.Supplier;
 
 import org.jcodec.api.SequenceEncoder;
 import org.jcodec.common.model.ColorSpace;
 import org.jcodec.common.model.Picture;
 
-import com.google.common.base.Supplier;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -32,12 +30,8 @@ public class Animation {
     SequenceEncoder encoder = SequenceEncoder.create30Fps(new File(path));
     
     var e = frames.get();
-    int k = 0;
     while(e.hasMoreElements()) {
       var frame = e.nextElement();
-      System.out.println(Integer.toString(frame.getWidth()) + "x" + Integer.toString(frame.getHeight()));
-      // Write the BufferedImage to the file as PNG
-      //ImageIO.write(frame, "PNG", new File("d:/frame"+Integer.toString(k++) +".png"));
       Picture picture = Picture.create(width, height, ColorSpace.RGB);
       var b = frame.getData().getDataBuffer();
       for(int i=0;i<height;i++) { 
