@@ -7,14 +7,51 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.imageio.ImageIO;
+
+import org.jcodec.api.SequenceEncoder;
+import org.jcodec.common.Codec;
+import org.jcodec.common.Format;
+import org.jcodec.common.io.NIOUtils;
+import org.jcodec.common.model.ColorSpace;
+import org.jcodec.common.model.Picture;
+import org.jcodec.common.model.Rational;
+
+import name.ncg777.computing.structures.Pixel32Bits;
 
 public class GraphicsFunctions {
   public static void writeToPNG(BufferedImage image, String path) throws IOException {
       File output = new File(path);
       ImageIO.write(image, "png", output);
+  }
+  
+  public static void writeAnimation(String path, Supplier<Enumeration<BufferedImage>> frames) throws IOException {
+    SequenceEncoder encoder = SequenceEncoder.create30Fps(new File(path));
+    
+    var e = frames.get();
+    while(e.hasMoreElements()) {
+      var frame = e.nextElement();
+      int width = frame.getWidth();
+      int height = frame.getHeight();
+      Picture picture = Picture.create(width, height, ColorSpace.RGB);
+      var b = frame.getData().getDataBuffer();
+      for(int i=0;i<height;i++) { 
+        for(int j=0;j<width;j++) { 
+          var p = new Pixel32Bits(b.getElem(((i*width)+j)));
+          
+          picture.getPlaneData(0)[3*((i*width)+j)] = (byte)(p.getR()-128);
+          picture.getPlaneData(0)[3*((i*width)+j)+1] = (byte)(p.getG()-128);
+          picture.getPlaneData(0)[3*((i*width)+j)+2] = (byte)(p.getB()-128);
+        }
+      }
+      encoder.encodeNativeFrame(picture);
+    }
+    
+    encoder.finish();
   }
   
   public static void drawParametric2D(
