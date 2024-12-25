@@ -67,35 +67,36 @@ public class Image32Bits extends MatrixOfIntegers {
       g.setColor(c);
       g.setPaint(c);
       
-      double A_x = x.apply(t);
-      double A_y = y.apply(t);
-      double B_x = x.apply(t+delta);
-      double B_y = y.apply(t+delta);
+      double A_x = scale*x.apply(t);
+      double A_y = scale*y.apply(t);
+      double B_x = scale*x.apply(t+delta);
+      double B_y = scale*y.apply(t+delta);
       
       double x_ccw = A_x - (B_y-A_y);
       double y_ccw = A_y + (B_x-A_x);
       double x_cw = A_x + (B_y-A_y);
       double y_cw = A_y - (B_x-A_x);
       
-      double f = width.apply(t) /
+      double f = (scale*width.apply(t)) /
           (2.0*Math.sqrt(Math.pow(B_x-A_x, 2.0) + Math.pow(B_y-A_y, 2.0)));
       
-      g.fillRect((int)(scale*A_x),(int)(scale*A_y),1,1);
+      g.fillRect((int)A_x,(int)A_y,1,1);
       
       g.draw(
+          
           new Line2D.Double(
-              scale*A_x, 
-              scale*A_y, 
-              scale*(A_x+f*(x_ccw-A_x)), 
-              scale*(A_y+f*(y_ccw-A_y))
+              A_x, 
+              A_y, 
+              A_x+f*(x_ccw-A_x), 
+              A_y+f*(y_ccw-A_y)
           ));
       
       g.draw(
           new Line2D.Double(
-              scale*A_x, 
-              scale*A_y, 
-              scale*(A_x+f*(x_cw-A_x)), 
-              scale*(A_y+f*(y_cw-A_y))
+              A_x, 
+              A_y, 
+              A_x+f*(x_cw-A_x), 
+              A_y+f*(y_cw-A_y)
           ));
     }
   }
@@ -105,7 +106,7 @@ public class Image32Bits extends MatrixOfIntegers {
   private static double defaultWidth = 1.0;
   private static double defaultScale = 1.0;
   private static Color defaultColor = Color.BLACK;
-  private static double defaultDelta = 0.0000000005;
+  private static double defaultDelta = 0.0000005;
   
   public static void drawParametric2D(
       Graphics2D g, 
