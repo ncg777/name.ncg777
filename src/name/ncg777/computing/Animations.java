@@ -39,8 +39,8 @@ public class Animations {
           final double j = list.get(_j);
           GraphicsFunctions.drawParametric2D(
                 g, 
-                (t) -> 0.5+j*0.4*Math.sin(j*Math.PI*0.25+ i*normalized_time*90*Math.PI)*(0.5-0.5*Math.cos(Math.PI*0.125+t*4*Math.PI)), 
-                (t) -> 0.5-j*0.4*Math.cos(-i*normalized_time*90*Math.PI)*(0.5+0.5*Math.sin(Math.PI*0.125+-t*4*Math.PI)),
+                (t) -> 0.5+j*0.4*Math.sin(j*Math.PI*0.25+ i*normalized_time*90*Math.PI)*(0.5-0.5*Math.cos(Math.PI*0.125+t*4.0*Math.PI)), 
+                (t) -> 0.5-j*0.4*Math.cos(-i*normalized_time*90*Math.PI)*(0.5+0.5*Math.sin(Math.PI*0.125+-t*4.0*Math.PI)),
                 0.0,
                 1.0,
                 (t) -> 0.0,
@@ -48,18 +48,17 @@ public class Animations {
                 (t) -> Double.valueOf(width),
                 (t) -> Double.valueOf(width),
                 (t) -> 0.075+(0.075*
-                    Math.sin((32*Math.PI*(t))*Math.sin(12*Math.PI*normalized_time))),
+                    Math.sin((45*Math.PI*(t))*Math.sin(22.5*Math.PI*normalized_time))),
                 (t) -> new Color(
-                    (int)(255.0*(0.5-j*0.5*(Math.cos(2.0*Math.PI*(6*t-i*normalized_time))))), 
-                    (int)(255.0*(0.5+j*0.5*(Math.sin(2.0*Math.PI*(6*t+i*normalized_time))))), 
+                    (int)(255.0*(0.5-j*0.5*(Math.cos(2.0*Math.PI*(6*(t-i*normalized_time)))))), 
+                    (int)(255.0*(0.5+j*0.5*(Math.sin(2.0*Math.PI*(6*(t+i*normalized_time)))))), 
                     128,
                     4
                    ),
-                0.001
+                (t) -> 0.0025+0.00225*Math.sin(Math.PI*8.0*t)
                 );
           }
         }
-        //double i = 0.0;
         
         k++;
         System.out.println(Integer.toString(k) + " of " +  Integer.toString(upper));

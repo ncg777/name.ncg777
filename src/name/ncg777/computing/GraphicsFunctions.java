@@ -62,12 +62,11 @@ public class GraphicsFunctions {
       Function<Double,Double> scaleY,
       Function<Double,Double> width,
       Function<Double, Color> color, 
-      double delta) { 
-    if(to_exclusive < from_inclusive && delta > 0) delta *= -1.0;
-    
+      Function<Double,Double> deltaf) {
     g.setStroke(new BasicStroke(2.0f));
     
-    for(double t=from_inclusive; t<to_exclusive; t+=delta) {
+    for(double t=from_inclusive; t<to_exclusive; t+=deltaf.apply(t)) {
+      var delta = deltaf.apply(t);
       var c = color.apply(t);
       
       g.setColor(c);
@@ -134,7 +133,7 @@ public class GraphicsFunctions {
         (t) -> defaultScaleY, 
         (t) -> defaultWidth, 
         (t) -> defaultColor, 
-        defaultDelta);
+        (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
@@ -150,7 +149,7 @@ public class GraphicsFunctions {
         (t) -> defaultScaleY, 
         (t) -> defaultWidth, 
         (t) -> defaultColor, 
-        defaultDelta);
+        (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
@@ -168,7 +167,7 @@ public class GraphicsFunctions {
         (t) -> defaultScaleY, 
         (t) -> defaultWidth, 
         (t) -> defaultColor, 
-        defaultDelta);
+        (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
@@ -188,7 +187,7 @@ public class GraphicsFunctions {
         scaleY, 
         (t) -> defaultWidth, 
         (t) -> defaultColor, 
-        defaultDelta);
+        (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
@@ -209,7 +208,7 @@ public class GraphicsFunctions {
         scaleY, 
         width, 
         (t) -> defaultColor, 
-        defaultDelta);
+        (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
@@ -231,6 +230,6 @@ public class GraphicsFunctions {
         scaleY, 
         width, 
         color, 
-        defaultDelta);
+        (t) -> defaultDelta);
   }
 }
