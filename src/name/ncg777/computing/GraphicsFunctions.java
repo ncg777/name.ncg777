@@ -14,12 +14,8 @@ import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 
 import org.jcodec.api.SequenceEncoder;
-import org.jcodec.common.Codec;
-import org.jcodec.common.Format;
-import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.ColorSpace;
 import org.jcodec.common.model.Picture;
-import org.jcodec.common.model.Rational;
 
 import name.ncg777.computing.structures.Pixel32Bits;
 
@@ -69,7 +65,7 @@ public class GraphicsFunctions {
       double delta) { 
     if(to_exclusive < from_inclusive && delta > 0) delta *= -1.0;
     
-    g.setStroke(new BasicStroke(1.0f));
+    g.setStroke(new BasicStroke(2.0f));
     
     for(double t=from_inclusive; t<to_exclusive; t+=delta) {
       var c = color.apply(t);
