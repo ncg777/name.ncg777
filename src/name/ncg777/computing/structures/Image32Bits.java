@@ -1,9 +1,13 @@
 package name.ncg777.computing.structures;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
@@ -43,4 +47,113 @@ public class Image32Bits extends MatrixOfIntegers {
       File output = new File(path);
       ImageIO.write(this.toBufferedImage(), "png", output);
   }
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Double> x, 
+      Function<Double,Double> y, 
+      double from_inclusive, 
+      double to_exclusive,
+      double scale,
+      Function<Double,Double> width,
+      Function<Double, Color> color, 
+      double delta) { 
+    if(to_exclusive < from_inclusive && delta > 0) delta *= -1.0;
+    
+    g.setStroke(new BasicStroke(1.0f));
+    
+    for(double t=from_inclusive; t<to_exclusive; t+=delta) {
+      Color c = color.apply(t);
+      g.setColor(c);
+      g.setPaint(c);
+      
+      double A_x = x.apply(t);
+      double A_y = y.apply(t);
+      double B_x = x.apply(t+delta);
+      double B_y = y.apply(t+delta);
+      
+      double x_ccw = A_x - (B_y-A_y);
+      double y_ccw = A_y + (B_x-A_x);
+      double x_cw = A_x + (B_y-A_y);
+      double y_cw = A_y - (B_x-A_x);
+      
+      double f = width.apply(t) /
+          (2.0*Math.sqrt(Math.pow(B_x-A_x, 2.0) + Math.pow(B_y-A_y, 2.0)));
+      
+      g.fillRect((int)(scale*A_x),(int)(scale*A_y),1,1);
+      
+      g.draw(
+          new Line2D.Double(
+              scale*A_x, 
+              scale*A_y, 
+              scale*(A_x+f*(x_ccw-A_x)), 
+              scale*(A_y+f*(y_ccw-A_y))
+          ));
+      
+      g.draw(
+          new Line2D.Double(
+              scale*A_x, 
+              scale*A_y, 
+              scale*(A_x+f*(x_cw-A_x)), 
+              scale*(A_y+f*(y_cw-A_y))
+          ));
+    }
+  }
+  
+  private static double defaultFrom = 0.0;
+  private static double defaultTo = 1.0;
+  private static double defaultWidth = 1.0;
+  private static double defaultScale = 1.0;
+  private static Color defaultColor = Color.BLACK;
+  private static double defaultDelta = 0.0000000005;
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Double> x, 
+      Function<Double,Double> y) {
+    drawParametric2D(g, x, y, defaultFrom, defaultTo, defaultScale, (t) -> defaultWidth, (t) -> defaultColor, defaultDelta);
+  }
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Double> x, 
+      Function<Double,Double> y, 
+      double from_inclusive, 
+      double to_exclusive) {
+    drawParametric2D(g, x, y, from_inclusive, to_exclusive, defaultScale, (t) -> defaultWidth, (t) -> defaultColor, defaultDelta);
+  }
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Double> x, 
+      Function<Double,Double> y, 
+      double from_inclusive, 
+      double to_exclusive,
+      double scale) {
+    drawParametric2D(g, x, y, from_inclusive, to_exclusive, scale, (t) -> defaultWidth, (t) -> defaultColor, defaultDelta);
+  }
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Double> x, 
+      Function<Double,Double> y, 
+      double from_inclusive, 
+      double to_exclusive,
+      double scale,
+      Function<Double,Double> width) {
+    drawParametric2D(g, x, y, from_inclusive, to_exclusive, scale, width, (t) -> defaultColor, defaultDelta);
+  }
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Double> x, 
+      Function<Double,Double> y, 
+      double from_inclusive, 
+      double to_exclusive,
+      double scale,
+      Function<Double,Double> width,
+      Function<Double, Color> color) {
+    drawParametric2D(g, x, y, from_inclusive, to_exclusive, scale, width, color, defaultDelta);
+  }
+  
 }
