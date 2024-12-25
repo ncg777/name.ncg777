@@ -1,4 +1,4 @@
-package name.ncg777.computing.structures;
+package name.ncg777.computing;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
