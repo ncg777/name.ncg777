@@ -90,8 +90,8 @@ public class GraphicsFunctions {
       double w = width.apply(t);
       double f = w /
           (2.0*Math.sqrt(
-              Math.pow(-tx+((B_x-A_x)/sx), 2.0) + 
-              Math.pow(-ty+((B_y-A_y)/sy), 2.0)));
+              Math.pow(((B_x-A_x)), 2.0) + 
+              Math.pow(((B_y-A_y)), 2.0)));
       
       g.fillRect((int)Math.round(A_x),(int)Math.round(A_y),1,1);
       
@@ -99,16 +99,16 @@ public class GraphicsFunctions {
           new Line2D.Double(
               A_x, 
               A_y, 
-              A_x+f*sx*(x_ccw-A_x), 
-              A_y+f*sy*(y_ccw-A_y)
+              A_x+f*sx*(((x_ccw-A_x))), 
+              A_y+f*sy*(((y_ccw-A_y)))
           ));
       
       g.draw(
           new Line2D.Double(
               A_x, 
               A_y, 
-              A_x+f*sx*(x_cw-A_x), 
-              A_y+f*sy*(y_cw-A_y)
+              A_x+f*sx*(((x_cw-A_x))), 
+              A_y+f*sy*(((y_cw-A_y)))
           ));
     }
   }
