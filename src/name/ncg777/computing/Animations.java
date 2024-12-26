@@ -53,7 +53,7 @@ public class Animations {
             }
           }
           
-          System.out.print("\r" + Integer.toString(k++) + " of " +  Integer.toString(upper));
+          System.out.print("\r" + Integer.toString(++k) + " of " +  Integer.toString(upper));
           return img;
         }
     };
@@ -90,7 +90,7 @@ public class Animations {
               }, 
               width, height);
           
-          System.out.print("\r" + Integer.toString(k++) + " of " +  Integer.toString(upper));
+          System.out.print("\r" + Integer.toString(++k) + " of " +  Integer.toString(upper));
           return img;
         }
       };
