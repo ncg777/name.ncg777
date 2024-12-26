@@ -2,7 +2,6 @@ package name.ncg777.computing;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
