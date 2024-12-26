@@ -1,13 +1,14 @@
 package name.ncg777.computing;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -48,6 +49,27 @@ public class GraphicsFunctions {
     }
     
     encoder.finish();
+  }
+  
+  public static void drawColorField2D(
+      Graphics2D g, 
+      BiFunction<Double,Double,Color> color,
+      int width,
+      int height) {
+    for(int x=0;x<width;x++) {
+      double xnorm = (double)x/(double)width;
+      xnorm += -0.5;
+      xnorm *= 2.0;
+      for(int y=0;y<height;y++) {
+        double ynorm = (double)y/(double)height;
+        ynorm += -0.5;
+        ynorm *= 2.0;
+        var c = color.apply(xnorm, ynorm);
+        g.setPaint(c);
+        g.setColor(c);
+        g.fill(new Ellipse2D.Double(x-1, y-1, 3, 3));
+      }
+    }
   }
   
   public static void drawParametric2D(
