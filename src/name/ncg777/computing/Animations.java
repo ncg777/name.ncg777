@@ -87,7 +87,7 @@ public class Animations {
                   (int)(128.0+Math.sin(p*8.0*Math.PI)*127.0),
                   (int)(128.0+Math.sin(Math.PI/4+p*4.0*Math.PI)*127.0),
                   (int)(128.0+Math.cos(p*2.0*Math.PI)*127.0),
-                  255);
+                  (int)(127.0*(1+Math.tanh(15*(0.5-r1)))));
               }, 
               width, height);
           
