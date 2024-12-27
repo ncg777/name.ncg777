@@ -87,7 +87,44 @@ public class Animations {
                   (int)(128.0+Math.sin(p*8.0*Math.PI)*127.0),
                   (int)(128.0+Math.sin(Math.PI/4+p*4.0*Math.PI)*127.0),
                   (int)(128.0+Math.cos(p*2.0*Math.PI)*127.0),
-                  (int)(127.0*(1+Math.tanh(15*(0.5-r1)))));
+                  (int)(128.0*(1.0+Math.tanh(20*(0.5-r1)))));
+              }, 
+              width, height);
+          
+          System.out.print("\r" + Integer.toString(++k) + " of " +  Integer.toString(upper));
+          return img;
+        }
+      };
+   }
+  public static Enumeration<BufferedImage> Animation20241225_3(int width, int height, int fps, double dur) {
+    return new Enumeration<BufferedImage>() {
+      int upper = (int)(dur*fps);
+      int k = 0;
+  
+      public boolean hasMoreElements() {
+          return k<upper;
+      }
+  
+      public BufferedImage nextElement() {
+          final double t = ((double) k)/((double)upper);
+          var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+          
+          var g = img.createGraphics();
+          
+          GraphicsFunctions.drawColorField2D(g, 
+              (x,y) -> {
+                var b =2.0;
+                var th = Math.atan2(x, y);
+                var s = (0.5+(th/Math.PI)*0.5);
+                var r1 = Math.sqrt((Math.pow(x,2.0)+Math.pow(y,2.0))/2.0);
+                var r1p = ((Math.sin(t*2.0*Math.PI)))*r1;
+                var r2 = (t - b*s);
+                var p = 4.0*Math.sin(2.0*Math.PI*(1.0*r2+1.0*r1p));
+                return new Color(
+                  (int)(128.0+Math.sin(p*8.0*Math.PI)*127.0),
+                  (int)(128.0-Math.sin(Math.PI/4+p*4.0*Math.PI)*127.0),
+                  (int)(128.0+Math.cos(p*2.0*Math.PI)*127.0),
+                  (int)(128.0*(1.0+Math.tanh(35.0*(0.5-r1)))));
               }, 
               width, height);
           
