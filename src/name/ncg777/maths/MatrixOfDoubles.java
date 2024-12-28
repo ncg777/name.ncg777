@@ -1,6 +1,7 @@
 package name.ncg777.maths;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
@@ -341,5 +342,118 @@ public class MatrixOfDoubles extends Matrix<Double> {
   
   public static MatrixOfDoubles parseJSONFile(String path) throws JsonParseException, IOException {
     return new MatrixOfDoubles(Matrix.parseJSONFile(path, Parsers.doubleParser));
+  }
+
+  // Compute the Gradient of a function F
+  public VectorOfDoubles computeGradient(Function<VectorOfDoubles, VectorOfDoubles> F, VectorOfDoubles x, double epsilon) {
+    int inputDim = x.getDimension();
+    int outputDim = F.apply(x).getDimension();
+    Double[] gradient = new Double[outputDim];
+
+    for (int i = 0; i < inputDim; i++) {
+   // Create perturbation vector for the i-th input
+      Double[] xPerturbPlus = x.toDoubleArray().clone();
+      Double[] xPerturbMinus = x.toDoubleArray().clone();
+
+      xPerturbPlus[i] += epsilon;   // Positive perturbation
+      xPerturbMinus[i] -= epsilon; // Negative perturbation
+
+      // Evaluate F at perturbed points
+      VectorOfDoubles fPlus = F.apply(VectorOfDoubles.of(xPerturbPlus));
+      VectorOfDoubles fMinus = F.apply(VectorOfDoubles.of(xPerturbMinus));
+
+      // Compute partial derivative for the i-th input dimension using central difference
+      double partialDerivative = 0.0;
+      for (int j = 0; j < outputDim; j++) {
+          partialDerivative += (fPlus.get(j) - fMinus.get(j)) / (2 * epsilon);
+      }
+
+      gradient[i] = partialDerivative;
+    }
+
+    return VectorOfDoubles.of(gradient);
+  }
+
+  //Compute the Jacobian of a function F
+  public MatrixOfDoubles computeJacobian(Function<VectorOfDoubles, VectorOfDoubles> F, VectorOfDoubles x, double epsilon) {
+    int inputDim = x.getDimension();
+    int outputDim = F.apply(x).getDimension();
+    Double[][] jacobian = new Double[outputDim][inputDim];
+
+    for (int j = 0; j < inputDim; j++) {
+      // Create perturbation vectors for the j-th input
+      Double[] xPerturbPlus = x.toDoubleArray().clone();
+      Double[] xPerturbMinus = x.toDoubleArray().clone();
+      xPerturbPlus[j] += epsilon;
+      xPerturbMinus[j] -= epsilon;
+
+      // Evaluate F at perturbed points
+      VectorOfDoubles fPlus = F.apply(VectorOfDoubles.of(xPerturbPlus));
+      VectorOfDoubles fMinus = F.apply(VectorOfDoubles.of(xPerturbMinus));
+
+      // Fill the Jacobian matrix column for the j-th input dimension
+      for (int i = 0; i < outputDim; i++) {
+        jacobian[i][j] = (fPlus.get(i) - fMinus.get(i)) / (2 * epsilon);
+      }
+    }
+
+    return new MatrixOfDoubles(jacobian);
+  }
+
+  //Compute the Hessian of a function F
+  public Double[][][] computeHessian(Function<VectorOfDoubles, VectorOfDoubles> F, VectorOfDoubles x, double epsilon) {
+    int inputDim = x.getDimension();
+    int outputDim = F.apply(x).getDimension();
+    Double[][][] hessian = new Double[outputDim][inputDim][inputDim];
+
+    for (int i = 0; i < outputDim; i++) {
+      for (int j = 0; j < inputDim; j++) {
+        for (int k = 0; k < inputDim; k++) {
+          // Perturbation vectors for the second-order partial derivatives
+          Double[] xPerturbPlusPlus = x.toDoubleArray().clone();
+          Double[] xPerturbPlusMinus = x.toDoubleArray().clone();
+          Double[] xPerturbMinusPlus = x.toDoubleArray().clone();
+          Double[] xPerturbMinusMinus = x.toDoubleArray().clone();
+
+          xPerturbPlusPlus[j] += epsilon; xPerturbPlusPlus[k] += epsilon;
+          xPerturbPlusMinus[j] += epsilon; xPerturbPlusMinus[k] -= epsilon;
+          xPerturbMinusPlus[j] -= epsilon; xPerturbMinusPlus[k] += epsilon;
+          xPerturbMinusMinus[j] -= epsilon; xPerturbMinusMinus[k] -= epsilon;
+
+          // Evaluate F at the four perturbed points
+          double fPlusPlus = F.apply(VectorOfDoubles.of(xPerturbPlusPlus)).get(i);
+          double fPlusMinus = F.apply(VectorOfDoubles.of(xPerturbPlusMinus)).get(i);
+          double fMinusPlus = F.apply(VectorOfDoubles.of(xPerturbMinusPlus)).get(i);
+          double fMinusMinus = F.apply(VectorOfDoubles.of(xPerturbMinusMinus)).get(i);
+
+          // Compute second-order partial derivative
+          hessian[i][j][k] = (fPlusPlus - fPlusMinus - fMinusPlus + fMinusMinus) / (4 * epsilon * epsilon);
+        }
+      }
+    }
+
+    return hessian;
+  }
+  
+  /**
+   * Compares two matrices for equality within a given epsilon.
+   *
+   * @param other The matrix to compare with
+   * @param epsilon The tolerance for comparison
+   * @return true if the matrices are approximately equal, false otherwise
+   */
+  public boolean isEqual(MatrixOfDoubles other, double epsilon) {
+      if (this.rowCount() != other.rowCount() || this.columnCount() != other.columnCount()) {
+          return false;
+      }
+
+      for (int i = 0; i < this.rowCount(); i++) {
+          for (int j = 0; j < this.columnCount(); j++) {
+              if (Math.abs(this.get(i, j) - other.get(i, j)) > epsilon) {
+                  return false;
+              }
+          }
+      }
+      return true;
   }
 }
