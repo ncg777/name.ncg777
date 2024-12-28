@@ -42,8 +42,7 @@ public class MatrixOfIntegers extends Matrix<Integer> {
    * @return A MatrixOfIntegers representing the Haar matrix.
    * @throws IllegalArgumentException if the vector length is not a power of 2.
    */
-  public static MatrixOfIntegers computeHaarMatrix(VectorOfIntegers vector) {
-    int size = vector.getDimension();
+  public static MatrixOfIntegers computeHaarMatrix(int size) {
     if ((size & (size - 1)) != 0) {
       throw new IllegalArgumentException("Vector size must be a power of 2.");
     }
