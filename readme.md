@@ -8,7 +8,7 @@ To run the main menu application that lets one open the apps with graphical inte
 # Enumeration Scripts Documentation
 Arguments' names cannot be specified and are just determined positionally at the moment.
 
-The int[] type is printed like 1 level JSON integer arrays and can be parsed from space-joined integer strings (ex: "1 2 3") or JSON array-like strings (ex: "[1, 2, 3]").
+The int[] type is printed or parsed as space-separated lists of integers (ex: "1 2 3") or JSON array-like strings (ex: "[1, 2, 3]").
 
 ## bitsequences.sh
 - **Class**: name.ncg777.maths.enumerations.BitSequenceEnumeration
