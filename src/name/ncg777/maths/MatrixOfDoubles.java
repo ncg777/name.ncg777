@@ -344,7 +344,17 @@ public class MatrixOfDoubles extends Matrix<Double> {
     return new MatrixOfDoubles(Matrix.parseJSONFile(path, Parsers.doubleParser));
   }
 
-  // Compute the Gradient of a function F
+  /**
+   * Computes the gradient of a vector-valued function F at a given point x.
+   * 
+   * The gradient is computed using the central difference method for each input dimension.
+   * If F is vector-valued, the result is the sum of partial derivatives across all output dimensions.
+   *
+   * @param F       The function whose gradient is to be computed. It maps a vector to another vector.
+   * @param x       The point at which to compute the gradient.
+   * @param epsilon A small positive value used for finite difference perturbations.
+   * @return A VectorOfDoubles representing the gradient of F at x.
+   */
   public VectorOfDoubles computeGradient(Function<VectorOfDoubles, VectorOfDoubles> F, VectorOfDoubles x, double epsilon) {
     int inputDim = x.getDimension();
     int outputDim = F.apply(x).getDimension();
@@ -374,7 +384,18 @@ public class MatrixOfDoubles extends Matrix<Double> {
     return VectorOfDoubles.of(gradient);
   }
 
-  //Compute the Jacobian of a function F
+  /**
+   * Computes the Jacobian matrix of a vector-valued function F at a given point x.
+   * 
+   * The Jacobian matrix contains partial derivatives of each output of F with respect to each input dimension,
+   * computed using the central difference method.
+   *
+   * @param F       The function whose Jacobian is to be computed. It maps a vector to another vector.
+   * @param x       The point at which to compute the Jacobian.
+   * @param epsilon A small positive value used for finite difference perturbations.
+   * @return A MatrixOfDoubles where the (i, j)-th entry represents the partial derivative of the i-th output of F 
+   *         with respect to the j-th input of x.
+   */
   public MatrixOfDoubles computeJacobian(Function<VectorOfDoubles, VectorOfDoubles> F, VectorOfDoubles x, double epsilon) {
     int inputDim = x.getDimension();
     int outputDim = F.apply(x).getDimension();
@@ -400,7 +421,19 @@ public class MatrixOfDoubles extends Matrix<Double> {
     return new MatrixOfDoubles(jacobian);
   }
 
-  //Compute the Hessian of a function F
+  /**
+   * Computes the Hessian tensor of a vector-valued function F at a given point x.
+   * 
+   * The Hessian tensor is a three-dimensional array containing second-order partial derivatives.
+   * For each output of F, the Hessian is a symmetric matrix representing mixed and pure second derivatives
+   * with respect to input dimensions.
+   *
+   * @param F       The function whose Hessian is to be computed. It maps a vector to another vector.
+   * @param x       The point at which to compute the Hessian.
+   * @param epsilon A small positive value used for finite difference perturbations.
+   * @return A 3D array of doubles, where the entry [i][j][k] represents the second-order partial derivative
+   *         of the i-th output of F with respect to the j-th and k-th input dimensions of x.
+   */
   public Double[][][] computeHessian(Function<VectorOfDoubles, VectorOfDoubles> F, VectorOfDoubles x, double epsilon) {
     int inputDim = x.getDimension();
     int outputDim = F.apply(x).getDimension();
