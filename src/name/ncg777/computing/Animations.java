@@ -113,18 +113,18 @@ public class Animations {
           
           GraphicsFunctions.drawColorField2D(g, 
               (x,y) -> {
-                var b =2.0;
+                var b =3.0;
                 var th = Math.atan2(x, y);
                 var s = (0.5+(th/Math.PI)*0.5);
                 var r1 = Math.sqrt((Math.pow(x,2.0)+Math.pow(y,2.0))/2.0);
-                var r1p = ((Math.sin(t*2.0*Math.PI)))*r1;
+                var r1p = ((Math.cos(t*4.0*Math.PI)))*r1;
                 var r2 = (t - b*s);
-                var p = 4.0*Math.sin(2.0*Math.PI*(1.0*r2+1.0*r1p));
+                var p = 4.0*Math.cos(2.0*Math.PI*(1.0*r2+2.0*r1p));
                 return new Color(
-                  (int)(128.0+Math.sin(p*8.0*Math.PI)*127.0),
+                  (int)(128.0-Math.sin(p*2.0*Math.PI)*127.0),
                   (int)(128.0-Math.sin(Math.PI/4+p*4.0*Math.PI)*127.0),
-                  (int)(128.0+Math.cos(p*2.0*Math.PI)*127.0),
-                  (int)(128.0*(1.0+Math.tanh(35.0*(0.5-r1)))));
+                  (int)(128.0+Math.cos(p*8.0*Math.PI)*127.0),
+                  (int)(127.0*(1.0+Math.tanh(25.0*(0.5-r1-0.025*(Math.sin(th*12.0 -t*Math.PI*6.0)))))));
               }, 
               width, height);
           
