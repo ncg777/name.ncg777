@@ -664,6 +664,91 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     return o;
   }
 
+  /**
+   * Computes the determinant of the matrix using Laplace expansion.
+   * 
+   * @param sum     Binary operator representing the addition operation.
+   * @param product Binary operator representing the multiplication operation.
+   * @param negate  Function representing the additive inverse (negation) operation.
+   * @return The determinant of the matrix.
+   */
+  public T computeDeterminant(BinaryOperator<T> sum, BinaryOperator<T> product, Function<T, T> negate) {
+      if (m != n)
+          throw new IllegalArgumentException("Matrix must be square to compute determinant.");
+      return computeDeterminantRecursive(this, sum, product, negate);
+  }
+
+  private T computeDeterminantRecursive(Matrix<T> matrix, BinaryOperator<T> sum, BinaryOperator<T> product,
+          Function<T, T> negate) {
+      int size = matrix.m;
+      if (size == 1) {
+          return matrix.get(0, 0);
+      }
+      T determinant = null;
+      for (int c = 0; c < size; c++) {
+          Matrix<T> subMatrix = matrix.getSubMatrix(0, c);
+          T subDeterminant = computeDeterminantRecursive(subMatrix, sum, product, negate);
+          T cofactor = (c % 2 == 0) ? subDeterminant : negate.apply(subDeterminant);
+          T term = product.apply(matrix.get(0, c), cofactor);
+          determinant = (determinant == null) ? term : sum.apply(determinant, term);
+      }
+      return determinant;
+  }
+
+  /**
+   * Gets a submatrix by excluding the specified row and column.
+   * 
+   * @param excludingRow
+   * @param excludingCol
+   * @return The submatrix
+   */
+  public Matrix<T> getSubMatrix(int excludingRow, int excludingCol) {
+      Matrix<T> subMatrix = new Matrix<T>(m - 1, n - 1);
+      for (int i = 0, subI = 0; i < m; i++) {
+          if (i == excludingRow)
+              continue;
+          for (int j = 0, subJ = 0; j < n; j++) {
+              if (j == excludingCol)
+                  continue;
+              subMatrix.set(subI, subJ, this.get(i, j));
+              subJ++;
+          }
+          subI++;
+      }
+      return subMatrix;
+  }
+
+  /**
+   * Computes the eigenvalues of the matrix.
+   * Note: For generic type T, computing eigenvalues may not be feasible without additional operations like division.
+   * This method assumes that T represents numbers where such operations are meaningful.
+   * 
+   * @param sum     Binary operator representing the addition operation.
+   * @param product Binary operator representing the multiplication operation.
+   * @return An array of eigenvalues.
+   */
+  public T[] computeEigenvalues(BinaryOperator<T> sum, BinaryOperator<T> product) {
+      // Placeholder implementation
+      throw new UnsupportedOperationException(
+              "Eigenvalue computation requires solving polynomial equations, which may not be supported for generic type T.");
+  }
+
+  /**
+   * Computes the eigenvectors of the matrix.
+   * Note: For generic type T, computing eigenvectors may not be feasible without additional operations like division.
+   * This method assumes that T represents numbers where such operations are meaningful.
+   * 
+   * @param sum     Binary operator representing the addition operation.
+   * @param product Binary operator representing the multiplication operation.
+   * @return An array of eigenvectors represented as matrices.
+   */
+  public Matrix<T>[] computeEigenvectors(BinaryOperator<T> sum, BinaryOperator<T> product) {
+      // Placeholder implementation
+      throw new UnsupportedOperationException(
+              "Eigenvector computation requires solving linear systems, which may not be supported for generic type T.");
+  }
+
+  
   public boolean contains(T el) {
     if(isDefaultValue(el) && m>0 && n>0) return true;
     return mat.values().contains(el);
