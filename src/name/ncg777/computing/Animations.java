@@ -1,14 +1,12 @@
 package name.ncg777.computing;
 
-import static org.hamcrest.CoreMatchers.sameInstance;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.function.Function;
 
 import name.ncg777.maths.HadamardMatrix;
-import name.ncg777.maths.MatrixOfIntegers;
 
 public class Animations {
   public static Enumeration<BufferedImage> Animation20241225_1(int width, int height, int fps, double dur) {
@@ -141,6 +139,7 @@ public class Animations {
   
   public static Enumeration<BufferedImage> Hadamard20241228_1(int n, int width, int height, int fps, double dur) {
     var m = HadamardMatrix.getMatrix(n);
+    
     return new Enumeration<BufferedImage>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -151,30 +150,41 @@ public class Animations {
   
       public BufferedImage nextElement() {
           final double t = (double) k/(double)upper;
+          final Function<Double,Double> _f = (Double r) -> 1.1*(1.0-(0.5+0.5*(Math.cos(2.0*t*Math.PI)))*r);
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
-          g.rotate(Math.PI*t*2.0, (double)width/2.0, (double)height/2.0);
+          g.rotate(Math.PI/4.0,width/2,height/2);
           GraphicsFunctions.drawColorField2D(g, 
               (_x,_y) -> {
                 double th = Math.atan2(_x, _y);
-                double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
+                Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                double x = r*Math.cos(th*r);
-                double y = r*Math.sin(th*r);;
+                Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*_f.apply(r)));
+                Double y = r*Math.sin(th-Math.PI*Math.sin(2.0*Math.PI*_f.apply(r)));
+                
                 //System.out.println(Double.toString(x) + ", " + Double.toString(y));
                 double v = m.get(
                     (int)((0.5+x*0.5)*(double)(dim-1)), 
                     (int)((0.5+y*0.5)*(double)(dim-1))).doubleValue();
+                var rfadestart = 0.6;
+                var rfadeend = 0.65;
                 return new Color(
-                  (int)(0.0),
-                  (int)((v*0.5+0.5)*127.0),
-                  (int)(0.0),
-                  (int)(255.0*(r>0.5 ? 0.0 : 1.0)));
+                  (int)((1.0-r)*(v*0.5+0.5)*255.0),
+                  (int)((0.5+0.5*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
+                  (int)((0.5-0.5*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
+                  r > rfadeend ? 0 : (
+                      r < rfadestart ? 255 : 
+                          ((int)(255.0*
+                              (1.0-(
+                                  (r-rfadestart)/(rfadeend-rfadestart)
+                              ))))
+                    ));
               }, 
               width, height);
           
           System.out.print("\r" + Integer.toString(++k) + " of " +  Integer.toString(upper));
+          
           return img;
         }
       };
