@@ -154,7 +154,7 @@ public class Animations {
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
-          g.rotate((Math.PI/8.0)+Math.cos(t*2.0*Math.PI)*_f.apply(t)*Math.PI*2.0,width/2,height/2);
+          g.rotate(-Math.PI*(5.0/8.0)+Math.cos(t*2.0*Math.PI)*_f.apply(t)*Math.PI*2.0,width/2,height/2);
           GraphicsFunctions.drawColorField2D(g, 
               (_x,_y) -> {
                 double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
