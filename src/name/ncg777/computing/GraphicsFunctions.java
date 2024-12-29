@@ -14,14 +14,20 @@ import java.util.function.Supplier;
 
 import javax.imageio.ImageIO;
 
-import org.jcodec.api.SequenceEncoder;
-import org.jcodec.common.model.ColorSpace;
-import org.jcodec.common.model.Picture;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Size;
+import org.opencv.videoio.VideoWriter;
 
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
 
 public class GraphicsFunctions {
+  static {
+    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+  }
+  
   public static void writeToPNG(BufferedImage image, String path) throws IOException {
       File output = new File(path);
       ImageIO.write(image, "png", output);
@@ -54,36 +60,58 @@ public class GraphicsFunctions {
     return o;
   }
   
-  public static void writeAnimation(String path, Supplier<Enumeration<BufferedImage>> frames) throws IOException {
-    writeAnimation(path, frames,-1);
+  public static BufferedImage MatToBufferedImage(Mat mat) {
+    int height = mat.height();
+    int width = mat.width();
+    var o = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
+    var b = o.getData().getDataBuffer();
+    for(int i=0;i<height;i++) {
+      for(int j=0;j<width;j++) {
+        b.setElem((i*width+j),(int)mat.get(i, j)[0]);
+      }
+    }
+    return o;
   }
-  public static void writeAnimation(String path, Supplier<Enumeration<BufferedImage>> frames, int hardLimit) throws IOException {
-    SequenceEncoder encoder = SequenceEncoder.create30Fps(new File(path));
-    System.out.println("Writing: " + path);
+  public static Mat BufferedImageToMat(BufferedImage img) {
+    int height = img.getHeight();
+    int width = img.getWidth();
+    var o = new Mat(new Size(width, height), CvType.CV_8UC4);
+    var b = img.getData().getDataBuffer();
+    for(int i=0;i<height;i++) {
+      for(int j=0;j<width;j++) {
+        var p = new Pixel32Bits(b.getElem(i*width+j));
+
+        byte[] pixel = {(byte) p.getB(), (byte) p.getG(), (byte) p.getR(), (byte) p.getA()}; // OpenCV stores pixels in BGRA order
+
+        o.put(i, j, pixel);
+      }
+    }
+    return o;
+  }
+  
+  public static void writeAnimation(String filename, Supplier<Enumeration<Mat>> frames, int width, int height, double fps) {
+    writeAnimation(filename, frames,width,height,fps,-1);
+  }
+  
+  public static void writeAnimation(String filename, Supplier<Enumeration<Mat>> frames, int width, int height, double fps, int hardLimit) {
+    var vw = new VideoWriter();
+    vw.open(filename,VideoWriter.fourcc('A', 'V', 'C', '1'),fps, new Size(width, height), true);
+    if (!vw.isOpened()) {
+      System.err.println("Failed to open the VideoWriter!");
+      return;
+    }
+    System.out.println("Writing: " + filename);
     var e = frames.get();
     int k=0;
     while(e.hasMoreElements()) {
       var frame = e.nextElement();
-      int width = frame.getWidth();
-      int height = frame.getHeight();
-      Picture picture = Picture.create(width, height, ColorSpace.RGB);
-      var b = frame.getData().getDataBuffer();
-      for(int i=0;i<height;i++) { 
-        for(int j=0;j<width;j++) { 
-          var p = new Pixel32Bits(b.getElem(((i*width)+j)));
-          
-          picture.getPlaneData(0)[3*((i*width)+j)] = (byte)(p.getR()-128);
-          picture.getPlaneData(0)[3*((i*width)+j)+1] = (byte)(p.getG()-128);
-          picture.getPlaneData(0)[3*((i*width)+j)+2] = (byte)(p.getB()-128);
-        }
-      }
+      vw.write(frame);
       System.out.print("\rWriting frame " + Integer.toString(++k));
-      encoder.encodeNativeFrame(picture);
       
       if(hardLimit>0 && k>=hardLimit) break;
     }
     
-    encoder.finish();
+    vw.release();
     System.out.println("\rDone.\n");
   }
   

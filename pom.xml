@@ -122,9 +122,9 @@
     		<version>1.11-8</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.jcodec</groupId>
-		    <artifactId>jcodec</artifactId>
-		    <version>0.2.5</version>
+		    <groupId>org.openpnp</groupId>
+		    <artifactId>opencv</artifactId>
+		    <version>4.9.0-0</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>

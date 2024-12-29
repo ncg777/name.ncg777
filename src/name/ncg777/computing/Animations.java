@@ -9,10 +9,11 @@ import java.util.function.Function;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 import name.ncg777.maths.MatrixOfIntegers;
+import org.opencv.core.Mat;
 
 public class Animations {
-  public static Enumeration<BufferedImage> Animation20241225_1(int width, int height, int fps, double dur) {
-    return new Enumeration<BufferedImage>() {
+  public static Enumeration<Mat> Animation20241225_1(int width, int height, double fps, double dur) {
+    return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
 
@@ -20,7 +21,7 @@ public class Animations {
         return k<upper;
       }
 
-      public BufferedImage nextElement() {
+      public Mat nextElement() {
         double normalized_time = ((double) k)/((double)upper);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -59,13 +60,13 @@ public class Animations {
           }
         }
         ++k;
-        return img;
+        return GraphicsFunctions.BufferedImageToMat(img);
       }
     };
   }
 
-  public static Enumeration<BufferedImage> Animation20241225_2(int width, int height, int fps, double dur) {
-    return new Enumeration<BufferedImage>() {
+  public static Enumeration<Mat> Animation20241225_2(int width, int height, double fps, double dur) {
+    return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
 
@@ -73,7 +74,7 @@ public class Animations {
         return k<upper;
       }
 
-      public BufferedImage nextElement() {
+      public Mat nextElement() {
         final double t = ((double) k)/((double)upper);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -95,12 +96,12 @@ public class Animations {
             }, 
             width, height);
         ++k;
-        return img;
+        return GraphicsFunctions.BufferedImageToMat(img);
       }
     };
   }
-  public static Enumeration<BufferedImage> Animation20241225_3(int width, int height, int fps, double dur) {
-    return new Enumeration<BufferedImage>() {
+  public static Enumeration<Mat> Animation20241225_3(int width, int height, double fps, double dur) {
+    return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
 
@@ -108,7 +109,7 @@ public class Animations {
         return k<upper;
       }
 
-      public BufferedImage nextElement() {
+      public Mat nextElement() {
         final double t = ((double) k)/((double)upper);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -131,15 +132,14 @@ public class Animations {
             }, 
             width, height);
         ++k;
-        return img;
+        return GraphicsFunctions.BufferedImageToMat(img);
       }
     };
   }
 
-  public static Enumeration<BufferedImage> Hadamard20241228_1(int n, int width, int height, int fps, double dur) {
-    var m = HadamardMatrix.getMatrix(n);
-
-    return new Enumeration<BufferedImage>() {
+  public static Enumeration<Mat> Hadamard20241228_1(int n, int width, int height, double fps, double dur) {
+    final var m = HadamardMatrix.getMatrix(n);
+    return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
 
@@ -147,7 +147,7 @@ public class Animations {
         return k<upper;
       }
 
-      public BufferedImage nextElement() {
+      public Mat nextElement() {
         final double t = (double) k/(double)upper;
         final Function<Double,Double> _f = (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,3.0);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -181,20 +181,20 @@ public class Animations {
             }, 
             width, height);
         ++k;     
-        return img;
+        return GraphicsFunctions.BufferedImageToMat(img);
       }
     };
   }
 
-  public static Enumeration<BufferedImage> MatrixOrb20241229_1(MatrixOfIntegers mat, int width, int height, int fps, double dur) {
+  public static Enumeration<Mat> MatrixOrb20241229_1(MatrixOfIntegers mat, int width, int height, double fps, double dur) {
     return MatrixOrb20241229_1(mat.toMatrixOfDoubles(), width, height, fps, dur);
   }
 
-  public static Enumeration<BufferedImage> MatrixOrb20241229_1(MatrixOfDoubles mat, int width, int height, int fps, double dur) {
+  public static Enumeration<Mat> MatrixOrb20241229_1(MatrixOfDoubles mat, int width, int height, double fps, double dur) {
     int m = mat.rowCount();
     int n = mat.columnCount();
 
-    return new Enumeration<BufferedImage>() {
+    return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
 
@@ -202,7 +202,7 @@ public class Animations {
         return k<upper;
       }
 
-      public BufferedImage nextElement() {
+      public Mat nextElement() {
         final double t = (double) k/(double)upper;
         final Function<Double,Double> _f =  (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,3.0);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -235,7 +235,7 @@ public class Animations {
             }, 
             width, height);
         ++k;     
-        return img;
+        return GraphicsFunctions.BufferedImageToMat(img);
       }
     };
   }
