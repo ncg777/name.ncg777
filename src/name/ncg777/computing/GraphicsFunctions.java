@@ -67,7 +67,24 @@ public class GraphicsFunctions {
     var b = o.getData().getDataBuffer();
     for(int i=0;i<height;i++) {
       for(int j=0;j<width;j++) {
-        b.setElem((i*width+j),(int)mat.get(i, j)[0]);
+        // Get the pixel from Mat (BGRA order)
+        double[] pixel = mat.get(i, j);
+
+        // Ensure the Mat is of type CV_8UC4 (BGRA)
+        if (pixel == null || pixel.length != 4) {
+            throw new IllegalArgumentException("The Mat must have 4 channels (BGRA).");
+        }
+
+        // Extract BGRA channels (OpenCV stores in BGRA order)
+        int blue = (int) pixel[0];  // Blue channel
+        int green = (int) pixel[1]; // Green channel
+        int red = (int) pixel[2];   // Red channel
+        int alpha = (int) pixel[3]; // Alpha channel
+
+        // Combine into an ARGB integer (Alpha, Red, Green, Blue)
+        int argb = (alpha << 24) | (red << 16) | (green << 8) | blue;
+
+        b.setElem((i*width+j), argb);
       }
     }
     return o;
