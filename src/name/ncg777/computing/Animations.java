@@ -160,8 +160,8 @@ public class Animations {
                 double th = Math.atan2(_x, _y);
                 Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                Double x = r*Math.sin(th+2.0*Math.PI*_f.apply(r));
-                Double y = r*Math.cos(th+2.0*Math.PI*_f.apply(r));
+                Double x = r*Math.sin(th+4.0*Math.PI*_f.apply(r));
+                Double y = r*Math.cos(th+4.0*Math.PI*_f.apply(r));
                 
                 //System.out.println(Double.toString(x) + ", " + Double.toString(y));
                 double v = m.get(
