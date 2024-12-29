@@ -160,8 +160,8 @@ public class Animations {
                 double th = Math.atan2(_x, _y);
                 Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                Double x = r*Math.cos(th+2.0*2.0*Math.PI*_f.apply(r));
-                Double y = r*Math.sin(th+2.0*2.0*Math.PI*_f.apply(r));
+                Double x = r*Math.cos(th+Math.PI*(-1.0+2.0*_f.apply(r)));
+                Double y = r*Math.sin(th+Math.PI*(-1.0+2.0*_f.apply(r)));
                 
                 double v = m.get(
                     (int)((0.5+x*0.5)*(double)(dim-1)), 
