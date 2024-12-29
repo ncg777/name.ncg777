@@ -150,7 +150,7 @@ public class Animations {
   
       public BufferedImage nextElement() {
           final double t = (double) k/(double)upper;
-          final Function<Double,Double> _f = (Double r) -> 4.0*(0.5+0.5*Math.cos(t*2.0*Math.PI)*r);
+          final Function<Double,Double> _f = (Double r) -> 2.0*Math.cos(t*2.0*Math.PI)*r;
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
@@ -160,19 +160,19 @@ public class Animations {
                 double th = Math.atan2(_x, _y);
                 Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                Double x = r*Math.cos(th+2.0*Math.PI*_f.apply(r));
-                Double y = r*Math.sin(th+2.0*Math.PI*_f.apply(r));
+                Double x = r*Math.sin(th+2.0*Math.PI*_f.apply(r));
+                Double y = r*Math.cos(th+2.0*Math.PI*_f.apply(r));
                 
                 //System.out.println(Double.toString(x) + ", " + Double.toString(y));
                 double v = m.get(
                     (int)((0.5+x*0.5)*(double)(dim-1)), 
                     (int)((0.5+y*0.5)*(double)(dim-1))).doubleValue();
-                var rfadestart = 0.6;
-                var rfadeend = 0.65;
+                var rfadestart = 0.5;
+                var rfadeend = 0.7;
                 return new Color(
                   (int)((0.5+0.5*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
-                  (int)((1.0-r)*(v*0.5+0.5)*255.0),
                   (int)((0.5-0.5*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
+                  0,
                   r > rfadeend ? 0 : (
                       r < rfadestart ? 255 : 
                           ((int)(255.0*
