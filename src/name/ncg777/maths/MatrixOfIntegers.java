@@ -84,6 +84,16 @@ public class MatrixOfIntegers extends Matrix<Integer> {
     return new MatrixOfIntegers(super.kronecker(other, (a,b) -> a*b));
   }
   
+  public MatrixOfDoubles toMatrixOfDoubles() {
+    var o = new MatrixOfDoubles(m,n); 
+    for(int i=0;i<rowCount();i++) {
+      for(int j=0;j<columnCount();j++) {
+        o.set(i, j, this.get(i, j).doubleValue());
+      }
+    }
+    return o;
+  }
+  
   @Override
   public VectorOfIntegers getColumnVector(int j) {
     return new VectorOfIntegers(super.getColumnVector(j));
