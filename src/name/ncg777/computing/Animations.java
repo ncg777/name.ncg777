@@ -150,7 +150,7 @@ public class Animations {
   
       public BufferedImage nextElement() {
           final double t = (double) k/(double)upper;
-          final Function<Double,Double> _f = (Double r) -> 1.25*(1.0-0.5*Math.sin(t*2.0*Math.PI)*r);
+          final Function<Double,Double> _f = (Double r) -> 4.0*(0.5+0.5*Math.cos(t*2.0*Math.PI)*r);
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
@@ -170,8 +170,8 @@ public class Animations {
                 var rfadestart = 0.6;
                 var rfadeend = 0.65;
                 return new Color(
-                  (int)((1.0-r)*(v*0.5+0.5)*255.0),
                   (int)((0.5+0.5*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
+                  (int)((1.0-r)*(v*0.5+0.5)*255.0),
                   (int)((0.5-0.5*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
                   r > rfadeend ? 0 : (
                       r < rfadestart ? 255 : 
