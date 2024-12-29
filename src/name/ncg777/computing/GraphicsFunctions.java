@@ -51,7 +51,7 @@ public class GraphicsFunctions {
     }
     
     encoder.finish();
-    System.out.println("Done.\n");
+    System.out.println("\rDone.");
   }
   
   public static void drawColorField2D(
