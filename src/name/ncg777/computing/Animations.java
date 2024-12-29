@@ -166,12 +166,13 @@ public class Animations {
               double v = (i>=dim || j >= dim) ? 0.0 : m.get(i,j).doubleValue();
               var rfadestart = 0.5;
               var rfadeend = 0.7;
+              var v2 = (v*0.5+0.5);
               return new Color(
-                  (int)((((0.75-0.25*Math.cos(2.0*Math.PI*t))*(v*0.5+0.5)+(0.5-v*0.5))*255.0)),
-                  (int)((((0.75+0.25*Math.cos(2.0*Math.PI*t))*(v*0.5+0.5)+(0.5-v*0.5))*255.0)),
-                  (int)(((0.5-v*0.5)*255.0)),
+                  (int)((((0.75-0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
+                  (int)((((0.75+0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
+                  (int)(0.0),
                   r > rfadeend ? 0 : (
-                      r < rfadestart ? 255 : 
+                      r < rfadestart ? (int)(v2*255.0) : 
                         ((int)(255.0*
                             (1.0-(
                                 (r-rfadestart)/(rfadeend-rfadestart)
@@ -219,12 +220,13 @@ public class Animations {
               double v = (i>=m || j >= n) ? 0.0 : Math.sin(mat.get(i,j)*Math.PI);
               var rfadestart = 0.5;
               var rfadeend = 0.7;
+              var v2 = (v*0.5+0.5);
               return new Color(
-                  (int)((((0.75-0.25*Math.cos(2.0*Math.PI*t))*(v*0.5+0.5)+(0.5-v*0.5))*255.0)),
-                  (int)((((0.75+0.25*Math.cos(2.0*Math.PI*t))*(v*0.5+0.5)+(0.5-v*0.5))*255.0)),
-                  (int)(((0.5-v*0.5)*255.0)),
+                  (int)((((0.75-0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
+                  (int)((((0.75+0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
+                  (int)(0.0),
                   r > rfadeend ? 0 : (
-                      r < rfadestart ? 255 : 
+                      r < rfadestart ? (int)(v2*255.0) : 
                         ((int)(255.0*
                             (1.0-(
                                 (r-rfadestart)/(rfadeend-rfadestart)
