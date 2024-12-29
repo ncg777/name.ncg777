@@ -19,6 +19,7 @@ import org.jcodec.common.model.ColorSpace;
 import org.jcodec.common.model.Picture;
 
 import name.ncg777.computing.structures.Pixel32Bits;
+import name.ncg777.maths.Matrix;
 
 public class GraphicsFunctions {
   public static void writeToPNG(BufferedImage image, String path) throws IOException {
@@ -26,7 +27,33 @@ public class GraphicsFunctions {
       ImageIO.write(image, "png", output);
   }
   
+  public static Matrix<Pixel32Bits> bufferedImageToMatrix(BufferedImage image) {
+    int m = image.getHeight();
+    int n = image.getWidth();
+    
+    var o = new Matrix<Pixel32Bits>(m,n);
+    var r = image.getData().getDataBuffer();
+    for(int i=0;i<m;i++) {
+      for(int j=0;j<n;j++) {
+        o.set(i,j,new Pixel32Bits(r.getElem(i*n+j)));
+      }
+    }
+    return o;
+  }
 
+  public static BufferedImage MatrixToBufferedImage(Matrix<Pixel32Bits> matrix) {
+    int height = matrix.rowCount();
+    int width = matrix.columnCount();
+    var o = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+    var b = o.getData().getDataBuffer();
+    for(int i=0;i<height;i++) {
+      for(int j=0;j<width;j++) {
+        b.setElem((i*width+j), matrix.get(i, j).toInteger());
+      }
+    }
+    return o;
+  }
+  
   public static void writeAnimation(String path, Supplier<Enumeration<BufferedImage>> frames) throws IOException {
     writeAnimation(path, frames,-1);
   }
@@ -57,7 +84,7 @@ public class GraphicsFunctions {
     }
     
     encoder.finish();
-    System.out.println("\rDone.");
+    System.out.println("\rDone.\n");
   }
   
   public static void drawColorField2D(

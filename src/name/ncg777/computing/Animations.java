@@ -153,7 +153,7 @@ public class Animations {
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
         int dim = m.columnCount();
-        g.rotate(Math.PI/4.0+Math.PI*2.0*t,width/2,height/2);
+        g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
         GraphicsFunctions.drawColorField2D(g, 
             (_x,_y) -> {
               double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
@@ -164,7 +164,7 @@ public class Animations {
               int i = (int)Math.floor((0.5+x*0.5)*((double)(dim)));
               int j = (int)Math.floor((0.5+y*0.5)*((double)(dim)));
               double v = (i>=dim || j >= dim) ? 0.0 : m.get(i,j).doubleValue();
-              var rfadestart = 0.5;
+              var rfadestart = 0.675;
               var rfadeend = 0.7;
               var v2 = (v*0.5+0.5);
               return new Color(
@@ -207,7 +207,7 @@ public class Animations {
         final Function<Double,Double> _f =  (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,3.0);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
-        g.rotate(Math.PI/4.0+Math.PI*2.0*t,width/2,height/2);
+        g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
         GraphicsFunctions.drawColorField2D(g, 
             (_x,_y) -> {
               double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
@@ -218,7 +218,7 @@ public class Animations {
               int i = (int)Math.floor((0.5+x*0.5)*((double)(m)));
               int j = (int)Math.floor((0.5+y*0.5)*((double)(n)));
               double v = (i>=m || j >= n) ? 0.0 : Math.sin(mat.get(i,j)*Math.PI);
-              var rfadestart = 0.5;
+              var rfadestart = 0.675;
               var rfadeend = 0.7;
               var v2 = (v*0.5+0.5);
               return new Color(
