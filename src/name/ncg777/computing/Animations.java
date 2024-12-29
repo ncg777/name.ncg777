@@ -149,7 +149,7 @@ public class Animations {
 
       public BufferedImage nextElement() {
         final double t = (double) k/(double)upper;
-        final Function<Double,Double> _f = (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,1.0/3.0);
+        final Function<Double,Double> _f = (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,3.0);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
         int dim = m.columnCount();
@@ -203,7 +203,7 @@ public class Animations {
 
       public BufferedImage nextElement() {
         final double t = (double) k/(double)upper;
-        final Function<Double,Double> _f =  (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,1.0/3.0);
+        final Function<Double,Double> _f =  (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,3.0);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
         g.rotate(Math.PI/4.0+Math.PI*2.0*t,width/2,height/2);
