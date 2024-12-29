@@ -30,6 +30,7 @@ public class GraphicsFunctions {
     SequenceEncoder encoder = SequenceEncoder.create30Fps(new File(path));
     System.out.println("Writing: " + path);
     var e = frames.get();
+    int k=0;
     while(e.hasMoreElements()) {
       var frame = e.nextElement();
       int width = frame.getWidth();
@@ -45,10 +46,12 @@ public class GraphicsFunctions {
           picture.getPlaneData(0)[3*((i*width)+j)+2] = (byte)(p.getB()-128);
         }
       }
+      System.out.print("\rWriting frame " + Integer.toString(++k));
       encoder.encodeNativeFrame(picture);
     }
     
     encoder.finish();
+    System.out.println("Done.\n");
   }
   
   public static void drawColorField2D(

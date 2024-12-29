@@ -57,7 +57,6 @@ public class Animations {
             }
           }
           
-          System.out.print("\r" + Integer.toString(++k) + " of " +  Integer.toString(upper));
           return img;
         }
     };
@@ -94,7 +93,6 @@ public class Animations {
               }, 
               width, height);
           
-          System.out.print("\r" + Integer.toString(++k) + " of " +  Integer.toString(upper));
           return img;
         }
       };
@@ -131,7 +129,6 @@ public class Animations {
               }, 
               width, height);
           
-          System.out.print("\r" + Integer.toString(++k) + " of " +  Integer.toString(upper));
           return img;
         }
       };
@@ -181,17 +178,7 @@ public class Animations {
                     ));
               }, 
               width, height);
-          
-          int digits = (int)(Math.floor(
-              Math.log10(
-                  Integer.valueOf(upper).doubleValue()
-              )
-          )+1.0);
-          String fmtStr ="%0" + Integer.toString(digits)+ "d";
-          System.out.print("\r" + 
-              String.format(fmtStr, ++k) + " of " +  Integer.toString(upper)
-          );
-          
+                 
           return img;
         }
       };
