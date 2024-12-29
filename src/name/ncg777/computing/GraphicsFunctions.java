@@ -26,7 +26,11 @@ public class GraphicsFunctions {
       ImageIO.write(image, "png", output);
   }
   
+
   public static void writeAnimation(String path, Supplier<Enumeration<BufferedImage>> frames) throws IOException {
+    writeAnimation(path, frames,-1);
+  }
+  public static void writeAnimation(String path, Supplier<Enumeration<BufferedImage>> frames, int hardLimit) throws IOException {
     SequenceEncoder encoder = SequenceEncoder.create30Fps(new File(path));
     System.out.println("Writing: " + path);
     var e = frames.get();
@@ -49,6 +53,7 @@ public class GraphicsFunctions {
       System.out.print("\rWriting frame " + Integer.toString(++k));
       encoder.encodeNativeFrame(picture);
       
+      if(hardLimit>0 && k>=hardLimit) break;
     }
     
     encoder.finish();
