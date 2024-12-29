@@ -160,8 +160,8 @@ public class Animations {
                 double th = Math.atan2(_x, _y);
                 Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                Double x = r*Math.cos(th+Math.PI*_f.apply(r));
-                Double y = r*Math.sin(th+Math.PI*_f.apply(r));
+                Double x = r*Math.sin(th+Math.PI*_f.apply(r));
+                Double y = r*Math.cos(th+Math.PI*_f.apply(r));
                 
                 //System.out.println(Double.toString(x) + ", " + Double.toString(y));
                 double v = m.get(
@@ -170,8 +170,8 @@ public class Animations {
                 var rfadestart = 0.5;
                 var rfadeend = 0.7;
                 return new Color(
-                  (int)((0.75+0.25*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
                   (int)((0.75-0.25*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
+                  (int)((0.75+0.25*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
                   0,
                   r > rfadeend ? 0 : (
                       r < rfadestart ? 255 : 
