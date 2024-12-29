@@ -150,22 +150,22 @@ public class Animations {
   
       public BufferedImage nextElement() {
           final double t = (double) k/(double)upper;
-          final Function<Double,Double> _f = (Double r) -> 3.0*(1.0-r)*r;
+          final Function<Double,Double> _f = (Double r) -> 4.0*(-1.0+2.0*(1.0-r)*r);
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
-          g.rotate(1.0*_f.apply(t)*Math.PI*2.0,width/2,height/2);
+          g.rotate((Math.PI/4.0)+_f.apply(t)*Math.PI*4.0,width/2,height/2);
           GraphicsFunctions.drawColorField2D(g, 
               (_x,_y) -> {
-                double th = Math.atan2(_x, _y);
+                double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
                 Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                Double x = r*Math.cos(th+2.0*Math.PI*(0.5+0.5*_f.apply(r)));
-                Double y = r*Math.sin(th+2.0*Math.PI*(0.5+0.5*_f.apply(r)));
+                Double x = r*Math.cos(th+Math.PI*(-1.0+2.0*_f.apply(r)));
+                Double y = r*Math.sin(th+Math.PI*(-1.0+2.0*_f.apply(r)));
                 
                 double v = m.get(
-                    (int)((0.5+x*0.5)*(double)(dim-1)), 
-                    (int)((0.5+y*0.5)*(double)(dim-1))).doubleValue();
+                    (int)((0.5+x*0.5)*((double)dim)), 
+                    (int)((0.5+y*0.5)*((double)dim))).doubleValue();
                 var rfadestart = 0.5;
                 var rfadeend = 0.7;
                 return new Color(
