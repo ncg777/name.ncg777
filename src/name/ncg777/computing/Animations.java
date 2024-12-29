@@ -150,11 +150,11 @@ public class Animations {
   
       public BufferedImage nextElement() {
           final double t = (double) k/(double)upper;
-          final Function<Double,Double> _f = (Double r) -> 1.0*Math.sin(t*2.0*Math.PI)*r;
+          final Function<Double,Double> _f = (Double r) -> 3.0*(Math.sin(t*2.0*Math.PI)*(1.0-r)*r);
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
-          g.rotate(Math.PI/4.0+_f.apply(t)*Math.PI*2.0,width/2,height/2);
+          g.rotate(-Math.PI/4.0+_f.apply(t)*Math.PI*2.0,width/2,height/2);
           GraphicsFunctions.drawColorField2D(g, 
               (_x,_y) -> {
                 double th = Math.atan2(_x, _y);
