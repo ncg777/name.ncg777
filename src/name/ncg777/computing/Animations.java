@@ -164,14 +164,14 @@ public class Animations {
                 Double y = r*Math.sin(th+Math.PI*(_f.apply(r)));
                 
                 double v = m.get(
-                    (int)((0.5+x*0.5)*((double)dim)), 
-                    (int)((0.5+y*0.5)*((double)dim))).doubleValue();
+                    (int)(Math.min((0.5+x*0.5)*Math.sqrt(2.0),1.0)*((double)dim-1)), 
+                    (int)(Math.min((0.5+y*0.5)*Math.sqrt(2.0),1.0)*((double)dim-1))).doubleValue();
                 var rfadestart = 0.5;
                 var rfadeend = 0.7;
                 return new Color(
                   (int)((0.75-0.25*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
                   (int)((0.75+0.25*Math.cos(2.0*Math.PI*t))*((1.0-r)*(v*0.5+0.5)*255.0)),
-                  (int)(r*255.0),
+                  (int)((0.5*(v*0.5+0.5))*128.0),
                   r > rfadeend ? 0 : (
                       r < rfadestart ? 255 : 
                           ((int)(255.0*
