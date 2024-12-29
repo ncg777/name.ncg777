@@ -150,7 +150,7 @@ public class Animations {
   
       public BufferedImage nextElement() {
           final double t = (double) k/(double)upper;
-          final Function<Double,Double> _f = (Double r) -> 2.0*Math.cos(t*2.0*Math.PI)*r;
+          final Function<Double,Double> _f = (Double r) -> 2.0*Math.sin(t*2.0*Math.PI)*r;
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
@@ -160,8 +160,8 @@ public class Animations {
                 double th = Math.atan2(_x, _y);
                 Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                Double x = r*Math.sin(th+4.0*Math.PI*_f.apply(r));
-                Double y = r*Math.cos(th+4.0*Math.PI*_f.apply(r));
+                Double x = r*Math.cos(th+Math.PI*_f.apply(r));
+                Double y = r*Math.sin(th+Math.PI*_f.apply(r));
                 
                 //System.out.println(Double.toString(x) + ", " + Double.toString(y));
                 double v = m.get(
