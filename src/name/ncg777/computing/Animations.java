@@ -149,7 +149,7 @@ public class Animations {
 
       public BufferedImage nextElement() {
         final double t = (double) k/(double)upper;
-        final Function<Double,Double> _f = (Double r) -> -1.0+11.0*(1.0-r)*r;
+        final Function<Double,Double> _f = (Double r) -> -1.0+3.0*(1.0-r)*r;
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
         int dim = m.columnCount();
@@ -161,8 +161,8 @@ public class Animations {
 
               Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
               Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
-              int i = (int)Math.floor(Math.sqrt(2.0)*(0.5+x*0.5)*((double)(dim)));
-              int j = (int)Math.floor(Math.sqrt(2.0)*(0.5+y*0.5)*((double)(dim)));
+              int i = (int)Math.floor((0.5+x*0.5)*((double)(dim)));
+              int j = (int)Math.floor((0.5+y*0.5)*((double)(dim)));
               double v = (i>=dim || j >= dim) ? 0.0 : m.get(i,j).doubleValue();
               var rfadestart = 0.5;
               var rfadeend = 0.7;
@@ -214,8 +214,8 @@ public class Animations {
 
               Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
               Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
-              int i = (int)Math.floor(Math.sqrt(2.0)*(0.5+x*0.5)*((double)(m)));
-              int j = (int)Math.floor(Math.sqrt(2.0)*(0.5+y*0.5)*((double)(n)));
+              int i = (int)Math.floor((0.5+x*0.5)*((double)(m)));
+              int j = (int)Math.floor((0.5+y*0.5)*((double)(n)));
               double v = (i>=m || j >= n) ? 0.0 : Math.sin(mat.get(i,j)*Math.PI);
               var rfadestart = 0.5;
               var rfadeend = 0.7;
