@@ -56,7 +56,7 @@ public class Animations {
               g.rotate(40.0*(double)k*2*Math.PI/(double)upper, width/2.0, height/2.0);
             }
           }
-          
+          ++k;
           return img;
         }
     };
@@ -92,7 +92,7 @@ public class Animations {
                   (int)(128.0*(1.0+Math.tanh(20*(0.5-r1)))));
               }, 
               width, height);
-          
+          ++k;
           return img;
         }
       };
@@ -128,7 +128,7 @@ public class Animations {
                   (int)(127.0*(1.0+Math.tanh(25.0*(0.5-r1-0.025*(Math.sin(th*12.0 -t*Math.PI*6.0)))))));
               }, 
               width, height);
-          
+          ++k;
           return img;
         }
       };
@@ -178,7 +178,7 @@ public class Animations {
                     ));
               }, 
               width, height);
-                 
+          ++k;     
           return img;
         }
       };

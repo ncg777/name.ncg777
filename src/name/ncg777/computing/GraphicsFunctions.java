@@ -48,6 +48,7 @@ public class GraphicsFunctions {
       }
       System.out.print("\rWriting frame " + Integer.toString(++k));
       encoder.encodeNativeFrame(picture);
+      
     }
     
     encoder.finish();
