@@ -150,7 +150,7 @@ public class Animations {
   
       public BufferedImage nextElement() {
           final double t = (double) k/(double)upper;
-          final Function<Double,Double> _f = (Double r) -> 2.0*(-1.0+2.0*(1.0-r)*r);
+          final Function<Double,Double> _f = (Double r) -> 4.0*(-1.0+2.0*(1.0-r)*r);
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           int dim = m.columnCount();
