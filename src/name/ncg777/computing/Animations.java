@@ -159,8 +159,8 @@ public class Animations {
               double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
               Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
 
-              Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
-              Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
+              Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
+              Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
               int i = (int)Math.floor((0.5+x*0.5)*((double)(dim)));
               int j = (int)Math.floor((0.5+y*0.5)*((double)(dim)));
               double v = (i>=dim || j >= dim) ? 0.0 : m.get(i,j).doubleValue();
@@ -212,8 +212,8 @@ public class Animations {
               double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
               Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
 
-              Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
-              Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
+              Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
+              Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
               int i = (int)Math.floor((0.5+x*0.5)*((double)(m)));
               int j = (int)Math.floor((0.5+y*0.5)*((double)(n)));
               double v = (i>=m || j >= n) ? 0.0 : Math.sin(mat.get(i,j)*Math.PI);
