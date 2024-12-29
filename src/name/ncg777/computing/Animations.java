@@ -160,12 +160,12 @@ public class Animations {
                 double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
                 Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
                 
-                Double x = r*Math.cos(th+Math.PI*(_f.apply(r)));
-                Double y = r*Math.sin(th+Math.PI*(_f.apply(r)));
+                Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
+                Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
                 
                 double v = m.get(
-                    (int)((0.5+x*0.5)*((double)(dim))), 
-                    (int)((0.5+y*0.5)*((double)(dim)))).doubleValue();
+                    (int)((0.5+x*0.5)*((double)(dim-1))), 
+                    (int)((0.5+y*0.5)*((double)(dim-1)))).doubleValue();
                 var rfadestart = 0.5;
                 var rfadeend = 0.7;
                 return new Color(
