@@ -164,8 +164,8 @@ public class Animations {
                 Double y = r*Math.sin(th+Math.PI*(_f.apply(r)));
                 
                 double v = m.get(
-                    (int)((0.5+x*0.5)*((double)(dim-1))), 
-                    (int)((0.5*y*0.5)*((double)(dim-1)))).doubleValue();
+                    (int)((0.5+x*0.5)*((double)(dim))), 
+                    (int)((0.5+y*0.5)*((double)(dim)))).doubleValue();
                 var rfadestart = 0.5;
                 var rfadeend = 0.7;
                 return new Color(
