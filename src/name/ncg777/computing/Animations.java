@@ -159,10 +159,9 @@ public class Animations {
                 
                 Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
                 Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*(_f.apply(r)));
-                
-                double v = m.get(
-                    (int)((0.5+x*0.5)*((double)(dim-1))), 
-                    (int)((0.5+y*0.5)*((double)(dim-1)))).doubleValue();
+                int i = (int)Math.floor(Math.sqrt(2.0)*(0.5+x*0.5)*((double)(dim)));
+                int j = (int)Math.floor(Math.sqrt(2.0)*(0.5+y*0.5)*((double)(dim)));
+                double v = (i>=dim || j >= dim) ? 0.0 : m.get(i,j).doubleValue();
                 var rfadestart = 0.5;
                 var rfadeend = 0.7;
                 return new Color(
