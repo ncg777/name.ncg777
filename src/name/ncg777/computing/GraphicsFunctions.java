@@ -28,7 +28,7 @@ public class GraphicsFunctions {
   
   public static void writeAnimation(String path, Supplier<Enumeration<BufferedImage>> frames) throws IOException {
     SequenceEncoder encoder = SequenceEncoder.create30Fps(new File(path));
-    
+    System.out.println("Writing: " + path);
     var e = frames.get();
     while(e.hasMoreElements()) {
       var frame = e.nextElement();
