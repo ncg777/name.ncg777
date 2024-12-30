@@ -3,11 +3,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -153,6 +153,45 @@ public class GraphicsFunctions {
     }
   }
   
+  public static BiFunction<Double, Double, Color> interpolateARGBColors(List<Color> colors) {
+    if (colors == null || colors.size() < 2) {
+        throw new IllegalArgumentException("List of colors must contain at least two colors.");
+    }
+
+    return (t, u) -> {
+        // Find the two colors to interpolate between
+        int numColors = colors.size();
+        double scaledU = u * (numColors - 1);
+        int lowerIndex = (int) Math.floor(scaledU);
+        int upperIndex = (int) Math.ceil(scaledU);
+
+        // Handle case where u is exactly 1, which corresponds to the last color
+        if (lowerIndex == upperIndex) {
+            return colors.get(lowerIndex);
+        }
+
+        // Interpolate between the two colors
+        Color color1 = colors.get(lowerIndex);
+        Color color2 = colors.get(upperIndex);
+
+        double fraction = scaledU - lowerIndex;
+
+        // Interpolate each ARGB component (alpha, red, green, blue)
+        int alpha = (int) (color1.getAlpha() + (color2.getAlpha() - color1.getAlpha()) * fraction);
+        int red = (int) (color1.getRed() + (color2.getRed() - color1.getRed()) * fraction);
+        int green = (int) (color1.getGreen() + (color2.getGreen() - color1.getGreen()) * fraction);
+        int blue = (int) (color1.getBlue() + (color2.getBlue() - color1.getBlue()) * fraction);
+
+        // Ensure values are within the valid range [0, 255]
+        alpha = Math.min(255, Math.max(0, alpha));
+        red = Math.min(255, Math.max(0, red));
+        green = Math.min(255, Math.max(0, green));
+        blue = Math.min(255, Math.max(0, blue));
+
+        return new Color(red, green, blue, alpha);
+    };
+  }
+  
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Double> x, 
@@ -164,17 +203,13 @@ public class GraphicsFunctions {
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY,
       Function<Double,Double> width,
-      Function<Double, Color> color, 
+      BiFunction<Double, Double, Color> color, 
       Function<Double,Double> deltaf) {
     g.setStroke(new BasicStroke(2.0f));
     
     for(double t=from_inclusive; t<to_exclusive; t+=deltaf.apply(t)) {
       var delta = deltaf.apply(t);
-      var c = color.apply(t);
-      
-      g.setColor(c);
-      g.setPaint(c);
-      
+
       double sx = scaleX.apply(t);
       double sy = scaleY.apply(t);
       double tx = translateX.apply(t);
@@ -189,29 +224,41 @@ public class GraphicsFunctions {
       double y_ccw = A_y + (B_x-A_x);
       double x_cw = A_x + (B_y-A_y);
       double y_cw = A_y - (B_x-A_x);
+      
       double w = width.apply(t);
       double f = w /
           (2.0*Math.sqrt(
               Math.pow(((B_x-A_x)), 2.0) + 
               Math.pow(((B_y-A_y)), 2.0)));
       
-      g.fillRect((int)Math.round(A_x),(int)Math.round(A_y),1,1);
+      x_ccw = A_x+f*sx*(x_ccw-A_x);
+      y_ccw = A_y+f*sy*(y_ccw-A_y);
+      x_cw = A_x+f*sx*(x_cw-A_x);
+      y_cw = A_y+f*sy*(y_cw-A_y);
       
-      g.draw(
-          new Line2D.Double(
-              A_x, 
-              A_y, 
-              A_x+f*sx*(((x_ccw-A_x))), 
-              A_y+f*sy*(((y_ccw-A_y)))
-          ));
-      
-      g.draw(
-          new Line2D.Double(
-              A_x, 
-              A_y, 
-              A_x+f*sx*(((x_cw-A_x))), 
-              A_y+f*sy*(((y_cw-A_y)))
-          ));
+      double dx = x_ccw-A_x;
+      double dy = y_ccw-A_y;
+      double l = Math.sqrt(Math.pow(dx, 2.0)+Math.pow(dy, 2.0));
+      double invl = 1.0/l;
+      // For the counterclockwise side (from the center to x_ccw, y_ccw)
+      for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
+          Color c = color.apply(t, u); // Use the gradient function
+          g.setColor(c);
+          g.setPaint(c);
+          double interX = A_x + u * (x_ccw - A_x);
+          double interY = A_y + u * (y_ccw - A_y);
+          g.fill(new Ellipse2D.Double(interX - 1, interY - 1, 2, 2)); // Draw small dot
+      }
+
+      // For the clockwise side (from the center to x_cw, y_cw)
+      for (double u = 0; u <= 1; u += 0.1) { // Can adjust step size for finer control
+          Color c = color.apply(t, u); // Use the gradient function
+          g.setColor(c);
+          g.setPaint(c);
+          double interX = A_x + u * (x_cw - A_x);
+          double interY = A_y + u * (y_cw - A_y);
+          g.fill(new Ellipse2D.Double(interX - 1, interY - 1, 2, 2)); // Draw small dot
+      }
     }
   }
   
@@ -235,7 +282,7 @@ public class GraphicsFunctions {
         (t) -> defaultScaleX, 
         (t) -> defaultScaleY, 
         (t) -> defaultWidth, 
-        (t) -> defaultColor, 
+        (t,u) -> defaultColor, 
         (t) -> defaultDelta);
   }
   
@@ -251,7 +298,7 @@ public class GraphicsFunctions {
         (t) -> defaultScaleX, 
         (t) -> defaultScaleY, 
         (t) -> defaultWidth, 
-        (t) -> defaultColor, 
+        (t,u) -> defaultColor, 
         (t) -> defaultDelta);
   }
   
@@ -269,7 +316,7 @@ public class GraphicsFunctions {
         (t) -> defaultScaleX, 
         (t) -> defaultScaleY, 
         (t) -> defaultWidth, 
-        (t) -> defaultColor, 
+        (t,u) -> defaultColor, 
         (t) -> defaultDelta);
   }
   
@@ -289,7 +336,7 @@ public class GraphicsFunctions {
         scaleX, 
         scaleY, 
         (t) -> defaultWidth, 
-        (t) -> defaultColor, 
+        (t,u) -> defaultColor, 
         (t) -> defaultDelta);
   }
   
@@ -310,7 +357,7 @@ public class GraphicsFunctions {
         scaleX, 
         scaleY, 
         width, 
-        (t) -> defaultColor, 
+        (t,u) -> defaultColor, 
         (t) -> defaultDelta);
   }
   
@@ -325,7 +372,7 @@ public class GraphicsFunctions {
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY,
       Function<Double,Double> width,
-      Function<Double,Color> color) {
+      BiFunction<Double,Double,Color> color) {
     drawParametric2D(g, x, y, from_inclusive, to_exclusive, 
         translateX,
         translateY, 

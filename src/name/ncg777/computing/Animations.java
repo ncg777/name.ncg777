@@ -48,11 +48,11 @@ public class Animations {
                 (t) -> Double.valueOf(width),
                 (t) -> Double.valueOf(height),
                 (t) -> 0.1+0.1*Math.sin(42*Math.PI*t)*Math.sin(20*Math.PI*normalized_time),
-                (t) -> new Color(
+                (t,u) -> new Color(
                     (int)Math.round(128.0-127.0*(j*Math.cos(Math.PI*(3.0*t-i*normalized_time)))), 
                     (int)Math.round(128.0+127.0*(j*Math.sin(Math.PI*(3.0*t+i*normalized_time)))), 
                     128,
-                    16
+                    (int)(255.0*(1.0-u))
                     ),
                 (t) -> 0.00075+0.0007*Math.sin(Math.PI*2.0*t + Math.PI*Math.sin(80.0*Math.PI*normalized_time))
                 );
