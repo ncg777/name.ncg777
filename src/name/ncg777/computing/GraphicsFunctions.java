@@ -240,6 +240,7 @@ public class GraphicsFunctions {
       double dy = y_ccw-A_y;
       double l = Math.sqrt(Math.pow(dx, 2.0)+Math.pow(dy, 2.0));
       double invl = 1.0/l;
+      
       // For the counterclockwise side (from the center to x_ccw, y_ccw)
       for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
           Color c = color.apply(t, u); // Use the gradient function
@@ -251,7 +252,7 @@ public class GraphicsFunctions {
       }
 
       // For the clockwise side (from the center to x_cw, y_cw)
-      for (double u = 0; u <= 1; u += 0.1) { // Can adjust step size for finer control
+      for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
           Color c = color.apply(t, u); // Use the gradient function
           g.setColor(c);
           g.setPaint(c);
