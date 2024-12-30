@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import junit.framework.TestCase;
-public class FunctionTests extends TestCase{
+public class FunctionsTests extends TestCase{
 
   @Override
   protected void setUp() throws Exception { }
