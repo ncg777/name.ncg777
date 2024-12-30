@@ -173,7 +173,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
    * @return An array of eigenvalues.
    */
   public List<Double> computeEigenvalues() {
-    return computeEigenvalues(1000,1e-10);
+    return computeEigenvalues(1000,Functions.DEFAULT_EPSILON);
   }
   
   /**
@@ -255,7 +255,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
   }
 
   private double[] computeHouseholderVector(double[] x) {
-      double normX = normL2(x);
+      double normX = Functions.normL2(x);
       double[] v = new double[x.length];
       System.arraycopy(x, 0, v, 0, x.length);
       if (normX == 0.0) {
@@ -266,7 +266,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
       } else {
           v[0] -= normX;
       }
-      double normV = normL2(v);
+      double normV = Functions.normL2(v);
       for (int i = 0; i < v.length; i++) {
           v[i] /= normV;
       }
@@ -302,13 +302,6 @@ public class MatrixOfDoubles extends Matrix<Double> {
           }
       }
       return result;
-  }
-
-  public double normL2(double[] x) {
-      double sum = 0.0;
-      for (double xi : x)
-          sum += xi * xi;
-      return Math.sqrt(sum);
   }
 
   public MatrixOfDoubles identityMatrix(int size) {
@@ -372,8 +365,6 @@ public class MatrixOfDoubles extends Matrix<Double> {
     return new MatrixOfDoubles(Matrix.parseJSONFile(path, Parsers.doubleParser));
   }
 
-  
-  
   /**
    * Compares two matrices for equality within a given epsilon.
    *

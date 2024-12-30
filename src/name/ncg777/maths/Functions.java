@@ -10,6 +10,14 @@ public class Functions {
       Math.sqrt(1-t)/Math.sqrt(t));
   public final static double DEFAULT_EPSILON = 1e-10;
   
+
+  public static double normL2(double... x) {
+      double sum = 0.0;
+      for (double xi : x)
+          sum += xi * xi;
+      return Math.sqrt(sum);
+  }
+  
   public static Function<List<Double>, List<Double>> numericalGradient(Function<List<Double>, Double> f) {
     return numericalGradient(f, DEFAULT_EPSILON);
   }
