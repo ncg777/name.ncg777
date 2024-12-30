@@ -3,6 +3,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -241,24 +242,19 @@ public class GraphicsFunctions {
       double l = Math.sqrt(Math.pow(dx, 2.0)+Math.pow(dy, 2.0));
       double invl = 1.0/l;
       
-      // For the counterclockwise side (from the center to x_ccw, y_ccw)
-      for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
-          Color c = color.apply(t, u); // Use the gradient function
-          g.setColor(c);
-          g.setPaint(c);
-          double interX = A_x + u * (x_ccw - A_x);
-          double interY = A_y + u * (y_ccw - A_y);
-          g.fill(new Ellipse2D.Double(interX - 1, interY - 1, 2, 2)); // Draw small dot
-      }
-
+      double interX = 0.0;
+      double interY = 0.0;
       // For the clockwise side (from the center to x_cw, y_cw)
       for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
           Color c = color.apply(t, u); // Use the gradient function
           g.setColor(c);
           g.setPaint(c);
-          double interX = A_x + u * (x_cw - A_x);
-          double interY = A_y + u * (y_cw - A_y);
-          g.fill(new Ellipse2D.Double(interX - 1, interY - 1, 2, 2)); // Draw small dot
+          interX = A_x + u * (x_cw - A_x);
+          interY = A_y + u * (y_cw - A_y);
+          g.fill(new Rectangle2D.Double(interX, interY, 1, 1));
+          interX = A_x + u * (x_ccw - A_x);
+          interY = A_y + u * (y_ccw - A_y);
+          g.fill(new Rectangle2D.Double(interX, interY, 1, 1)); 
       }
     }
   }
