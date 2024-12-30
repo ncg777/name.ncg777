@@ -13,15 +13,15 @@ public class FunctionTests extends TestCase{
   protected void setUp() throws Exception { }
 
   public void testNumericalGradient() {
-    Function<VectorOfDoubles,VectorOfDoubles> function = (VectorOfDoubles x) -> VectorOfDoubles.of(x.get(0) * x.get(0), x.get(1) * x.get(1));
-    var gradient = Functions.numericalGradient(function, 1e-5).apply(VectorOfDoubles.of(1.0, 2.0));
+    Function<VectorOfDoubles,Double> function = (VectorOfDoubles x) -> x.get(0) * x.get(0) + x.get(1) * x.get(1);
+    var gradient = Functions.numericalGradient(function).apply(VectorOfDoubles.of(1.0, 2.0));
     assertThat(gradient.get(0).intValue(), is(2));
     assertThat(gradient.get(1).intValue(), is(4));
   }
 
   public void testNumericalJacobian() {
     Function<VectorOfDoubles,VectorOfDoubles> function = (VectorOfDoubles x) -> VectorOfDoubles.of(x.get(0) + x.get(1), x.get(0) * x.get(1));
-    var jacobian = Functions.numericalJacobian(function, 1e-5).apply(VectorOfDoubles.of(1.0, 2.0));
+    var jacobian = Functions.numericalJacobian(function).apply(VectorOfDoubles.of(1.0, 2.0));
     assertThat(
         jacobian.isEqual(
             new MatrixOfDoubles(new Double[][]{{1.0, 1.0},{2.0, 1.0}}), 
@@ -35,7 +35,7 @@ public class FunctionTests extends TestCase{
     
     Function<VectorOfDoubles, VectorOfDoubles> function = (VectorOfDoubles x) -> VectorOfDoubles.of(x.get(0) * x.get(0) + x.get(1), x.get(1) * x.get(1) + x.get(0), x.get(0));
     
-    Double[][][] hessian = Functions.numericalHessian(function, 1e-5).apply(VectorOfDoubles.of(1.0, 2.0));
+    Double[][][] hessian = Functions.numericalHessian(function).apply(VectorOfDoubles.of(1.0, 2.0));
     
     assertThat(hessian.length, is(v));
     assertThat(hessian[0].length, is(u));
