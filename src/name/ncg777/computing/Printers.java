@@ -11,10 +11,6 @@ import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.JaggedList;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.Composition;
-import name.ncg777.maths.Vector;
-import name.ncg777.maths.VectorOfBooleans;
-import name.ncg777.maths.VectorOfDoubles;
-import name.ncg777.maths.VectorOfIntegers;
 import name.ncg777.maths.music.pcs12.Pcs12;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -36,13 +32,6 @@ public class Printers {
   public static Function<Pcs12, String> PCS12Printer = (pcs) -> pcs.toForteNumberString();
   public static Function<Combination, String> combinationPrinter = (c) -> c.toBinaryString();
   public static Function<Composition, String> compositionPrinter = (c) -> c.toBinaryString();
-  public static Function<VectorOfDoubles,String> vectorOfDoublesPrinter = (v) -> v.toString();
-  public static Function<VectorOfIntegers,String> vectorOfIntegersPrinter = (v) -> v.toString();
-  public static Function<VectorOfBooleans,String> vectorOfBooleansPrinter = (v) -> v.toString();
-  
-  public static <T extends Comparable<? super T>> Function<Vector<T>, String> vectorDecorator(Function<T,String> printer) {
-    return (v) -> v.toString(printer);
-  }
   
   public static Function<HomoPair<Integer>, String> intPairPrinter = (p) -> {
     Sequence ss = new Sequence();

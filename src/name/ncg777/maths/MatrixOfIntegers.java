@@ -1,6 +1,9 @@
 package name.ncg777.maths;
 
 import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.collections4.list.UnmodifiableList;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
@@ -95,13 +98,13 @@ public class MatrixOfIntegers extends Matrix<Integer> {
   }
   
   @Override
-  public VectorOfIntegers getColumnVector(int j) {
-    return new VectorOfIntegers(super.getColumnVector(j));
+  public List<Integer> getColumnVector(int j) {
+    return UnmodifiableList.unmodifiableList(super.getColumnVector(j));
   }
   
   @Override
-  public VectorOfIntegers getRowVector(int i) {
-    return new VectorOfIntegers(super.getRowVector(i));
+  public List<Integer> getRowVector(int i) {
+    return UnmodifiableList.unmodifiableList(super.getRowVector(i));
   }
   
   public static MatrixOfIntegers parseJSONFile(String path) throws JsonParseException, IOException {

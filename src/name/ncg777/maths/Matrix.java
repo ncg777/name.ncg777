@@ -11,6 +11,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+
+import org.apache.commons.collections4.list.UnmodifiableList;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -425,17 +428,6 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
       set(i++, j, v);
     }
   }
-  public void insertColumn(int j, Vector<T> c) { 
-    if (c.getDimension() != m && n != 0) {
-      throw new IllegalArgumentException("Matrix::insertColumn vector dimension don't match matrix.");
-    }
-
-    shiftColumnsRight(j);
-
-    for (int i=0;i<m;i++) {
-      set(i, j, c.get(i));
-    }
-  }
   /**
    * Inserts a column with all values set to v. Matrix must be unlocked.
    * 
@@ -470,15 +462,6 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   public void insertRow(int i, List<T> r) {
     if (r.size() != n && m != 0) {
       throw new IllegalArgumentException("Matrix::insertRow list size don't match matrix.");
-    }
-    shiftRowsDown(i);
-    for (int j = 0; j < n; j++) {
-      set(i, j, r.get(j));
-    }
-  }
-  public void insertRow(int i, Vector<T> r) {
-    if (r.getDimension() != n && m != 0) {
-      throw new IllegalArgumentException("Matrix::insertRow vector dimension don't match matrix.");
     }
     shiftRowsDown(i);
     for (int j = 0; j < n; j++) {
@@ -573,14 +556,6 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
       set(i, j, c);
     }
   }
-  public void setColumn(int j, Vector<T> c) {
-    if (c.getDimension() != m) {
-      throw new IllegalArgumentException("Matrix::setColumn vector dimension don't match matrix.");
-    }
-    for (int i=0;i<c.getDimension();i++) {
-      set(i, j, c.get(i));
-    }
-  }
   /**
    * Overwrites row i with ArrayList l Matrix must be unlocked.
    * 
@@ -594,14 +569,6 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     int j = 0;
     for (T e : r) {
       set(i, j++, e);
-    }
-  }
-  public void setRow(int i, Vector<T> r) {
-    if (r.getDimension() != n) {
-      throw new IllegalArgumentException("Matrix::setRow vector dimension don't match matrix.");
-    }
-    for (int j=0;j<r.getDimension();j++) {
-      set(i, j, r.get(j));
     }
   }
   /**
@@ -630,8 +597,8 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     return o;
   }
   
-  public Vector<T> getColumnVector(int j) {
-    return Vector.of(getColumn(j));
+  public List<T> getColumnVector(int j) {
+    return UnmodifiableList.unmodifiableList(getColumn(j));
   }
   
   /**
@@ -649,8 +616,8 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     return r;
   }
   
-  public Vector<T> getRowVector(int i) {
-    return Vector.of(getRow(i));
+  public List<T> getRowVector(int i) {
+    return UnmodifiableList.unmodifiableList(getRow(i));
   }
   
   /**

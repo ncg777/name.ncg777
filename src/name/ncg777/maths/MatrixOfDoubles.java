@@ -1,6 +1,9 @@
 package name.ncg777.maths;
 
 import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.collections4.list.UnmodifiableList;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
@@ -47,13 +50,13 @@ public class MatrixOfDoubles extends Matrix<Double> {
   }
   
   @Override
-  public VectorOfDoubles getColumnVector(int j) {
-    return new VectorOfDoubles(super.getColumnVector(j));
+  public List<Double> getColumnVector(int j) {
+    return UnmodifiableList.unmodifiableList(super.getColumnVector(j));
   }
   
   @Override
-  public VectorOfDoubles getRowVector(int i) {
-    return new VectorOfDoubles(super.getRowVector(i));
+  public List<Double> getRowVector(int i) {
+    return UnmodifiableList.unmodifiableList(super.getRowVector(i));
   }
   
   /**
@@ -129,7 +132,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
    * @param epsilon       Convergence threshold
    * @return An array of eigenvalues.
    */
-  public VectorOfDoubles computeEigenvalues(int maxIterations, double epsilon) {
+  public List<Double> computeEigenvalues(int maxIterations, double epsilon) {
       if (m != n)
           throw new IllegalArgumentException("Matrix must be square to compute eigenvalues.");
 
@@ -159,7 +162,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
           eigenvalues[i] = Ak[i][i];
       }
 
-      return VectorOfDoubles.of(eigenvalues);
+      return List.of(eigenvalues);
   }
   /**
    * Computes the eigenvalues of the matrix using the QR algorithm.
@@ -169,7 +172,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
    * @param epsilon       Convergence threshold
    * @return An array of eigenvalues.
    */
-  public VectorOfDoubles computeEigenvalues() {
+  public List<Double> computeEigenvalues() {
     return computeEigenvalues(1000,1e-10);
   }
   
