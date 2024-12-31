@@ -1,14 +1,22 @@
 package name.ncg777.computing;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 import name.ncg777.maths.MatrixOfIntegers;
+
+import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.distribution.UniformIntegerDistribution;
+
 import org.opencv.core.Mat;
 
 public class Animations {
@@ -239,4 +247,82 @@ public class Animations {
       }
     };
   }
+  
+  
+  public static Enumeration<Mat> Droplets20241230_1(double freq, int width, int height, double fps, double dur) {
+    var nd = new NormalDistribution(0.0, 0.25);
+    var ud = new UniformIntegerDistribution(4, 16);
+    double period = 1.0/freq;
+    
+    return new Enumeration<Mat>() {
+      List<BiConsumer<Graphics2D, Double>> df = new ArrayList<BiConsumer<Graphics2D, Double>>();
+      int upper = (int)(dur*fps);
+      int k = 0;
+      
+      Runnable regen = () -> {
+        df.clear();
+        int n = ud.sample();
+        for(int i=0;i<n;i++) {
+          double x=0.0;
+          double y=0.0;
+          double r1=0.0;
+          double r2=0.0;
+          x = width*(0.5+0.5*nd.sample());
+          if(x < width*0.1) x = width*0.1;
+          if(x > width*0.9) x = width*0.9;
+          y = height*(0.5+0.5*nd.sample());
+          if(y < height*0.1) y = height*0.1;
+          if(y > height*0.9) y = height*0.9;
+          r1 = width*0.25*(0.5+0.5*nd.sample());
+          if(r1 < 0.025*width) r1 = 0.025*width;
+          if(r1 > 0.25*width) r1 = 0.25*width;
+          r2 = height*0.25*(0.5+0.5*nd.sample());
+          if(r2 < 0.025*height) r2 = 0.025*height;
+          if(r2 > 0.25*height) r2 = 0.25*height;
+          final double _x = x;
+          final double _y = y;
+          final double _r1 = r1;
+          final double _r2 = r2;
+          
+          df.add((Graphics2D g, Double _a) -> {
+            Color c = new Color((int)(_a*255.0),(int)(_a*255.0),(int)(_a*255.0),(int)(_a*255.0));
+            g.setColor(c);
+            g.setPaint(c);
+            
+            g.fill(new Ellipse2D.Double(_x, _y, _r1, _r2));
+          });
+        }
+      };
+      
+      boolean init = true;
+      
+      public boolean hasMoreElements() {
+        return k<upper;
+      }
+      double phase=0.0;
+      public Mat nextElement() {
+        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        var g = img.createGraphics();
+        
+        double t = ((double)k)/fps;
+        double a = 0.5+0.5*Math.sin(-(Math.PI/2.0)+(freq*2.0*Math.PI*t));
+        Double _phase = Double.valueOf(t/period);
+        _phase -= Math.floor(_phase);
+        double phase_diff = _phase-phase;
+        
+        phase = _phase;
+        if(init || phase_diff<0.0) {
+          regen.run();
+          init = false;
+        }
+        for(var f : df) {
+          f.accept(g, a);
+        }
+        
+        ++k;
+        return GraphicsFunctions.BufferedImageToMat(img);
+      }
+    };
+  }
+  
 }
