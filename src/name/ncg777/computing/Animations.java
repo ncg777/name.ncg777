@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import name.ncg777.maths.HadamardMatrix;
@@ -249,74 +250,60 @@ public class Animations {
   }
   
   
-  public static Enumeration<Mat> Droplets20241230_1(double freq, int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> Droplets20241230_1(double freq, int nb, int width, int height, double fps, double dur) {
+    List<List<Consumer<Graphics2D>>> df = new ArrayList<List<Consumer<Graphics2D>>>();
+    int upper = (int)(dur*fps);
+    for(int i=0;i<upper;i++) {
+      df.add(new ArrayList<>());
+    }
+    
     var nd = new NormalDistribution(0.0, 0.25);
-    var ud = new UniformIntegerDistribution(4, 16);
     double period = 1.0/freq;
+    var startd = new UniformIntegerDistribution(0, (int)(-1.0+((dur-period)*fps)));
+    int len = (int)(fps*period);
+    for(int i=0;i<nb;i++) {
+      int f = startd.sample();
+      
+      double x=0.0;
+      double y=0.0;
+      double r=0.0;
+      
+      x = width*(0.5+0.5*nd.sample());
+      if(x < width*0.1) x = width*0.1;
+      if(x > width*0.9) x = width*0.9;
+      y = height*(0.5+0.5*nd.sample());
+      if(y < height*0.1) y = height*0.1;
+      if(y > height*0.9) y = height*0.9;
+      r = width*0.0625*(0.5+0.5*nd.sample());
+      if(r < 0.025*width) r = 0.025*width;
+      if(r > 0.25*width) r = 0.25*width;
+      final double _x = x;
+      final double _y = y;
+      final double _r = r;
+      for(int j=0;j<len;j++) {
+        final double a = (double)j/(double)len;
+        df.get(f+j).add((Graphics2D g) -> {
+          Color c = new Color((int)(a*255.0),(int)(a*255.0),(int)(a*255.0),(int)(a*255.0));
+          g.setColor(c);
+          g.setPaint(c);
+          
+          g.fill(new Ellipse2D.Double(_x, _y, _r, _r));
+        });
+      }
+    };
     
     return new Enumeration<Mat>() {
-      List<BiConsumer<Graphics2D, Double>> df = new ArrayList<BiConsumer<Graphics2D, Double>>();
-      int upper = (int)(dur*fps);
       int k = 0;
-      
-      Runnable regen = () -> {
-        df.clear();
-        int n = ud.sample();
-        for(int i=0;i<n;i++) {
-          double x=0.0;
-          double y=0.0;
-          double r1=0.0;
-          double r2=0.0;
-          x = width*(0.5+0.5*nd.sample());
-          if(x < width*0.1) x = width*0.1;
-          if(x > width*0.9) x = width*0.9;
-          y = height*(0.5+0.5*nd.sample());
-          if(y < height*0.1) y = height*0.1;
-          if(y > height*0.9) y = height*0.9;
-          r1 = width*0.0625*(0.5+0.5*nd.sample());
-          if(r1 < 0.025*width) r1 = 0.025*width;
-          if(r1 > 0.25*width) r1 = 0.25*width;
-          r2 = height*0.0625*(0.5+0.5*nd.sample());
-          if(r2 < 0.025*height) r2 = 0.025*height;
-          if(r2 > 0.25*height) r2 = 0.25*height;
-          final double _x = x;
-          final double _y = y;
-          final double _r1 = r1;
-          final double _r2 = r2;
-          
-          df.add((Graphics2D g, Double _a) -> {
-            Color c = new Color((int)(_a*255.0),(int)(_a*255.0),(int)(_a*255.0),(int)(_a*255.0));
-            g.setColor(c);
-            g.setPaint(c);
-            
-            g.fill(new Ellipse2D.Double(_x, _y, _r1, _r2));
-          });
-        }
-      };
-      
-      boolean init = true;
       
       public boolean hasMoreElements() {
         return k<upper;
       }
-      double phase=0.0;
       public Mat nextElement() {
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
         
-        double t = ((double)k)/fps;
-        double a = 0.4999*(1.0+Math.sin(-(Math.PI/2.0)+(freq*2.0*Math.PI*t)));
-        Double _phase = Double.valueOf(t/period);
-        _phase -= Math.floor(_phase);
-        double phase_diff = _phase-phase;
-        
-        phase = _phase;
-        if(init || phase_diff<0.0) {
-          regen.run();
-          init = false;
-        }
-        for(var f : df) {
-          f.accept(g, a);
+        for(var f : df.get(k)) {
+          f.accept(g);
         }
         
         ++k;
