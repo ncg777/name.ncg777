@@ -248,61 +248,33 @@ public class Animations {
     };
   }
   
-  public static Enumeration<Mat> Droplets20241230_2(
-      double freq, 
-      int nb, 
-      int width, 
-      int height, 
-      double radius_ratio, 
-      double fps, 
-      double dur) {
-    var nd = new NormalDistribution(0.0, 0.25);
-  
-    Function<Double,Double> xf = (t) -> {
-      double x = width*(0.5+0.5*nd.sample());
-      if(x < width*0.1) x = width*0.1;
-      if(x > width*0.9) x = width*0.9;
-      return x;
-    };
-    
-    Function<Double,Double> yf = (t) -> {
-      double y = height*(0.5+0.5*nd.sample());
-      if(y < height*0.1) y = height*0.1;
-      if(y > height*0.9) y = height*0.9;
-      return y;
-    };
-    return Droplets20241230_1(freq,nb,width,height,radius_ratio,xf,yf,fps,dur);
-  }
-  public static Enumeration<Mat> Droplets20241230_1( double freq, 
-      int nb, 
-      int width, 
-      int height, 
-      double radius_ratio, 
-      Function<Double,Double> xf, 
-      Function<Double,Double> yf,
-      double fps, 
-      double dur) {
-    var nd = new NormalDistribution(0.0, 0.25);
-  
+  public static Enumeration<Mat> Droplets20241230_1(double freq, int nb, int width, int height, double fps, double dur) {
     List<List<Consumer<Graphics2D>>> df = new ArrayList<List<Consumer<Graphics2D>>>();
     int upper = (int)(dur*fps);
     for(int i=0;i<upper;i++) {
       df.add(new ArrayList<>());
     }
     
-    
+    var nd = new NormalDistribution(0.0, 0.25);
     double period = 1.0/freq;
     var startd = new UniformIntegerDistribution(0, (int)(-1.0+((dur-period)*fps)));
     var colord = new UniformIntegerDistribution(1, 7);
     int len = (int)(fps*period);
     for(int i=0;i<nb;i++) {
       int f = startd.sample();
-      double t = (double)i/(double)nb;
-      double x=xf.apply(t);
-      double y=yf.apply(t);
-      final double maxr = radius_ratio;
-      double r=width*maxr*(0.5+0.5*nd.sample());
       
+      double x=0.0;
+      double y=0.0;
+      double r=0.0;
+      
+      x = width*(0.5+0.5*nd.sample());
+      if(x < width*0.1) x = width*0.1;
+      if(x > width*0.9) x = width*0.9;
+      y = height*(0.5+0.5*nd.sample());
+      if(y < height*0.1) y = height*0.1;
+      if(y > height*0.9) y = height*0.9;
+      final double maxr = (1.0/32.0);
+      r = width*maxr*(0.5+0.5*nd.sample());
       final double _x = x;
       final double _y = y;
       final double _r = r;
@@ -339,5 +311,4 @@ public class Animations {
       }
     };
   }
-  
 }
