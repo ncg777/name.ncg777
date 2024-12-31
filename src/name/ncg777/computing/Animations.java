@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -260,6 +259,7 @@ public class Animations {
     var nd = new NormalDistribution(0.0, 0.25);
     double period = 1.0/freq;
     var startd = new UniformIntegerDistribution(0, (int)(-1.0+((dur-period)*fps)));
+    var colord = new UniformIntegerDistribution(1, 7);
     int len = (int)(fps*period);
     for(int i=0;i<nb;i++) {
       int f = startd.sample();
@@ -274,16 +274,17 @@ public class Animations {
       y = height*(0.5+0.5*nd.sample());
       if(y < height*0.1) y = height*0.1;
       if(y > height*0.9) y = height*0.9;
-      r = width*0.0625*(0.5+0.5*nd.sample());
-      if(r < 0.025*width) r = 0.025*width;
-      if(r > 0.25*width) r = 0.25*width;
+      final double maxr = (1.0/8.0);
+      r = width*maxr*(0.5+0.5*nd.sample());
       final double _x = x;
       final double _y = y;
       final double _r = r;
+      int cn = colord.sample();
       for(int j=0;j<len;j++) {
-        final double a = (double)j/(double)len;
+        final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+((double)j/(double)len)*Math.PI*2.0));
         df.get(f+j).add((Graphics2D g) -> {
-          Color c = new Color((int)(a*255.0),(int)(a*255.0),(int)(a*255.0),(int)(a*255.0));
+          
+          Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),128);
           g.setColor(c);
           g.setPaint(c);
           
