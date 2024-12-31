@@ -251,7 +251,7 @@ public class Animations {
   
   public static Enumeration<Mat> Droplets20241230_1(double freq, int width, int height, double fps, double dur) {
     var nd = new NormalDistribution(0.0, 0.25);
-    var ud = new UniformIntegerDistribution(4, 16);
+    var ud = new UniformIntegerDistribution(16, 128);
     double period = 1.0/freq;
     
     return new Enumeration<Mat>() {
@@ -273,10 +273,10 @@ public class Animations {
           y = height*(0.5+0.5*nd.sample());
           if(y < height*0.1) y = height*0.1;
           if(y > height*0.9) y = height*0.9;
-          r1 = width*0.25*(0.5+0.5*nd.sample());
+          r1 = width*0.0625*(0.5+0.5*nd.sample());
           if(r1 < 0.025*width) r1 = 0.025*width;
           if(r1 > 0.25*width) r1 = 0.25*width;
-          r2 = height*0.25*(0.5+0.5*nd.sample());
+          r2 = height*0.0625*(0.5+0.5*nd.sample());
           if(r2 < 0.025*height) r2 = 0.025*height;
           if(r2 > 0.25*height) r2 = 0.25*height;
           final double _x = x;
@@ -305,7 +305,7 @@ public class Animations {
         var g = img.createGraphics();
         
         double t = ((double)k)/fps;
-        double a = 0.5+0.5*Math.sin(-(Math.PI/2.0)+(freq*2.0*Math.PI*t));
+        double a = 0.4999*(1.0+Math.sin(-(Math.PI/2.0)+(freq*2.0*Math.PI*t)));
         Double _phase = Double.valueOf(t/period);
         _phase -= Math.floor(_phase);
         double phase_diff = _phase-phase;
