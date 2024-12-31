@@ -251,7 +251,7 @@ public class Animations {
   
   public static Enumeration<Mat> Droplets20241230_1(double freq, int width, int height, double fps, double dur) {
     var nd = new NormalDistribution(0.0, 0.25);
-    var ud = new UniformIntegerDistribution(16, 128);
+    var ud = new UniformIntegerDistribution(4, 16);
     double period = 1.0/freq;
     
     return new Enumeration<Mat>() {
