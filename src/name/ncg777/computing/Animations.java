@@ -274,7 +274,7 @@ public class Animations {
       y = height*(0.5+0.5*nd.sample());
       if(y < height*0.1) y = height*0.1;
       if(y > height*0.9) y = height*0.9;
-      final double maxr = (1.0/8.0);
+      final double maxr = (1.0/32.0);
       r = width*maxr*(0.5+0.5*nd.sample());
       final double _x = x;
       final double _y = y;
