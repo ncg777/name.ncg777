@@ -14,6 +14,7 @@ import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 import name.ncg777.maths.MatrixOfIntegers;
 
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 
@@ -254,11 +255,13 @@ public class Animations {
     for(int i=0;i<upper;i++) {
       df.add(new ArrayList<>());
     }
-    
+    double[] means = {0.0,0.0};
+    double[][] cov = {{0.025,0.0},{0.0,0.025}};
     var nd = new NormalDistribution(0.0, 0.25);
+    var mnd = new MultivariateNormalDistribution(means, cov);
     double period = 1.0/freq;
     var startd = new UniformIntegerDistribution(0, (int)(-1.0+((dur-period)*fps)));
-    var colord = new UniformIntegerDistribution(1, 7);
+    var colord = new UniformIntegerDistribution(1, 3);
     int len = (int)(fps*period);
     for(int i=0;i<nb;i++) {
       int f = startd.sample();
@@ -266,14 +269,14 @@ public class Animations {
       double x=0.0;
       double y=0.0;
       double r=0.0;
-      
-      x = width*(0.5+0.5*nd.sample());
+      var s = mnd.sample();
+      x = width*(0.5+0.5*s[0]);
       if(x < width*0.1) x = width*0.1;
       if(x > width*0.9) x = width*0.9;
-      y = height*(0.5+0.5*nd.sample());
+      y = height*(0.5+0.5*s[1]);
       if(y < height*0.1) y = height*0.1;
       if(y > height*0.9) y = height*0.9;
-      final double maxr = (1.0/32.0);
+      final double maxr = (1.0/16.0);
       r = width*maxr*(0.5+0.5*nd.sample());
       final double _x = x;
       final double _y = y;
@@ -283,7 +286,7 @@ public class Animations {
         final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+((double)j/(double)len)*Math.PI*2.0));
         df.get(f+j).add((Graphics2D g) -> {
           
-          Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),64);
+          Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),0,64);
           g.setColor(c);
           g.setPaint(c);
           
