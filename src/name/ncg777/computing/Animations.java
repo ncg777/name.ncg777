@@ -284,7 +284,7 @@ public class Animations {
         final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+((double)j/(double)len)*Math.PI*2.0));
         df.get(f+j).add((Graphics2D g) -> {
           
-          Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),128);
+          Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),64);
           g.setColor(c);
           g.setPaint(c);
           
