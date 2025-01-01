@@ -237,7 +237,7 @@ public class CollectionUtils {
     while (i.hasNext()) {
       o = i.next();
       acc += normalizedWeights[k];
-      if(r <= acc) break;
+      if(r < acc) break;
       k++;
     }
     

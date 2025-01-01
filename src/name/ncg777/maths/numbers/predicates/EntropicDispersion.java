@@ -11,8 +11,9 @@ public class EntropicDispersion implements Predicate<BinaryNatural> {
   public EntropicDispersion() {}
   
   @Override
-  public boolean test(BinaryNatural binaryNatural) {
-    return cd.apply(binaryNatural).isEntropic(0.025);
+  public boolean test(BinaryNatural _input) {
+    BinaryNatural input = _input.reverse();
+    return cd.apply(input).isEntropic(0.025);
   }
 
 }

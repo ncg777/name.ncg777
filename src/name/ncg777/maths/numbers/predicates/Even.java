@@ -8,8 +8,8 @@ import name.ncg777.maths.numbers.BinaryNatural;
 public class Even implements StandardAndGuavaPredicate<BinaryNatural> {
 
   @Override
-  public boolean apply(@Nonnull BinaryNatural arg0) {
-    for(int n : arg0.getComposition().asSequence()) {if((n%2)==1) {return false;}}
+  public boolean apply(@Nonnull BinaryNatural input) {
+    for(int n : input.getComposition().asSequence()) {if((n%2)==1) {return false;}}
     
     return true;
   }

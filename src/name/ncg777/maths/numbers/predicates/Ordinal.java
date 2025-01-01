@@ -37,7 +37,8 @@ public class Ordinal implements StandardAndGuavaPredicate<BinaryNatural>  {
   }
   
   @Override
-  public boolean apply(@Nonnull BinaryNatural input) {
+  public boolean apply(@Nonnull BinaryNatural _input) {
+    BinaryNatural input = _input.reverse();
     if(input.getN() % this.n != 0) throw new RuntimeException("Ordinal:: rhythm is incompatible with n");
     
     int k = input.getN()/this.n;

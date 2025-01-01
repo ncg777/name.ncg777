@@ -10,27 +10,27 @@ public class Cipher extends ArrayList<Character> {
 
   public static enum Name {
     Hexadecimal,
-    Decimal,
+    //Decimal,
     Octal,
     Binary,
-    Ternary
+    //Ternary
   }
   
   public static TreeMap<Name, Cipher> Ciphers;
   
   static {
     Ciphers = new TreeMap<>();
-    Character[] ARR_TERNARY = {'T','0','1'};
+    //Character[] ARR_TERNARY = {'T','0','1'};
     Character[] ARR_BINARY = {'0','1'};
     Character[] ARR_OCTAL = {'0','1','2','3','4','5','6','7'};
-    Character[] ARR_DECIMAL = {'0','1','2','3','4','5','6','7','8','9'};
+    //Character[] ARR_DECIMAL = {'0','1','2','3','4','5','6','7','8','9'};
     Character[] ARR_HEXADECIMAL = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     
     Ciphers.put(Name.Hexadecimal, new Cipher(ARR_HEXADECIMAL));
-    Ciphers.put(Name.Decimal, new Cipher(ARR_DECIMAL));
+    //Ciphers.put(Name.Decimal, new Cipher(ARR_DECIMAL));
     Ciphers.put(Name.Octal, new Cipher(ARR_OCTAL));
     Ciphers.put(Name.Binary, new Cipher(ARR_BINARY));
-    Ciphers.put(Name.Ternary, new Cipher(ARR_TERNARY));
+    //Ciphers.put(Name.Ternary, new Cipher(ARR_TERNARY));
   }
   
   public double information() {

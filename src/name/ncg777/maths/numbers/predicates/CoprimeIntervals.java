@@ -14,7 +14,8 @@ import name.ncg777.maths.numbers.BinaryNatural;
 public class CoprimeIntervals implements StandardAndGuavaPredicate<BinaryNatural> {
 
   @Override
-  public boolean apply(@Nonnull BinaryNatural input) {
+  public boolean apply(@Nonnull BinaryNatural _input) {
+    BinaryNatural input = _input.reverse();
     int n = input.getN();
     if (input.getK() <= 1) {
       return false;

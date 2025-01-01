@@ -102,18 +102,18 @@ public class RexRandomizer {
           case Hexadecimal:
             mult = 16;
             break;
-          case Decimal:
-            mult = 10;
-            break;
+          //case Decimal:
+            //mult = 10;
+            //break;
           case Octal:
             mult = 8;
             break;
           case Binary:
             mult = 2;
             break;
-          case Ternary:
-            mult = 3;
-            break;
+          //case Ternary:
+            //mult = 3;
+            //break;
         }
         int len = nbBars*mult;
         

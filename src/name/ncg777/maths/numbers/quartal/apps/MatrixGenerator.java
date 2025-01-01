@@ -145,6 +145,7 @@ public class MatrixGenerator {
             filterModes.add(new LowEntropy());
             filterModes.add(new Even());
             filterModes.add(new RelativelyFlat());
+            filterModes.add(new Ordinal(ordinal_n));
             ArrayList<BiPredicate<BinaryNatural, BinaryNatural>> diffModes = new ArrayList<>();
             for(var predicate : filterModes) diffModes.add(new PredicatedDifferences(predicate));
             
@@ -243,7 +244,13 @@ public class MatrixGenerator {
                     ArrayList<BinaryNatural> p = null;
                     if(j>0) {
                       p = possibles.apply(output.get(i, j-1).toString());
+                      if(p.size() == 0) {
+                        i=fixedSize;
+                        j=0;
+                        continue;
+                      }
                     }
+                   
                     
                     
                     BinaryNatural r = null;
@@ -302,6 +309,7 @@ public class MatrixGenerator {
                   textArea.setText(tmpMat.toString() + "\nNOT:\n" + tmpMatNot.toString());
               }
             } catch(Exception x) {
+              x.printStackTrace(System.out);
               textArea.setText("Error");
             }
             if(!running) {
@@ -331,11 +339,11 @@ public class MatrixGenerator {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
+    lblMode.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li></ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
+    lblDiffs.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li></ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {
