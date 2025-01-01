@@ -33,7 +33,6 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.music.apps.SeqGenFS",name.ncg777.maths.music.apps.SeqGenFS.class);
     addAppButton(panel, "maths.music.apps.SeqGenFixedSum",name.ncg777.maths.music.apps.SeqGenFixedSum.class);
     addAppButton(panel, "maths.music.apps.SequenceConvolverAbsoluteTime",name.ncg777.maths.music.apps.SequenceConvolverAbsoluteTime.class);
-    addAppButton(panel, "maths.music.apps.XORCircularConvolver",name.ncg777.maths.music.apps.XORCircularConvolver.class);
     addAppButton(panel, "maths.music.apps.XRSequenceGenerator",name.ncg777.maths.music.apps.XRSequenceGenerator.class);
     addAppButton(panel, "maths.music.apps.x2mid",name.ncg777.maths.music.apps.x2mid.class);
     addAppButton(panel, "maths.music.pcs12.apps.Combiner",name.ncg777.maths.music.pcs12.apps.Combiner.class);
@@ -50,17 +49,18 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.music.pcs12.apps.Sorter",name.ncg777.maths.music.pcs12.apps.Sorter.class);
     addAppButton(panel, "maths.music.pcs12.apps.Walker",name.ncg777.maths.music.pcs12.apps.Walker.class);
     addAppButton(panel, "maths.numbers.quartal.apps.BitCounter",name.ncg777.maths.numbers.quartal.apps.BitCounter.class);
+    addAppButton(panel, "maths.numbers.quartal.apps.Calculator",name.ncg777.maths.numbers.quartal.apps.Calculator.class);
     addAppButton(panel, "maths.numbers.quartal.apps.Contours",name.ncg777.maths.numbers.quartal.apps.Contours.class);
     addAppButton(panel, "maths.numbers.quartal.apps.Diluter",name.ncg777.maths.numbers.quartal.apps.Diluter.class);
     addAppButton(panel, "maths.numbers.quartal.apps.Expander",name.ncg777.maths.numbers.quartal.apps.Expander.class);
     addAppButton(panel, "maths.numbers.quartal.apps.Pulsations",name.ncg777.maths.numbers.quartal.apps.Pulsations.class);
-    addAppButton(panel, "maths.numbers.quartal.apps.Calculator",name.ncg777.maths.numbers.quartal.apps.Calculator.class);
     addAppButton(panel, "maths.numbers.quartal.apps.MatrixGenerator",name.ncg777.maths.numbers.quartal.apps.MatrixGenerator.class);
     addAppButton(panel, "maths.numbers.quartal.apps.MatrixSequencer",name.ncg777.maths.numbers.quartal.apps.MatrixSequencer.class);
     addAppButton(panel, "maths.numbers.quartal.apps.Merger",name.ncg777.maths.numbers.quartal.apps.Merger.class);
     addAppButton(panel, "maths.numbers.quartal.apps.Partitioner",name.ncg777.maths.numbers.quartal.apps.Partitioner.class);
     addAppButton(panel, "maths.numbers.quartal.apps.ScaleModulo",name.ncg777.maths.numbers.quartal.apps.ScaleModulo.class);
     addAppButton(panel, "maths.numbers.quartal.apps.SequenceGenerator",name.ncg777.maths.numbers.quartal.apps.SequenceGenerator.class);
+    addAppButton(panel, "maths.numbers.quartal.apps.XORCircularConvolver",name.ncg777.maths.numbers.quartal.apps.XORCircularConvolver.class);
     addAppButton(panel, "maths.sequences.apps.Adder",name.ncg777.maths.sequences.apps.Adder.class);
     addAppButton(panel, "maths.sequences.apps.Calculator",name.ncg777.maths.sequences.apps.Calculator.class);
     addAppButton(panel, "maths.sequences.apps.Convolver",name.ncg777.maths.sequences.apps.Convolver.class);

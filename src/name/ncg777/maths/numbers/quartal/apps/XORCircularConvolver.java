@@ -1,4 +1,4 @@
-package name.ncg777.maths.music.apps;
+package name.ncg777.maths.numbers.quartal.apps;
 
 import java.awt.EventQueue;
 
