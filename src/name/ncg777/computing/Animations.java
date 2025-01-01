@@ -135,9 +135,10 @@ public class Animations {
               var p = 4.0*Math.cos(2.0*Math.PI*(1.0*r2+2.0*r1p));
               return new Color(
                   (int)(128.0-Math.sin(p*2.0*Math.PI)*127.0),
-                  (int)(128.0-Math.sin(Math.PI/4+p*4.0*Math.PI)*127.0),
-                  (int)(128.0+Math.cos(p*8.0*Math.PI)*127.0),
-                  (int)(127.0*(1.0+Math.tanh(25.0*(0.5-r1-0.025*(Math.sin(th*12.0 -t*Math.PI*6.0)))))));
+                  (int)(128.0-Math.sin(p*2.0*Math.PI)*127.0),
+                  (int)(128.0-Math.sin(p*2.0*Math.PI)*127.0),
+                  r1 < 0.7 ? 255 : 0
+              );
             }, 
             width, height);
         ++k;

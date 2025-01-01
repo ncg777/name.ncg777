@@ -24,7 +24,7 @@ import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.relations.PredicatedDifferences;
 import name.ncg777.maths.numbers.relations.PredicatedJuxtaposition;
 import name.ncg777.maths.sequences.Sequence;
-
+import name.ncg777.maths.numbers.predicates.Ordinal;
 import javax.swing.JLabel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
@@ -132,6 +132,10 @@ public class MatrixGenerator {
           @Override
           public void run() {
             var abc = (Cipher.Name)comboBox.getSelectedItem();
+            int ordinal_n = -1;
+            if(abc == Cipher.Name.Binary) ordinal_n=4; 
+            if(abc == Cipher.Name.Hexadecimal) ordinal_n=16;
+            if(abc == Cipher.Name.Octal) ordinal_n=12;
             
             ArrayList<Predicate<BinaryNatural>> filterModes = new ArrayList<>();
             filterModes.add((a) -> true);
@@ -141,7 +145,7 @@ public class MatrixGenerator {
             filterModes.add(new LowEntropy());
             filterModes.add(new Even());
             filterModes.add(new RelativelyFlat());
-           
+            filterModes.add(new Ordinal(ordinal_n));
             ArrayList<BiPredicate<BinaryNatural, BinaryNatural>> diffModes = new ArrayList<>();
             for(var predicate : filterModes) diffModes.add(new PredicatedDifferences(predicate));
             
@@ -328,11 +332,11 @@ public class MatrixGenerator {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
+    lblMode.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li></ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li></ol></html>");
+    lblDiffs.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li></ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {
