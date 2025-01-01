@@ -9,13 +9,12 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
-import name.ncg777.maths.MatrixOfIntegers;
 
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 
 import org.opencv.core.Mat;
@@ -195,12 +194,19 @@ public class Animations {
       }
     };
   }
+  public static record MatrixDiskColorParams(double x, double y, double v, double t) {}
 
-  public static Enumeration<Mat> MatrixOrb20241229_1(MatrixOfIntegers mat, int width, int height, double fps, double dur) {
-    return MatrixOrb20241229_1(mat.toMatrixOfDoubles(), width, height, fps, dur);
-  }
-
-  public static Enumeration<Mat> MatrixOrb20241229_1(MatrixOfDoubles mat, int width, int height, double fps, double dur) {
+  /***
+   * Draws a matrix of doubles on a disk.
+   * 
+   * @param mat Values assumed to be in [-1,1]
+   * @param width
+   * @param height
+   * @param fps
+   * @param dur
+   * @return
+   */
+  public static Enumeration<Mat> MatrixDisk(MatrixOfDoubles mat, Function<MatrixDiskColorParams,Color> color, int width, int height, double fps, double dur) {
     int m = mat.rowCount();
     int n = mat.columnCount();
 
@@ -227,21 +233,9 @@ public class Animations {
               Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
               int i = (int)Math.floor((0.5+x*0.5)*((double)(m)));
               int j = (int)Math.floor((0.5+y*0.5)*((double)(n)));
-              double v = (i>=m || j >= n) ? 0.0 : Math.sin(mat.get(i,j)*Math.PI);
-              var rfadestart = 0.675;
-              var rfadeend = 0.7;
-              var v2 = (v*0.5+0.5);
-              return new Color(
-                  (int)((((0.75-0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
-                  (int)((((0.75+0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
-                  (int)(0.0),
-                  r > rfadeend ? 0 : (
-                      r < rfadestart ? (int)(v2*255.0) : 
-                        ((int)(255.0*
-                            (1.0-(
-                                (r-rfadestart)/(rfadeend-rfadestart)
-                                ))))
-                      ));
+              double v = (i>=m || j >= n) ? 0.0 : mat.get(i,j);
+              
+              return color.apply(new MatrixDiskColorParams(x,y,v,t));
             }, 
             width, height);
         ++k;     
@@ -250,48 +244,80 @@ public class Animations {
     };
   }
   
-  public static Enumeration<Mat> Droplets20241230_1(double freq, int nb, int width, int height, double fps, double dur) {
+  public static record BivariateNormalProcessParams(Graphics2D g, int individual, double x, double y, double t, double life) {};
+  
+  public static Enumeration<Mat> Droplets20241230_1(
+      int nb_individuals, 
+      double total_duration, 
+      double mean_lifetime,
+      double lifetime_stdev,
+      double max_radius,
+      int width, 
+      int height, 
+      double fps) {
+    var colord = new UniformIntegerDistribution(1, 7);
+    var nd = new NormalDistribution(0.0, 0.25);
+    
+    List<Integer> ind_colors = new ArrayList<Integer>();
+    List<Double> radii = new ArrayList<Double>();
+    
+    for(int i=0;i<nb_individuals;i++) {
+      ind_colors.add(colord.sample());
+      radii.add(max_radius*(0.5+0.5*nd.sample()));
+    }
+    
+    return BivariateNormalProcess((params) -> {
+      final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+(params.life)*Math.PI*2.0));
+      int cn = ind_colors.get(params.individual);
+      Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),64);
+      params.g.setColor(c);
+      params.g.setPaint(c);
+      
+      params.g.fill(new Ellipse2D.Double(params.x, params.y, radii.get(params.individual), radii.get(params.individual)));
+    }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
+  }
+  
+  public static Enumeration<Mat> BivariateNormalProcess(Consumer<BivariateNormalProcessParams> drawf, RealDistribution lifetime, int nb, int width, int height, double fps, double dur) {
     List<List<Consumer<Graphics2D>>> df = new ArrayList<List<Consumer<Graphics2D>>>();
     int upper = (int)(dur*fps);
+    
     for(int i=0;i<upper;i++) {
       df.add(new ArrayList<>());
     }
+    
     double[] means = {0.0,0.0};
     double[][] cov = {{0.025,0.0},{0.0,0.025}};
-    var nd = new NormalDistribution(0.0, 0.25);
-    var mnd = new MultivariateNormalDistribution(means, cov);
-    double period = 1.0/freq;
-    var startd = new UniformIntegerDistribution(0, (int)(-1.0+((dur-period)*fps)));
-    var colord = new UniformIntegerDistribution(1, 3);
-    int len = (int)(fps*period);
+    List<Double> lifetimes = new ArrayList<Double>();
+    double max_lifetime = -1.0;
     for(int i=0;i<nb;i++) {
+      double life = lifetime.sample();
+      lifetimes.add(life);
+      if(life > max_lifetime) max_lifetime = life;
+    }
+    
+    var mnd = new MultivariateNormalDistribution(means, cov);
+    var startd = new UniformIntegerDistribution(0, (int)(-1.0+((dur-max_lifetime)*fps)));
+    
+    for(int _i=0;_i<nb;_i++) {
+      final int i = _i;
       int f = startd.sample();
       
       double x=0.0;
       double y=0.0;
-      double r=0.0;
       var s = mnd.sample();
       x = width*(0.5+0.5*s[0]);
-      if(x < width*0.1) x = width*0.1;
-      if(x > width*0.9) x = width*0.9;
+      if(x < width*0.05) x = width*0.05;
+      if(x > width*0.95) x = width*0.95;
       y = height*(0.5+0.5*s[1]);
-      if(y < height*0.1) y = height*0.1;
-      if(y > height*0.9) y = height*0.9;
-      final double maxr = (1.0/16.0);
-      r = width*maxr*(0.5+0.5*nd.sample());
+      if(y < height*0.05) y = height*0.05;
+      if(y > height*0.95) y = height*0.95;
       final double _x = x;
       final double _y = y;
-      final double _r = r;
-      int cn = colord.sample();
-      for(int j=0;j<len;j++) {
-        final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+((double)j/(double)len)*Math.PI*2.0));
+      int len = (int)(fps*lifetimes.get(i));  
+      for(int _j=0;_j<len;_j++) {
+        final int j = _j;
         df.get(f+j).add((Graphics2D g) -> {
-          
-          Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),0,64);
-          g.setColor(c);
-          g.setPaint(c);
-          
-          g.fill(new Ellipse2D.Double(_x, _y, _r, _r));
+          drawf.accept(new BivariateNormalProcessParams(g, i, _x, _y, (double)(f+j)/(double)upper, (double)j/(double)len));
         });
       }
     };
