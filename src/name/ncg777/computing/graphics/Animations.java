@@ -396,7 +396,7 @@ public class Animations {
       RealDistribution sizesd,
       RealDistribution lifetime
       ) {
-
+    ColorSequence cs = new ColorSequence(nb);
     var orientationd = new UniformIntegerDistribution(0, 1);
     List<Double> orientations = new ArrayList<Double>();
     List<Double> thetas = new ArrayList<Double>(); 
@@ -428,7 +428,16 @@ public class Animations {
           (t) -> Double.valueOf(width),
           (t) -> Double.valueOf(height),
           (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
-          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*u*a),(int)(255.0*Math.pow(u,2.0)*a),(int)(32.0*a)),
+          (t,u) -> {
+            var c = cs.get(params.individual);
+            double thres = 0.85;
+            double ctl = Math.max(thres, Math.pow(u, 0.0625));
+            return new Color(
+                (int)((double)c.getRed()*ctl*a),
+                (int)((double)c.getGreen()*ctl*a),
+                (int)((double)c.getBlue()*ctl*a),
+                (int)(16.0));
+          },
           (t) -> 1/(2.0*(double)Math.max(height, width))
           );
       
