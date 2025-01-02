@@ -23,7 +23,7 @@ import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 import org.opencv.core.Mat;
 
 public class Animations {
-  public static Enumeration<Mat> Animation20241225_1(int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> Metazoa20241225_1(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -76,7 +76,7 @@ public class Animations {
     };
   }
 
-  public static Enumeration<Mat> Animation20241225_2(int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> Spiral20241225_2(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -113,7 +113,7 @@ public class Animations {
       }
     };
   }
-  public static Enumeration<Mat> Animation20241225_3(int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> Spiral20241225_3(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -159,8 +159,6 @@ public class Animations {
         (params) -> {
           Double r = Math.sqrt(((Math.pow(params.x, 2.0) + Math.pow(params.y, 2.0))/2.0));
           
-          //Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
-          //Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
           var rfadestart = 0.675;
           var rfadeend = 0.7;
           var v2 = (params.v*0.5+0.5);
