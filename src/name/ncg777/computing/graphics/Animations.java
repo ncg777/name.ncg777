@@ -1,15 +1,16 @@
-package name.ncg777.computing;
+package name.ncg777.computing.graphics;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import name.ncg777.computing.graphics.shapes.OscillatingCircle;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 
@@ -252,21 +253,39 @@ public class Animations {
       double total_duration, 
       double mean_lifetime,
       double lifetime_stdev,
-      double max_radius,
+      double base_radius,
       boolean draw_contour,
+      int nb_partials,
+      double max_partial,
+      int max_nb_turns_in_lifetime,
       int width, 
       int height, 
       double fps) {
     int nbcols = nb_individuals; //(int)Math.ceil(Math.log((double)nb_individuals)/Math.log(2.0));
     var colord = new UniformIntegerDistribution(0, nbcols-1);
+    var orientation = new UniformIntegerDistribution(0, 1);
     var nd = new NormalDistribution(0.0, 0.25);
-    
+    var pd = new NormalDistribution(0.0, max_partial);
+    var td = new NormalDistribution(Math.PI,Math.PI);
+    var turns = new UniformIntegerDistribution(0,max_nb_turns_in_lifetime);
     List<Integer> ind_colors = new ArrayList<Integer>();
     List<Double> radii = new ArrayList<Double>();
-    
+    List<double[]> partials = new ArrayList<double[]>();
+    List<Double> thetas = new ArrayList<Double>();
+    List<Double> orientations = new ArrayList<Double>();
     for(int i=0;i<nb_individuals;i++) {
       ind_colors.add(colord.sample());
-      radii.add(max_radius*(0.5+0.5*nd.sample()));
+      radii.add(base_radius*(0.5+0.5*nd.sample()));
+      int p2 = (int)(Math.pow(2.0, nb_partials-1))+1;
+      var pr = new double[p2];
+      for(int j=0;j<nb_partials;j++) {
+        double s = pd.sample();
+        pr[(int)Math.pow(2.0, j)] = (s < 0 || s > 1) ? 0.0 : s;
+      }
+      partials.add(pr);
+      
+      thetas.add(td.sample());
+      orientations.add((double)(turns.sample()*(-1+orientation.sample()*2)));
     }
     
     ColorSequence cs = new ColorSequence(nbcols);
@@ -274,15 +293,16 @@ public class Animations {
     return BivariateNormalProcess((params) -> {
       final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+(params.life)*Math.PI*2.0));
       Color c = cs.get((int)(((double)params.individual/(double)nb_individuals)*((double)nbcols)));
-      Color c2 = new Color(c.getRed(),c.getGreen(),c.getBlue(),16);
+      Color c2 = new Color((int)(c.getRed()*a),(int)(c.getGreen()*a),(int)(c.getBlue()*a),(int)(a*32.0));
       params.g.setPaint(c2);
       
       var rr = radii.get(params.individual)*a;
-      var e = new Ellipse2D.Double(params.x-rr/2, params.y-rr/2, rr, rr);
+      
+      var e = new OscillatingCircle(params.x-rr/2, params.y-rr/2, rr, partials.get(params.individual), orientations.get(params.individual)*(params.life*Math.PI*2.0)+ thetas.get(params.individual));
       params.g.fill(e);
-      params.g.setStroke(new BasicStroke(1.0f));
+      params.g.setStroke(new BasicStroke(1.1f));
       if(draw_contour) {
-        params.g.setColor(Color.WHITE);
+        params.g.setColor(new Color((int)(a*255.0),(int)(a*255.0),(int)(a*255.0),(int)(a*255.0)));
         params.g.draw(e);  
       }
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);

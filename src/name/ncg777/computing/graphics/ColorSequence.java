@@ -1,4 +1,4 @@
-package name.ncg777.computing;
+package name.ncg777.computing.graphics;
 
 import java.awt.Color;
 import java.util.Map;
