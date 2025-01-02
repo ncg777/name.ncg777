@@ -47,7 +47,7 @@ public class Animations {
           for(int _j=0;_j<2;_j++) {
             final double j = list.get(_j);
 
-            GraphicsFunctions.drawParametric2D(
+            GraphicsFunctions.drawParametric2DWithLateralBars(
                 g, 
                 (t) -> 0.5+j*0.35*Math.cos(j*Math.PI*0.125+i*normalized_time*40*Math.PI)*(0.5-0.5*Math.cos((4.0-(Math.abs(2.0-4.0*t)*2.0+2.0*(2.0+(1.0-Math.abs(1.0-2.0*normalized_time)))))*Math.PI)), 
                 (t) -> 0.5-j*0.35*Math.sin(               -i*normalized_time*40*Math.PI)*(0.5+0.5*Math.sin((2.0-(Math.abs(1.0-2.0*t)*2.0+2.0*(4.0+(2.0-Math.abs(2.0-4.0*normalized_time)))))*Math.PI)),
@@ -375,4 +375,47 @@ public class Animations {
       }
     };
   }
+  
+  
+  public static Enumeration<Mat> Animation20250102_1(int width, int height, double fps, double dur, int radial_freq, int time_freq) {
+    return new Enumeration<Mat>() {
+      int upper = (int)(dur*fps);
+      int k = 0;
+
+      public boolean hasMoreElements() {
+        return k<upper;
+      }
+
+      public Mat nextElement() {
+        double normalized_time = ((double) k)/((double)upper);
+        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        var g = img.createGraphics();
+        g.setBackground(new Color(0,0,0,0));
+
+        GraphicsFunctions.drawParametric2DWithLateralBars(
+            g, 
+            (t) -> (0.5+0.4*Math.sin(2.0*t*Math.PI)),
+            (t) -> (0.5+0.4*Math.cos(2.0*t*Math.PI)),
+            0.0,
+            1.0,
+            (t) -> 0.0,
+            (t) -> 0.0,
+            (t) -> Double.valueOf(width),
+            (t) -> Double.valueOf(height),
+            (t) -> 0.1+0.1*Math.sin(((double)radial_freq)*2.0*Math.PI*t)*Math.sin(((double)time_freq)*2.0*Math.PI*normalized_time),
+            (t,u) -> new Color((int)(255.0*(1.0-u)),(int)(255.0*(1.0-u)),(int)(255.0*(1.0-u)),(int)(255.0*(1.0-u))),
+            (t) -> 1/(2.0*(double)Math.max(height, width))
+            );
+        g.rotate(1.0*(double)k*2*Math.PI/(double)upper, width/2.0, height/2.0);
+     
+        ++k;
+        return GraphicsFunctions.BufferedImageToMat(img);
+      }
+    };
+  }
+  
+  
+  
+  
 }

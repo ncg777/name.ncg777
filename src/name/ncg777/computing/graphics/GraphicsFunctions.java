@@ -3,16 +3,15 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Core;
@@ -21,6 +20,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.videoio.VideoWriter;
 
+import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
 
@@ -193,7 +193,7 @@ public class GraphicsFunctions {
     };
   }
   
-  public static void drawParametric2D(
+  public static void drawParametric2DWithLateralBars(
       Graphics2D g, 
       Function<Double,Double> x, 
       Function<Double,Double> y, 
@@ -204,7 +204,79 @@ public class GraphicsFunctions {
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY,
       Function<Double,Double> width,
-      BiFunction<Double, Double, Color> color, 
+      BiFunction<Double,Double,Color> color,
+      Function<Double,Double> deltaf) {
+    drawParametric2D(
+        g,
+        x,
+        y,
+        
+        (Double t, HomoPair<HomoPair<Double>> p) -> 
+          {
+            double sx = scaleX.apply(t);
+            double sy = scaleY.apply(t);
+          
+            double A_x = p.getFirst().getFirst();
+            double A_y = p.getFirst().getSecond();
+            double B_x = p.getSecond().getFirst();
+            double B_y = p.getSecond().getSecond();
+            
+            double x_ccw = A_x - (B_y-A_y);
+            double y_ccw = A_y + (B_x-A_x);
+            double x_cw = A_x + (B_y-A_y);
+            double y_cw = A_y - (B_x-A_x);
+            
+            double w = width.apply(t);
+            double f = w /
+                (2.0*Math.sqrt(
+                    Math.pow(((B_x-A_x)), 2.0) + 
+                    Math.pow(((B_y-A_y)), 2.0)));
+            
+            x_ccw = A_x+f*sx*(x_ccw-A_x);
+            y_ccw = A_y+f*sy*(y_ccw-A_y);
+            x_cw = A_x+f*sx*(x_cw-A_x);
+            y_cw = A_y+f*sy*(y_cw-A_y);
+            
+            double dx = x_ccw-A_x;
+            double dy = y_ccw-A_y;
+            double l = Math.sqrt(Math.pow(dx, 2.0)+Math.pow(dy, 2.0));
+            double invl = 1.0/l;
+            
+            double interX = 0.0;
+            double interY = 0.0;
+            // For the clockwise side (from the center to x_cw, y_cw)
+            for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
+                Color c = color.apply(t, u); // Use the gradient function
+                g.setColor(c);
+                g.setPaint(c);
+                interX = A_x + u * (x_cw - A_x);
+                interY = A_y + u * (y_cw - A_y);
+                g.fill(new Ellipse2D.Double(interX-1, interY-1, 3, 3));
+                interX = A_x + u * (x_ccw - A_x);
+                interY = A_y + u * (y_ccw - A_y);
+                g.fill(new Ellipse2D.Double(interX-1, interY-1, 3, 3)); 
+            }
+        },
+      from_inclusive,
+      to_exclusive,
+      translateX,
+      translateY,
+      scaleX,
+      scaleY,
+      deltaf);
+  }
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Double> x, 
+      Function<Double,Double> y,
+      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
+      double from_inclusive, 
+      double to_exclusive,
+      Function<Double,Double> translateX,
+      Function<Double,Double> translateY,
+      Function<Double,Double> scaleX,
+      Function<Double,Double> scaleY,
       Function<Double,Double> deltaf) {
     g.setStroke(new BasicStroke(2.0f));
     
@@ -221,81 +293,45 @@ public class GraphicsFunctions {
       double B_x = sx*(x.apply(t+delta)+tx);
       double B_y = sy*(y.apply(t+delta)+ty);
       
-      double x_ccw = A_x - (B_y-A_y);
-      double y_ccw = A_y + (B_x-A_x);
-      double x_cw = A_x + (B_y-A_y);
-      double y_cw = A_y - (B_x-A_x);
-      
-      double w = width.apply(t);
-      double f = w /
-          (2.0*Math.sqrt(
-              Math.pow(((B_x-A_x)), 2.0) + 
-              Math.pow(((B_y-A_y)), 2.0)));
-      
-      x_ccw = A_x+f*sx*(x_ccw-A_x);
-      y_ccw = A_y+f*sy*(y_ccw-A_y);
-      x_cw = A_x+f*sx*(x_cw-A_x);
-      y_cw = A_y+f*sy*(y_cw-A_y);
-      
-      double dx = x_ccw-A_x;
-      double dy = y_ccw-A_y;
-      double l = Math.sqrt(Math.pow(dx, 2.0)+Math.pow(dy, 2.0));
-      double invl = 1.0/l;
-      
-      double interX = 0.0;
-      double interY = 0.0;
-      // For the clockwise side (from the center to x_cw, y_cw)
-      for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
-          Color c = color.apply(t, u); // Use the gradient function
-          g.setColor(c);
-          g.setPaint(c);
-          interX = A_x + u * (x_cw - A_x);
-          interY = A_y + u * (y_cw - A_y);
-          g.fill(new Rectangle2D.Double(interX, interY, 1, 1));
-          interX = A_x + u * (x_ccw - A_x);
-          interY = A_y + u * (y_ccw - A_y);
-          g.fill(new Rectangle2D.Double(interX, interY, 1, 1)); 
-      }
+      drawf.accept(t, HomoPair.makeHomoPair(HomoPair.makeHomoPair(A_x, A_y), HomoPair.makeHomoPair(B_x, B_y)));
     }
   }
   
   private static double defaultFrom = 0.0;
   private static double defaultTo = 1.0;
-  private static double defaultWidth = 1.0;
   private static double defaultTranslateX = 0.0;
   private static double defaultTranslateY = 0.0;
   private static double defaultScaleX = 1.0;
   private static double defaultScaleY = 1.0;
-  private static Color defaultColor = Color.BLACK;
   private static double defaultDelta = 0.000005;
   
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Double> x, 
-      Function<Double,Double> y) {
-    drawParametric2D(g, x, y, defaultFrom, defaultTo, 
+      Function<Double,Double> y,
+      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf) {
+    drawParametric2D(g, x, y, drawf, 
+        defaultFrom, 
+        defaultTo, 
         (t) -> defaultTranslateX,
         (t) -> defaultTranslateY, 
         (t) -> defaultScaleX, 
-        (t) -> defaultScaleY, 
-        (t) -> defaultWidth, 
-        (t,u) -> defaultColor, 
+        (t) -> defaultScaleY,
         (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Double> x, 
-      Function<Double,Double> y, 
+      Function<Double,Double> y,
+      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
       double from_inclusive, 
       double to_exclusive) {
-    drawParametric2D(g, x, y, from_inclusive, to_exclusive, 
+    drawParametric2D(g, x, y, drawf, from_inclusive, to_exclusive, 
         (t) -> defaultTranslateX,
         (t) -> defaultTranslateY, 
         (t) -> defaultScaleX, 
-        (t) -> defaultScaleY, 
-        (t) -> defaultWidth, 
-        (t,u) -> defaultColor, 
+        (t) -> defaultScaleY,
         (t) -> defaultDelta);
   }
   
@@ -303,80 +339,35 @@ public class GraphicsFunctions {
       Graphics2D g, 
       Function<Double,Double> x, 
       Function<Double,Double> y, 
+      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> translateX,
       Function<Double,Double> translateY) {
-    drawParametric2D(g, x, y, from_inclusive, to_exclusive, 
+    drawParametric2D(g, x, y,drawf, from_inclusive, to_exclusive, 
         translateX,
         translateY, 
         (t) -> defaultScaleX, 
-        (t) -> defaultScaleY, 
-        (t) -> defaultWidth, 
-        (t,u) -> defaultColor, 
+        (t) -> defaultScaleY,
         (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Double> x, 
-      Function<Double,Double> y, 
+      Function<Double,Double> y,
+      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> translateX,
       Function<Double,Double> translateY,
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY) {
-    drawParametric2D(g, x, y, from_inclusive, to_exclusive, 
+    drawParametric2D(g, x, y,drawf, from_inclusive, to_exclusive, 
         translateX,
         translateY, 
         scaleX, 
         scaleY, 
-        (t) -> defaultWidth, 
-        (t,u) -> defaultColor, 
-        (t) -> defaultDelta);
-  }
-  
-  public static void drawParametric2D(
-      Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y, 
-      double from_inclusive, 
-      double to_exclusive,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
-      Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY,
-      Function<Double,Double> width) {
-    drawParametric2D(g, x, y, from_inclusive, to_exclusive, 
-        translateX,
-        translateY, 
-        scaleX, 
-        scaleY, 
-        width, 
-        (t,u) -> defaultColor, 
-        (t) -> defaultDelta);
-  }
-  
-  public static void drawParametric2D(
-      Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y, 
-      double from_inclusive, 
-      double to_exclusive,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
-      Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY,
-      Function<Double,Double> width,
-      BiFunction<Double,Double,Color> color) {
-    drawParametric2D(g, x, y, from_inclusive, to_exclusive, 
-        translateX,
-        translateY, 
-        scaleX, 
-        scaleY, 
-        width, 
-        color, 
         (t) -> defaultDelta);
   }
 }
