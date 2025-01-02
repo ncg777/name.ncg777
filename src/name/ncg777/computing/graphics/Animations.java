@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
+import name.ncg777.maths.Functions;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 
@@ -19,6 +20,7 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
+import org.apache.commons.math3.distribution.UniformRealDistribution;
 import org.opencv.core.Mat;
 
 public class Animations {
@@ -381,17 +383,21 @@ public class Animations {
     final List<Integer> rf = new ArrayList<Integer>();
     final List<Double> sizes = new ArrayList<Double>();
     final List<Double> spins = new ArrayList<Double>();
+    final List<Double> ronds = new ArrayList<Double>();
+    var rondd = new UniformRealDistribution(0.001, 0.999);
     for(int i=0;i<nb;i++) {
       rf.add(radial_freq.sample());
       sizes.add(sizesd.sample());
       spins.add((double)spinsd.sample());
       thetas.add(thetad.sample());
       orientations.add((double)(-1+(orientationd.sample()*2)));
+      ronds.add(rondd.sample());
     }
     
     return BivariateNormalProcess((params) -> {
       var g = params.g;
-      double a = 0.5*(1.0+Math.sin(-(Math.PI/2.0)+params.life*Math.PI*2.0));
+      double l = Functions.ROND.apply(params.life,ronds.get(params.individual));
+      double a = 0.5*(1.0+Math.sin(-(Math.PI/2.0)+l*Math.PI*2.0));
       
       double w = Math.sqrt(
           Math.pow(sizes.get(params.individual)/(double)(2*width), 2.0) +
@@ -402,13 +408,13 @@ public class Animations {
             ((sizes.get(params.individual)/(double)(2*width))*
                   Math.sin(
                         thetas.get(params.individual)+
-                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
+                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*l))),
                   
           (t) -> (params.y/((double)height))+
             ((sizes.get(params.individual)/(double)(2*height))*
                     Math.cos(
                         thetas.get(params.individual)+
-                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
+                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*l))),
                 
           0.0,
           1.0,
@@ -419,13 +425,13 @@ public class Animations {
           (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
           (t,u) -> {
             var c = cs.get(params.individual);
-            double thres = 0.8;
+            double thres = 0.75;
             double ctl = (-thres+Math.max(thres, u))*(1.0/(1.0-thres));
             return new Color(
-                (int)((255.0*ctl+(double)c.getRed()*(1-ctl))*a),
-                (int)((255.0*ctl+(double)c.getGreen()*(1-ctl))*a),
-                (int)((255.0*ctl+(double)c.getBlue()*(1-ctl))*a),
-                (int)(16.0));
+                (int)((((double)((255)))*ctl+(double)c.getRed()*(1-ctl))*a),
+                (int)((((double)((255)))*ctl+(double)c.getGreen()*(1-ctl))*a),
+                (int)((((double)((255)))*ctl+(double)c.getBlue()*(1-ctl))*a),
+                (int)(64.0*a));
           },
           (t) -> 1/((double)Math.max(height, width))
           );
