@@ -389,20 +389,18 @@ public class Animations {
       int height, 
       double fps, 
       double dur, 
-      IntegerDistribution radial_freq, 
-      IntegerDistribution time_freq, 
+      IntegerDistribution radial_freq,
+      IntegerDistribution spinsd,
       int nb,
       RealDistribution sizesd,
-      RealDistribution lifetime,
-      IntegerDistribution spinsd) {
+      RealDistribution lifetime
+      ) {
     
     final List<Integer> rf = new ArrayList<Integer>();
-    final List<Integer> tf = new ArrayList<Integer>();
     final List<Double> sizes = new ArrayList<Double>();
     final List<Double> spins = new ArrayList<Double>();
     for(int i=0;i<nb;i++) {
       rf.add(radial_freq.sample());
-      tf.add(time_freq.sample());
       sizes.add(sizesd.sample());
       spins.add((double)spinsd.sample());
     }
@@ -415,15 +413,15 @@ public class Animations {
           Math.pow(sizes.get(params.individual)/(double)(2*height), 2.0));
       GraphicsFunctions.drawParametric2DWithLateralBars(
           g, 
-          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(2.0*Math.PI*t)),
-          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(2.0*Math.PI*t)),
+          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
+          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
           0.0,
           1.0,
           (t) -> 0.0,
           (t) -> 0.0,
           (t) -> Double.valueOf(width),
           (t) -> Double.valueOf(height),
-          (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)*Math.sin(spins.get(params.individual)*((double)tf.get(params.individual))*2.0*Math.PI*params.life)),
+          (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
           (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*u*a),(int)(16.0*a)),
           (t) -> 1/(2.0*(double)Math.max(height, width))
           );
