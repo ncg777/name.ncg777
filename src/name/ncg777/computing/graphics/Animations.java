@@ -409,22 +409,22 @@ public class Animations {
     
     return BivariateNormalProcess((params) -> {
       var g = params.g;
-      
+      double a = 0.5*(1.0+Math.sin((Math.PI/2.0)+params.life*Math.PI*2.0));
       double w = Math.sqrt(
           Math.pow(sizes.get(params.individual)/(double)(2*width), 2.0) +
           Math.pow(sizes.get(params.individual)/(double)(2*height), 2.0));
       GraphicsFunctions.drawParametric2DWithLateralBars(
           g, 
-          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
-          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
+          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(2.0*Math.PI*t)),
+          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(2.0*Math.PI*t)),
           0.0,
           1.0,
           (t) -> 0.0,
           (t) -> 0.0,
           (t) -> Double.valueOf(width),
           (t) -> Double.valueOf(height),
-          (t) -> w*(0.7+0.3*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)*Math.sin(((double)tf.get(params.individual))*2.0*Math.PI*params.life)),
-          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*params.life),(int)(255.0*Math.pow(u,2.0)*params.life),(int)(255.0*u*params.life),(int)(255.0*(1.0-u)*params.life)),
+          (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)*Math.sin(spins.get(params.individual)*((double)tf.get(params.individual))*2.0*Math.PI*params.life)),
+          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*u*a),(int)(16.0*a)),
           (t) -> 1/(2.0*(double)Math.max(height, width))
           );
       
