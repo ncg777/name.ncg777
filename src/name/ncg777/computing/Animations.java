@@ -245,8 +245,8 @@ public class Animations {
   }
   
   public static record BivariateNormalProcessParams(Graphics2D g, int individual, double x, double y, double t, double life) {};
-  
-  public static Enumeration<Mat> Droplets20241230_1(
+   
+  public static Enumeration<Mat> Droplets20250101_1(
       int nb_individuals, 
       double total_duration, 
       double mean_lifetime,
@@ -269,11 +269,12 @@ public class Animations {
     return BivariateNormalProcess((params) -> {
       final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+(params.life)*Math.PI*2.0));
       int cn = ind_colors.get(params.individual);
-      Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),64);
+      Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),(int)(32.0*a));
       params.g.setColor(c);
       params.g.setPaint(c);
       
-      params.g.fill(new Ellipse2D.Double(params.x, params.y, radii.get(params.individual), radii.get(params.individual)));
+      var rr = radii.get(params.individual)*a;
+      params.g.fill(new Ellipse2D.Double(params.x-rr/2, params.y-rr/2, rr, rr));
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
   }
   
