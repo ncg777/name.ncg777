@@ -391,11 +391,15 @@ public class Animations {
       double dur, 
       IntegerDistribution radial_freq,
       IntegerDistribution spinsd,
+      RealDistribution thetad,
       int nb,
       RealDistribution sizesd,
       RealDistribution lifetime
       ) {
-    
+
+    var orientationd = new UniformIntegerDistribution(0, 1);
+    List<Double> orientations = new ArrayList<Double>();
+    List<Double> thetas = new ArrayList<Double>(); 
     final List<Integer> rf = new ArrayList<Integer>();
     final List<Double> sizes = new ArrayList<Double>();
     final List<Double> spins = new ArrayList<Double>();
@@ -403,18 +407,20 @@ public class Animations {
       rf.add(radial_freq.sample());
       sizes.add(sizesd.sample());
       spins.add((double)spinsd.sample());
+      thetas.add(thetad.sample());
+      orientations.add((double)(-1+(orientationd.sample()*2)));
     }
     
     return BivariateNormalProcess((params) -> {
       var g = params.g;
-      double a = 0.5*(1.0+Math.sin((Math.PI/2.0)+params.life*Math.PI*2.0));
+      double a = 0.5*(1.0+Math.sin(-(Math.PI/2.0)+params.life*Math.PI*2.0));
       double w = Math.sqrt(
           Math.pow(sizes.get(params.individual)/(double)(2*width), 2.0) +
           Math.pow(sizes.get(params.individual)/(double)(2*height), 2.0));
       GraphicsFunctions.drawParametric2DWithLateralBars(
           g, 
-          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
-          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
+          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(thetas.get(params.individual)+2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
+          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(thetas.get(params.individual)+2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
           0.0,
           1.0,
           (t) -> 0.0,
@@ -422,7 +428,7 @@ public class Animations {
           (t) -> Double.valueOf(width),
           (t) -> Double.valueOf(height),
           (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
-          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*u*a),(int)(16.0*a)),
+          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*u*a),(int)(32.0*a)),
           (t) -> 1/(2.0*(double)Math.max(height, width))
           );
       
