@@ -430,12 +430,12 @@ public class Animations {
           (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
           (t,u) -> {
             var c = cs.get(params.individual);
-            double thres = 0.85;
-            double ctl = Math.max(thres, Math.pow(u, 0.0625));
+            double thres = 0.8;
+            double ctl = (-thres+Math.max(thres, u))*(1.0/(1.0-thres));
             return new Color(
-                (int)((double)c.getRed()*ctl*a),
-                (int)((double)c.getGreen()*ctl*a),
-                (int)((double)c.getBlue()*ctl*a),
+                (int)((255.0*ctl+(double)c.getRed()*(1-ctl))*a),
+                (int)((255.0*ctl+(double)c.getGreen()*(1-ctl))*a),
+                (int)((255.0*ctl+(double)c.getBlue()*(1-ctl))*a),
                 (int)(16.0));
           },
           (t) -> 1/(2.0*(double)Math.max(height, width))
