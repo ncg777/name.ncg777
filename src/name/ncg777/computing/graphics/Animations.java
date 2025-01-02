@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
-import name.ncg777.maths.Functions;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 
@@ -212,11 +211,11 @@ public class Animations {
             (params) -> {
               double x = params.x();
               double y = params.y();
+              var almost1 = 0.9999999999;
+              int i = (int)((Math.floor(params.r()*almost1*((double)(m)))));
+              int j = (int)Math.floor(almost1*(0.5+0.5*(params.theta()/Math.PI))*((double)(n)));
               
-              int i = (int)Math.floor(params.r()*((double)(m-1)));
-              int j = (int)Math.floor((0.5+0.5*(params.theta()/Math.PI))*((double)(n-1)));
-              
-              double v = mat.get(i,j);
+              double v = (i >=m ? 0.0 : mat.get(i,j));
               
               return color.apply(new MatrixDiskColorParams(x,y,v,t));
             }, 
@@ -396,8 +395,7 @@ public class Animations {
     
     return BivariateNormalProcess((params) -> {
       var g = params.g;
-      double l = Functions.ROND.apply(params.life,ronds.get(params.individual));
-      double a = 0.5*(1.0+Math.sin(-(Math.PI/2.0)+l*Math.PI*2.0));
+      double a = 0.5*(1.0+Math.sin(-(Math.PI/2.0)+params.life*Math.PI*2.0));
       
       double w = Math.sqrt(
           Math.pow(sizes.get(params.individual)/(double)(2*width), 2.0) +
@@ -408,13 +406,13 @@ public class Animations {
             ((sizes.get(params.individual)/(double)(2*width))*
                   Math.sin(
                         thetas.get(params.individual)+
-                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*l))),
+                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
                   
           (t) -> (params.y/((double)height))+
             ((sizes.get(params.individual)/(double)(2*height))*
                     Math.cos(
                         thetas.get(params.individual)+
-                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*l))),
+                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
                 
           0.0,
           1.0,

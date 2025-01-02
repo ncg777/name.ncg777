@@ -149,9 +149,8 @@ public class GraphicsFunctions {
         ynorm += -0.5;
         ynorm *= 2.0;
         
-        Double r = Math.sqrt((Math.pow(xnorm, 2.0) + Math.pow(ynorm, 2.0))/2.0);
+        Double r = Math.sqrt((Math.pow(xnorm, 2.0) + Math.pow(ynorm, 2.0)));
         double th = Math.atan2(xnorm, ynorm);
-        
         var c = color.apply(new MixedCoordinates(xnorm, ynorm,r,th));
         g.setPaint(c);
         g.setColor(c);
