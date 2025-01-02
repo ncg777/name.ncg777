@@ -19,7 +19,6 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
-
 import org.opencv.core.Mat;
 
 public class Animations {
@@ -393,13 +392,24 @@ public class Animations {
     return BivariateNormalProcess((params) -> {
       var g = params.g;
       double a = 0.5*(1.0+Math.sin(-(Math.PI/2.0)+params.life*Math.PI*2.0));
+      
       double w = Math.sqrt(
           Math.pow(sizes.get(params.individual)/(double)(2*width), 2.0) +
           Math.pow(sizes.get(params.individual)/(double)(2*height), 2.0));
       GraphicsFunctions.drawParametric2DWithLateralBars(
           g, 
-          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(thetas.get(params.individual)+2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
-          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(thetas.get(params.individual)+2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
+          (t) -> (params.x/((double)width))+
+            ((sizes.get(params.individual)/(double)(2*width))*
+                  Math.sin(
+                        thetas.get(params.individual)+
+                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
+                  
+          (t) -> (params.y/((double)height))+
+            ((sizes.get(params.individual)/(double)(2*height))*
+                    Math.cos(
+                        thetas.get(params.individual)+
+                        2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
+                
           0.0,
           1.0,
           (t) -> 0.0,
