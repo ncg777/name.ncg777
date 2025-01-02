@@ -256,7 +256,7 @@ public class Animations {
       int width, 
       int height, 
       double fps) {
-    int nbcols = (int)Math.ceil(Math.log((double)nb_individuals)/Math.log(2.0));
+    int nbcols = nb_individuals; //(int)Math.ceil(Math.log((double)nb_individuals)/Math.log(2.0));
     var colord = new UniformIntegerDistribution(0, nbcols-1);
     var nd = new NormalDistribution(0.0, 0.25);
     
@@ -273,13 +273,13 @@ public class Animations {
     return BivariateNormalProcess((params) -> {
       final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+(params.life)*Math.PI*2.0));
       Color c = cs.get((int)(((double)params.individual/(double)nb_individuals)*((double)nbcols)));
-      
-      params.g.setPaint(c);
+      Color c2 = new Color(c.getRed(),c.getGreen(),c.getBlue(),16);
+      params.g.setPaint(c2);
       
       var rr = radii.get(params.individual)*a;
       var e = new Ellipse2D.Double(params.x-rr/2, params.y-rr/2, rr, rr);
       params.g.fill(e);
-      params.g.setStroke(new BasicStroke(1.0f));
+      params.g.setStroke(new BasicStroke(2.0f));
       params.g.setColor(Color.WHITE);
       params.g.draw(e);
       
