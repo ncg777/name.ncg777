@@ -1,5 +1,6 @@
 package name.ncg777.computing;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
@@ -255,7 +256,8 @@ public class Animations {
       int width, 
       int height, 
       double fps) {
-    var colord = new UniformIntegerDistribution(1, 7);
+    int nbcols = (int)Math.ceil(Math.log((double)nb_individuals)/Math.log(2.0));
+    var colord = new UniformIntegerDistribution(0, nbcols-1);
     var nd = new NormalDistribution(0.0, 0.25);
     
     List<Integer> ind_colors = new ArrayList<Integer>();
@@ -266,15 +268,21 @@ public class Animations {
       radii.add(max_radius*(0.5+0.5*nd.sample()));
     }
     
+    ColorSequence cs = new ColorSequence(nbcols);
+    
     return BivariateNormalProcess((params) -> {
       final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+(params.life)*Math.PI*2.0));
-      int cn = ind_colors.get(params.individual);
-      Color c = new Color((int)(((cn&1)/1)*(a*255.0)),(int)(((cn&2)/2)*(a*255.0)),(int)(((cn&4)/4)*(a*255.0)),(int)(32.0*a));
-      params.g.setColor(c);
+      Color c = cs.get((int)(((double)params.individual/(double)nb_individuals)*((double)nbcols)));
+      
       params.g.setPaint(c);
       
       var rr = radii.get(params.individual)*a;
-      params.g.fill(new Ellipse2D.Double(params.x-rr/2, params.y-rr/2, rr, rr));
+      var e = new Ellipse2D.Double(params.x-rr/2, params.y-rr/2, rr, rr);
+      params.g.fill(e);
+      params.g.setStroke(new BasicStroke(1.0f));
+      params.g.setColor(Color.WHITE);
+      params.g.draw(e);
+      
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
   }
   
@@ -289,15 +297,13 @@ public class Animations {
     double[] means = {0.0,0.0};
     double[][] cov = {{0.025,0.0},{0.0,0.025}};
     List<Double> lifetimes = new ArrayList<Double>();
-    double max_lifetime = -1.0;
     for(int i=0;i<nb;i++) {
       double life = lifetime.sample();
       lifetimes.add(life);
-      if(life > max_lifetime) max_lifetime = life;
     }
     
     var mnd = new MultivariateNormalDistribution(means, cov);
-    var startd = new UniformIntegerDistribution(0, (int)(-1.0+((dur-max_lifetime)*fps)));
+    var startd = new UniformIntegerDistribution(0, (int)(-1.0+(dur*fps)));
     
     for(int _i=0;_i<nb;_i++) {
       final int i = _i;
@@ -317,7 +323,7 @@ public class Animations {
       int len = (int)(fps*lifetimes.get(i));  
       for(int _j=0;_j<len;_j++) {
         final int j = _j;
-        df.get(f+j).add((Graphics2D g) -> {
+        df.get((f+j)%upper).add((Graphics2D g) -> {
           drawf.accept(new BivariateNormalProcessParams(g, i, _x, _y, (double)(f+j)/(double)upper, (double)j/(double)len));
         });
       }
