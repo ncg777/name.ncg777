@@ -14,6 +14,7 @@ import name.ncg777.computing.graphics.shapes.OscillatingCircle;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 
+import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
@@ -308,7 +309,14 @@ public class Animations {
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
   }
   
-  public static Enumeration<Mat> BivariateNormalProcess(Consumer<BivariateNormalProcessParams> drawf, RealDistribution lifetime, int nb, int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> BivariateNormalProcess(
+      Consumer<BivariateNormalProcessParams> drawf, 
+      RealDistribution lifetime, 
+      int nb, 
+      int width, 
+      int height, 
+      double fps, 
+      double dur) {
     List<List<Consumer<Graphics2D>>> df = new ArrayList<List<Consumer<Graphics2D>>>();
     int upper = (int)(dur*fps);
     
@@ -376,46 +384,51 @@ public class Animations {
     };
   }
   
-  
-  public static Enumeration<Mat> Animation20250102_1(int width, int height, double fps, double dur, int radial_freq, int time_freq) {
-    return new Enumeration<Mat>() {
-      int upper = (int)(dur*fps);
-      int k = 0;
-
-      public boolean hasMoreElements() {
-        return k<upper;
-      }
-
-      public Mat nextElement() {
-        double normalized_time = ((double) k)/((double)upper);
-        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-        var g = img.createGraphics();
-        g.setBackground(new Color(0,0,0,0));
-
-        GraphicsFunctions.drawParametric2DWithLateralBars(
-            g, 
-            (t) -> (0.5+0.4*Math.sin(2.0*t*Math.PI)),
-            (t) -> (0.5+0.4*Math.cos(2.0*t*Math.PI)),
-            0.0,
-            1.0,
-            (t) -> 0.0,
-            (t) -> 0.0,
-            (t) -> Double.valueOf(width),
-            (t) -> Double.valueOf(height),
-            (t) -> 0.1+0.1*Math.sin(((double)radial_freq)*2.0*Math.PI*t)*Math.sin(((double)time_freq)*2.0*Math.PI*normalized_time),
-            (t,u) -> new Color((int)(255.0*Math.pow(u,5.0)),(int)(255.0*Math.pow(u,5.0)),255,(int)(255.0*(1.0-u))),
-            (t) -> 1/(2.0*(double)Math.max(height, width))
-            );
-        g.rotate(1.0*(double)k*2*Math.PI/(double)upper, width/2.0, height/2.0);
-     
-        ++k;
-        return GraphicsFunctions.BufferedImageToMat(img);
-      }
-    };
+  public static Enumeration<Mat> Animation20250102_1(
+      int width, 
+      int height, 
+      double fps, 
+      double dur, 
+      IntegerDistribution radial_freq, 
+      IntegerDistribution time_freq, 
+      int nb,
+      RealDistribution sizesd,
+      RealDistribution lifetime,
+      IntegerDistribution spinsd) {
+    
+    final List<Integer> rf = new ArrayList<Integer>();
+    final List<Integer> tf = new ArrayList<Integer>();
+    final List<Double> sizes = new ArrayList<Double>();
+    final List<Double> spins = new ArrayList<Double>();
+    for(int i=0;i<nb;i++) {
+      rf.add(radial_freq.sample());
+      tf.add(time_freq.sample());
+      sizes.add(sizesd.sample());
+      spins.add((double)spinsd.sample());
+    }
+    
+    return BivariateNormalProcess((params) -> {
+      var g = params.g;
+      
+      double w = Math.sqrt(
+          Math.pow(sizes.get(params.individual)/(double)(2*width), 2.0) +
+          Math.pow(sizes.get(params.individual)/(double)(2*height), 2.0));
+      GraphicsFunctions.drawParametric2DWithLateralBars(
+          g, 
+          (t) -> (params.x/((double)width))+((sizes.get(params.individual)/(double)(2*width))*Math.sin(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
+          (t) -> (params.y/((double)height))+((sizes.get(params.individual)/(double)(2*height))*Math.cos(2.0*Math.PI*(t+spins.get(params.individual)*params.life))),
+          0.0,
+          1.0,
+          (t) -> 0.0,
+          (t) -> 0.0,
+          (t) -> Double.valueOf(width),
+          (t) -> Double.valueOf(height),
+          (t) -> w*(0.7+0.3*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)*Math.sin(((double)tf.get(params.individual))*2.0*Math.PI*params.life)),
+          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*params.life),(int)(255.0*Math.pow(u,2.0)*params.life),(int)(255.0*u*params.life),(int)(255.0*(1.0-u)*params.life)),
+          (t) -> 1/(2.0*(double)Math.max(height, width))
+          );
+      
+    }, lifetime, nb, width, height, fps, dur);
+    
   }
-  
-  
-  
-  
 }
