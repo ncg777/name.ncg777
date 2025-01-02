@@ -317,7 +317,8 @@ public class Animations {
     }
     
     double[] means = {0.0,0.0};
-    double[][] cov = {{0.025,0.0},{0.0,0.025}};
+    double sd = 1.0/32.0;
+    double[][] cov = {{sd,0.0},{0.0,sd}};
     List<Double> lifetimes = new ArrayList<Double>();
     for(int i=0;i<nb;i++) {
       double life = lifetime.sample();
