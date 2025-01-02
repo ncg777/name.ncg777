@@ -325,11 +325,12 @@ public class Animations {
       int len = (int)(fps*lifetimes.get(i));  
       for(int _j=0;_j<len;_j++) {
         final int j = _j;
-        int zzz = f+j;
-        while(zzz < 0) zzz += upper;
-        while(zzz >= upper) zzz -= upper;
+        int _zzz = f+j;
+        while(_zzz < 0) _zzz += upper;
+        while(_zzz >= upper) _zzz -= upper;
+        final int zzz = _zzz;
         df.get(zzz).add((Graphics2D g) -> {
-          drawf.accept(new BivariateNormalProcessParams(g, i, _x, _y, (double)(f+j)/(double)upper, (double)j/(double)len));
+          drawf.accept(new BivariateNormalProcessParams(g, i, _x, _y, (double)(zzz)/(double)upper, (double)j/(double)len));
         });
       }
     };
