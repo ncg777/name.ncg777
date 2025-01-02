@@ -404,7 +404,7 @@ public class Animations {
             (t) -> Double.valueOf(width),
             (t) -> Double.valueOf(height),
             (t) -> 0.1+0.1*Math.sin(((double)radial_freq)*2.0*Math.PI*t)*Math.sin(((double)time_freq)*2.0*Math.PI*normalized_time),
-            (t,u) -> new Color((int)(255.0*(1.0-u)),(int)(255.0*(1.0-u)),(int)(255.0*(1.0-u)),(int)(255.0*(1.0-u))),
+            (t,u) -> new Color((int)(255.0*Math.pow(u,5.0)),(int)(255.0*Math.pow(u,5.0)),255,(int)(255.0*(1.0-u))),
             (t) -> 1/(2.0*(double)Math.max(height, width))
             );
         g.rotate(1.0*(double)k*2*Math.PI/(double)upper, width/2.0, height/2.0);
