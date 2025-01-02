@@ -211,13 +211,27 @@ public class Animations {
             (params) -> {
               double x = params.x();
               double y = params.y();
-              var almost1 = 0.9999999999;
-              int i = (int)((Math.floor(params.r()*almost1*((double)(m)))));
-              int j = (int)Math.floor(almost1*(0.5+0.5*(params.theta()/Math.PI))*((double)(n)));
+              double almost1=1.0-2*Double.MIN_VALUE;
+              double di = params.r()*((double)(m))*almost1;
+              double dj = (0.5+0.5*(params.theta()/Math.PI))*((double)(n))*almost1;
               
-              double v = (i >=m ? 0.0 : mat.get(i,j));
+              int fi = (int)Math.floor(di);
+              int fj = (int)Math.floor(dj);
               
-              return color.apply(new MatrixDiskColorParams(x,y,v,t));
+              int ci = (int)Math.floor(di+1.0);
+
+              int diffi = ci-fi;
+
+              double va = (fi >=m || fj >= n ? 0.0 : mat.get(fi,fj));
+              double vb = (ci >=m || fj >= n ? 0.0 : mat.get(ci,fj));
+              
+              double vc = va;
+              double ph = 0.0;
+              if(diffi > 0) {
+                ph = (di-fi)/(double)(diffi);
+              }
+              vc = (vc*(1.0-ph)+vb*(ph));
+              return color.apply(new MatrixDiskColorParams(x,y,vc,t));
             }, 
             width, height);
         ++k;     
