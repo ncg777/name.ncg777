@@ -428,7 +428,7 @@ public class Animations {
           (t) -> Double.valueOf(width),
           (t) -> Double.valueOf(height),
           (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
-          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*u*a),(int)(32.0*a)),
+          (t,u) -> new Color((int)(255.0*Math.pow(u,2.0)*a),(int)(255.0*u*a),(int)(255.0*Math.pow(u,2.0)*a),(int)(32.0*a)),
           (t) -> 1/(2.0*(double)Math.max(height, width))
           );
       
