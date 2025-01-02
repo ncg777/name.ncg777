@@ -253,6 +253,7 @@ public class Animations {
       double mean_lifetime,
       double lifetime_stdev,
       double max_radius,
+      boolean draw_contour,
       int width, 
       int height, 
       double fps) {
@@ -279,10 +280,11 @@ public class Animations {
       var rr = radii.get(params.individual)*a;
       var e = new Ellipse2D.Double(params.x-rr/2, params.y-rr/2, rr, rr);
       params.g.fill(e);
-      params.g.setStroke(new BasicStroke(2.0f));
-      params.g.setColor(Color.WHITE);
-      params.g.draw(e);
-      
+      params.g.setStroke(new BasicStroke(1.0f));
+      if(draw_contour) {
+        params.g.setColor(Color.WHITE);
+        params.g.draw(e);  
+      }
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
   }
   
@@ -323,7 +325,10 @@ public class Animations {
       int len = (int)(fps*lifetimes.get(i));  
       for(int _j=0;_j<len;_j++) {
         final int j = _j;
-        df.get((f+j)%upper).add((Graphics2D g) -> {
+        int zzz = f+j;
+        while(zzz < 0) zzz += upper;
+        while(zzz >= upper) zzz -= upper;
+        df.get(zzz).add((Graphics2D g) -> {
           drawf.accept(new BivariateNormalProcessParams(g, i, _x, _y, (double)(f+j)/(double)upper, (double)j/(double)len));
         });
       }
