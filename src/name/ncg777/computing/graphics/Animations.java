@@ -92,7 +92,9 @@ public class Animations {
         var g = img.createGraphics();
 
         GraphicsFunctions.drawColorField2D(g, 
-            (x,y) -> {
+            (params) -> {
+              double x = params.x();
+              double y = params.y();
               var b = 5.0;
               var th = Math.atan2(x, y);
               var s = 0.5+(th/Math.PI)*0.5;
@@ -127,7 +129,9 @@ public class Animations {
         var g = img.createGraphics();
 
         GraphicsFunctions.drawColorField2D(g, 
-            (x,y) -> {
+            (params) -> {
+              double x = params.x();
+              double y = params.y();
               var b =3.0;
               var th = Math.atan2(x, y);
               var s = (0.5+(th/Math.PI)*0.5);
@@ -150,52 +154,31 @@ public class Animations {
   }
 
   public static Enumeration<Mat> Hadamard20241228_1(int n, int width, int height, double fps, double dur) {
-    final var m = HadamardMatrix.getMatrix(n);
-    return new Enumeration<Mat>() {
-      int upper = (int)(dur*fps);
-      int k = 0;
-
-      public boolean hasMoreElements() {
-        return k<upper;
-      }
-
-      public Mat nextElement() {
-        final double t = (double) k/(double)upper;
-        final Function<Double,Double> _f = (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,3.0);
-        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        var g = img.createGraphics();
-        int dim = m.columnCount();
-        g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
-        GraphicsFunctions.drawColorField2D(g, 
-            (_x,_y) -> {
-              double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
-              Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
-
-              Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
-              Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
-              int i = (int)Math.floor((0.5+x*0.5)*((double)(dim)));
-              int j = (int)Math.floor((0.5+y*0.5)*((double)(dim)));
-              double v = (i>=dim || j >= dim) ? 0.0 : m.get(i,j).doubleValue();
-              var rfadestart = 0.675;
-              var rfadeend = 0.7;
-              var v2 = (v*0.5+0.5);
-              return new Color(
-                  (int)((((0.75-0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
-                  (int)((((0.75+0.25*Math.cos(2.0*Math.PI*t))*v2)*255.0)),
-                  (int)(0.0),
-                  r > rfadeend ? 0 : (
-                      r < rfadestart ? (int)(v2*255.0) : 
-                        ((int)(255.0*
-                            (1.0-(
-                                (r-rfadestart)/(rfadeend-rfadestart)
-                                ))))
-                      ));
-            }, 
-            width, height);
-        ++k;     
-        return GraphicsFunctions.BufferedImageToMat(img);
-      }
-    };
+    return MatrixDisk(
+        HadamardMatrix.getMatrix(n).toMatrixOfDoubles(), 
+        (params) -> {
+          Double r = Math.sqrt(((Math.pow(params.x, 2.0) + Math.pow(params.y, 2.0))/2.0));
+          
+          //Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
+          //Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
+          var rfadestart = 0.675;
+          var rfadeend = 0.7;
+          var v2 = (params.v*0.5+0.5);
+          return new Color(
+              (int)((((0.75-0.25*Math.cos(2.0*Math.PI*params.t))*v2)*255.0)),
+              (int)((((0.75+0.25*Math.cos(2.0*Math.PI*params.t))*v2)*255.0)),
+              (int)(0.0),
+              r > rfadeend ? 0 : (
+                  r < rfadestart ? (int)(v2*255.0) : 
+                    ((int)(255.0*
+                        (1.0-(
+                            (r-rfadestart)/(rfadeend-rfadestart)
+                            ))))
+                  ));
+          
+        }, 
+        width, height, fps, dur);
+    
   }
   public static record MatrixDiskColorParams(double x, double y, double v, double t) {}
 
@@ -223,20 +206,18 @@ public class Animations {
 
       public Mat nextElement() {
         final double t = (double) k/(double)upper;
-        final Function<Double,Double> _f =  (Double r) -> Math.pow(-1.0+2.0*(1.0-r)*r,3.0);
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
         g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
         GraphicsFunctions.drawColorField2D(g, 
-            (_x,_y) -> {
-              double th = Math.atan2(0.5+0.5*_x, 0.5+0.5*_y);
-              Double r = Math.sqrt((Math.pow(_x, 2.0) + Math.pow(_y, 2.0))/2.0);
-
-              Double x = r*Math.cos(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
-              Double y = r*Math.sin(th+Math.PI*Math.sin(2.0*Math.PI*t)*_f.apply(r));
-              int i = (int)Math.floor((0.5+x*0.5)*((double)(m)));
-              int j = (int)Math.floor((0.5+y*0.5)*((double)(n)));
-              double v = (i>=m || j >= n) ? 0.0 : mat.get(i,j);
+            (params) -> {
+              double x = params.x();
+              double y = params.y();
+              
+              int i = (int)Math.floor(params.r()*((double)(m-1)));
+              int j = (int)Math.floor((0.5+0.5*(params.theta()/Math.PI))*((double)(n-1)));
+              
+              double v = mat.get(i,j);
               
               return color.apply(new MatrixDiskColorParams(x,y,v,t));
             }, 
@@ -384,7 +365,7 @@ public class Animations {
     };
   }
   
-  public static Enumeration<Mat> Animation20250102_1(
+  public static Enumeration<Mat> ParametricStars20250102_1(
       int width, 
       int height, 
       double fps, 
@@ -438,10 +419,9 @@ public class Animations {
                 (int)((255.0*ctl+(double)c.getBlue()*(1-ctl))*a),
                 (int)(16.0));
           },
-          (t) -> 1/(2.0*(double)Math.max(height, width))
+          (t) -> 1/((double)Math.max(height, width))
           );
       
     }, lifetime, nb, width, height, fps, dur);
-    
   }
 }

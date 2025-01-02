@@ -133,9 +133,11 @@ public class GraphicsFunctions {
     System.out.println("\rDone.\n");
   }
   
+  public record MixedCoordinates(double x, double y, double r, double theta) {};
+  
   public static void drawColorField2D(
       Graphics2D g, 
-      BiFunction<Double,Double,Color> color,
+      Function<MixedCoordinates,Color> color,
       int width,
       int height) {
     for(int x=0;x<width;x++) {
@@ -146,7 +148,11 @@ public class GraphicsFunctions {
         double ynorm = (double)y/(double)height;
         ynorm += -0.5;
         ynorm *= 2.0;
-        var c = color.apply(xnorm, ynorm);
+        
+        Double r = Math.sqrt((Math.pow(xnorm, 2.0) + Math.pow(ynorm, 2.0))/2.0);
+        double th = Math.atan2(xnorm, ynorm);
+        
+        var c = color.apply(new MixedCoordinates(xnorm, ynorm,r,th));
         g.setPaint(c);
         g.setColor(c);
         g.fill(new Ellipse2D.Double(x-1, y-1, 3, 3));
