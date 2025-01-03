@@ -207,10 +207,10 @@ public class GraphicsFunctions {
       Function<Double,Double> y, 
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY,
+      Function<Double,Double> translateX,
+      Function<Double,Double> translateY,
       Function<Double,Double> width,
       BiFunction<Double,Double,Color> color,
       Function<Double,Double> deltaf) {
@@ -267,10 +267,10 @@ public class GraphicsFunctions {
         },
       from_inclusive,
       to_exclusive,
-      translateX,
-      translateY,
       scaleX,
       scaleY,
+      translateX,
+      translateY,
       deltaf);
   }
   
@@ -281,10 +281,10 @@ public class GraphicsFunctions {
       BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY,
+      Function<Double,Double> translateX,
+      Function<Double,Double> translateY,
       Function<Double,Double> deltaf) {
     g.setStroke(new BasicStroke(2.0f));
     
@@ -296,10 +296,10 @@ public class GraphicsFunctions {
       double tx = translateX.apply(t);
       double ty = translateY.apply(t);
       
-      double A_x = sx*(x.apply(t)+tx);
-      double A_y = sy*(y.apply(t)+ty);
-      double B_x = sx*(x.apply(t+delta)+tx);
-      double B_y = sy*(y.apply(t+delta)+ty);
+      double A_x = (sx*x.apply(t))+tx;
+      double A_y = (sy*y.apply(t))+ty;
+      double B_x = (sx*x.apply(t+delta))+tx;
+      double B_y = (sy*y.apply(t+delta))+ty;
       
       drawf.accept(t, HomoPair.makeHomoPair(HomoPair.makeHomoPair(A_x, A_y), HomoPair.makeHomoPair(B_x, B_y)));
     }
@@ -320,11 +320,11 @@ public class GraphicsFunctions {
       BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf) {
     drawParametric2D(g, x, y, drawf, 
         defaultFrom, 
-        defaultTo, 
-        (t) -> defaultTranslateX,
-        (t) -> defaultTranslateY, 
+        defaultTo,  
         (t) -> defaultScaleX, 
         (t) -> defaultScaleY,
+        (t) -> defaultTranslateX,
+        (t) -> defaultTranslateY,
         (t) -> defaultDelta);
   }
   
@@ -336,10 +336,10 @@ public class GraphicsFunctions {
       double from_inclusive, 
       double to_exclusive) {
     drawParametric2D(g, x, y, drawf, from_inclusive, to_exclusive, 
-        (t) -> defaultTranslateX,
-        (t) -> defaultTranslateY, 
         (t) -> defaultScaleX, 
         (t) -> defaultScaleY,
+        (t) -> defaultTranslateX,
+        (t) -> defaultTranslateY, 
         (t) -> defaultDelta);
   }
   
@@ -350,13 +350,13 @@ public class GraphicsFunctions {
       BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY) {
+      Function<Double,Double> scaleX,
+      Function<Double,Double> scaleY) {
     drawParametric2D(g, x, y,drawf, from_inclusive, to_exclusive, 
-        translateX,
-        translateY, 
-        (t) -> defaultScaleX, 
-        (t) -> defaultScaleY,
+        scaleX,
+        scaleY, 
+        (t) -> defaultTranslateX, 
+        (t) -> defaultTranslateY,
         (t) -> defaultDelta);
   }
   
@@ -367,15 +367,15 @@ public class GraphicsFunctions {
       BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
       Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY) {
+      Function<Double,Double> scaleY,
+      Function<Double,Double> translateX,
+      Function<Double,Double> translateY) {
     drawParametric2D(g, x, y,drawf, from_inclusive, to_exclusive, 
-        translateX,
-        translateY, 
         scaleX, 
         scaleY, 
+        translateX,
+        translateY, 
         (t) -> defaultDelta);
   }
 }

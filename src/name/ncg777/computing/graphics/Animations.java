@@ -24,6 +24,9 @@ import org.opencv.core.Mat;
 
 public class Animations {
   public static class Helpers {
+    public static record MatrixDiskColorParams(double x, double y, double v, double t) {}
+    public static record BivariateNormalProcessParams(Graphics2D g, int individual, double x, double y, double t, double life) {};
+     
     /***
      * Draws a matrix of doubles on a disk.
      * 
@@ -314,12 +317,7 @@ public class Animations {
         width, height, fps, dur);
     
   }
-  public static record MatrixDiskColorParams(double x, double y, double v, double t) {}
 
-  
-  
-  public static record BivariateNormalProcessParams(Graphics2D g, int individual, double x, double y, double t, double life) {};
-   
   public static Enumeration<Mat> Droplets20250101_1(
       int nb_individuals, 
       double total_duration, 
@@ -435,10 +433,11 @@ public class Animations {
                 
           0.0,
           1.0,
-          (t) -> 0.0,
-          (t) -> 0.0,
-          (t) -> Double.valueOf(width),
-          (t) -> Double.valueOf(height),
+          
+          (t) -> Double.valueOf(width)*(1.0-params.life),
+          (t) -> Double.valueOf(height)*(1.0-params.life),
+          (t) -> params.life*Double.valueOf(width)*0.5,
+          (t) -> params.life*Double.valueOf(height)*0.5,
           (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
           (t,u) -> {
             var c = cs.get(params.individual);
