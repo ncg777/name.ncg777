@@ -53,11 +53,11 @@ public class Animations {
           g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
           GraphicsFunctions.drawColorField2D(g, 
               (params) -> {
-                double x = params.x();
-                double y = params.y();
+                double x = params.cartesian().getFirst();
+                double y = params.cartesian().getSecond();
                 double almost1=1.0-2*Double.MIN_VALUE;
-                double di = params.r()*((double)(m))*almost1;
-                double dj = (0.5+0.5*(params.theta()/Math.PI))*((double)(n))*almost1;
+                double di = params.polar().getFirst()*((double)(m))*almost1;
+                double dj = (0.5+0.5*(params.polar().getSecond()/Math.PI))*((double)(n))*almost1;
                 
                 int fi = (int)Math.floor(di);
                 int fj = (int)Math.floor(dj);
@@ -229,8 +229,8 @@ public class Animations {
 
         GraphicsFunctions.drawColorField2D(g, 
             (params) -> {
-              double x = params.x();
-              double y = params.y();
+              double x = params.cartesian().getFirst();
+              double y = params.cartesian().getSecond();
               var b = 5.0;
               var th = Math.atan2(x, y);
               var s = 0.5+(th/Math.PI)*0.5;
@@ -266,8 +266,8 @@ public class Animations {
 
         GraphicsFunctions.drawColorField2D(g, 
             (params) -> {
-              double x = params.x();
-              double y = params.y();
+              double x = params.cartesian().getFirst();
+              double y = params.cartesian().getSecond();
               var b =3.0;
               var th = Math.atan2(x, y);
               var s = (0.5+(th/Math.PI)*0.5);

@@ -133,7 +133,7 @@ public class GraphicsFunctions {
     System.out.println("\rDone.\n");
   }
   
-  public record MixedCoordinates(double x, double y, double r, double theta) {};
+  public record MixedCoordinates(HomoPair<Double> cartesian, HomoPair<Double> polar) {};
   
   public static void drawColorField2D(
       Graphics2D g, 
@@ -151,7 +151,10 @@ public class GraphicsFunctions {
         
         Double r = Math.sqrt((Math.pow(xnorm, 2.0) + Math.pow(ynorm, 2.0)));
         double th = Math.atan2(xnorm, ynorm);
-        var c = color.apply(new MixedCoordinates(xnorm, ynorm,r,th));
+        var c = color.apply(
+            new MixedCoordinates(
+                HomoPair.makeHomoPair(xnorm, ynorm),
+                HomoPair.makeHomoPair(r,th)));
         g.setPaint(c);
         g.setColor(c);
         g.fill(new Ellipse2D.Double(x-1, y-1, 3, 3));
