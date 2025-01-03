@@ -23,6 +23,142 @@ import org.apache.commons.math3.distribution.UniformRealDistribution;
 import org.opencv.core.Mat;
 
 public class Animations {
+  public static class Helpers {
+    /***
+     * Draws a matrix of doubles on a disk.
+     * 
+     * @param mat Values assumed to be in [-1,1]
+     * @param width
+     * @param height
+     * @param fps
+     * @param dur
+     * @return
+     */
+    public static Enumeration<Mat> MatrixDisk(MatrixOfDoubles mat, Function<MatrixDiskColorParams,Color> color, int width, int height, double fps, double dur) {
+      int m = mat.rowCount();
+      int n = mat.columnCount();
+
+      return new Enumeration<Mat>() {
+        int upper = (int)(dur*fps);
+        int k = 0;
+
+        public boolean hasMoreElements() {
+          return k<upper;
+        }
+
+        public Mat nextElement() {
+          final double t = (double) k/(double)upper;
+          var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+          var g = img.createGraphics();
+          g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
+          GraphicsFunctions.drawColorField2D(g, 
+              (params) -> {
+                double x = params.x();
+                double y = params.y();
+                double almost1=1.0-2*Double.MIN_VALUE;
+                double di = params.r()*((double)(m))*almost1;
+                double dj = (0.5+0.5*(params.theta()/Math.PI))*((double)(n))*almost1;
+                
+                int fi = (int)Math.floor(di);
+                int fj = (int)Math.floor(dj);
+                
+                int ci = (int)Math.floor(di+1.0);
+
+                int diffi = ci-fi;
+
+                double va = (fi >=m || fj >= n ? 0.0 : mat.get(fi,fj));
+                double vb = (ci >=m || fj >= n ? 0.0 : mat.get(ci,fj));
+                
+                double vc = va;
+                double ph = 0.0;
+                if(diffi > 0) {
+                  ph = (di-fi)/(double)(diffi);
+                }
+                vc = (vc*(1.0-ph)+vb*(ph));
+                return color.apply(new MatrixDiskColorParams(x,y,vc,t));
+              }, 
+              width, height);
+          ++k;     
+          return GraphicsFunctions.BufferedImageToMat(img);
+        }
+      };
+    }
+    
+    public static Enumeration<Mat> BivariateNormalProcess(
+        Consumer<BivariateNormalProcessParams> drawf, 
+        RealDistribution lifetime, 
+        int nb, 
+        int width, 
+        int height, 
+        double fps, 
+        double dur) {
+      List<List<Consumer<Graphics2D>>> df = new ArrayList<List<Consumer<Graphics2D>>>();
+      int upper = (int)(dur*fps);
+      
+      for(int i=0;i<upper;i++) {
+        df.add(new ArrayList<>());
+      }
+      
+      double[] means = {0.0,0.0};
+      double sd = 1.0/32.0;
+      double[][] cov = {{sd,0.0},{0.0,sd}};
+      List<Double> lifetimes = new ArrayList<Double>();
+      for(int i=0;i<nb;i++) {
+        double life = lifetime.sample();
+        lifetimes.add(life);
+      }
+      
+      var mnd = new MultivariateNormalDistribution(means, cov);
+      var startd = new UniformIntegerDistribution(0, (int)(-1.0+(dur*fps)));
+      
+      for(int _i=0;_i<nb;_i++) {
+        final int i = _i;
+        int f = startd.sample();
+        
+        double x=0.0;
+        double y=0.0;
+        var s = mnd.sample();
+        x = width*(0.5+0.5*s[0]);
+        if(x < width*0.05) x = width*0.05;
+        if(x > width*0.95) x = width*0.95;
+        y = height*(0.5+0.5*s[1]);
+        if(y < height*0.05) y = height*0.05;
+        if(y > height*0.95) y = height*0.95;
+        final double _x = x;
+        final double _y = y;
+        int len = (int)(fps*lifetimes.get(i));  
+        for(int _j=0;_j<len;_j++) {
+          final int j = _j;
+          int _zzz = f+j;
+          while(_zzz < 0) _zzz += upper;
+          while(_zzz >= upper) _zzz -= upper;
+          final int zzz = _zzz;
+          df.get(zzz).add((Graphics2D g) -> {
+            drawf.accept(new BivariateNormalProcessParams(g, i, _x, _y, (double)(zzz)/(double)upper, (double)j/(double)len));
+          });
+        }
+      };
+      
+      return new Enumeration<Mat>() {
+        int k = 0;
+        
+        public boolean hasMoreElements() {
+          return k<upper;
+        }
+        public Mat nextElement() {
+          var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+          var g = img.createGraphics();
+          
+          for(var f : df.get(k)) {
+            f.accept(g);
+          }
+          
+          ++k;
+          return GraphicsFunctions.BufferedImageToMat(img);
+        }
+      };
+    }
+  }
   public static Enumeration<Mat> Metazoa20241225_1(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
@@ -154,7 +290,7 @@ public class Animations {
   }
 
   public static Enumeration<Mat> Hadamard20241228_1(int n, int width, int height, double fps, double dur) {
-    return MatrixDisk(
+    return Helpers.MatrixDisk(
         HadamardMatrix.getMatrix(n).toMatrixOfDoubles(), 
         (params) -> {
           Double r = Math.sqrt(((Math.pow(params.x, 2.0) + Math.pow(params.y, 2.0))/2.0));
@@ -180,65 +316,7 @@ public class Animations {
   }
   public static record MatrixDiskColorParams(double x, double y, double v, double t) {}
 
-  /***
-   * Draws a matrix of doubles on a disk.
-   * 
-   * @param mat Values assumed to be in [-1,1]
-   * @param width
-   * @param height
-   * @param fps
-   * @param dur
-   * @return
-   */
-  public static Enumeration<Mat> MatrixDisk(MatrixOfDoubles mat, Function<MatrixDiskColorParams,Color> color, int width, int height, double fps, double dur) {
-    int m = mat.rowCount();
-    int n = mat.columnCount();
-
-    return new Enumeration<Mat>() {
-      int upper = (int)(dur*fps);
-      int k = 0;
-
-      public boolean hasMoreElements() {
-        return k<upper;
-      }
-
-      public Mat nextElement() {
-        final double t = (double) k/(double)upper;
-        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        var g = img.createGraphics();
-        g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
-        GraphicsFunctions.drawColorField2D(g, 
-            (params) -> {
-              double x = params.x();
-              double y = params.y();
-              double almost1=1.0-2*Double.MIN_VALUE;
-              double di = params.r()*((double)(m))*almost1;
-              double dj = (0.5+0.5*(params.theta()/Math.PI))*((double)(n))*almost1;
-              
-              int fi = (int)Math.floor(di);
-              int fj = (int)Math.floor(dj);
-              
-              int ci = (int)Math.floor(di+1.0);
-
-              int diffi = ci-fi;
-
-              double va = (fi >=m || fj >= n ? 0.0 : mat.get(fi,fj));
-              double vb = (ci >=m || fj >= n ? 0.0 : mat.get(ci,fj));
-              
-              double vc = va;
-              double ph = 0.0;
-              if(diffi > 0) {
-                ph = (di-fi)/(double)(diffi);
-              }
-              vc = (vc*(1.0-ph)+vb*(ph));
-              return color.apply(new MatrixDiskColorParams(x,y,vc,t));
-            }, 
-            width, height);
-        ++k;     
-        return GraphicsFunctions.BufferedImageToMat(img);
-      }
-    };
-  }
+  
   
   public static record BivariateNormalProcessParams(Graphics2D g, int individual, double x, double y, double t, double life) {};
    
@@ -284,7 +362,7 @@ public class Animations {
     
     ColorSequence cs = new ColorSequence(nbcols);
     
-    return BivariateNormalProcess((params) -> {
+    return Helpers.BivariateNormalProcess((params) -> {
       final double a = 0.49999*(1.0+Math.sin(-(Math.PI/2.0)+(params.life)*Math.PI*2.0));
       Color c = cs.get((int)(((double)params.individual/(double)nb_individuals)*((double)nbcols)));
       Color c2 = new Color((int)(c.getRed()*a),(int)(c.getGreen()*a),(int)(c.getBlue()*a),(int)(a*32.0));
@@ -302,80 +380,7 @@ public class Animations {
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
   }
   
-  public static Enumeration<Mat> BivariateNormalProcess(
-      Consumer<BivariateNormalProcessParams> drawf, 
-      RealDistribution lifetime, 
-      int nb, 
-      int width, 
-      int height, 
-      double fps, 
-      double dur) {
-    List<List<Consumer<Graphics2D>>> df = new ArrayList<List<Consumer<Graphics2D>>>();
-    int upper = (int)(dur*fps);
-    
-    for(int i=0;i<upper;i++) {
-      df.add(new ArrayList<>());
-    }
-    
-    double[] means = {0.0,0.0};
-    double sd = 1.0/32.0;
-    double[][] cov = {{sd,0.0},{0.0,sd}};
-    List<Double> lifetimes = new ArrayList<Double>();
-    for(int i=0;i<nb;i++) {
-      double life = lifetime.sample();
-      lifetimes.add(life);
-    }
-    
-    var mnd = new MultivariateNormalDistribution(means, cov);
-    var startd = new UniformIntegerDistribution(0, (int)(-1.0+(dur*fps)));
-    
-    for(int _i=0;_i<nb;_i++) {
-      final int i = _i;
-      int f = startd.sample();
-      
-      double x=0.0;
-      double y=0.0;
-      var s = mnd.sample();
-      x = width*(0.5+0.5*s[0]);
-      if(x < width*0.05) x = width*0.05;
-      if(x > width*0.95) x = width*0.95;
-      y = height*(0.5+0.5*s[1]);
-      if(y < height*0.05) y = height*0.05;
-      if(y > height*0.95) y = height*0.95;
-      final double _x = x;
-      final double _y = y;
-      int len = (int)(fps*lifetimes.get(i));  
-      for(int _j=0;_j<len;_j++) {
-        final int j = _j;
-        int _zzz = f+j;
-        while(_zzz < 0) _zzz += upper;
-        while(_zzz >= upper) _zzz -= upper;
-        final int zzz = _zzz;
-        df.get(zzz).add((Graphics2D g) -> {
-          drawf.accept(new BivariateNormalProcessParams(g, i, _x, _y, (double)(zzz)/(double)upper, (double)j/(double)len));
-        });
-      }
-    };
-    
-    return new Enumeration<Mat>() {
-      int k = 0;
-      
-      public boolean hasMoreElements() {
-        return k<upper;
-      }
-      public Mat nextElement() {
-        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        var g = img.createGraphics();
-        
-        for(var f : df.get(k)) {
-          f.accept(g);
-        }
-        
-        ++k;
-        return GraphicsFunctions.BufferedImageToMat(img);
-      }
-    };
-  }
+  
   
   public static Enumeration<Mat> ParametricStars20250102_1(
       int width, 
@@ -407,7 +412,7 @@ public class Animations {
       ronds.add(rondd.sample());
     }
     
-    return BivariateNormalProcess((params) -> {
+    return Helpers.BivariateNormalProcess((params) -> {
       var g = params.g;
       double a = 0.5*(1.0+Math.sin(-(Math.PI/2.0)+params.life*Math.PI*2.0));
       
