@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 
+import org.apache.commons.math3.util.FastMath;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -151,7 +152,7 @@ public class GraphicsFunctions {
         ynorm *= 2.0;
         
         Double r = Math.sqrt((Math.pow(xnorm, 2.0) + Math.pow(ynorm, 2.0)));
-        double th = Math.atan2(xnorm, ynorm);
+        double th = FastMath.atan2(ynorm, xnorm);
         var c = color.apply(
             new MixedCoordinates(
                 HomoPair.makeHomoPair(xnorm, ynorm),
