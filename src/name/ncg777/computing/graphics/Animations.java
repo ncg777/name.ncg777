@@ -282,7 +282,7 @@ public class Animations {
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         var g = img.createGraphics();
-
+        g.rotate(t*2.0*Math.PI, width/2.0,height/2);
         GraphicsFunctions.MatrixDisk(
             g,
             mat,

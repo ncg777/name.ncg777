@@ -185,12 +185,13 @@ public class GraphicsFunctions {
           double x = params.cartesian().getFirst();
           double y = params.cartesian().getSecond();
           double di = params.polar().getFirst()*((double)(m));
-          double tmpj = (params.polar().getSecond()-(Math.PI/2.0))/Math.PI;
+         
+          double tmpj = (params.polar().getSecond()-(Math.PI/4.0))/Math.PI;
           if(tmpj<-1.0) tmpj+=2.0;
           if(tmpj>1.0) tmpj-=2.0;
-          double dj = 0.5+0.5*tmpj*((double)(n));
+          double dj = (0.5+0.5*tmpj*((double)(n)))-0.5;
           
-          int fi = (int)Math.round(di-0.5);
+          int fi = (int)Math.round(di);
           int fj = (int)Math.round(dj);
           
           int fim = fi-1;
