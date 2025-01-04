@@ -12,7 +12,6 @@ import java.util.function.Consumer;
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
-import name.ncg777.computing.graphics.GraphicsFunctions.MixedCoordinates;
 import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
