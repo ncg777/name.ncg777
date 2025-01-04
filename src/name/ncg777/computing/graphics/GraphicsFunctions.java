@@ -91,7 +91,7 @@ public class GraphicsFunctions {
     }
     return o;
   }
-  public static Mat BufferedImageToMat(BufferedImage img) {
+  public static Mat bufferedImageToMat(BufferedImage img) {
     int height = img.getHeight();
     int width = img.getWidth();
     var o = new Mat(new Size(width, height), CvType.CV_8UC4);
@@ -133,7 +133,7 @@ public class GraphicsFunctions {
     vw.release();
     System.out.println("\rDone.\n");
   }
-  
+
   public record MixedCoordinates(HomoPair<Double> cartesian, HomoPair<Double> polar) {};
   
   public static void drawColorField2D(Graphics2D g, Function<MixedCoordinates, Color> color, int width, int height) {
@@ -192,7 +192,7 @@ public class GraphicsFunctions {
         return color.apply(HomoPair.makeHomoPair(x, y), vo);
     }, width, height);
   }
-
+  
   private static int wrapIndex(int index, int max) {
     return (index + max) % max;
   }

@@ -94,7 +94,7 @@ public class Animations {
           }
 
           ++k;
-          return GraphicsFunctions.BufferedImageToMat(img);
+          return GraphicsFunctions.bufferedImageToMat(img);
         }
       };
     }
@@ -156,7 +156,7 @@ public class Animations {
           }
         }
         ++k;
-        return GraphicsFunctions.BufferedImageToMat(img);
+        return GraphicsFunctions.bufferedImageToMat(img);
       }
     };
   }
@@ -202,7 +202,7 @@ public class Animations {
             }, 
             width, height);
         ++k;
-        return GraphicsFunctions.BufferedImageToMat(img);
+        return GraphicsFunctions.bufferedImageToMat(img);
       }
     };
   }
@@ -250,7 +250,7 @@ public class Animations {
             }, 
             width, height);
         ++k;
-        return GraphicsFunctions.BufferedImageToMat(img);
+        return GraphicsFunctions.bufferedImageToMat(img);
       }
     };
   }
@@ -306,7 +306,7 @@ public class Animations {
             }, 
             width, height, interpolate);
         ++k;
-        return GraphicsFunctions.BufferedImageToMat(img);
+        return GraphicsFunctions.bufferedImageToMat(img);
       }
     };
     
