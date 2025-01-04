@@ -156,40 +156,47 @@ public class GraphicsFunctions {
     }
   }
   
-  public static void matrixDisk(Graphics2D g, MatrixOfDoubles mat, BiFunction<HomoPair<Double>,Double, Color> color, int width, int height, boolean interpolate) {
+  public static void matrixDisk(Graphics2D g, MatrixOfDoubles mat, BiFunction<HomoPair<Double>, Double, Color> color, int width, int height, boolean interpolate) {
     int m = mat.rowCount();
     int n = mat.columnCount();
 
     drawColorField2D(g, (params) -> {
-        double x = params.cartesian().getFirst();
-        double y = params.cartesian().getSecond();
+      double x = params.cartesian().getFirst();
+      double y = params.cartesian().getSecond();
 
-        double di = params.polar().getFirst() * m;
-        double dj = (((params.polar().getSecond())/ Math.PI) * 0.5 + 0.5) * n;
-        while(dj < 0.0) dj += (double)n;
-        while(dj >= (double) n) dj -= (double)n;
-        
-        int fi = (int) Math.floor(di);
-        int fj = wrapIndex((int) Math.floor(dj),n);
+      // Compute polar indices
+      double di = params.polar().getFirst() * m;
+      double adjustedDi = Math.sqrt(di / m) * m; // Uniform area distribution
+      int fi = (int) Math.floor(adjustedDi);
 
-        double phi = di - fi;
-        double phj = dj - fj;
+      double dj = (((params.polar().getSecond()) / Math.PI) * 0.5 + 0.5) * n;
+      while (dj < 0.0) dj += n;
+      while (dj >= n) dj -= n;
 
-        double vo = (fi >= 0 && fi < m) ? mat.get(fi, fj) : 0.0;
+      int fj = wrapIndex((int) Math.floor(dj), n);
 
-        if (interpolate) {
-            int fip = fi + 1;
-            int fjp = wrapIndex(fj + 1, n);
+      // Interpolation factors
+      double phi = adjustedDi - fi;
+      double phj = dj - fj;
 
-            double v00 = vo;
-            double v10 = (fip < m) ? mat.get(fip, fj) : 0.0;
-            double v01 = (fi >= 0 && fi < m) ? mat.get(fi, fjp) : 0.0;
-            double v11 = (fip < m) ? mat.get(fip, fjp) : 0.0;
+      // Fetch base value
+      double vo = (fi >= 0 && fi < m) ? mat.get(fi, fj) : 0.0;
 
-            vo = bilinearInterpolation(phi, phj, v00, v10, v01, v11);
-        }
+      if (interpolate) {
+        // Neighbor indices for interpolation
+        int fip = fi + 1;
+        int fjp = wrapIndex(fj + 1, n);
 
-        return color.apply(HomoPair.makeHomoPair(x, y), vo);
+        double v00 = vo;
+        double v10 = (fip < m) ? mat.get(fip, fj) : 0.0;
+        double v01 = (fi >= 0 && fi < m) ? mat.get(fi, fjp) : 0.0;
+        double v11 = (fip < m) ? mat.get(fip, fjp) : 0.0;
+
+        // Bilinear interpolation
+        vo = bilinearInterpolation(phi, phj, v00, v10, v01, v11);
+      }
+
+      return color.apply(HomoPair.makeHomoPair(x, y), vo);
     }, width, height);
   }
   

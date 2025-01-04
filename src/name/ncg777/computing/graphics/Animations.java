@@ -40,8 +40,8 @@ public class Animations {
       }
 
       double[] means = {0.0,0.0};
-      double sd = 1.0/32.0;
-      double[][] cov = {{sd,0.0},{0.0,sd}};
+      double va = 1.0/16.0;
+      double[][] cov = {{va,0.0},{0.0,va}};
       List<Double> lifetimes = new ArrayList<Double>();
       for(int i=0;i<nb;i++) {
         double life = lifetime.sample();
@@ -383,8 +383,9 @@ public class Animations {
 
       var e = new OscillatingCircle(params.x-rr/2, params.y-rr/2, rr, partials.get(params.individual), orientations.get(params.individual)*(params.life*Math.PI*2.0)+ thetas.get(params.individual));
       params.g.fill(e);
-      params.g.setStroke(new BasicStroke(1.1f));
+      
       if(draw_contour) {
+        params.g.setStroke(new BasicStroke(1.1f));
         params.g.setColor(new Color((int)(a*255.0),(int)(a*255.0),(int)(a*255.0),(int)(a*255.0)));
         params.g.draw(e);  
       }
