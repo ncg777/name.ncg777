@@ -23,6 +23,7 @@ import org.opencv.videoio.VideoWriter;
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
+import name.ncg777.maths.MatrixOfDoubles;
 
 public class GraphicsFunctions {
   static {
@@ -160,6 +161,71 @@ public class GraphicsFunctions {
         g.fill(new Ellipse2D.Double(x-1, y-1, 3, 3));
       }
     }
+  }
+  
+  public static record MatrixDiskColorParams(double x, double y, double v) {}
+  
+  /***
+   * Draws a matrix of doubles on a disk.
+   * 
+   * @param mat Values assumed to be in [-1,1]
+   * @param width
+   * @param height
+   * @param fps
+   * @param dur
+   * @return
+   */
+  public static void MatrixDisk(Graphics2D g, MatrixOfDoubles mat, Function<MatrixDiskColorParams,Color> color, int width, int height, boolean interpolate) {
+  
+    int m = mat.rowCount();
+    int n = mat.columnCount();
+
+    drawColorField2D(g, 
+        (params) -> {
+          double x = params.cartesian().getFirst();
+          double y = params.cartesian().getSecond();
+          double di = params.polar().getFirst()*((double)(m));
+          double tmpj = (params.polar().getSecond()-(Math.PI/2.0))/Math.PI;
+          if(tmpj<-1.0) tmpj+=2.0;
+          if(tmpj>1.0) tmpj-=2.0;
+          double dj = 0.5+0.5*tmpj*((double)(n));
+          
+          int fi = (int)Math.round(di-0.5);
+          int fj = (int)Math.round(dj);
+          
+          int fim = fi-1;
+          int fip = fi+1;
+          
+          int fjm = fj-1;
+          int fjp = fj+1;
+          
+          double vo = (fi >=m ? 0.0 : mat.get(fi,(fj+n)%n));
+          
+          if(interpolate) {                  
+            int closesti = (Math.abs((double)fip-di)<Math.abs(di-(double)fim) ? fip : fim);
+            int closestj = (Math.abs((double)fjp-dj)<Math.abs(dj-(double)fjm) ? fjp : fjm);
+            
+            double phi = Math.abs((double)closesti-di);
+            double phj = Math.abs((double)closestj-dj);
+            
+            if(closesti < 0) closesti=0;
+            if(closestj >= n) closestj-=n;
+            if(closestj < 0) closestj+=n;
+            
+            double vprimei = (closesti >=m ? 0.0 : mat.get(closesti,(fj+n)%n));
+            double vprimej = (fi >=m ? 0.0 : mat.get(fi,closestj));
+            double vprime = (closesti >=m ? 0.0 : mat.get(closesti,closestj));
+            phi = 1.0-phi;
+            phj = 1.0-phj;
+            vo = 
+                vo*(1-phi)*(1-phj) + 
+                vprimei*phi*(1-phj) + 
+                vprimej*(1.0-phi)*phj + 
+                vprime*phi*phj;
+          };
+          
+          return color.apply(new MatrixDiskColorParams(x,y,vo));
+        }, width, height);    
   }
   
   public static BiFunction<Double, Double, Color> interpolateARGBColors(List<Color> colors) {
