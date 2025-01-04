@@ -204,12 +204,62 @@ public class GraphicsFunctions {
         + v11 * phi * phj;
   }
   
-  public static BiFunction<Double, Double, Color> interpolateARGBColors(List<Color> colors) {
+  /**
+   * Performs bicubic interpolation given a fractional position (x, y) within a grid.
+   * The values parameter must be a 4x4 grid of surrounding data points.
+   * x and y must be in the range [0, 1].
+   *
+   * @param x      The fractional horizontal position within the grid [0, 1].
+   * @param y      The fractional vertical position within the grid [0, 1].
+   * @param values A 4x4 grid of surrounding values.
+   * @return The interpolated value.
+   */
+  private static double bicubicInterpolation(double x, double y, double[][] values) {
+      if (x < 0 || x > 1 || y < 0 || y > 1) {
+          throw new IllegalArgumentException("x and y must be in the range [0, 1]");
+      }
+      if (values.length != 4 || values[0].length != 4) {
+          throw new IllegalArgumentException("values must be a 4x4 grid");
+      }
+
+      // Interpolation result
+      double result = 0.0;
+
+      // Perform bicubic interpolation using the cubic basis function
+      for (int i = 0; i < 4; i++) {
+          for (int j = 0; j < 4; j++) {
+              // Contribution of each surrounding point
+              double basis = cubicBasis(x - (i - 1)) * cubicBasis(y - (j - 1));
+              result += basis * values[i][j];
+          }
+      }
+      return result;
+  }
+
+  /**
+   * The cubic basis function used for interpolation.
+   * Approximates a smooth cubic curve for interpolation.
+   *
+   * @param t The distance from the grid point.
+   * @return The weight for the given distance.
+   */
+  private static double cubicBasis(double t) {
+      t = Math.abs(t);
+      if (t <= 1) {
+          return 1 - 2 * t * t + t * t * t; // |t| <= 1
+      } else if (t < 2) {
+          return 4 - 8 * t + 5 * t * t - t * t * t; // 1 < |t| < 2
+      }
+      return 0; // |t| >= 2
+  }
+  
+  
+  public static Function<Double, Color> interpolateARGBColors(List<Color> colors) {
     if (colors == null || colors.size() < 2) {
         throw new IllegalArgumentException("List of colors must contain at least two colors.");
     }
 
-    return (t, u) -> {
+    return (u) -> {
         // Find the two colors to interpolate between
         int numColors = colors.size();
         double scaledU = u * (numColors - 1);
