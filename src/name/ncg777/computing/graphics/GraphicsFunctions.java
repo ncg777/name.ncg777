@@ -137,97 +137,73 @@ public class GraphicsFunctions {
   
   public record MixedCoordinates(HomoPair<Double> cartesian, HomoPair<Double> polar) {};
   
-  public static void drawColorField2D(
-      Graphics2D g, 
-      Function<MixedCoordinates,Color> color,
-      int width,
-      int height) {
-    for(int x=0;x<width;x++) {
-      double xnorm = (double)x/(double)width;
-      xnorm += -0.5;
-      xnorm *= 2.0;
-      for(int y=0;y<height;y++) {
-        double ynorm = (double)y/(double)height;
-        ynorm += -0.5;
-        ynorm *= 2.0;
-        
-        Double r = Math.sqrt((Math.pow(xnorm, 2.0) + Math.pow(ynorm, 2.0)));
-        double th = FastMath.atan2(ynorm, xnorm);
-        var c = color.apply(
-            new MixedCoordinates(
+  public static void drawColorField2D(Graphics2D g, Function<MixedCoordinates, Color> color, int width, int height) {
+    for (int x = 0; x < width; x++) {
+        double xnorm = (x / (double) width - 0.5) * 2.0;
+        for (int y = 0; y < height; y++) {
+            double ynorm = (y / (double) height - 0.5) * 2.0;
+
+            double r = Math.sqrt(xnorm * xnorm + ynorm * ynorm);
+            double th = Math.atan2(ynorm, xnorm); // Fixed normalized coordinate usage
+
+            Color c = color.apply(new MixedCoordinates(
                 HomoPair.makeHomoPair(xnorm, ynorm),
-                HomoPair.makeHomoPair(r,th)));
-        g.setPaint(c);
-        g.setColor(c);
-        g.fill(new Ellipse2D.Double(x-1, y-1, 3, 3));
-      }
+                HomoPair.makeHomoPair(r, th)
+            ));
+            g.setColor(c);
+            g.fillRect(x, y, 1, 1); // Use a single-pixel rectangle for efficiency
+        }
     }
   }
   
   public static record MatrixDiskColorParams(double x, double y, double v) {}
-  
-  /***
-   * Draws a matrix of doubles on a disk.
-   * 
-   * @param mat Values assumed to be in [-1,1]
-   * @param width
-   * @param height
-   * @param fps
-   * @param dur
-   * @return
-   */
-  public static void MatrixDisk(Graphics2D g, MatrixOfDoubles mat, Function<MatrixDiskColorParams,Color> color, int width, int height, boolean interpolate) {
-  
+
+  public static void MatrixDisk(Graphics2D g, MatrixOfDoubles mat, Function<MatrixDiskColorParams, Color> color, int width, int height, boolean interpolate) {
     int m = mat.rowCount();
     int n = mat.columnCount();
 
-    drawColorField2D(g, 
-        (params) -> {
-          double x = params.cartesian().getFirst();
-          double y = params.cartesian().getSecond();
-          double di = params.polar().getFirst()*((double)(m));
-         
-          double tmpj = (params.polar().getSecond()-(Math.PI/4.0))/Math.PI;
-          if(tmpj<-1.0) tmpj+=2.0;
-          if(tmpj>1.0) tmpj-=2.0;
-          double dj = (0.5+0.5*tmpj*((double)(n)))-0.5;
-          
-          int fi = (int)Math.round(di);
-          int fj = (int)Math.round(dj);
-          
-          int fim = fi-1;
-          int fip = fi+1;
-          
-          int fjm = fj-1;
-          int fjp = fj+1;
-          
-          double vo = (fi >=m ? 0.0 : mat.get(fi,(fj+n)%n));
-          
-          if(interpolate) {                  
-            int closesti = (Math.abs((double)fip-di)<Math.abs(di-(double)fim) ? fip : fim);
-            int closestj = (Math.abs((double)fjp-dj)<Math.abs(dj-(double)fjm) ? fjp : fjm);
-            
-            double phi = Math.abs((double)closesti-di);
-            double phj = Math.abs((double)closestj-dj);
-            
-            if(closesti < 0) closesti=0;
-            if(closestj >= n) closestj-=n;
-            if(closestj < 0) closestj+=n;
-            
-            double vprimei = (closesti >=m ? 0.0 : mat.get(closesti,(fj+n)%n));
-            double vprimej = (fi >=m ? 0.0 : mat.get(fi,closestj));
-            double vprime = (closesti >=m ? 0.0 : mat.get(closesti,closestj));
-            phi = 1.0-phi;
-            phj = 1.0-phj;
-            vo = 
-                vo*(1-phi)*(1-phj) + 
-                vprimei*phi*(1-phj) + 
-                vprimej*(1.0-phi)*phj + 
-                vprime*phi*phj;
-          };
-          
-          return color.apply(new MatrixDiskColorParams(x,y,vo));
-        }, width, height);    
+    drawColorField2D(g, (params) -> {
+        double x = params.cartesian().getFirst();
+        double y = params.cartesian().getSecond();
+
+        double di = params.polar().getFirst() * m;
+        double dj = (((params.polar().getSecond())/ Math.PI) * 0.5 + 0.5) * n;
+        while(dj < 0.0) dj += (double)n;
+        while(dj >= (double) n) dj -= (double)n;
+        
+        int fi = (int) Math.floor(di);
+        int fj = wrapIndex((int) Math.floor(dj),n);
+
+        double phi = di - fi;
+        double phj = dj - fj;
+
+        double vo = (fi >= 0 && fi < m) ? mat.get(fi, fj) : 0.0;
+
+        if (interpolate) {
+            int fip = fi + 1;
+            int fjp = wrapIndex(fj + 1, n);
+
+            double v00 = vo;
+            double v10 = (fip < m) ? mat.get(fip, fj) : 0.0;
+            double v01 = (fi >= 0 && fi < m) ? mat.get(fi, fjp) : 0.0;
+            double v11 = (fip < m) ? mat.get(fip, fjp) : 0.0;
+
+            vo = bilinearInterpolation(phi, phj, v00, v10, v01, v11);
+        }
+
+        return color.apply(new MatrixDiskColorParams(x, y, vo));
+    }, width, height);
+  }
+
+  private static int wrapIndex(int index, int max) {
+    return (index + max) % max;
+  }
+
+  private static double bilinearInterpolation(double phi, double phj, double v00, double v10, double v01, double v11) {
+    return v00 * (1 - phi) * (1 - phj)
+        + v10 * phi * (1 - phj)
+        + v01 * (1 - phi) * phj
+        + v11 * phi * phj;
   }
   
   public static BiFunction<Double, Double, Color> interpolateARGBColors(List<Color> colors) {
