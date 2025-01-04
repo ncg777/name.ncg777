@@ -108,7 +108,7 @@ public class Animations {
    * @param dur
    * @return
    */
-  public static Enumeration<Mat> Metazoa(int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> metazoa(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -169,7 +169,7 @@ public class Animations {
    * @param dur
    * @return
    */
-  public static Enumeration<Mat> Spiral1(int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> spiral1(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -215,7 +215,7 @@ public class Animations {
    * @param dur
    * @return
    */
-  public static Enumeration<Mat> Spiral2(int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> spiral2(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -266,7 +266,7 @@ public class Animations {
    * @param interpolate
    * @return
    */
-  public static Enumeration<Mat> Hadamard(int n, int width, int height, double fps, double dur, boolean interpolate) {
+  public static Enumeration<Mat> hadamard(int n, int width, int height, double fps, double dur, boolean interpolate) {
     final MatrixOfDoubles mat = HadamardMatrix.getMatrix(n).toMatrixOfDoubles();
     mat.apply((v) -> v==1.0 ? 1.0 : 0);
     return new Enumeration<Mat>() {
@@ -283,7 +283,7 @@ public class Animations {
 
         var g = img.createGraphics();
         g.rotate(t*2.0*Math.PI, width/2.0,height/2);
-        GraphicsFunctions.MatrixDisk(
+        GraphicsFunctions.matrixDisk(
             g,
             mat,
             (coords, v) -> {
@@ -331,7 +331,7 @@ public class Animations {
    * @param fps
    * @return
    */
-  public static Enumeration<Mat> Droplets(
+  public static Enumeration<Mat> droplets(
       int nb_individuals, 
       double total_duration, 
       double mean_lifetime,
@@ -406,7 +406,7 @@ public class Animations {
    * @param lifetime
    * @return
    */
-  public static Enumeration<Mat> ParametricStars(
+  public static Enumeration<Mat> parametricStars(
       int width, 
       int height, 
       double fps, 

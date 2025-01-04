@@ -49,7 +49,7 @@ public class GraphicsFunctions {
     return o;
   }
 
-  public static BufferedImage MatrixToBufferedImage(Matrix<Pixel32Bits> matrix) {
+  public static BufferedImage matrixToBufferedImage(Matrix<Pixel32Bits> matrix) {
     int height = matrix.rowCount();
     int width = matrix.columnCount();
     var o = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
@@ -62,7 +62,7 @@ public class GraphicsFunctions {
     return o;
   }
   
-  public static BufferedImage MatToBufferedImage(Mat mat) {
+  public static BufferedImage matToBufferedImage(Mat mat) {
     int height = mat.height();
     int width = mat.width();
     var o = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
@@ -156,7 +156,7 @@ public class GraphicsFunctions {
     }
   }
   
-  public static void MatrixDisk(Graphics2D g, MatrixOfDoubles mat, BiFunction<HomoPair<Double>,Double, Color> color, int width, int height, boolean interpolate) {
+  public static void matrixDisk(Graphics2D g, MatrixOfDoubles mat, BiFunction<HomoPair<Double>,Double, Color> color, int width, int height, boolean interpolate) {
     int m = mat.rowCount();
     int n = mat.columnCount();
 
