@@ -151,13 +151,8 @@ public class GraphicsFunctions {
                 HomoPair.makeHomoPair(r, th)
             ));
             
-            // Draw a 3x3 cross centered at (x, y)
             g.setColor(c);
-            g.fillRect(x - 1, y, 1, 1); // Left
-            g.fillRect(x + 1, y, 1, 1); // Right
-            g.fillRect(x, y - 1, 1, 1); // Up
-            g.fillRect(x, y + 1, 1, 1); // Down
-            g.fillRect(x, y, 1, 1);     // Center
+            g.fillRect(x - 1, y-1, 3, 3);
         }
     }
   }
