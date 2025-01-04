@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
+import name.ncg777.computing.graphics.GraphicsFunctions.MixedCoordinates;
 import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -235,7 +236,7 @@ public class Animations {
               double x = params.cartesian().getFirst();
               double y = params.cartesian().getSecond();
               var b =3.0;
-              var th = Math.atan2(x, y);
+              var th = Math.atan2(y, x);
               var s = (0.5+(th/Math.PI)*0.5);
               var r1 = Math.sqrt((Math.pow(x,2.0)+Math.pow(y,2.0))/2.0);
               var r1p = ((Math.cos(t*4.0*Math.PI)))*r1;
@@ -286,12 +287,11 @@ public class Animations {
         GraphicsFunctions.MatrixDisk(
             g,
             mat,
-            (params) -> {
-              Double r = Math.sqrt(((Math.pow(params.x(), 2.0) + Math.pow(params.y(), 2.0))/2.0));
+            (coords, v) -> {
+              Double r = Math.sqrt(((Math.pow(coords.getFirst(), 2.0) + Math.pow(coords.getSecond(), 2.0))/2.0));
 
               var rfadestart = 0.675;
               var rfadeend = 0.7;
-              double v = params.v();
               return new Color(
                   (int)((((0.75-0.25*Math.cos(2.0*Math.PI*t))*v)*255.0)),
                   (int)((((0.75+0.25*Math.sin(4.0*Math.PI*t))*v)*255.0)),

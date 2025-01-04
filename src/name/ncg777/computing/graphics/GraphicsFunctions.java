@@ -14,7 +14,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 
-import org.apache.commons.math3.util.FastMath;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -157,9 +156,7 @@ public class GraphicsFunctions {
     }
   }
   
-  public static record MatrixDiskColorParams(double x, double y, double v) {}
-
-  public static void MatrixDisk(Graphics2D g, MatrixOfDoubles mat, Function<MatrixDiskColorParams, Color> color, int width, int height, boolean interpolate) {
+  public static void MatrixDisk(Graphics2D g, MatrixOfDoubles mat, BiFunction<HomoPair<Double>,Double, Color> color, int width, int height, boolean interpolate) {
     int m = mat.rowCount();
     int n = mat.columnCount();
 
@@ -192,7 +189,7 @@ public class GraphicsFunctions {
             vo = bilinearInterpolation(phi, phj, v00, v10, v01, v11);
         }
 
-        return color.apply(new MatrixDiskColorParams(x, y, vo));
+        return color.apply(HomoPair.makeHomoPair(x, y), vo);
     }, width, height);
   }
 
