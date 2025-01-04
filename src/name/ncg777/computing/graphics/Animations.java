@@ -139,10 +139,10 @@ public class Animations {
                 (t) -> 0.5-j*0.35*Math.sin(               -i*normalized_time*40*Math.PI)*(0.5+0.5*Math.sin((2.0-(Math.abs(1.0-2.0*t)*2.0+2.0*(4.0+(2.0-Math.abs(2.0-4.0*normalized_time)))))*Math.PI)),
                 0.0,
                 1.0,
-                (t) -> 0.0,
-                (t) -> 0.0,
                 (t) -> Double.valueOf(width),
                 (t) -> Double.valueOf(height),
+                (t) -> 0.0,
+                (t) -> 0.0,
                 (t) -> 0.1+0.1*Math.sin(42*Math.PI*t)*Math.sin(20*Math.PI*normalized_time),
                 (t,u) -> new Color(
                     (int)Math.round(128.0-127.0*(j*Math.cos(Math.PI*(3.0*t-i*normalized_time)))), 
