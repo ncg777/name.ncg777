@@ -37,10 +37,7 @@ public class Animations {
      * @param dur
      * @return
      */
-    public static Enumeration<Mat> MatrixDisk(MatrixOfDoubles mat, Function<MatrixDiskColorParams,Color> color, int width, int height, double fps, double dur) {
-      int m = mat.rowCount();
-      int n = mat.columnCount();
-
+    public static Enumeration<Mat> MatrixDisk(Function<Double, MatrixOfDoubles> mats, Function<MatrixDiskColorParams,Color> color, int width, int height, double fps, double dur, boolean interpolate) {
       return new Enumeration<Mat>() {
         int upper = (int)(dur*fps);
         int k = 0;
@@ -51,6 +48,10 @@ public class Animations {
 
         public Mat nextElement() {
           final double t = (double) k/(double)upper;
+          var mat = mats.apply(t);
+          int m = mat.rowCount();
+          int n = mat.columnCount();
+
           var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
           var g = img.createGraphics();
           g.rotate((Math.PI/4.0)-(Math.PI*2.0*t),width/2,height/2);
@@ -58,27 +59,44 @@ public class Animations {
               (params) -> {
                 double x = params.cartesian().getFirst();
                 double y = params.cartesian().getSecond();
-                double almost1=1.0-2*Double.MIN_VALUE;
-                double di = params.polar().getFirst()*((double)(m))*almost1;
-                double dj = (0.5+0.5*(params.polar().getSecond()/Math.PI))*((double)(n))*almost1;
+                double di = params.polar().getFirst()*((double)(m));
+                double dj = (0.5+0.5*(params.polar().getSecond()/Math.PI))*((double)(n));
                 
-                int fi = (int)Math.floor(di);
-                int fj = (int)Math.floor(dj);
+                int fi = (int)Math.round(di-0.5);
+                int fj = (int)Math.round(dj);
                 
-                int ci = (int)Math.floor(di+1.0);
-
-                int diffi = ci-fi;
-
-                double va = (fi >=m || fj >= n ? 0.0 : mat.get(fi,fj));
-                double vb = (ci >=m || fj >= n ? 0.0 : mat.get(ci,fj));
+                int fim = fi-1;
+                int fip = fi+1;
                 
-                double vc = va;
-                double ph = 0.0;
-                if(diffi > 0) {
-                  ph = (di-fi)/(double)(diffi);
+                int fjm = fj-1;
+                int fjp = fj+1;
+                
+                double vo = (fi >=m ? 0.0 : mat.get(fi,fj%n));
+                
+                if(interpolate) {                  
+                  int closesti = (Math.abs((double)fip-di)<Math.abs(di-(double)fim) ? fip : fim);
+                  int closestj = (Math.abs((double)fjp-dj)<Math.abs(dj-(double)fjm) ? fjp : fjm);
+                  
+                  double phi = Math.abs((double)closesti-di);
+                  double phj = Math.abs((double)closestj-dj);
+                  
+                  if(closesti < 0) closesti=0;
+                  if(closestj >= n) closestj-=n;
+                  if(closestj < 0) closestj+=n;
+                  
+                  double vprimei = (closesti >=m ? 0.0 : mat.get(closesti,fj%n));
+                  double vprimej = (fi >=m ? 0.0 : mat.get(fi,closestj));
+                  double vprime = (closesti >=m ? 0.0 : mat.get(closesti,closestj));
+                  phi = 1.0-phi;
+                  phj = 1.0-phj;
+                  vo = 
+                      vo*(1-phi)*(1-phj) + 
+                      vprimei*phi*(1-phj) + 
+                      vprimej*(1.0-phi)*phj + 
+                      vprime*phi*phj;
                 }
-                vc = (vc*(1.0-ph)+vb*(ph));
-                return color.apply(new MatrixDiskColorParams(x,y,vc,t));
+                
+                return color.apply(new MatrixDiskColorParams(x,y,vo,t));
               }, 
               width, height);
           ++k;     
@@ -292,21 +310,23 @@ public class Animations {
     };
   }
 
-  public static Enumeration<Mat> Hadamard20241228_1(int n, int width, int height, double fps, double dur) {
+  public static Enumeration<Mat> Hadamard20241228_1(int n, int width, int height, double fps, double dur, boolean interpolate) {
+    final MatrixOfDoubles mat = HadamardMatrix.getMatrix(n).toMatrixOfDoubles();
+    mat.apply((v) -> v==1.0 ? 1.0 : 0);
     return Helpers.MatrixDisk(
-        HadamardMatrix.getMatrix(n).toMatrixOfDoubles(), 
+        (t) -> mat,
         (params) -> {
           Double r = Math.sqrt(((Math.pow(params.x, 2.0) + Math.pow(params.y, 2.0))/2.0));
           
           var rfadestart = 0.675;
           var rfadeend = 0.7;
-          var v2 = (params.v*0.5+0.5);
+          double v = params.v;
           return new Color(
-              (int)((((0.75-0.25*Math.cos(2.0*Math.PI*params.t))*v2)*255.0)),
-              (int)((((0.75+0.25*Math.cos(2.0*Math.PI*params.t))*v2)*255.0)),
+              (int)((((0.75-0.25*Math.cos(2.0*Math.PI*params.t))*v)*255.0)),
+              (int)((((0.75+0.25*Math.cos(2.0*Math.PI*params.t))*v)*255.0)),
               (int)(0.0),
               r > rfadeend ? 0 : (
-                  r < rfadestart ? (int)(v2*255.0) : 
+                  r < rfadestart ? (int)(v*255.0) : 
                     ((int)(255.0*
                         (1.0-(
                             (r-rfadestart)/(rfadeend-rfadestart)
@@ -314,7 +334,7 @@ public class Animations {
                   ));
           
         }, 
-        width, height, fps, dur);
+        width, height, fps, dur, interpolate);
     
   }
 

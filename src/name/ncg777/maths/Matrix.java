@@ -56,6 +56,14 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     return m;
   }
 
+  public void apply(Function<T,T> transform) {
+    for(int i=0;i<this.m;i++) {
+      for(int j=0;j<this.n;j++) {
+        this.set(i, j, transform.apply(this.get(i,j)));
+      }
+    }
+  }
+  
   /**
    * Constructor from an array.
    * 
