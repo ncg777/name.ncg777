@@ -180,7 +180,16 @@ public class Animations {
       };
     }
   }
-  public static Enumeration<Mat> Metazoa20241225_1(int width, int height, double fps, double dur) {
+  /**
+   * 20241225
+   * 
+   * @param width
+   * @param height
+   * @param fps
+   * @param dur
+   * @return
+   */
+  public static Enumeration<Mat> Metazoa(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -232,8 +241,16 @@ public class Animations {
       }
     };
   }
-
-  public static Enumeration<Mat> Spiral20241225_2(int width, int height, double fps, double dur) {
+  /**
+   * 20241225
+   * 
+   * @param width
+   * @param height
+   * @param fps
+   * @param dur
+   * @return
+   */
+  public static Enumeration<Mat> Spiral1(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -270,7 +287,16 @@ public class Animations {
       }
     };
   }
-  public static Enumeration<Mat> Spiral20241225_3(int width, int height, double fps, double dur) {
+  /**
+   * 20241225
+   * 
+   * @param width
+   * @param height
+   * @param fps
+   * @param dur
+   * @return
+   */
+  public static Enumeration<Mat> Spiral2(int width, int height, double fps, double dur) {
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -310,7 +336,18 @@ public class Animations {
     };
   }
 
-  public static Enumeration<Mat> Hadamard20241228_1(int n, int width, int height, double fps, double dur, boolean interpolate) {
+  /**
+   * 20241228
+   * 
+   * @param n
+   * @param width
+   * @param height
+   * @param fps
+   * @param dur
+   * @param interpolate
+   * @return
+   */
+  public static Enumeration<Mat> Hadamard(int n, int width, int height, double fps, double dur, boolean interpolate) {
     final MatrixOfDoubles mat = HadamardMatrix.getMatrix(n).toMatrixOfDoubles();
     mat.apply((v) -> v==1.0 ? 1.0 : 0);
     return Helpers.MatrixDisk(
@@ -338,7 +375,24 @@ public class Animations {
     
   }
 
-  public static Enumeration<Mat> Droplets20250101_1(
+  /**
+   * 20250101
+   * 
+   * @param nb_individuals
+   * @param total_duration
+   * @param mean_lifetime
+   * @param lifetime_stdev
+   * @param base_radius
+   * @param draw_contour
+   * @param nb_partials
+   * @param max_partial
+   * @param max_nb_turns_in_lifetime
+   * @param width
+   * @param height
+   * @param fps
+   * @return
+   */
+  public static Enumeration<Mat> Droplets(
       int nb_individuals, 
       double total_duration, 
       double mean_lifetime,
@@ -398,9 +452,22 @@ public class Animations {
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
   }
   
-  
-  
-  public static Enumeration<Mat> ParametricStars20250102_1(
+  /**
+   * 20250102
+   * 
+   * @param width
+   * @param height
+   * @param fps
+   * @param dur
+   * @param radial_freq
+   * @param spinsd
+   * @param thetad
+   * @param nb
+   * @param sizesd
+   * @param lifetime
+   * @return
+   */
+  public static Enumeration<Mat> ParametricStars(
       int width, 
       int height, 
       double fps, 
