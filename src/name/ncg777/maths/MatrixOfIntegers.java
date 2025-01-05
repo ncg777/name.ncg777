@@ -52,16 +52,6 @@ public class MatrixOfIntegers extends Matrix<Integer> {
     return o;
   }
   
-  @Override
-  public List<Integer> getColumnVector(int j) {
-    return UnmodifiableList.unmodifiableList(super.getColumnVector(j));
-  }
-  
-  @Override
-  public List<Integer> getRowVector(int i) {
-    return UnmodifiableList.unmodifiableList(super.getRowVector(i));
-  }
-  
   public static MatrixOfIntegers parseJSONFile(String path) throws JsonParseException, IOException {
     return new MatrixOfIntegers(Matrix.parseJSONFile(path, Parsers.integerParser));
   }

@@ -47,18 +47,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
   
   public MatrixOfDoubles kronecker(MatrixOfDoubles other) {
     return new MatrixOfDoubles(super.kronecker(other, (a,b) -> a*b));
-  }
-  
-  @Override
-  public List<Double> getColumnVector(int j) {
-    return UnmodifiableList.unmodifiableList(super.getColumnVector(j));
-  }
-  
-  @Override
-  public List<Double> getRowVector(int i) {
-    return UnmodifiableList.unmodifiableList(super.getRowVector(i));
-  }
-  
+  }  
 
   /**
    * Computes the Haar matrix from a given vector.
@@ -217,7 +206,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
           qrDecomposition(Ak, Q, R);
 
           // Ak+1 = R * Q
-          Ak = matrixMultiply(R, Q).toDoubleArray();
+          Ak = matrixMultiply(R, Q);
 
           // Check for convergence
           if (isUpperTriangular(Ak, epsilon)) {
@@ -269,10 +258,10 @@ public class MatrixOfDoubles extends Matrix<Double> {
           qrDecomposition(A, Q, R);
 
           // Update A
-          A = matrixMultiply(R, Q).toDoubleArray();
+          A = matrixMultiply(R, Q);
 
           // Update eigenvector matrix V
-          V = matrixMultiply(V, Q).toDoubleArray();
+          V = matrixMultiply(V, Q);
 
           // Check for convergence
           if (isUpperTriangular(A, epsilon)) {
@@ -381,11 +370,25 @@ public class MatrixOfDoubles extends Matrix<Double> {
   }
 
 
-  public MatrixOfDoubles matrixMultiply(MatrixOfDoubles A, MatrixOfDoubles B) {
-    return matrixMultiply(A.toDoubleArray(), B.toDoubleArray());
+  public MatrixOfDoubles matrixMultiply(MatrixOfDoubles B) {
+    int rows = this.rowCount();
+    int cols = B.columnCount();
+    int n = this.columnCount();
+    var o = new MatrixOfDoubles(rows,cols);
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            double total = 0.0;
+            for (int k = 0; k < n; k++) {
+                total += this.get(i, k) * B.get(k, j);
+            }
+            o.set(i, j, total);
+        }
+    }
+    return o;
   }
   
-  public MatrixOfDoubles matrixMultiply(double[][] A, double[][] B) {
+  private double[][] matrixMultiply(double[][] A, double[][] B) {
       int rows = A.length;
       int cols = B[0].length;
       int n = A[0].length;
@@ -400,7 +403,7 @@ public class MatrixOfDoubles extends Matrix<Double> {
               C[i][j] = total;
           }
       }
-      return new MatrixOfDoubles(C);
+      return C;
   }
   /**
    * Converts the matrix to a 2D array of doubles.

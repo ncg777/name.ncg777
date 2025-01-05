@@ -86,6 +86,17 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     setColumn(0, list);
   }
   
+  public MatrixOfDoubles toMatrixOfDoubles(Function<T,Double> f) {
+    MatrixOfDoubles o = new MatrixOfDoubles(this.rowCount(),this.columnCount(), f.apply(defaultValue));
+    for(var e : mat.entrySet()) o.set(e.getKey().getFirst(), e.getKey().getSecond(), f.apply(e.getValue()));
+    return o;
+  }
+ 
+  public MatrixOfIntegers toMatrixOfIntegers(Function<T,Integer> f) {
+    MatrixOfIntegers o = new MatrixOfIntegers(this.rowCount(),this.columnCount(), f.apply(defaultValue));
+    for(var e : mat.entrySet()) o.set(e.getKey().getFirst(), e.getKey().getSecond(), f.apply(e.getValue()));
+    return o;
+  }
   /**
    * Copy constructor.
    * 
