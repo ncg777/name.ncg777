@@ -18,6 +18,7 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoWriter;
 
 import name.ncg777.computing.structures.HomoPair;
@@ -242,7 +243,49 @@ public class GraphicsFunctions {
       }
       return result;
   }
+  // Logistic function to model organic focusing behavior
+  public static double logisticFocus(double t, double L, double k, double t0) {
+      return L / (1 + Math.exp(-k * (t - t0)));
+  }
+  /**
+   * Simulates a focus blur effect on an image by dynamically adjusting the Gaussian blur
+   * based on a logistic function that models organic focusing behavior.
+   * 
+   * The focus distance evolves smoothly over time, and the blur intensity (represented by 
+   * the kernel size of the Gaussian blur) is adjusted according to the focus distance.
+   *
+   * @param image The image on which the focus blur effect will be applied.
+   * @param t The current time or frame index. This determines the current focus distance.
+   *          The focus distance evolves according to a logistic function over time.
+   * @param L The maximum focus distance (upper bound). This value defines the farthest focus point.
+   * @param k The growth rate of the focus distance, controlling how quickly it changes over time.
+   * @param t0 The midpoint of the focus transition. This defines when the focus distance is halfway
+   *           between its minimum and maximum values.
+   * @return A new image with the simulated focus blur effect applied.
+   */
+  public static Mat simulateFocusBlur(Mat image, double t, double L, double k, double t0) {
+      // Get the current focus distance using the logistic function
+      double focusDistance = logisticFocus(t, L, k, t0);
 
+      // Normalize focusDistance to a reasonable range for blur effect
+      int maxKernelSize = 21; // Maximum kernel size
+      int minKernelSize = 3;  // Minimum kernel size
+
+      // Map focusDistance to kernel size
+      int kernelSize = (int)(maxKernelSize - (focusDistance * (maxKernelSize - minKernelSize)));
+
+      // Ensure kernel size is odd (required for GaussianBlur)
+      if (kernelSize % 2 == 0) {
+          kernelSize++;
+      }
+
+      // Apply Gaussian Blur with the computed kernel size
+      Mat blurredImage = new Mat();
+      Imgproc.GaussianBlur(image, blurredImage, new Size(kernelSize, kernelSize), 0);
+
+      return blurredImage;
+  }
+  
   /**
    * The cubic basis function used for interpolation.
    * Approximates a smooth cubic curve for interpolation.
