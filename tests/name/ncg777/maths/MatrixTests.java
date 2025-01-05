@@ -97,7 +97,7 @@ public class MatrixTests {
         Matrix<Integer> transposedMatrix = new Matrix<>(arr).getTranspose();
         assertThat(transposedMatrix.rowCount(), is(2)); // Transpose should now have 2 rows
         assertThat(transposedMatrix.columnCount(), is(3)); // Transpose should have 3 columns
-        assertThat(transposedMatrix.get(0, 1), is(Integer.valueOf(2))); // Check value in transposed position
+        assertThat(transposedMatrix.get(0, 2), is(Integer.valueOf(5))); // Check value in transposed position
     }
 
     @Test
