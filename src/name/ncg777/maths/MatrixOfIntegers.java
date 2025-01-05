@@ -41,7 +41,7 @@ public class MatrixOfIntegers extends Matrix<Integer> {
   /**
    * Computes the Haar matrix from a given vector.
    * 
-   * @param vector The input vector of integers.
+   * @param size
    * @return A MatrixOfIntegers representing the Haar matrix.
    * @throws IllegalArgumentException if the vector length is not a power of 2.
    */
