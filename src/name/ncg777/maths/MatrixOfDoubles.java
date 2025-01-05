@@ -59,6 +59,75 @@ public class MatrixOfDoubles extends Matrix<Double> {
     return UnmodifiableList.unmodifiableList(super.getRowVector(i));
   }
   
+
+  /**
+   * Computes the Haar matrix from a given vector.
+   * 
+   * @param size
+   * @return A MatrixOfIntegers representing the Haar matrix.
+   * @throws IllegalArgumentException if the vector length is not a power of 2.
+   */
+  public static MatrixOfDoubles getHaarMatrix(int size) {
+    return new MatrixOfDoubles((new MatrixOfDoubles(generateHaarMatrix(size))).getTranspose());
+  }
+
+  /**
+   * Generates a Haar matrix of size n x n.
+   * 
+   * @param n The size of the matrix (must be a power of 2).
+   * @return A 2D array representing the Haar matrix.
+   * @throws IllegalArgumentException if n is not a power of 2.
+   */
+  private static double[][] generateHaarMatrix(int n) {
+      // Validate that n is a power of 2
+      if ((n & (n - 1)) != 0) {
+          throw new IllegalArgumentException("Matrix size must be a power of 2.");
+      }
+
+      // Initialize the Haar matrix
+      double[][] haarMatrix = new double[n][n];
+
+      // Fill the matrix
+      fillHaarMatrix(haarMatrix, 0, 0, n, 1.0);
+
+      return haarMatrix;
+  }
+
+  /**
+   * Recursive helper method to fill the Haar matrix.
+   * 
+   * @param matrix The matrix being populated.
+   * @param rowStart The starting row index for the current block.
+   * @param colStart The starting column index for the current block.
+   * @param size The size of the current block.
+   * @param scale The scaling factor for normalization.
+   */
+  private static void fillHaarMatrix(double[][] matrix, int rowStart, int colStart, int size, double scale) {
+      if (size == 1) {
+          // Base case: Single value, fill with the scale
+          matrix[rowStart][colStart] = scale;
+          return;
+      }
+
+      int half = size / 2;
+
+      // Low-pass filter (averaging rows)
+      for (int i = 0; i < half; i++) {
+          matrix[rowStart + i][colStart + i] = scale / Math.sqrt(2);
+          matrix[rowStart + i][colStart + i + half] = scale / Math.sqrt(2);
+      }
+
+      // High-pass filter (differencing rows)
+      for (int i = 0; i < half; i++) {
+          matrix[rowStart + half + i][colStart + i] = scale / Math.sqrt(2);
+          matrix[rowStart + half + i][colStart + i + half] = -scale / Math.sqrt(2);
+      }
+
+      // Recursive calls for the next levels of detail
+      fillHaarMatrix(matrix, rowStart, colStart, half, scale / Math.sqrt(2)); // Low-pass
+      fillHaarMatrix(matrix, rowStart + half, colStart, half, scale / Math.sqrt(2)); // High-pass
+  }
+
   /**
    * Computes the determinant of the matrix using LU decomposition.
    * Assumes that T is Double.

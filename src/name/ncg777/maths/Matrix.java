@@ -635,7 +635,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    */
   public Matrix<T> getTranspose() {
     Matrix<T> o = new Matrix<T>(n, m);
-    for(var e : mat.entrySet()) o.set(e.getKey().getFirst(),e.getKey().getSecond(), e.getValue());
+    for(var e : mat.entrySet()) o.set(e.getKey().getSecond(),e.getKey().getFirst(), e.getValue());
     return o;
   }
 
