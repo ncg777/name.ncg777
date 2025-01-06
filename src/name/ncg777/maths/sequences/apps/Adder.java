@@ -91,7 +91,7 @@ public class Adder {
     textResult.setBounds(80, 85, 344, 17);
     frmAddSequences.getContentPane().add(textResult);
     
-    JLabel lblXy = new JLabel("composed:");
+    JLabel lblXy = new JLabel("articulated:");
     lblXy.setHorizontalAlignment(SwingConstants.RIGHT);
     lblXy.setBounds(10, 88, 66, 14);
     frmAddSequences.getContentPane().add(lblXy);
