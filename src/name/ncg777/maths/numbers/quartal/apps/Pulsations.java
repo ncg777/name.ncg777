@@ -164,7 +164,7 @@ public class Pulsations {
           result.setText(
               new QuartalNumbersSequence(
                   (Cipher.Name)comboBox.getSelectedItem(),
-                  rh).toString());
+                  rh.reverse()).toString());
         } catch(Exception ex) {
           result.setText(ex.getMessage());
         }
