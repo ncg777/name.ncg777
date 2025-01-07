@@ -3,8 +3,6 @@ package name.ncg777.maths;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.collections4.list.UnmodifiableList;
-
 import com.fasterxml.jackson.core.JsonParseException;
 
 import name.ncg777.computing.Parsers;

@@ -5,9 +5,14 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class Functions {
-  public static BiFunction<Double,Double,Double> ROND = (x,t) -> 1.0 - 
-      Math.pow(1.0 - Math.pow(x, Math.sqrt(t)/Math.sqrt(1-t)),
-      Math.sqrt(1-t)/Math.sqrt(t));
+  public static BiFunction<Double,Double,Double> ROND = (x,t) -> Math.signum(x)*
+      (
+        1.0 - 
+        Math.pow(
+            1.0 - Math.pow(x, Math.sqrt(t)/Math.sqrt(1-t)),
+            Math.sqrt(1-t)/Math.sqrt(t)
+          )
+      );
   public final static double DEFAULT_EPSILON = 1e-10;
   
 
