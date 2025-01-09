@@ -305,8 +305,7 @@ public class Pcs12 extends ImmutableCombination implements Serializable {
     double o = 1.0;
     var s = this.asSequence();
     TreeMap<Integer,Double> m = new TreeMap<Integer,Double>();
-    for(int i=0;i<=6;i++) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/12.0));
-    for(int i=-1;i>-6;i--) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/12.0));
+    for(int i=-5;i<7;i++) m.put((center+i+12)%12,Math.pow(2.0, ((double)i)/12.0));
     for(var t : s) {
       o *= (double)m.get(t);
     }
