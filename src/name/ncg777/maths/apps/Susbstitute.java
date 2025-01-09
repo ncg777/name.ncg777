@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 
 public class Susbstitute {
 
-  private JFrame frame;
+  private JFrame frmSubstitute;
   private JTextArea textMatch;
   private JTextArea textReplace;
   private JTextArea textInput;
@@ -35,7 +35,7 @@ public class Susbstitute {
       public void run() {
         try {
           Susbstitute window = new Susbstitute();
-          window.frame.setVisible(true);
+          window.frmSubstitute.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -54,9 +54,10 @@ public class Susbstitute {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    frame = new JFrame();
-    frame.setBounds(100, 100, 654, 480);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frmSubstitute = new JFrame();
+    frmSubstitute.setTitle("Substitute");
+    frmSubstitute.setBounds(100, 100, 654, 480);
+    frmSubstitute.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JScrollPane scrollPane = new JScrollPane();
     
@@ -124,7 +125,7 @@ public class Susbstitute {
     JScrollPane scrollPane_2 = new JScrollPane();
     
     JLabel lblNewLabel_3 = new JLabel("Output");
-    GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+    GroupLayout groupLayout = new GroupLayout(frmSubstitute.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
@@ -181,6 +182,6 @@ public class Susbstitute {
     textInput = new JTextArea();
     textInput.setLineWrap(true);
     scrollPane_1_1.setViewportView(textInput);
-    frame.getContentPane().setLayout(groupLayout);
+    frmSubstitute.getContentPane().setLayout(groupLayout);
   }
 }
