@@ -22,6 +22,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
     addAppButton(panel, "maths.apps.Permutator",name.ncg777.maths.apps.Permutator.class);
+    addAppButton(panel, "maths.apps.Susbstitute",name.ncg777.maths.apps.Susbstitute.class);
     addAppButton(panel, "maths.apps.WordPermutator",name.ncg777.maths.apps.WordPermutator.class);
     addAppButton(panel, "maths.music.apps.BurstSequenceMetaComposer",name.ncg777.maths.music.apps.BurstSequenceMetaComposer.class);
     addAppButton(panel, "maths.music.apps.KernelEvaluator", name.ncg777.maths.music.apps.kernelEvaluator.Application.class);
