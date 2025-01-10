@@ -9,14 +9,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import com.google.common.base.Joiner;
 
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.awt.event.ActionEvent;
 
 public class Susbstitute {
@@ -42,7 +40,23 @@ public class Susbstitute {
       }
     });
   }
-
+  public static String expandPattern(String pattern, Map<String, String> defs) {
+    String current = pattern;
+    while(true) {
+      String next = expand(current,defs);
+      if(next.equals(current)) break;;
+      current = next;
+    }
+    
+    return current;
+  }
+  
+  private static String expand(String p, Map<String, String> defs) {
+      for(var e : defs.entrySet()) {
+        p = p.replaceAll(e.getKey(), e.getValue());
+      }
+      return p;
+  }
   /**
    * Create the application.
    */
@@ -85,40 +99,7 @@ public class Susbstitute {
         TreeMap<String,String> rep = new TreeMap<>();
         for(int i=0;i<n;i++) rep.put(match[i], replace[i]);
         
-        TreeSet<Character> allCharsInInput = new TreeSet<>();
-        
-        for(int i=0;i<input.length();i++) allCharsInInput.add(input.charAt(i));
-        { 
-          var m = Joiner.on("").join(List.of(match));
-          for(int i=0;i<m.length();i++) allCharsInInput.add(m.charAt(i));
-          m = Joiner.on("").join(List.of(replace));
-          for(int i=0;i<m.length();i++) allCharsInInput.add(m.charAt(i));
-        }
-        
-        int max_chars=100;
-        TreeSet<Character> unusedChars = new TreeSet<>();
-        {
-          char ch = (char)65;
-          
-          for(int i=0;i<max_chars;i++) {
-            unusedChars.add((char)((int)ch+i));
-          }
-        }
-        unusedChars.removeAll(allCharsInInput);
-        TreeMap<String,String> safeMap = new TreeMap<>();
-        TreeMap<String,String> safeMapRev = new TreeMap<>();
-        var it = unusedChars.iterator();
-        for(int i=0;i<n;i++) safeMap.put(match[i], String.valueOf(it.next())); 
-        for(var entry: safeMap.entrySet()) safeMapRev.put(entry.getValue(), entry.getKey());
-        String output = input;
-        
-        for(var entry : rep.entrySet()) {
-          output = output.replaceAll(entry.getKey(), safeMap.get(entry.getKey()));
-        }
-        for(var entry : rep.entrySet()) {
-          output = output.replaceAll(safeMap.get(entry.getKey()), entry.getValue());
-        }
-        textOutput.setText(output);
+        textOutput.setText(expandPattern(input, rep));
       }
     });
     
