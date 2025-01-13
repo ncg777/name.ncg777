@@ -19,6 +19,6 @@ public class PredicatedJuxtaposition implements BiPredicate<BinaryNatural, Binar
     return predicate.test(
         Natural.agglutinate(
             a.toNatural(Cipher.Name.Binary), 
-            b.toNatural(Cipher.Name.Binary)).toBinaryWord());
+            b.toNatural(Cipher.Name.Binary)).toBinaryNatural());
   }
 }

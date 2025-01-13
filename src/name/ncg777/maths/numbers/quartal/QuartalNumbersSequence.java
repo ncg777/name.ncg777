@@ -40,12 +40,12 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     this(alphabetName, binaryNatural.toNatural(alphabetName));
   }
   
-  public Natural toWord() {
+  public Natural toNatural() {
     return new Natural(alphabetName,toString().replaceAll("\\s", ""));
   }
   
-  public BinaryNatural toBinaryWord() {
-    return toWord().toBinaryWord();
+  public BinaryNatural toBinaryNatural() {
+    return toNatural().toBinaryNatural();
   }
   
   @Override
@@ -56,7 +56,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   }
   
   public static QuartalNumbersSequence expand(QuartalNumbersSequence a, int x, boolean fill) {
-    BinaryNatural b = a.toBinaryWord();
+    BinaryNatural b = a.toBinaryNatural();
     BinaryNatural o = new BinaryNatural(new BitSet(), x * b.getN());
     
     for (int i = 0; i < b.getN(); i++) {
@@ -76,11 +76,11 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   }
   
   public static QuartalNumbersSequence rotate(QuartalNumbersSequence r, int t) {
-    return new QuartalNumbersSequence(r.alphabetName, BinaryNatural.build(r.toBinaryWord().rotate(t)).reverse());
+    return new QuartalNumbersSequence(r.alphabetName, BinaryNatural.build(r.toBinaryNatural().rotate(t)).reverse());
   }
 
   public static QuartalNumbersSequence not(QuartalNumbersSequence a) {
-    return new QuartalNumbersSequence(a.alphabetName, a.toBinaryWord().invert());
+    return new QuartalNumbersSequence(a.alphabetName, a.toBinaryNatural().invert());
   }
 
   public static QuartalNumbersSequence and(QuartalNumbersSequence a, QuartalNumbersSequence b) {
@@ -105,7 +105,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
       output.add(
           new QuartalNumber(
               BinaryNatural.build(
-                  a.get(i).toBinaryWord().intersect(b.get(i).toBinaryWord())
+                  a.get(i).toBinaryNatural().intersect(b.get(i).toBinaryNatural())
               ).reverse().toNatural(a.alphabetName)
           )
       );
@@ -136,8 +136,8 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
       output.add(new QuartalNumber(
           BinaryNatural.build(
               Combination.merge(
-                  a.get(i).toBinaryWord(), 
-                  b.get(i).toBinaryWord())).reverse()
+                  a.get(i).toBinaryNatural(), 
+                  b.get(i).toBinaryNatural())).reverse()
           .toNatural(a.alphabetName)));
     }
     return output;
@@ -165,7 +165,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
       output.add(
           new QuartalNumber(
               BinaryNatural.build(
-                  (a.get(i).toBinaryWord().symmetricDifference(b.get(i).toBinaryWord()))).reverse().toNatural(a.alphabetName)
+                  (a.get(i).toBinaryNatural().symmetricDifference(b.get(i).toBinaryNatural()))).reverse().toNatural(a.alphabetName)
           )
       );
     }
@@ -194,7 +194,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
       output.add(
           new QuartalNumber(
               BinaryNatural.build(
-                  (a.get(i).toBinaryWord().minus(b.get(i).toBinaryWord()))
+                  (a.get(i).toBinaryNatural().minus(b.get(i).toBinaryNatural()))
               ).reverse().toNatural(a.alphabetName)
           )
       );
@@ -209,8 +209,8 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     QuartalNumbersSequence carrier = a;
     QuartalNumbersSequence impulse = b;
 
-    BinaryNatural b_carrier = carrier.toBinaryWord().reverse();
-    BinaryNatural b_impulse = impulse.toBinaryWord().reverse();
+    BinaryNatural b_carrier = carrier.toBinaryNatural().reverse();
+    BinaryNatural b_impulse = impulse.toBinaryNatural().reverse();
 
     BinaryNatural o = new BinaryNatural(new BitSet(), b_carrier.getN());
 
@@ -249,10 +249,10 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
 
   public Sequence clusterPartition(Cipher.Name alphabetName) {
     var clusters =
-        QuartalNumbersSequence.clusterRhythmPartition(alphabetName, this.toBinaryWord().decomposeIntoHomogeneousRegions());
+        QuartalNumbersSequence.clusterRhythmPartition(alphabetName, this.toBinaryNatural().decomposeIntoHomogeneousRegions());
     var rs = new ArrayList<BinaryNatural>();
     for (QuartalNumbersSequence r : clusters)
-      rs.add(r.toBinaryWord());
+      rs.add(r.toBinaryNatural());
 
     Sequence o = new Sequence();
 
@@ -268,7 +268,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
     return o.reverse();
   }
 
-  private static class FourCharPhraseUnionSet {
+  private static class QuartalNumbersSequenceUnionSet {
     ArrayList<QuartalNumbersSequence> representants = new ArrayList<>();
     TreeMap<String, TreeSet<QuartalNumbersSequence>> instances = new TreeMap<>();
 
@@ -341,7 +341,7 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
       return f;
     }
     
-    FourCharPhraseUnionSet us = new FourCharPhraseUnionSet();
+    QuartalNumbersSequenceUnionSet us = new QuartalNumbersSequenceUnionSet();
     for(QuartalNumbersSequence r: partition) {us.add(r);}
     ArrayList<QuartalNumbersSequence> o = new ArrayList<QuartalNumbersSequence>();
     

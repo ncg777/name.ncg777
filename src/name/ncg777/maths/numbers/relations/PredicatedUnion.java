@@ -20,7 +20,7 @@ public class PredicatedUnion implements BiPredicate<QuartalNumber, QuartalNumber
     return predicate.test(
         new Natural(
             Cipher.Name.Binary,
-            Combination.merge(a.toBinaryWord(), b.toBinaryWord())
+            Combination.merge(a.toBinaryNatural(), b.toBinaryNatural())
             )
         );
   }

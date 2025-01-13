@@ -115,7 +115,7 @@ public class Application {
               (new QuartalNumbersSequence(
                   (Cipher.Name)comboBox_1.getSelectedItem(), 
                   rhythm.getText()
-              )).toBinaryWord(), 
+              )).toBinaryNatural(), 
               params.getText(), 
               getSelectedKernel());
           

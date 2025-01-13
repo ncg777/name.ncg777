@@ -77,20 +77,20 @@ public class Contours {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
         QuartalNumbersSequence r4 = new QuartalNumbersSequence(abc, textField.getText());
         
-        txtContour.setText(r4.toWord().getContour().toString());
-        txtShadowContour.setText(r4.toWord().getShadowContour().toString());
-        txtComposition.setText(r4.toBinaryWord().reverse().getComposition().asSequence().toString());
-        textFieldBinary.setText(r4.toBinaryWord().toString());
+        txtContour.setText(r4.toNatural().getContour().toString());
+        txtShadowContour.setText(r4.toNatural().getShadowContour().toString());
+        txtComposition.setText(r4.toBinaryNatural().reverse().getComposition().asSequence().toString());
+        textFieldBinary.setText(r4.toBinaryNatural().toString());
         textCompositionPartition.setText(r4.clusterPartition(abc).toString());
         String o = "";
         
-        var clusters = QuartalNumbersSequence.clusterRhythmPartition(abc, r4.toBinaryWord().decomposeIntoHomogeneousRegions());
+        var clusters = QuartalNumbersSequence.clusterRhythmPartition(abc, r4.toBinaryNatural().decomposeIntoHomogeneousRegions());
         for(QuartalNumbersSequence r : clusters) {
           o += r.toString() + "\n";
         }
         textAreaPartitions.setText(o);
         
-        Sequence contourseq = r4.toWord().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar().addToEach(-1);
+        Sequence contourseq = r4.toNatural().getContour().circularHoldNonZero().cyclicalAntidifference(0).asOrdinalsUnipolar().addToEach(-1);
 
         textContourSeq.setText(contourseq.toString());
         lblContourSeqMax.setText(Integer.valueOf(contourseq.getMax()).toString());

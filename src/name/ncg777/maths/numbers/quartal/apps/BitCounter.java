@@ -66,7 +66,7 @@ public class BitCounter {
           String str = textField.getText().trim();
           var abc = (Cipher.Name)comboBox.getSelectedItem();
           lblCount.setText(
-              Integer.toString((new QuartalNumbersSequence(abc, str)).toBinaryWord().getK()));
+              Integer.toString((new QuartalNumbersSequence(abc, str)).toBinaryNatural().getK()));
         }
       }
     });

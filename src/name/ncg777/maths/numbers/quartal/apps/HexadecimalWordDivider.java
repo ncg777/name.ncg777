@@ -74,7 +74,7 @@ public class HexadecimalWordDivider {
       public void actionPerformed(ActionEvent e) {
         var r1 = (new QuartalNumbersSequence(
             Cipher.Name.Hexadecimal, txtR.getText().trim()))
-            .toBinaryWord();
+            .toBinaryNatural();
         int div = (int)spinner.getValue();
         int len = r1.getN();
         int d = len/div;

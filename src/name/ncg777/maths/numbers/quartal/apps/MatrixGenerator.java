@@ -171,7 +171,7 @@ public class MatrixGenerator {
               TreeSet<BinaryNatural> t = new TreeSet<BinaryNatural>();
               TreeSet<BinaryNatural> t0 = new TreeSet<BinaryNatural>();
              
-              for(QuartalNumber r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryWord());
+              for(QuartalNumber r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryNatural());
               
               for(BinaryNatural r : t0){
                 if(pred.test(r)) {
@@ -194,7 +194,7 @@ public class MatrixGenerator {
                     strFixed[i].trim());
                 for(int j=0;j<n;j++) {
                   output.set(i, n-j-1, 
-                      r.get((n-j)%r.size()).toBinaryWord()
+                      r.get((n-j)%r.size()).toBinaryNatural()
                   );
                 }
                 

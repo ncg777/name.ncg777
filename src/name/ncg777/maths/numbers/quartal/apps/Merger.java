@@ -67,7 +67,7 @@ public class Merger {
               new QuartalNumbersSequence(
                   (Cipher.Name)comboBox.getSelectedItem(),
                   lines[i].trim())
-          .toBinaryWord().reverse());
+          .toBinaryNatural().reverse());
         }
         
         BinaryNatural result = BinaryNatural.build(Combination.mergeAll(arr));

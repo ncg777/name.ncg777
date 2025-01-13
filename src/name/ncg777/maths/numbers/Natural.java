@@ -85,7 +85,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
     this.addAll(tmp.reversed());
   }
 
-  public BinaryNatural toBinaryWord() {
+  public BinaryNatural toBinaryNatural() {
     return new BinaryNatural(
         toBigInteger(),
         BigInteger
@@ -110,13 +110,13 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   }
 
   public Sequence getContour() {
-    var bn = toBinaryWord();
+    var bn = toBinaryNatural();
     if (bn.getK() == 0) return new Sequence();
     return bn.getComposition().asSequence().reverse().cyclicalDifference().signs();
   }
 
   public Sequence getShadowContour() {
-    var combination = toBinaryWord();
+    var combination = toBinaryNatural();
     if (combination.getK() == 0) return new Sequence();
     Sequence a = combination.getComposition().asSequence().reverse();
 
@@ -129,7 +129,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   }
 
   public String toBitstring() {
-    return toBinaryWord().toString();
+    return toBinaryNatural().toString();
   }
 
   public static Natural fromBitstring(Cipher.Name alphabetName, String string) {

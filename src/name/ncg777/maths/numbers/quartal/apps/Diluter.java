@@ -130,7 +130,7 @@ public class Diluter {
     var str = textRhythm.getText().replaceAll("\\s+", "");
     BinaryNatural r = new QuartalNumbersSequence(
         abc, 
-        str).toBinaryWord();
+        str).toBinaryNatural();
  
     int n = r.getN();
     

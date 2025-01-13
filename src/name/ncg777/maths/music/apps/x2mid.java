@@ -87,12 +87,12 @@ public class x2mid {
         if(chckbxNewCheckBox.isSelected()) {
           r = QuartalNumbersSequence.expand(r, 2, false);  
         } else {
-          if(!(new Even()).apply(r.toWord().toBinaryWord())) {
+          if(!(new Even()).apply(r.toNatural().toBinaryNatural())) {
             txtrOutput.setText("BinaryNatural is not even");
           }
         }
         
-        Sequence s = r.toWord().toBinaryWord().asSequence();
+        Sequence s = r.toNatural().toBinaryNatural().asSequence();
         Sequence mid = new Sequence();
         int total = r.size()*16;
         for(int i=0;i<s.size();i++){

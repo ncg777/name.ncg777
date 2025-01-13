@@ -78,7 +78,7 @@ public class XRSequenceGenerator {
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
         Sequence comp = (new QuartalNumbersSequence(abc, textRhythm.getText()))
-            .toBinaryWord().reverse().getComposition().asSequence();
+            .toBinaryNatural().reverse().getComposition().asSequence();
         boolean useHalf = true;
         
         ArrayList<Double> output = new ArrayList<Double>();

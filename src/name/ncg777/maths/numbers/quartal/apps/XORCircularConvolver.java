@@ -70,8 +70,8 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
-        BinaryNatural carrier = new QuartalNumbersSequence(abc, txtCarrier.getText()).toBinaryWord().reverse();
-        BinaryNatural impulse = new QuartalNumbersSequence(abc, txtImpulse.getText()).toBinaryWord().reverse();
+        BinaryNatural carrier = new QuartalNumbersSequence(abc, txtCarrier.getText()).toBinaryNatural().reverse();
+        BinaryNatural impulse = new QuartalNumbersSequence(abc, txtImpulse.getText()).toBinaryNatural().reverse();
         
         BitSet bs = new BitSet(carrier.getN());
         

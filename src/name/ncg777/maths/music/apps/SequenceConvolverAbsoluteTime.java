@@ -96,7 +96,7 @@ public class SequenceConvolverAbsoluteTime {
       public void actionPerformed(ActionEvent e) {
         Sequence s = Sequence.parse(txtS.getText());
         Sequence i = Sequence.parse(txtImpulse.getText());
-        BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryWord().reverse();
+        BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), txtR.getText()).toBinaryNatural().reverse();
         
         txtResult.setText(s.absoluteTimeConvolve(r, i).toString());
       }

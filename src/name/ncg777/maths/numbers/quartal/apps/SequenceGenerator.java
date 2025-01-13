@@ -76,7 +76,7 @@ public class SequenceGenerator {
           binaryNaturals.add(
               new QuartalNumbersSequence(
                   (Cipher.Name)comboBox.getSelectedItem(), 
-                  l[0].trim()).toWord().toBinaryWord());
+                  l[0].trim()).toNatural().toBinaryNatural());
           
           muls.add(Integer.valueOf(l[1].trim()));
         }

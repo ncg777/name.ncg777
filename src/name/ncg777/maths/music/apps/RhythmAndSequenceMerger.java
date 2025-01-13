@@ -69,7 +69,7 @@ public class RhythmAndSequenceMerger {
           Sequence s = new Sequence();
           if(parts.length > 1) {s = Sequence.parse(parts[1].trim());}
           sequences.add(s);
-          arr.add(new QuartalNumbersSequence(abc, parts[0].trim()).toBinaryWord().reverse());
+          arr.add(new QuartalNumbersSequence(abc, parts[0].trim()).toBinaryNatural().reverse());
         }
         
         BinaryNatural result = BinaryNatural.build(Combination.mergeAll(arr));

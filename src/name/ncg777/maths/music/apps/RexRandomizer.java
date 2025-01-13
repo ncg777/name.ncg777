@@ -117,7 +117,7 @@ public class RexRandomizer {
         }
         int len = nbBars*mult;
         
-        BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryWord();
+        BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryNatural();
         
         Sequence c = r.getComposition().asSequence();
         

@@ -125,7 +125,7 @@ public class SeqGenFixedSum {
               String str_R = txtRhythm.getText().trim();       
               int n = new QuartalNumbersSequence(
                   (Cipher.Name)comboBox.getSelectedItem(), 
-                  str_R).toBinaryWord().reverse().getK();
+                  str_R).toBinaryNatural().reverse().getK();
               
               if(n < 2) {
                 throw new RuntimeException("rhythm is empty or too small");

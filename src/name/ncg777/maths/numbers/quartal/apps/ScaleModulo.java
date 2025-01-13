@@ -84,7 +84,7 @@ public class ScaleModulo {
           (new QuartalNumbersSequence(
               Cipher.Name.Hexadecimal, 
               textField.getText().trim()))
-            .toWord().toBinaryWord().scaleModulo(
+            .toNatural().toBinaryNatural().scaleModulo(
                 (int)k.getValue(), 
                 (int)n.getValue())).toString());
         }

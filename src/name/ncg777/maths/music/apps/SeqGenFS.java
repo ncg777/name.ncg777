@@ -103,7 +103,7 @@ public class SeqGenFS {
               {
                 String str_R = txtRhythm.getText().trim();
                 
-                BinaryNatural R = (new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R)).toBinaryWord().reverse();
+                BinaryNatural R = (new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R)).toBinaryNatural().reverse();
                 
                 
                 Sequence s;
