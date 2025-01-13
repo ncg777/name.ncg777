@@ -49,6 +49,16 @@ public class MatrixOfIntegers extends Matrix<Integer> {
     return o;
   }
   
+  // Method to generate the Basic Syncopation Transform Matrix
+  public static MatrixOfIntegers generateBasicSyncopationMatrix(int n) {
+      throw new RuntimeException("not implemented");
+  }
+
+  // Method to generate the Rest-Based Syncopation Transform Matrix
+  public static MatrixOfIntegers generateRestBasedSyncopationMatrix(int n) {
+    throw new RuntimeException("not implemented");
+  }
+  
   public static MatrixOfIntegers parseJSONFile(String path) throws JsonParseException, IOException {
     return new MatrixOfIntegers(Matrix.parseJSONFile(path, Parsers.integerParser));
   }

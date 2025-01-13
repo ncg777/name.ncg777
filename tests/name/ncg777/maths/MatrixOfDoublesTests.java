@@ -31,5 +31,5 @@ public class MatrixOfDoublesTests extends TestCase{
       List<Double> eigenvalues = matrix.computeEigenvalues(100, 1e-10);
       assertThat(Double.valueOf(eigenvalues.get(0)*10000).intValue(), is(53722));
       assertThat(Double.valueOf(eigenvalues.get(1)*10000).intValue(), is(-3722));
-  }
+  }  
 }
