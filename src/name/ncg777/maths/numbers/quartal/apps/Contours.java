@@ -77,8 +77,8 @@ public class Contours {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
         QuartalNumbersSequence r4 = new QuartalNumbersSequence(abc, textField.getText());
         
-        txtContour.setText(r4.toNatural().getContour().toString());
-        txtShadowContour.setText(r4.toNatural().getShadowContour().toString());
+        txtContour.setText(r4.toBinaryNatural().getContour().toString());
+        txtShadowContour.setText(r4.toBinaryNatural().getShadowContour().toString());
         txtComposition.setText(r4.toBinaryNatural().reverse().getComposition().asSequence().toString());
         textFieldBinary.setText(r4.toBinaryNatural().toString());
         textCompositionPartition.setText(r4.clusterPartition(abc).toString());
