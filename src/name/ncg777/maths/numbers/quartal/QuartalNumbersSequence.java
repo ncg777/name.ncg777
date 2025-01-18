@@ -67,8 +67,8 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
       if(b.get(i)) {
         
         if(!fill && pattern != null) {
-          for(int j=0;j<Math.min(x, pattern.getN());j++) {
-            o.set(((i*x)+j)%o.size(), pattern.get(j));
+          for(int j=0;j<x;j++) {
+            o.set(((i*x)+j)%o.size(), pattern.get(j%pattern.size()));
           }
         } else if(fill) {
           for(int j=0; j<x;j++) {
