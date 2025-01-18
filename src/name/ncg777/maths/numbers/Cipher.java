@@ -12,8 +12,9 @@ public class Cipher extends ArrayList<Character> {
     Hexadecimal,
     Octal,
     Binary,
-    LatinExtAFF
+    //LatinExtAFF
     //Ternary
+    //Decimal
   }
   
   public static TreeMap<Name, Cipher> Ciphers;
