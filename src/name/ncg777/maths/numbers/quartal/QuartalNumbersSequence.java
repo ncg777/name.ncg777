@@ -56,21 +56,31 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   }
   
   public static QuartalNumbersSequence expand(QuartalNumbersSequence a, int x, boolean fill) {
-    BinaryNatural b = a.toBinaryNatural();
+    return expand(a,x,fill,null);
+  }
+  public static QuartalNumbersSequence expand(QuartalNumbersSequence a, int x, boolean fill, QuartalNumbersSequence _pattern) {
+    BinaryNatural pattern = _pattern == null ? null : _pattern.toBinaryNatural().reverse();
+    BinaryNatural b = a.toBinaryNatural().reverse();
     BinaryNatural o = new BinaryNatural(new BitSet(), x * b.getN());
     
     for (int i = 0; i < b.getN(); i++) {
-      if(b.get(-1 + b.getN() - i)) {
-        o.set(-1+ o.getN() - i*x);
-        if(fill) {
-          for(int j=1; j<x;j++) {
+      if(b.get(i)) {
+        
+        if(pattern != null) {
+          for(int j=0;j<Math.min(x, pattern.getN());j++) {
+            o.set(((i*x)+j)%o.size(), pattern.get(j));
+          }
+        } else if(fill) {
+          for(int j=0; j<x;j++) {
             o.set(-1 + o.getN() -((i * x) + j));
           }
-        } 
+        } else {
+          o.set(i*x);
+        }
       }
     }
     
-    QuartalNumbersSequence output = new QuartalNumbersSequence(a.alphabetName, o);
+    QuartalNumbersSequence output = new QuartalNumbersSequence(a.alphabetName, o.reverse());
     
     return output;
   }

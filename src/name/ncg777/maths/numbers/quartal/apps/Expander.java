@@ -29,6 +29,7 @@ public class Expander {
   private JTextField txtResult;
   private JTextField txtNot;
   private JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
+  private JTextField textPattern;
 
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
@@ -51,7 +52,7 @@ public class Expander {
     frmExpander = new JFrame();
     frmExpander.setResizable(false);
     frmExpander.setTitle("Expander");
-    frmExpander.setBounds(100, 100, 542, 209);
+    frmExpander.setBounds(100, 100, 605, 239);
     frmExpander.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
     JLabel lblRhythm = new JLabel("Rhythm :");
@@ -82,7 +83,8 @@ public class Expander {
                     abc, 
                     txtRhythm.getText()), 
                     (int)spinner.getValue(), 
-                    chckbxFill.isSelected()), 
+                    chckbxFill.isSelected(),
+                    new QuartalNumbersSequence(abc,textPattern.getText())), 
                     (int)rot.getValue());
         
         txtResult.setText(o.toString());
@@ -100,27 +102,32 @@ public class Expander {
     JLabel lblRotate = new JLabel("Rotate :");
     lblRotate.setHorizontalAlignment(SwingConstants.RIGHT);
     
+    textPattern = new JTextField();
+    textPattern.setColumns(10);
+    
+    JLabel lblNewLabel = new JLabel("Pattern:");
+    
     GroupLayout groupLayout = new GroupLayout(frmExpander.getContentPane());
     groupLayout.setHorizontalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
-          .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+          .addContainerGap()
+          .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+            .addGroup(groupLayout.createSequentialGroup()
               .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                 .addGroup(groupLayout.createSequentialGroup()
-                  .addGap(17)
-                  .addComponent(lblResult))
-                .addGroup(groupLayout.createSequentialGroup()
-                  .addGap(30)
-                  .addComponent(lblNot)))
-              .addPreferredGap(ComponentPlacement.RELATED)
-              .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-                .addComponent(txtNot, Alignment.LEADING)
-                .addComponent(txtResult, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
-                .addComponent(btnExpand, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-            .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-              .addContainerGap()
-              .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+                  .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                    .addGroup(groupLayout.createSequentialGroup()
+                      .addGap(7)
+                      .addComponent(lblResult))
+                    .addGroup(groupLayout.createSequentialGroup()
+                      .addGap(20)
+                      .addComponent(lblNot)))
+                  .addPreferredGap(ComponentPlacement.RELATED)
+                  .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+                    .addComponent(txtNot, Alignment.LEADING)
+                    .addComponent(txtResult, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                    .addComponent(btnExpand, Alignment.LEADING)))
                 .addGroup(groupLayout.createSequentialGroup()
                   .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
                   .addPreferredGap(ComponentPlacement.RELATED)
@@ -133,13 +140,17 @@ public class Expander {
                   .addComponent(lblRotate)
                   .addPreferredGap(ComponentPlacement.RELATED)
                   .addComponent(rot, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-                  .addGap(94))
-                .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-                  .addComponent(lblRhythm)
-                  .addPreferredGap(ComponentPlacement.RELATED)
-                  .addComponent(txtRhythm, GroupLayout.PREFERRED_SIZE, 449, GroupLayout.PREFERRED_SIZE)))
-              .addGap(82)))
-          .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                  .addGap(91)))
+              .addGap(85))
+            .addGroup(groupLayout.createSequentialGroup()
+              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                .addComponent(lblRhythm)
+                .addComponent(lblNewLabel))
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                .addComponent(textPattern, GroupLayout.PREFERRED_SIZE, 449, GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtRhythm, GroupLayout.PREFERRED_SIZE, 449, GroupLayout.PREFERRED_SIZE))
+              .addContainerGap(82, Short.MAX_VALUE))))
     );
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
@@ -148,6 +159,10 @@ public class Expander {
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(lblRhythm)
             .addComponent(txtRhythm, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+          .addPreferredGap(ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+          .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+            .addComponent(textPattern, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addComponent(lblNewLabel))
           .addPreferredGap(ComponentPlacement.UNRELATED)
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -166,7 +181,7 @@ public class Expander {
           .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
             .addComponent(txtNot, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
             .addComponent(lblNot))
-          .addContainerGap(22, Short.MAX_VALUE))
+          .addGap(22))
     );
     frmExpander.getContentPane().setLayout(groupLayout);
   }
