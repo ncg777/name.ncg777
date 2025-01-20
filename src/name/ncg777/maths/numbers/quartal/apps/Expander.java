@@ -13,6 +13,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
@@ -84,7 +85,7 @@ public class Expander {
                     txtRhythm.getText()), 
                     (int)spinner.getValue(), 
                     chckbxFill.isSelected(),
-                    new QuartalNumbersSequence(abc,textPattern.getText())), 
+                    List.of(textPattern.getText().split(",")).stream().map(t -> new QuartalNumbersSequence(abc,t)).toList()), 
                     (int)rot.getValue());
         
         txtResult.setText(o.toString());
@@ -105,7 +106,7 @@ public class Expander {
     textPattern = new JTextField();
     textPattern.setColumns(10);
     
-    JLabel lblNewLabel = new JLabel("Pattern:");
+    JLabel lblNewLabel = new JLabel("Patterns:");
     
     GroupLayout groupLayout = new GroupLayout(frmExpander.getContentPane());
     groupLayout.setHorizontalGroup(

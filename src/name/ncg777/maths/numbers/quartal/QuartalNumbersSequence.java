@@ -58,15 +58,15 @@ public class QuartalNumbersSequence extends ArrayList<QuartalNumber> implements 
   public static QuartalNumbersSequence expand(QuartalNumbersSequence a, int x, boolean fill) {
     return expand(a,x,fill,null);
   }
-  public static QuartalNumbersSequence expand(QuartalNumbersSequence a, int x, boolean fill, QuartalNumbersSequence _pattern) {
-    BinaryNatural pattern = _pattern == null ? null : _pattern.toBinaryNatural().reverse();
+  public static QuartalNumbersSequence expand(QuartalNumbersSequence a, int x, boolean fill, List<QuartalNumbersSequence> _patterns) {
+    List<BinaryNatural> patterns = _patterns == null ? null : _patterns.stream().map(q -> q.toBinaryNatural().reverse()).toList();
     BinaryNatural b = a.toBinaryNatural().reverse();
     BinaryNatural o = new BinaryNatural(new BitSet(), x * b.getN());
-    
+    int k=0;
     for (int i = 0; i < b.getN(); i++) {
       if(b.get(i)) {
-        
-        if(!fill && pattern != null) {
+        if(!fill && patterns != null) {
+          var pattern = patterns.get((k++)%patterns.size());
           for(int j=0;j<x;j++) {
             o.set(((i*x)+j)%o.size(), pattern.get(j%pattern.size()));
           }
