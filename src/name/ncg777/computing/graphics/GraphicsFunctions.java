@@ -8,8 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import javax.imageio.ImageIO;
@@ -392,8 +392,11 @@ public class GraphicsFunctions {
         g,
         _p,
         
-        (Double t, HomoPair<Cartesian> p) -> 
+        (DrawingContext ctx) -> 
           {
+            Double t = ctx.t();
+            HomoPair<Cartesian> p = ctx.p_and_pprime();
+            
             double sx = scaleX.apply(t);
             double sy = scaleY.apply(t);
           
@@ -447,10 +450,11 @@ public class GraphicsFunctions {
       deltaf);
   }
   
+  public record DrawingContext(Graphics2D g, double t, HomoPair<Cartesian> p_and_pprime) {};
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
-      BiConsumer<Double, HomoPair<Cartesian>> drawf,
+      Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> scaleX,
@@ -458,8 +462,6 @@ public class GraphicsFunctions {
       Function<Double,Double> translateX,
       Function<Double,Double> translateY,
       Function<Double,Double> deltaf) {
-    g.setStroke(new BasicStroke(2.0f));
-    
     for(double t=from_inclusive; t<to_exclusive; t+=deltaf.apply(t)) {
       var delta = deltaf.apply(t);
 
@@ -475,7 +477,7 @@ public class GraphicsFunctions {
       double B_x = (sx*pointp.x())+tx;
       double B_y = (sy*pointp.y())+ty;
       
-      drawf.accept(t, HomoPair.makeHomoPair(new Cartesian(A_x, A_y), new Cartesian(B_x, B_y)));
+      drawf.accept(new DrawingContext(g, t, HomoPair.makeHomoPair(new Cartesian(A_x, A_y), new Cartesian(B_x, B_y))));
     }
   }
   
@@ -489,7 +491,7 @@ public class GraphicsFunctions {
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
-      BiConsumer<Double, HomoPair<Cartesian>> drawf) {
+      Consumer<DrawingContext> drawf) {
     drawParametric2D(g, p, drawf, 
         defaultFrom, 
         defaultTo,  
@@ -503,7 +505,7 @@ public class GraphicsFunctions {
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
-      BiConsumer<Double, HomoPair<Cartesian>> drawf,
+      Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive) {
     drawParametric2D(g, p, drawf, from_inclusive, to_exclusive, 
@@ -517,7 +519,7 @@ public class GraphicsFunctions {
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p, 
-      BiConsumer<Double, HomoPair<Cartesian>> drawf,
+      Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> scaleX,
@@ -533,7 +535,7 @@ public class GraphicsFunctions {
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
-      BiConsumer<Double, HomoPair<Cartesian>> drawf,
+      Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> scaleX,
