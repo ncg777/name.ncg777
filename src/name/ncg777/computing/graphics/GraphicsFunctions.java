@@ -367,10 +367,8 @@ public class GraphicsFunctions {
       Function<Double,HomoPair<Double>> _p,
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
+      Function<Double,Cartesian> scale,
+      Function<Double,Cartesian> translate,
       Function<Double,Double> width,
       BiFunction<Double,Double,Color> color) {
     
@@ -381,29 +379,32 @@ public class GraphicsFunctions {
       Function<Double,Cartesian> _p,
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
+      Function<Double,Cartesian> scale,
+      Function<Double,Cartesian> translate,
       Function<Double,Double> width,
       BiFunction<Double,Double,Color> color,
       Function<Double,Double> deltaf) {
     drawParametric2D(
-        g,
+        g, 
         _p,
-        
+        scale,
+        translate,
         (DrawingContext ctx) -> 
           {
-            Double t = ctx.t();
-            HomoPair<Cartesian> p = ctx.p_and_pprime();
+            var t = ctx.t();
+            var sc = ctx.scale().apply(t);
+            double sx = sc.x();
+            double sy = sc.y();
+            var tr = ctx.translate().apply(t);
+            double tx = tr.x();
+            double ty = tr.y();
+            var point = ctx.p().apply(t);
+            double A_x = (sx*point.x())+tx;
+            double A_y = (sy*point.y())+ty;
             
-            double sx = scaleX.apply(t);
-            double sy = scaleY.apply(t);
-          
-            double A_x = p.getFirst().x();
-            double A_y = p.getFirst().y();
-            double B_x = p.getSecond().x();
-            double B_y = p.getSecond().y();
+            var pointp = ctx.p().apply(t+ctx.delta());
+            double B_x = (sx*pointp.x())+tx;
+            double B_y = (sy*pointp.y())+ty;
             
             double x_ccw = A_x - (B_y-A_y);
             double y_ccw = A_y + (B_x-A_x);
@@ -443,41 +444,30 @@ public class GraphicsFunctions {
         },
       from_inclusive,
       to_exclusive,
-      scaleX,
-      scaleY,
-      translateX,
-      translateY,
       deltaf);
   }
   
-  public record DrawingContext(Graphics2D g, double t, HomoPair<Cartesian> p_and_pprime) {};
+  public record DrawingContext(
+      Graphics2D g, 
+      double t, 
+      Function<Double,Cartesian> p, 
+      Function<Double,Cartesian> scale,
+      Function<Double,Cartesian> translate, double delta) {};
+      
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
+      Function<Double,Cartesian> scale,
+      Function<Double,Cartesian> translate,
       Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY,
       Function<Double,Double> deltaf) {
     for(double t=from_inclusive; t<to_exclusive; t+=deltaf.apply(t)) {
       var delta = deltaf.apply(t);
-
-      double sx = scaleX.apply(t);
-      double sy = scaleY.apply(t);
-      double tx = translateX.apply(t);
-      double ty = translateY.apply(t);
-      var point = p.apply(t);
-      double A_x = (sx*point.x())+tx;
-      double A_y = (sy*point.y())+ty;
       
-      var pointp = p.apply(t+delta);
-      double B_x = (sx*pointp.x())+tx;
-      double B_y = (sy*pointp.y())+ty;
       
-      drawf.accept(new DrawingContext(g, t, HomoPair.makeHomoPair(new Cartesian(A_x, A_y), new Cartesian(B_x, B_y))));
+      drawf.accept(new DrawingContext(g, t, p, scale, translate, delta));
     }
   }
   
@@ -492,13 +482,12 @@ public class GraphicsFunctions {
       Graphics2D g, 
       Function<Double,Cartesian> p,
       Consumer<DrawingContext> drawf) {
-    drawParametric2D(g, p, drawf, 
+    drawParametric2D(g, p, 
+        (t) -> new Cartesian(defaultScaleX,defaultScaleY), 
+        (t) -> new Cartesian(defaultTranslateX, defaultTranslateY),
+        drawf, 
         defaultFrom, 
-        defaultTo,  
-        (t) -> defaultScaleX, 
-        (t) -> defaultScaleY,
-        (t) -> defaultTranslateX,
-        (t) -> defaultTranslateY,
+        defaultTo,
         (t) -> defaultDelta);
   }
   
@@ -508,45 +497,40 @@ public class GraphicsFunctions {
       Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive) {
-    drawParametric2D(g, p, drawf, from_inclusive, to_exclusive, 
-        (t) -> defaultScaleX, 
-        (t) -> defaultScaleY,
-        (t) -> defaultTranslateX,
-        (t) -> defaultTranslateY, 
-        (t) -> defaultDelta);
-  }
-  
-  public static void drawParametric2D(
-      Graphics2D g, 
-      Function<Double,Cartesian> p, 
-      Consumer<DrawingContext> drawf,
-      double from_inclusive, 
-      double to_exclusive,
-      Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY) {
-    drawParametric2D(g, p,drawf, from_inclusive, to_exclusive, 
-        scaleX,
-        scaleY, 
-        (t) -> defaultTranslateX, 
-        (t) -> defaultTranslateY,
+    drawParametric2D(g, p, 
+        (t) -> new Cartesian(defaultScaleX,defaultScaleY), 
+        (t) -> new Cartesian(defaultTranslateX, defaultTranslateY),
+        drawf, 
+        from_inclusive, to_exclusive, 
         (t) -> defaultDelta);
   }
   
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
+      Function<Double,Cartesian> scale, 
       Consumer<DrawingContext> drawf,
       double from_inclusive, 
-      double to_exclusive,
-      Function<Double,Double> scaleX,
-      Function<Double,Double> scaleY,
-      Function<Double,Double> translateX,
-      Function<Double,Double> translateY) {
-    drawParametric2D(g, p,drawf, from_inclusive, to_exclusive, 
-        scaleX, 
-        scaleY, 
-        translateX,
-        translateY, 
+      double to_exclusive) {
+    drawParametric2D(g, p,scale,
+        (t) -> new Cartesian(defaultTranslateX, defaultTranslateY), 
+        drawf, 
+        from_inclusive, to_exclusive, 
+        (t) -> defaultDelta);
+  }
+  
+  public static void drawParametric2D(
+      Graphics2D g, 
+      Function<Double,Cartesian> p,
+      Function<Double,Cartesian> scale,
+      Function<Double,Cartesian> translate,
+      Consumer<DrawingContext> drawf,
+      double from_inclusive, 
+      double to_exclusive) {
+    drawParametric2D(g, p,scale, 
+        translate, 
+        drawf, 
+        from_inclusive, to_exclusive, 
         (t) -> defaultDelta);
   }
 }

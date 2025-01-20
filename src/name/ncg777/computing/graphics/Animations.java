@@ -142,10 +142,8 @@ public class Animations {
                        ),
                 0.0,
                 1.0,
-                (t) -> Double.valueOf(width),
-                (t) -> Double.valueOf(height),
-                (t) -> 0.0,
-                (t) -> 0.0,
+                (t) -> new Cartesian(Double.valueOf(width),Double.valueOf(height)),
+                (t) -> new Cartesian(0.0,0.0),
                 (t) -> 0.1+0.1*Math.sin(42*Math.PI*t)*Math.sin(20*Math.PI*normalized_time),
                 (t,u) -> new Color(
                     (int)Math.round(128.0-127.0*(j*Math.cos(Math.PI*(3.0*t-i*normalized_time)))), 
@@ -464,10 +462,8 @@ public class Animations {
           0.0,
           1.0,
 
-          (t) -> Double.valueOf(width)*(1.0-params.life),
-          (t) -> Double.valueOf(height)*(1.0-params.life),
-          (t) -> params.life*Double.valueOf(width)*0.5,
-          (t) -> params.life*Double.valueOf(height)*0.5,
+          (t) -> new Cartesian(Double.valueOf(width)*(1.0-params.life),Double.valueOf(height)*(1.0-params.life)),
+          (t) -> new Cartesian(params.life*Double.valueOf(width)*0.5,params.life*Double.valueOf(height)*0.5),
           (t) -> w*(0.5+0.4*Math.sin(((double)rf.get(params.individual))*2.0*Math.PI*t)),
           (t,u) -> {
             var c = cs.get(params.individual);
