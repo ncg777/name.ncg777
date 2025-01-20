@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
 
+import name.ncg777.computing.graphics.GraphicsFunctions.Cartesian;
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
@@ -135,8 +136,10 @@ public class Animations {
 
             GraphicsFunctions.drawParametric2DWithLateralBars(
                 g, 
-                (t) -> 0.5+j*0.35*Math.cos(j*Math.PI*0.125+i*normalized_time*40*Math.PI)*(0.5-0.5*Math.cos((4.0-(Math.abs(2.0-4.0*t)*2.0+2.0*(2.0+(1.0-Math.abs(1.0-2.0*normalized_time)))))*Math.PI)), 
-                (t) -> 0.5-j*0.35*Math.sin(               -i*normalized_time*40*Math.PI)*(0.5+0.5*Math.sin((2.0-(Math.abs(1.0-2.0*t)*2.0+2.0*(4.0+(2.0-Math.abs(2.0-4.0*normalized_time)))))*Math.PI)),
+                (t) -> new Cartesian(
+                        0.5+j*0.35*Math.cos(j*Math.PI*0.125+i*normalized_time*40*Math.PI)*(0.5-0.5*Math.cos((4.0-(Math.abs(2.0-4.0*t)*2.0+2.0*(2.0+(1.0-Math.abs(1.0-2.0*normalized_time)))))*Math.PI)), 
+                        0.5-j*0.35*Math.sin(               -i*normalized_time*40*Math.PI)*(0.5+0.5*Math.sin((2.0-(Math.abs(1.0-2.0*t)*2.0+2.0*(4.0+(2.0-Math.abs(2.0-4.0*normalized_time)))))*Math.PI))
+                       ),
                 0.0,
                 1.0,
                 (t) -> Double.valueOf(width),
@@ -186,8 +189,8 @@ public class Animations {
 
         GraphicsFunctions.drawColorField2D(g, 
             (params) -> {
-              double x = params.cartesian().getFirst();
-              double y = params.cartesian().getSecond();
+              double x = params.cartesian().x();
+              double y = params.cartesian().y();
               var b = 5.0;
               var th = Math.atan2(x, y);
               var s = 0.5+(th/Math.PI)*0.5;
@@ -232,8 +235,8 @@ public class Animations {
 
         GraphicsFunctions.drawColorField2D(g, 
             (params) -> {
-              double x = params.cartesian().getFirst();
-              double y = params.cartesian().getSecond();
+              double x = params.cartesian().x();
+              double y = params.cartesian().y();
               var b =3.0;
               var th = Math.atan2(y, x);
               var s = (0.5+(th/Math.PI)*0.5);
@@ -282,6 +285,7 @@ public class Animations {
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         var g = img.createGraphics();
+
         g.rotate(t*2.0*Math.PI, width/2.0,height/2);
         GraphicsFunctions.matrixDisk(
             g,
@@ -446,17 +450,16 @@ public class Animations {
           Math.pow(sizes.get(params.individual)/(double)(2*height), 2.0));
       GraphicsFunctions.drawParametric2DWithLateralBars(
           g, 
-          (t) -> (params.x/((double)width))+
-          ((sizes.get(params.individual)/(double)(2*width))*
-              Math.sin(
+          (t) -> new Cartesian((params.x/((double)width))+
+              ((sizes.get(params.individual)/(double)(2*width))*
+                  Math.sin(
                   thetas.get(params.individual)+
                   2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
-
-          (t) -> (params.y/((double)height))+
-          ((sizes.get(params.individual)/(double)(2*height))*
-              Math.cos(
+              (params.y/((double)height))+
+                ((sizes.get(params.individual)/(double)(2*height))*
+                  Math.cos(
                   thetas.get(params.individual)+
-                  2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life))),
+                  2.0*Math.PI*(t+orientations.get(params.individual)*spins.get(params.individual)*params.life)))),
 
           0.0,
           1.0,

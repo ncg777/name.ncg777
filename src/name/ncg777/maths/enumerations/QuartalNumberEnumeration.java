@@ -6,11 +6,11 @@ import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.quartal.QuartalNumber;
 import name.ncg777.maths.sequences.Sequence;
 
-public class QuartalWordEnumeration implements Enumeration<QuartalNumber>  {
+public class QuartalNumberEnumeration implements Enumeration<QuartalNumber>  {
   private Cipher.Name alphabetName;
   
   private MixedRadixEnumeration mre;
-  public QuartalWordEnumeration(Cipher.Name alphabetName) {
+  public QuartalNumberEnumeration(Cipher.Name alphabetName) {
     this.alphabetName = alphabetName;
     var alphabet = Cipher.getAlphabet(alphabetName);
     

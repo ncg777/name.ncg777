@@ -135,7 +135,25 @@ public class GraphicsFunctions {
     System.out.println("\rDone.\n");
   }
 
-  public record MixedCoordinates(HomoPair<Double> cartesian, HomoPair<Double> polar) {};
+  public record Cartesian(double x, double y) implements Comparable<Cartesian> {
+    @Override
+    public int compareTo(Cartesian other) {
+      var o = this.x-other.x;
+      if(o != 0.0d) return o<0 ?-1 : 1;
+      o = this.y-other.y;
+      return o < 0 ? -1 : o > 0 ? 1 : 0;
+    }
+  };
+  public record Polar(double r, double theta) implements Comparable<Polar> {
+    @Override
+    public int compareTo(Polar other) {
+      var o = this.r-other.r;
+      if(o != 0.0d) return o<0 ?-1 : 1;
+      o = this.theta-other.theta;
+      return o < 0 ? -1 : o > 0 ? 1 : 0;
+    }
+  };
+  public record MixedCoordinates(Cartesian cartesian, Polar polar) {};
   
   public static void drawColorField2D(Graphics2D g, Function<MixedCoordinates, Color> color, int width, int height) {
     for (int x = 0; x < width; x++) {
@@ -147,8 +165,8 @@ public class GraphicsFunctions {
             double th = Math.atan2(ynorm, xnorm); // Fixed normalized coordinate usage
 
             Color c = color.apply(new MixedCoordinates(
-                HomoPair.makeHomoPair(xnorm, ynorm),
-                HomoPair.makeHomoPair(r, th)
+                new Cartesian(xnorm, ynorm),
+                new Polar(r, th)
             ));
             
             g.setColor(c);
@@ -162,15 +180,15 @@ public class GraphicsFunctions {
     int n = mat.columnCount();
 
     drawColorField2D(g, (params) -> {
-      double x = params.cartesian().getFirst();
-      double y = params.cartesian().getSecond();
+      double x = params.cartesian().x;
+      double y = params.cartesian().y;
 
       // Compute polar indices
-      double di = params.polar().getFirst() * m;
+      double di = params.polar().r * m;
       double adjustedDi = Math.sqrt(di / m) * m; // Uniform area distribution
       int fi = (int) Math.floor(adjustedDi);
 
-      double dj = (((params.polar().getSecond()) / Math.PI) * 0.5 + 0.5) * n;
+      double dj = (((params.polar().theta) / Math.PI) * 0.5 + 0.5) * n;
       while (dj < 0.0) dj += n;
       while (dj >= n) dj -= n;
 
@@ -343,10 +361,24 @@ public class GraphicsFunctions {
     };
   }
   
+  
   public static void drawParametric2DWithLateralBars(
       Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y, 
+      Function<Double,HomoPair<Double>> _p,
+      double from_inclusive, 
+      double to_exclusive,
+      Function<Double,Double> scaleX,
+      Function<Double,Double> scaleY,
+      Function<Double,Double> translateX,
+      Function<Double,Double> translateY,
+      Function<Double,Double> width,
+      BiFunction<Double,Double,Color> color) {
+    
+  }
+  
+  public static void drawParametric2DWithLateralBars(
+      Graphics2D g, 
+      Function<Double,Cartesian> _p,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> scaleX,
@@ -358,18 +390,17 @@ public class GraphicsFunctions {
       Function<Double,Double> deltaf) {
     drawParametric2D(
         g,
-        x,
-        y,
+        _p,
         
-        (Double t, HomoPair<HomoPair<Double>> p) -> 
+        (Double t, HomoPair<Cartesian> p) -> 
           {
             double sx = scaleX.apply(t);
             double sy = scaleY.apply(t);
           
-            double A_x = p.getFirst().getFirst();
-            double A_y = p.getFirst().getSecond();
-            double B_x = p.getSecond().getFirst();
-            double B_y = p.getSecond().getSecond();
+            double A_x = p.getFirst().x();
+            double A_y = p.getFirst().y();
+            double B_x = p.getSecond().x();
+            double B_y = p.getSecond().y();
             
             double x_ccw = A_x - (B_y-A_y);
             double y_ccw = A_y + (B_x-A_x);
@@ -418,9 +449,8 @@ public class GraphicsFunctions {
   
   public static void drawParametric2D(
       Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y,
-      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
+      Function<Double,Cartesian> p,
+      BiConsumer<Double, HomoPair<Cartesian>> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> scaleX,
@@ -437,13 +467,15 @@ public class GraphicsFunctions {
       double sy = scaleY.apply(t);
       double tx = translateX.apply(t);
       double ty = translateY.apply(t);
+      var point = p.apply(t);
+      double A_x = (sx*point.x())+tx;
+      double A_y = (sy*point.y())+ty;
       
-      double A_x = (sx*x.apply(t))+tx;
-      double A_y = (sy*y.apply(t))+ty;
-      double B_x = (sx*x.apply(t+delta))+tx;
-      double B_y = (sy*y.apply(t+delta))+ty;
+      var pointp = p.apply(t+delta);
+      double B_x = (sx*pointp.x())+tx;
+      double B_y = (sy*pointp.y())+ty;
       
-      drawf.accept(t, HomoPair.makeHomoPair(HomoPair.makeHomoPair(A_x, A_y), HomoPair.makeHomoPair(B_x, B_y)));
+      drawf.accept(t, HomoPair.makeHomoPair(new Cartesian(A_x, A_y), new Cartesian(B_x, B_y)));
     }
   }
   
@@ -454,13 +486,11 @@ public class GraphicsFunctions {
   private static double defaultScaleX = 1.0;
   private static double defaultScaleY = 1.0;
   private static double defaultDelta = 0.000005;
-  
   public static void drawParametric2D(
       Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y,
-      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf) {
-    drawParametric2D(g, x, y, drawf, 
+      Function<Double,Cartesian> p,
+      BiConsumer<Double, HomoPair<Cartesian>> drawf) {
+    drawParametric2D(g, p, drawf, 
         defaultFrom, 
         defaultTo,  
         (t) -> defaultScaleX, 
@@ -472,12 +502,11 @@ public class GraphicsFunctions {
   
   public static void drawParametric2D(
       Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y,
-      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
+      Function<Double,Cartesian> p,
+      BiConsumer<Double, HomoPair<Cartesian>> drawf,
       double from_inclusive, 
       double to_exclusive) {
-    drawParametric2D(g, x, y, drawf, from_inclusive, to_exclusive, 
+    drawParametric2D(g, p, drawf, from_inclusive, to_exclusive, 
         (t) -> defaultScaleX, 
         (t) -> defaultScaleY,
         (t) -> defaultTranslateX,
@@ -487,14 +516,13 @@ public class GraphicsFunctions {
   
   public static void drawParametric2D(
       Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y, 
-      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
+      Function<Double,Cartesian> p, 
+      BiConsumer<Double, HomoPair<Cartesian>> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY) {
-    drawParametric2D(g, x, y,drawf, from_inclusive, to_exclusive, 
+    drawParametric2D(g, p,drawf, from_inclusive, to_exclusive, 
         scaleX,
         scaleY, 
         (t) -> defaultTranslateX, 
@@ -504,16 +532,15 @@ public class GraphicsFunctions {
   
   public static void drawParametric2D(
       Graphics2D g, 
-      Function<Double,Double> x, 
-      Function<Double,Double> y,
-      BiConsumer<Double, HomoPair<HomoPair<Double>>> drawf,
+      Function<Double,Cartesian> p,
+      BiConsumer<Double, HomoPair<Cartesian>> drawf,
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> scaleX,
       Function<Double,Double> scaleY,
       Function<Double,Double> translateX,
       Function<Double,Double> translateY) {
-    drawParametric2D(g, x, y,drawf, from_inclusive, to_exclusive, 
+    drawParametric2D(g, p,drawf, from_inclusive, to_exclusive, 
         scaleX, 
         scaleY, 
         translateX,

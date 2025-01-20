@@ -3,7 +3,7 @@ package name.ncg777.maths.numbers.quartal;
 import java.util.List;
 import java.util.TreeSet;
 
-import name.ncg777.maths.enumerations.QuartalWordEnumeration;
+import name.ncg777.maths.enumerations.QuartalNumberEnumeration;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.Natural;
 import name.ncg777.maths.sequences.Sequence;
@@ -36,7 +36,7 @@ public class QuartalNumber extends Natural {
     
   public static TreeSet<QuartalNumber> generate(Cipher.Name alphabetName) {
     TreeSet<QuartalNumber> o = new TreeSet<QuartalNumber>();
-    var tge = new QuartalWordEnumeration(alphabetName);
+    var tge = new QuartalNumberEnumeration(alphabetName);
     while(tge.hasMoreElements()) o.add(tge.nextElement());
     return o;
   }
