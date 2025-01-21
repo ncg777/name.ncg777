@@ -9,9 +9,9 @@ public class MixedRadixEnumerationTests {
   @Test
   public final void testBase() {
     int[] base = {2,3,4};
-    int n = 2*3*4;
+    long n = 2*3*4;
     var mre = new MixedRadixEnumeration(base);
-    for(int i=0;i<n;i++) {
+    for(long i=0;i<n;i++) {
       var elem = mre.nextElement();
       var i2c = MixedRadixEnumeration.mapIndexToCoordinates(i, base);
       assertArrayEquals(elem, i2c);

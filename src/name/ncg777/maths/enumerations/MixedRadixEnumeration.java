@@ -95,20 +95,20 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     return o;
   }
 
-  public static int[] mapIndexToCoordinates(int index, int[] base) {
+  public static int[] mapIndexToCoordinates(long index, int[] base) {
     int[] o = new int[base.length];
-    int t = index;
+    long t = index;
 
     for (int k = 0; k <base.length; k++) {
-      int b = base[k];
-      o[k] = t % b;
+      long b = (long)base[k];
+      o[k] = (int)(t % b);
       t = t / b;
     }
     return o;
   }
   
-  public static int mapCoordinatesToIndex(int[] v, int[] base) {
-    int o = 0;
+  public static long mapCoordinatesToIndex(int[] v, int[] base) {
+    long o = 0l;
     int[] base2 = new int[base.length];
     for(int i=0;i<base.length;i++) {
       base2[i] = 1;
@@ -117,7 +117,7 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
       }
     }
     
-    for(int i=0;i<v.length;i++) o += v[i]*base2[i];
+    for(int i=0;i<v.length;i++) o += (long)(v[i]*base2[i]);
     return o;
   }
 }
