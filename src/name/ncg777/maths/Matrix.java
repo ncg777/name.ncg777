@@ -147,7 +147,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Initializes matrix with a default value. Matrix must be unlocked.
+   * Initializes matrix with a default value..
    * 
    * @param m
    * @param n
@@ -261,7 +261,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     return v.equals(defaultValue);
   }
   /**
-   * Sets value at row i, column j. Matrix must be unlocked.
+   * Sets value at row i, column j..
    * 
    * @param i
    * @param j
@@ -278,7 +278,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Adds row at bottom of matrix. Matrix must be unlocked.
+   * Adds row at bottom of matrix..
    * 
    * @param l
    */
@@ -287,7 +287,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Inserts a row filled with value v. Matrix must be unlocked.
+   * Inserts a row filled with value v..
    * 
    * @param v
    */
@@ -300,7 +300,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Concatenate matrix c vertically. Matrix must be unlocked.
+   * Concatenate matrix c vertically..
    * 
    * @param c
    */
@@ -329,7 +329,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Adds column at right end of matrix Matrix must be unlocked.
+   * Adds column at right end of matrix.
    * 
    * @param c
    */
@@ -342,7 +342,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Appends column filled with value v. Matrix must be unlocked.
+   * Appends column filled with value v..
    * 
    * @param v
    */
@@ -351,7 +351,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Concatenates matrix horizontally. Matrix must be unlocked.
+   * Concatenates matrix horizontally..
    * 
    * @param c
    */
@@ -381,7 +381,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
 
   /**
    * Sets a block of the matrix to a copy of values in supplied matrix (i0 and j0 is upper left
-   * corner). Matrix must be unlocked.
+   * corner)..
    * 
    * @param p_mat
    * @param i0
@@ -406,31 +406,28 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
 
   private synchronized void shiftColumnsRight(int j) {
     n++;
-    for(var e : mat.descendingMap().entrySet()) {
-      if(e.getKey().getSecond() >= j) {
-        mat.put(
-              HomoPair.makeHomoPair(e.getKey().getFirst(),e.getKey().getSecond()+1), 
-              mat.remove(e.getKey())
-            );
-      }
+    for(var _e : getTranspose().mat.descendingKeySet().stream().filter((x) -> x.getFirst() >=j).toList()) {
+      var e = _e.converse();
+      mat.put(
+            HomoPair.makeHomoPair(e.getFirst(),e.getSecond()+1), 
+            mat.remove(e)
+          );
     }
   }
 
   private synchronized void shiftRowsDown(int i) {
     m++;
-    for(var e : mat.descendingMap().entrySet()) {
-      if(e.getKey().getFirst() >= i) {
-        mat.put(
-              HomoPair.makeHomoPair(e.getKey().getFirst()+1,e.getKey().getSecond()), 
-              mat.remove(e.getKey())
-            );
-      }
+    for(var e : mat.descendingKeySet().stream().filter((x) -> x.getFirst() >=i).toList()) {  
+      mat.put(
+            HomoPair.makeHomoPair(e.getFirst()+1,e.getSecond()), 
+            mat.remove(e)
+          );
     }
   }
 
   /**
    * Inserts column before position j. If matrix was empty, inserting column sets the number of
-   * rows. Matrix must be unlocked.
+   * rows..
    * 
    * @param j
    * @param c
@@ -448,7 +445,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
   /**
-   * Inserts a column with all values set to v. Matrix must be unlocked.
+   * Inserts a column with all values set to v..
    * 
    * @param j
    * @param v
@@ -463,7 +460,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
 
   /**
    * Inserts a column with all values set to null. Near duplicate of insertColumn(int j, T v), but
-   * is needed to avoid ambiguity. Matrix must be unlocked.
+   * is needed to avoid ambiguity..
    * 
    * @param j
    */
@@ -473,7 +470,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
 
   /**
    * Inserts row before position i. If matrix was empty, inserting row sets the number of columns.
-   * Matrix must be unlocked.
+   *.
    * 
    * @param i
    * @param l
@@ -488,7 +485,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
   /**
-   * Insert a row with all values set to v. Matrix must be unlocked.
+   * Insert a row with all values set to v..
    * 
    * @param i
    * @param v
@@ -502,7 +499,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
 
   /**
    * Insert a row with all values set to null. Near duplicate of insertRow(int i, T v), but is
-   * needed to avoid ambiguity. Matrix must be unlocked.
+   * needed to avoid ambiguity..
    * 
    * @param i
    */
@@ -511,45 +508,44 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Removes column at position j Matrix must be unlocked.
+   * Removes column at position j.
    * 
    * @param j
    */
   public synchronized void removeColumn(int j) {
     n--;
-    
-    for(var e : mat.descendingMap().entrySet()) {
-      if(e.getKey().getSecond() == j) mat.remove(e.getKey());
-      if(e.getKey().getSecond() > j) {
+    for(var e : mat.keySet().stream().toList()) if(e.getSecond()==j) mat.remove(e);
+    for(var _e : this.getTranspose().mat.descendingKeySet().stream().toList()) {
+      var e = _e.converse();
+      if(e.getSecond() > j) {
         mat.put(
-              HomoPair.makeHomoPair(e.getKey().getFirst(),e.getKey().getSecond()-1), 
-              mat.remove(e.getKey())
+              HomoPair.makeHomoPair(e.getFirst(),e.getSecond()-1), 
+              mat.remove(e)
             );
       }
     }
   }
 
   /**
-   * Removes row at position i Matrix must be unlocked.
+   * Removes row at position i.
    * 
    * @param i
    */
   public synchronized void removeRow(int i) {
     m--;
-    
-    for(var e : mat.descendingMap().entrySet()) {
-      if(e.getKey().getFirst() == i) mat.remove(e.getKey());
-      if(e.getKey().getFirst() > i) {
+    for(var e : mat.keySet().stream().toList()) if(e.getFirst()==i) mat.remove(e);
+    for(var e : mat.descendingKeySet().stream().toList()) {
+      if(e.getFirst() > i) {
         mat.put(
-              HomoPair.makeHomoPair(e.getKey().getFirst()-1,e.getKey().getSecond()), 
-              mat.remove(e.getKey())
+              HomoPair.makeHomoPair(e.getFirst()-1,e.getSecond()), 
+              mat.remove(e)
             );
       }
     }
   }
 
   /**
-   * Overwrites column j with ArrayList c Matrix must be unlocked.
+   * Overwrites column j with ArrayList c.
    * 
    * @param j
    * @param c
@@ -565,7 +561,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
 
   /**
-   * Sets all elements in column j to c Matrix must be unlocked.
+   * Sets all elements in column j to c.
    * 
    * @param j
    * @param c
@@ -576,7 +572,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
   /**
-   * Overwrites row i with ArrayList l Matrix must be unlocked.
+   * Overwrites row i with ArrayList l.
    * 
    * @param i
    * @param l
@@ -591,7 +587,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
     }
   }
   /**
-   * Sets all elements in row i to r Matrix must be unlocked.
+   * Sets all elements in row i to r.
    * 
    * @param i
    * @param r
@@ -796,7 +792,7 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
   }
   public <U extends Comparable<? super U>> JaggedList<U> toJaggedList(Function<T,U> transformer) {
     var o = new JaggedList<U>();
-    o.init(m,n);
+    if(m>0) o.init(m,n);
     for(int i=0;i<m;i++) {
       for(int j=0;j<n;j++) {
         o.set(transformer.apply(get(i,j)), i,j);
