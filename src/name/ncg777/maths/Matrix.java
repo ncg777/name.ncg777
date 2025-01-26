@@ -514,9 +514,9 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    */
   public synchronized void removeColumn(int j) {
     n--;
-    for(var e : mat.keySet().stream().toList()) if(e.getSecond()==j) mat.remove(e);
-    for(var _e : this.getTranspose().mat.descendingKeySet().stream().toList()) {
+    for(var _e : this.getTranspose().mat.keySet().stream().toList()) {
       var e = _e.converse();
+      if(e.getSecond()==j) mat.remove(e);
       if(e.getSecond() > j) {
         mat.put(
               HomoPair.makeHomoPair(e.getFirst(),e.getSecond()-1), 
@@ -533,8 +533,8 @@ public class Matrix<T extends Comparable<? super T>> implements Comparable<Matri
    */
   public synchronized void removeRow(int i) {
     m--;
-    for(var e : mat.keySet().stream().toList()) if(e.getFirst()==i) mat.remove(e);
-    for(var e : mat.descendingKeySet().stream().toList()) {
+    for(var e : mat.keySet().stream().toList()) {
+      if(e.getFirst()==i) mat.remove(e);
       if(e.getFirst() > i) {
         mat.put(
               HomoPair.makeHomoPair(e.getFirst()-1,e.getSecond()), 
