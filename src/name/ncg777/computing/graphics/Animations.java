@@ -289,7 +289,7 @@ public class Animations {
             g,
             mat,
             (coords, v) -> {
-              Double r = Math.sqrt(((Math.pow(coords.getFirst(), 2.0) + Math.pow(coords.getSecond(), 2.0))/2.0));
+              Double r = Math.sqrt(((Math.pow(coords.x(), 2.0) + Math.pow(coords.y(), 2.0))/2.0));
 
               var rfadestart = 0.675;
               var rfadeend = 0.7;

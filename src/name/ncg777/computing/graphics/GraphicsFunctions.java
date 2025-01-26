@@ -175,7 +175,13 @@ public class GraphicsFunctions {
     }
   }
   
-  public static void matrixDisk(Graphics2D g, MatrixOfDoubles mat, BiFunction<HomoPair<Double>, Double, Color> color, int width, int height, boolean interpolate) {
+  public static void matrixDisk(
+      Graphics2D g, 
+      MatrixOfDoubles mat, 
+      BiFunction<Cartesian, Double, Color> color, 
+      int width, 
+      int height, 
+      boolean interpolate) {
     int m = mat.rowCount();
     int n = mat.columnCount();
 
@@ -215,7 +221,7 @@ public class GraphicsFunctions {
         vo = bilinearInterpolation(phi, phj, v00, v10, v01, v11);
       }
 
-      return color.apply(HomoPair.makeHomoPair(x, y), vo);
+      return color.apply(new Cartesian(x, y), vo);
     }, width, height);
   }
   
