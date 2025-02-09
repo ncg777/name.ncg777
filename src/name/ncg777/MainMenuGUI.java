@@ -62,11 +62,11 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.numbers.quartal.apps.ScaleModulo",name.ncg777.maths.numbers.quartal.apps.ScaleModulo.class);
     addAppButton(panel, "maths.numbers.quartal.apps.SequenceGenerator",name.ncg777.maths.numbers.quartal.apps.SequenceGenerator.class);
     addAppButton(panel, "maths.numbers.quartal.apps.XORCircularConvolver",name.ncg777.maths.numbers.quartal.apps.XORCircularConvolver.class);
-    addAppButton(panel, "maths.sequences.apps.AdderMultiplier",name.ncg777.maths.sequences.apps.AdderMultiplier.class);
     addAppButton(panel, "maths.sequences.apps.Calculator",name.ncg777.maths.sequences.apps.Calculator.class);
     addAppButton(panel, "maths.sequences.apps.Convolver",name.ncg777.maths.sequences.apps.Convolver.class);
     addAppButton(panel, "maths.sequences.apps.Mapper",name.ncg777.maths.sequences.apps.Mapper.class);
     addAppButton(panel, "maths.sequences.apps.Merger",name.ncg777.maths.sequences.apps.Merger.class);
+    addAppButton(panel, "maths.sequences.apps.Operator",name.ncg777.maths.sequences.apps.Operator.class);
     addAppButton(panel, "maths.sequences.apps.Permutator",name.ncg777.maths.sequences.apps.Permutator.class);
     addAppButton(panel, "maths.sequences.apps.PseudoBase",name.ncg777.maths.sequences.apps.PseudoBase.class);
     addAppButton(panel, "maths.sequences.apps.Range",name.ncg777.maths.sequences.apps.Range.class);
