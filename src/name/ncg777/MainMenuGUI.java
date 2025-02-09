@@ -62,7 +62,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.numbers.quartal.apps.ScaleModulo",name.ncg777.maths.numbers.quartal.apps.ScaleModulo.class);
     addAppButton(panel, "maths.numbers.quartal.apps.SequenceGenerator",name.ncg777.maths.numbers.quartal.apps.SequenceGenerator.class);
     addAppButton(panel, "maths.numbers.quartal.apps.XORCircularConvolver",name.ncg777.maths.numbers.quartal.apps.XORCircularConvolver.class);
-    addAppButton(panel, "maths.sequences.apps.Adder",name.ncg777.maths.sequences.apps.Adder.class);
+    addAppButton(panel, "maths.sequences.apps.AdderMultiplier",name.ncg777.maths.sequences.apps.AdderMultiplier.class);
     addAppButton(panel, "maths.sequences.apps.Calculator",name.ncg777.maths.sequences.apps.Calculator.class);
     addAppButton(panel, "maths.sequences.apps.Convolver",name.ncg777.maths.sequences.apps.Convolver.class);
     addAppButton(panel, "maths.sequences.apps.Mapper",name.ncg777.maths.sequences.apps.Mapper.class);

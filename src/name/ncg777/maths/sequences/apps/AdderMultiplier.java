@@ -14,13 +14,15 @@ import name.ncg777.maths.sequences.Sequence;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Adder {
+public class AdderMultiplier {
 
   private JFrame frmAddSequences;
   private JTextField textX;
   private JTextField textY;
   private JTextField textResult;
   private JTextField textRecycled;
+  private JTextField textMultArt;
+  private JTextField textMultRec;
 
   /**
    * Launch the application.
@@ -29,7 +31,7 @@ public class Adder {
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
-          Adder window = new Adder();
+          AdderMultiplier window = new AdderMultiplier();
           window.frmAddSequences.setVisible(true);
         } catch (Exception e) {
           e.printStackTrace();
@@ -38,14 +40,14 @@ public class Adder {
     });
   }
 
-  public Adder() {
+  public AdderMultiplier() {
     initialize();
   }
 
   private void initialize() {
     frmAddSequences = new JFrame();
-    frmAddSequences.setTitle("Add sequences");
-    frmAddSequences.setBounds(100, 100, 450, 182);
+    frmAddSequences.setTitle("Add/Multiply sequences");
+    frmAddSequences.setBounds(100, 100, 450, 250);
     frmAddSequences.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frmAddSequences.getContentPane().setLayout(null);
     
@@ -64,7 +66,7 @@ public class Adder {
     textY.setBounds(80, 31, 344, 17);
     frmAddSequences.getContentPane().add(textY);
     
-    JLabel lblSequenceY = new JLabel("Sequence y:");
+    JLabel lblSequenceY = new JLabel("y:");
     lblSequenceY.setHorizontalAlignment(SwingConstants.RIGHT);
     lblSequenceY.setBounds(0, 34, 76, 14);
     frmAddSequences.getContentPane().add(lblSequenceY);
@@ -81,6 +83,14 @@ public class Adder {
         Sequence r = new Sequence();
         for(int i=0;i<n;i++) r.add(x.get(i%x.size())+y.get(i%y.size()));
         textRecycled.setText(r.toString());
+        Sequence mr = new Sequence();
+        for(int i=0;i<n;i++) mr.add(x.get(i%x.size())*y.get(i%y.size()));
+        Sequence ma = new Sequence();
+        n = x.size()*y.size();
+        for(int i=0;i<n;i++) ma.add(x.get(i%x.size())*y.get(i/x.size()));
+        
+        textMultArt.setText(ma.toString());
+        textMultRec.setText(mr.toString());
       }
     });
     btnNewButton.setBounds(80, 53, 344, 23);
@@ -91,12 +101,12 @@ public class Adder {
     textResult.setBounds(80, 85, 344, 17);
     frmAddSequences.getContentPane().add(textResult);
     
-    JLabel lblXy = new JLabel("articulated:");
+    JLabel lblXy = new JLabel("y[i/]+x[i%]:");
     lblXy.setHorizontalAlignment(SwingConstants.RIGHT);
     lblXy.setBounds(10, 88, 66, 14);
     frmAddSequences.getContentPane().add(lblXy);
     
-    JLabel lblRecycled = new JLabel("recycled:");
+    JLabel lblRecycled = new JLabel("x[i%]+y[i%]:");
     lblRecycled.setHorizontalAlignment(SwingConstants.RIGHT);
     lblRecycled.setBounds(10, 116, 66, 14);
     frmAddSequences.getContentPane().add(lblRecycled);
@@ -105,5 +115,25 @@ public class Adder {
     textRecycled.setColumns(10);
     textRecycled.setBounds(80, 113, 344, 17);
     frmAddSequences.getContentPane().add(textRecycled);
+    
+    textMultArt = new JTextField();
+    textMultArt.setColumns(10);
+    textMultArt.setBounds(80, 141, 344, 17);
+    frmAddSequences.getContentPane().add(textMultArt);
+    
+    textMultRec = new JTextField();
+    textMultRec.setColumns(10);
+    textMultRec.setBounds(80, 169, 344, 17);
+    frmAddSequences.getContentPane().add(textMultRec);
+    
+    JLabel lblYixi = new JLabel("y[i/]*x[i%]:");
+    lblYixi.setHorizontalAlignment(SwingConstants.RIGHT);
+    lblYixi.setBounds(10, 143, 66, 14);
+    frmAddSequences.getContentPane().add(lblYixi);
+    
+    JLabel lblXiyi = new JLabel("x[i%]*y[i%]:");
+    lblXiyi.setHorizontalAlignment(SwingConstants.RIGHT);
+    lblXiyi.setBounds(10, 171, 66, 14);
+    frmAddSequences.getContentPane().add(lblXiyi);
   }
 }
