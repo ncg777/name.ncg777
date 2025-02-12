@@ -31,8 +31,8 @@ public class PartitionEnumerationTests {
         List<List<Integer>> partitions = collectPartitions(enumeration);
         
         assertThat(partitions, hasSize(2));
-        assertThat(partitions.get(1), is(equalTo(Arrays.asList(2))));
-        assertThat(partitions.get(0), is(equalTo(Arrays.asList(1, 1))));
+        assertThat(partitions.get(0), is(equalTo(Arrays.asList(2))));
+        assertThat(partitions.get(1), is(equalTo(Arrays.asList(1, 1))));
     }
 
     @Test
@@ -41,9 +41,9 @@ public class PartitionEnumerationTests {
         List<List<Integer>> partitions = collectPartitions(enumeration);
         
         assertThat(partitions, hasSize(3));
-        assertThat(partitions.get(2), is(equalTo(Arrays.asList(3))));
+        assertThat(partitions.get(0), is(equalTo(Arrays.asList(3))));
         assertThat(partitions.get(1), is(equalTo(Arrays.asList(2, 1))));
-        assertThat(partitions.get(0), is(equalTo(Arrays.asList(1, 1, 1))));
+        assertThat(partitions.get(2), is(equalTo(Arrays.asList(1, 1, 1))));
     }
 
     @Test
@@ -52,11 +52,11 @@ public class PartitionEnumerationTests {
         List<List<Integer>> partitions = collectPartitions(enumeration);
         
         assertThat(partitions, hasSize(5));
-        assertThat(partitions.get(4), is(equalTo(Arrays.asList(4))));
-        assertThat(partitions.get(3), is(equalTo(Arrays.asList(3, 1))));
+        assertThat(partitions.get(0), is(equalTo(Arrays.asList(4))));
+        assertThat(partitions.get(1), is(equalTo(Arrays.asList(3, 1))));
         assertThat(partitions.get(2), is(equalTo(Arrays.asList(2, 2))));
-        assertThat(partitions.get(1), is(equalTo(Arrays.asList(2, 1, 1))));
-        assertThat(partitions.get(0), is(equalTo(Arrays.asList(1, 1, 1, 1))));
+        assertThat(partitions.get(3), is(equalTo(Arrays.asList(2, 1, 1))));
+        assertThat(partitions.get(4), is(equalTo(Arrays.asList(1, 1, 1, 1))));
     }
     
     @Test
@@ -65,13 +65,13 @@ public class PartitionEnumerationTests {
         List<List<Integer>> partitions = collectPartitions(enumeration);
 
         assertThat(partitions, hasSize(7));
-        assertThat(partitions.get(6), is(equalTo(Arrays.asList(5))));
-        assertThat(partitions.get(5), is(equalTo(Arrays.asList(4, 1))));
-        assertThat(partitions.get(4), is(equalTo(Arrays.asList(3, 2))));
+        assertThat(partitions.get(0), is(equalTo(Arrays.asList(5))));
+        assertThat(partitions.get(1), is(equalTo(Arrays.asList(4, 1))));
+        assertThat(partitions.get(2), is(equalTo(Arrays.asList(3, 2))));
         assertThat(partitions.get(3), is(equalTo(Arrays.asList(3, 1, 1))));
-        assertThat(partitions.get(2), is(equalTo(Arrays.asList(2, 2, 1))));
-        assertThat(partitions.get(1), is(equalTo(Arrays.asList(2, 1, 1, 1))));
-        assertThat(partitions.get(0), is(equalTo(Arrays.asList(1, 1, 1, 1, 1))));
+        assertThat(partitions.get(4), is(equalTo(Arrays.asList(2, 2, 1))));
+        assertThat(partitions.get(5), is(equalTo(Arrays.asList(2, 1, 1, 1))));
+        assertThat(partitions.get(6), is(equalTo(Arrays.asList(1, 1, 1, 1, 1))));
     }
 }
 
