@@ -42,8 +42,8 @@ public class Operator {
   }
   private Map<Operation,BiFunction<Integer, Integer, Integer>> ops;
   private enum Scale {
-    LCM, 
-    Product
+    Product,
+    LCM
   }
   private int getLength(Sequence x, Sequence y) {
     return
@@ -64,7 +64,7 @@ public class Operator {
     Or,
     Xor
   }
-  private Scale scale = Scale.LCM;
+  private Scale scale = Scale.Product;
   private Operation operation = Operation.Add;
   private JComboBox<Scale> comboScale;
   private JComboBox<Operation> comboOperation;
@@ -96,8 +96,8 @@ public class Operator {
     for(int i=0;i<n;i++) {
       o.add(this.ops.get(operation)
           .apply(
-              x.get(i%x.size()),
-              this.scale == Scale.LCM ? y.get(i%y.size()) : y.get(i/x.size())
+              this.scale == Scale.LCM ? x.get(i%x.size()) : x.get(i/y.size()),
+              y.get(i%y.size())
            )
       );
     }
@@ -149,7 +149,7 @@ public class Operator {
     textMultArt.setBounds(80, 183, 344, 17);
     frmAddSequences.getContentPane().add(textMultArt);
     
-    JLabel lblYixi = new JLabel("x[i%]⋅y[i% or /]:");
+    JLabel lblYixi = new JLabel("x[i/ or %]⋅y[i%]:");
     lblYixi.setHorizontalAlignment(SwingConstants.RIGHT);
     lblYixi.setBounds(80, 158, 82, 14);
     frmAddSequences.getContentPane().add(lblYixi);
