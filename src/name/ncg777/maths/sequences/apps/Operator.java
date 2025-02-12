@@ -61,16 +61,30 @@ public class Operator {
     Modulo,
     Bounce,
     And,
+    Nand,
     Or,
-    Xor
+    Nor,
+    Implication,
+    ReverseImplication,
+    Xor,
+    Xnor,
+    ShiftLeft,
+    ShiftRight,
+    LCM,
+    GCD,
+    Equal,
+    NotEqual,
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual,
   }
   private Scale scale = Scale.Product;
   private Operation operation = Operation.Add;
   private JComboBox<Scale> comboScale;
   private JComboBox<Operation> comboOperation;
   public Operator() {
-    ops = 
-        new TreeMap<Operation,BiFunction<Integer,Integer,Integer>>();
+    ops = new TreeMap<Operation,BiFunction<Integer,Integer,Integer>>();
     
     ops.put(Operation.Add, (x,y) -> x+y);
     ops.put(Operation.Subtract, (x,y) -> x-y);
@@ -83,8 +97,23 @@ public class Operator {
     ops.put(Operation.Modulo, (x,y) -> x%y);
     ops.put(Operation.Bounce, (x,y) -> x%(2*y) <= y ? x%(2*y) : ((2*y)-(x%(2*y))));
     ops.put(Operation.And, (x,y) -> x&y);
+    ops.put(Operation.Nand, (x,y) -> ~(x&y));
     ops.put(Operation.Or, (x,y) -> x|y);
+    ops.put(Operation.Nor, (x,y) -> ~(x|y));
+    ops.put(Operation.Implication, (x,y) -> (~x)|y);
+    ops.put(Operation.ReverseImplication, (x,y) -> (~y)|x);
     ops.put(Operation.Xor, (x,y) -> x^y);
+    ops.put(Operation.Xnor, (x,y) -> ~(x^y));
+    ops.put(Operation.ShiftLeft, (x,y) -> (x<<y));
+    ops.put(Operation.ShiftRight, (x,y) -> (x>>y));
+    ops.put(Operation.LCM, (x,y) -> (int)Numbers.lcm(x, y));
+    ops.put(Operation.GCD, (x,y) -> (int)Numbers.gcd(x, y));
+    ops.put(Operation.Equal, (x,y) -> x==y ? 1 :0);
+    ops.put(Operation.NotEqual, (x,y) -> x!=y ? 1 :0);
+    ops.put(Operation.LessThan, (x,y) -> x<y ? 1 :0);
+    ops.put(Operation.LessThanOrEqual, (x,y) -> x<=y ? 1 :0);
+    ops.put(Operation.GreaterThan, (x,y) -> x>y ? 1 :0);
+    ops.put(Operation.GreaterThanOrEqual, (x,y) -> x>=y ? 1 :0);
     initialize();
   }
 
