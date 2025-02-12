@@ -79,7 +79,12 @@ The int[] type is printed or parsed as space-separated lists of integers (ex: "1
 - **Class**: name.ncg777.maths.enumerations.NonCrossingPartitionEnumeration
 - **Parameters**: 
   - `n` (int): The size of the non-crossing partitions.
-    
+
+## partitions.sh
+- **Class**: name.ncg777.maths.enumerations.PartitionEnumeration
+- **Parameters**: 
+  - `n` (int) : Integer to partition.
+
 ## permutations.sh
 - **Class**: name.ncg777.maths.enumerations.PermutationEnumeration
 - **Parameters**: 
