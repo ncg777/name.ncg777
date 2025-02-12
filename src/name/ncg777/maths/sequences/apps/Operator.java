@@ -42,21 +42,29 @@ public class Operator {
   }
   private Map<Operation,BiFunction<Integer, Integer, Integer>> ops;
   private enum Scale {
-    Recycled, 
-    Articulated
+    LCM, 
+    Product
   }
   private int getLength(Sequence x, Sequence y) {
     return
-        scale == Scale.Recycled ? (int)Numbers.lcm(x.size(), y.size()) : x.size()*y.size();
+        scale == Scale.LCM ? (int)Numbers.lcm(x.size(), y.size()) : x.size()*y.size();
   }
   private enum Operation {
-    Add, 
-    Mult,
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
+    Power,
+    Log,
+    Min,
+    Max,
+    Modulo,
+    Bounce,
     And,
     Or,
     Xor
   }
-  private Scale scale = Scale.Recycled;
+  private Scale scale = Scale.LCM;
   private Operation operation = Operation.Add;
   private JComboBox<Scale> comboScale;
   private JComboBox<Operation> comboOperation;
@@ -65,7 +73,15 @@ public class Operator {
         new TreeMap<Operation,BiFunction<Integer,Integer,Integer>>();
     
     ops.put(Operation.Add, (x,y) -> x+y);
-    ops.put(Operation.Mult, (x,y) -> x*y);
+    ops.put(Operation.Subtract, (x,y) -> x-y);
+    ops.put(Operation.Multiply, (x,y) -> x*y);
+    ops.put(Operation.Divide, (x,y) -> x/y);
+    ops.put(Operation.Power, (x,y) -> (int)Math.round(Math.pow(x,y)));
+    ops.put(Operation.Log, (x,y) -> (int)Math.floor(Math.log(x)/Math.log(y)));
+    ops.put(Operation.Min, (x,y) -> Math.min(x,y));
+    ops.put(Operation.Max, (x,y) -> Math.max(x,y));
+    ops.put(Operation.Modulo, (x,y) -> x%y);
+    ops.put(Operation.Bounce, (x,y) -> x%(2*y) <= y ? x%(2*y) : ((2*y)-(x%(2*y))));
     ops.put(Operation.And, (x,y) -> x&y);
     ops.put(Operation.Or, (x,y) -> x|y);
     ops.put(Operation.Xor, (x,y) -> x^y);
@@ -81,7 +97,7 @@ public class Operator {
       o.add(this.ops.get(operation)
           .apply(
               x.get(i%x.size()),
-              this.scale == Scale.Recycled ? y.get(i%y.size()) : y.get(i/x.size())
+              this.scale == Scale.LCM ? y.get(i%y.size()) : y.get(i/x.size())
            )
       );
     }
