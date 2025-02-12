@@ -12,15 +12,28 @@ import java.util.List;
  */
 public class MixedRadixEnumeration implements Enumeration<int[]> {
   private int[] base;
+  private int[] factor;
   private int[] current;
   private boolean isLast = false;
 
-  public MixedRadixEnumeration(List<Integer> base0){
+  public MixedRadixEnumeration(List<Integer> base0, List<Integer> factor0){
     int[] base = new int[base0.size()];
     for(int i=0;i<base0.size();i++){
       base[i] = base0.get(i);
     }
     init(base);
+    
+    if(factor0!=null) {
+      if(factor0.size() != base0.size()) throw new IllegalArgumentException();
+      factor = new int[factor0.size()];
+      for(int i=0;i<factor0.size();i++){
+        factor[i] = factor0.get(i);
+      }  
+    }
+  }
+  
+  public MixedRadixEnumeration(List<Integer> base0){
+    this(base0,null);
   }
   
   private void init(int[] base){
@@ -92,6 +105,12 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     }
     current = Arrays.copyOf(o, o.length);
 
+    if(factor != null) {
+      int t = 0;
+      for(int i=0;i<o.length;i++) t+=factor[i]*o[i];
+      o = new int[1];
+      o[0]=t;
+    }
     return o;
   }
 

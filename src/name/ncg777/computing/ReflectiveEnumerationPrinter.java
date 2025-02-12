@@ -96,10 +96,10 @@ public class ReflectiveEnumerationPrinter implements Callable<Integer> {
             return "null";
         }
         if (obj instanceof int[]) {
-            return Arrays.toString((int[]) obj);
+            return (new Sequence((int[])obj)).toString();
         }
         if (obj instanceof Integer[]) {
-            return Arrays.toString((Integer[]) obj);
+          return (new Sequence((Integer[])obj)).toString();
         }
         if (obj instanceof Sequence) {
           return ((Sequence)obj).toString(true);
@@ -107,12 +107,12 @@ public class ReflectiveEnumerationPrinter implements Callable<Integer> {
         if (obj instanceof List) {
             return ((List<?>) obj).stream()
                 .map(this::prettyPrint)
-                .collect(Collectors.joining(", ", "[", "]"));
+                .collect(Collectors.joining(" "));
         }
         if (obj instanceof Set) {
             return ((Set<?>) obj).stream()
                 .map(this::prettyPrint)
-                .collect(Collectors.joining(", ", "{", "}"));
+                .collect(Collectors.joining(" "));
         }
         if (obj.getClass().isArray()) {
             return Arrays.deepToString((Object[]) obj);

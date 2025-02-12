@@ -69,7 +69,8 @@ The int[] type is printed or parsed as space-separated lists of integers (ex: "1
 - **Class**: name.ncg777.maths.enumerations.MixedRadixEnumeration
 - **Parameters**: 
   - `base` (int[]) : The base for the mixed radix enumeration.
-
+ - [`factor`] (int[]) : Optional factor vector in inner product of elements.
+ 
 ## ngoodpaths.sh
 - **Class**: name.ncg777.maths.enumerations.NGoodPathEnumeration
 - **Parameters**: 
