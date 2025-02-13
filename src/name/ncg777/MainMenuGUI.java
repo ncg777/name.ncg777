@@ -67,7 +67,6 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.sequences.apps.Mapper",name.ncg777.maths.sequences.apps.Mapper.class);
     addAppButton(panel, "maths.sequences.apps.Merger",name.ncg777.maths.sequences.apps.Merger.class);
     addAppButton(panel, "maths.sequences.apps.Operator",name.ncg777.maths.sequences.apps.Operator.class);
-    addAppButton(panel, "maths.sequences.apps.Permutator",name.ncg777.maths.sequences.apps.Permutator.class);
     addAppButton(panel, "maths.sequences.apps.PseudoBase",name.ncg777.maths.sequences.apps.PseudoBase.class);
     addAppButton(panel, "maths.sequences.apps.Range",name.ncg777.maths.sequences.apps.Range.class);
     addAppButton(panel, "maths.sequences.apps.ScaleModuloPermutation",name.ncg777.maths.sequences.apps.ScaleModuloPermutation.class);

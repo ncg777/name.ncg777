@@ -43,17 +43,20 @@ public class Operator {
   private Map<Operation,BiFunction<Integer, Integer, Integer>> ops;
   private enum Scale {
     Product,
-    LCM
+    LCM,
+    Apply
   }
   private int getLength(Sequence x, Sequence y) {
     return
-        scale == Scale.LCM ? (int)Numbers.lcm(x.size(), y.size()) : x.size()*y.size();
+        (scale == Scale.Apply ? y.size() : (scale == Scale.LCM ? (int)Numbers.lcm(x.size(), y.size()) : x.size()*y.size()));
   }
   private enum Operation {
     Add,
     Subtract,
     Multiply,
     Divide,
+    X,
+    Y,
     Power,
     Log,
     Min,
@@ -90,6 +93,8 @@ public class Operator {
     ops.put(Operation.Subtract, (x,y) -> x-y);
     ops.put(Operation.Multiply, (x,y) -> x*y);
     ops.put(Operation.Divide, (x,y) -> x/y);
+    ops.put(Operation.X, (x,y) -> x);
+    ops.put(Operation.Y, (x,y) -> y);
     ops.put(Operation.Power, (x,y) -> (int)Math.round(Math.pow(x,y)));
     ops.put(Operation.Log, (x,y) -> (int)Math.floor(Math.log(x)/Math.log(y)));
     ops.put(Operation.Min, (x,y) -> Math.min(x,y));
@@ -125,7 +130,7 @@ public class Operator {
     for(int i=0;i<n;i++) {
       o.add(this.ops.get(operation)
           .apply(
-              this.scale == Scale.LCM ? x.get(i%x.size()) : x.get(i/y.size()),
+              this.scale == Scale.Apply ? x.apply(y.get(i)%x.size()) : this.scale == Scale.LCM ? x.get(i%x.size()) : x.get(i/y.size()),
               y.get(i%y.size())
            )
       );
@@ -178,9 +183,9 @@ public class Operator {
     textMultArt.setBounds(80, 183, 344, 17);
     frmAddSequences.getContentPane().add(textMultArt);
     
-    JLabel lblYixi = new JLabel("x[i/ or %]⋅y[i%]:");
-    lblYixi.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblYixi.setBounds(80, 158, 82, 14);
+    JLabel lblYixi = new JLabel("Result (x[i/ or % or y[i]]⋅y[i%]):");
+    lblYixi.setHorizontalAlignment(SwingConstants.LEFT);
+    lblYixi.setBounds(80, 158, 182, 14);
     frmAddSequences.getContentPane().add(lblYixi);
     
     comboScale = new JComboBox<Scale>(new DefaultComboBoxModel<>(Scale.values()));
