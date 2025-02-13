@@ -23,7 +23,7 @@ public class Operator {
   private JFrame frmAddSequences;
   private JTextField textX;
   private JTextField textY;
-  private JTextField textMultArt;
+  private JTextField textResult;
 
   /**
    * Launch the application.
@@ -172,16 +172,16 @@ public class Operator {
         var x = Sequence.parse(textX.getText());
         var y = Sequence.parse(textY.getText());
         
-        textMultArt.setText(getResult(x, y).toString());
+        textResult.setText(getResult(x, y).toString());
       }
     });
     btnNewButton.setBounds(80, 53, 344, 23);
     frmAddSequences.getContentPane().add(btnNewButton);
     
-    textMultArt = new JTextField();
-    textMultArt.setColumns(10);
-    textMultArt.setBounds(80, 183, 344, 17);
-    frmAddSequences.getContentPane().add(textMultArt);
+    textResult = new JTextField();
+    textResult.setColumns(10);
+    textResult.setBounds(80, 183, 344, 17);
+    frmAddSequences.getContentPane().add(textResult);
     
     JLabel lblYixi = new JLabel("Result (x[i/ or % or y[i]]⋅y[i%]):");
     lblYixi.setHorizontalAlignment(SwingConstants.LEFT);
@@ -205,5 +205,23 @@ public class Operator {
     });
     comboOperation.setBounds(80, 121, 344, 23);
     frmAddSequences.getContentPane().add(comboOperation);
+    
+    JButton btnNewButton_1 = new JButton("x");
+    btnNewButton_1.setBounds(250, 154, 48, 23);
+    btnNewButton_1.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        textX.setText(textResult.getText());
+      }
+    });
+    frmAddSequences.getContentPane().add(btnNewButton_1);
+    
+    JButton btnNewButton_1_1 = new JButton("y");
+    btnNewButton_1_1.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        textY.setText(textResult.getText());
+      }
+    });
+    btnNewButton_1_1.setBounds(305, 154, 48, 23);
+    frmAddSequences.getContentPane().add(btnNewButton_1_1);
   }
 }
