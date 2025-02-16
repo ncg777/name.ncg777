@@ -17,7 +17,7 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
   private Sequence transformation = null;
   private boolean isLast = false;
 
-  public MixedRadixEnumeration(List<Integer> base0, List<Integer> transformation, List<Integer> factor0){
+  public MixedRadixEnumeration(List<Integer> base0, List<Integer> transformation, List<Integer> factor0, boolean baseify){
     int[] base = new int[base0.size()];
     for(int i=0;i<base0.size();i++){
       base[i] = base0.get(i);
@@ -28,24 +28,31 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
         throw new IllegalArgumentException("transformation is out of bounds in the base");
       }
       this.transformation = new Sequence(transformation);
-      
     } 
     
     if(factor0!=null) {
       if((transformation != null && factor0.size() != transformation.size()) || 
           (transformation == null) && factor0.size() != base0.size()) throw new IllegalArgumentException("Factor size must match base or transformation size.");
       factor = new int[factor0.size()];
+      int p = 1;
       for(int i=0;i<factor0.size();i++){
         factor[i] = factor0.get(i);
-      }  
+        if(baseify) {
+          factor[i] = i == 0 ? 1 : p;
+        }
+        p *= factor0.get(i);
+      }
     }
   }
+  public MixedRadixEnumeration(List<Integer> base0, List<Integer> transformation, List<Integer> factor0){
+    this(base0,transformation,factor0,false);
+  }
   public MixedRadixEnumeration(List<Integer> base0, List<Integer> transformation){
-    this(base0,transformation,null);
+    this(base0,transformation,null,false);
   }
   
   public MixedRadixEnumeration(List<Integer> base0){
-    this(base0,null,null);
+    this(base0,null,null,false);
   }
   
   private void init(int[] base){
