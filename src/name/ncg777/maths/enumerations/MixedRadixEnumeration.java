@@ -17,7 +17,7 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
   private Sequence transformation = null;
   private boolean isLast = false;
 
-  public MixedRadixEnumeration(List<Integer> base0, List<Integer> transformation, List<Integer> factor0, boolean partial_products){
+  public MixedRadixEnumeration(List<Integer> base0, List<Integer> transformation, List<Integer> factor0, boolean cumulative_products){
     int[] base = new int[base0.size()];
     for(int i=0;i<base0.size();i++){
       base[i] = base0.get(i);
@@ -37,7 +37,7 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
       int p = 1;
       for(int i=0;i<factor0.size();i++){
         factor[i] = factor0.get(i);
-        if(partial_products) {
+        if(cumulative_products) {
           p *= factor0.get(i);
           factor[i] = p;
         }
