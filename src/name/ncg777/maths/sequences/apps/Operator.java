@@ -41,15 +41,14 @@ public class Operator {
     });
   }
   private Map<Operation,BiFunction<Integer, Integer, Integer>> ops;
-  private enum Scale {
+  private enum Combiner {
     Product,
+    Triangular,
     LCM,
-    Apply
+    Apply,
+    Reduce,
   }
-  private int getLength(Sequence x, Sequence y) {
-    return
-        (scale == Scale.Apply ? y.size() : (scale == Scale.LCM ? (int)Numbers.lcm(x.size(), y.size()) : x.size()*y.size()));
-  }
+  
   private enum Operation {
     Add,
     Subtract,
@@ -82,9 +81,9 @@ public class Operator {
     GreaterThan,
     GreaterThanOrEqual,
   }
-  private Scale scale = Scale.Product;
+  private Combiner scale = Combiner.Product;
   private Operation operation = Operation.Add;
-  private JComboBox<Scale> comboScale;
+  private JComboBox<Combiner> comboCombiner;
   private JComboBox<Operation> comboOperation;
   public Operator() {
     ops = new TreeMap<Operation,BiFunction<Integer,Integer,Integer>>();
@@ -123,17 +122,41 @@ public class Operator {
   }
 
   private Sequence getResult(Sequence x, Sequence y) {
-    
-    int n = getLength(x,y);
-    
-    Sequence o = new Sequence();
-    for(int i=0;i<n;i++) {
-      o.add(this.ops.get(operation)
-          .apply(
-              this.scale == Scale.Apply ? x.apply(y.get(i)%x.size()) : this.scale == Scale.LCM ? x.get(i%x.size()) : x.get(i/y.size()),
-              y.get(i%y.size())
-           )
-      );
+    var o = new Sequence();
+    var operationFn = this.ops.get(operation);
+    switch (this.scale) {
+      case Combiner.Apply:
+        for (int i = 0; i < y.size(); i++) {
+            o.add(operationFn.apply(x.get(y.get(i) % x.size()), y.get(i % y.size())));
+        }
+        break;
+      case Combiner.LCM:
+        int l = (int)Numbers.lcm(x.size(),y.size());
+        for (int i = 0; i < l; i++) { 
+            o.add(operationFn.apply(x.get(i/(l/x.size())), y.get(i/(l/y.size()))));
+        }
+        break;
+      case Combiner.Product:
+        for (int i = 0; i < x.size(); i++) {
+          for (int j = 0; j < y.size(); j++) {  
+              o.add(operationFn.apply(x.get(i), y.get(j)));
+          }
+        }
+        break;
+      case Combiner.Triangular:
+        for (int i = 0; i < x.size(); i++) {
+          for (int j = 0; j < y.size(); j++) {
+            if (j<=i) {
+              o.add(operationFn.apply(x.get(i), y.get(j)));
+            }
+          }
+        }
+        break;
+      case Combiner.Reduce:
+        for (int i = 0; i < x.size(); i++) {
+          o.add(y.stream().reduce(x.get(i), (a,b) -> operationFn.apply(a, b)));
+        }
+        break;
     }
     return o;
   }
@@ -188,14 +211,14 @@ public class Operator {
     lblYixi.setBounds(80, 158, 182, 14);
     frmAddSequences.getContentPane().add(lblYixi);
     
-    comboScale = new JComboBox<Scale>(new DefaultComboBoxModel<>(Scale.values()));
-    comboScale.addActionListener(new ActionListener() {
+    comboCombiner = new JComboBox<Combiner>(new DefaultComboBoxModel<>(Combiner.values()));
+    comboCombiner.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        scale = (Scale)comboScale.getSelectedItem();
+        scale = (Combiner)comboCombiner.getSelectedItem();
       }
     });
-    comboScale.setBounds(80, 87, 344, 23);
-    frmAddSequences.getContentPane().add(comboScale);
+    comboCombiner.setBounds(80, 87, 344, 23);
+    frmAddSequences.getContentPane().add(comboCombiner);
     
     comboOperation = new JComboBox<Operation>(new DefaultComboBoxModel<>(Operation.values()));
     comboOperation.addActionListener(new ActionListener() {
