@@ -3,7 +3,7 @@ Until further notice, this application is a prototype. Some of these apps may be
 
 First, you should extract the zip file wherever you want and add the path to the jar file to your CLASSPATH environment variable.
 
-To run the main menu application that lets one open the apps with graphical interfaces, run the name.ncg777.sh script.
+To run the main menu application that lets one open the apps with graphical interfaces, run the name.ncg777.cmd (windows) or name.ncg777.sh (linux) script.
 
 # Enumeration Scripts Documentation
 Arguments' names cannot be specified and are just determined positionally at the moment.
