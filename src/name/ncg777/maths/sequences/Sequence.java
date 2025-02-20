@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.apache.commons.collections4.bidimap.TreeBidiMap;
@@ -1336,4 +1337,122 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
   public Integer apply(Integer t) {
     return this.get(t);
   }
+  
+  private static Map<Operation,BiFunction<Integer, Integer, Integer>> ops;
+  public static enum Combiner {
+    Product,
+    Triangular,
+    LCM,
+    Apply,
+    Reduce,
+  }
+  
+  public static enum Operation {
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
+    X,
+    Y,
+    Power,
+    Log,
+    Min,
+    Max,
+    Modulo,
+    Bounce,
+    And,
+    Nand,
+    Or,
+    Nor,
+    Implication,
+    ReverseImplication,
+    Xor,
+    Xnor,
+    ShiftLeft,
+    ShiftRight,
+    LCM,
+    GCD,
+    Equal,
+    NotEqual,
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual,
+  }
+  
+  static {
+    ops = new TreeMap<Operation,BiFunction<Integer,Integer,Integer>>();
+    
+    ops.put(Operation.Add, (x,y) -> x+y);
+    ops.put(Operation.Subtract, (x,y) -> x-y);
+    ops.put(Operation.Multiply, (x,y) -> x*y);
+    ops.put(Operation.Divide, (x,y) -> x/y);
+    ops.put(Operation.X, (x,y) -> x);
+    ops.put(Operation.Y, (x,y) -> y);
+    ops.put(Operation.Power, (x,y) -> (int)Math.round(Math.pow(x,y)));
+    ops.put(Operation.Log, (x,y) -> (int)Math.floor(Math.log(x)/Math.log(y)));
+    ops.put(Operation.Min, (x,y) -> Math.min(x,y));
+    ops.put(Operation.Max, (x,y) -> Math.max(x,y));
+    ops.put(Operation.Modulo, (x,y) -> x%y);
+    ops.put(Operation.Bounce, (x,y) -> x%(2*y) <= y ? x%(2*y) : ((2*y)-(x%(2*y))));
+    ops.put(Operation.And, (x,y) -> x&y);
+    ops.put(Operation.Nand, (x,y) -> ~(x&y));
+    ops.put(Operation.Or, (x,y) -> x|y);
+    ops.put(Operation.Nor, (x,y) -> ~(x|y));
+    ops.put(Operation.Implication, (x,y) -> (~x)|y);
+    ops.put(Operation.ReverseImplication, (x,y) -> (~y)|x);
+    ops.put(Operation.Xor, (x,y) -> x^y);
+    ops.put(Operation.Xnor, (x,y) -> ~(x^y));
+    ops.put(Operation.ShiftLeft, (x,y) -> (x<<y));
+    ops.put(Operation.ShiftRight, (x,y) -> (x>>y));
+    ops.put(Operation.LCM, (x,y) -> (int)Numbers.lcm(x, y));
+    ops.put(Operation.GCD, (x,y) -> (int)Numbers.gcd(x, y));
+    ops.put(Operation.Equal, (x,y) -> x==y ? 1 :0);
+    ops.put(Operation.NotEqual, (x,y) -> x!=y ? 1 :0);
+    ops.put(Operation.LessThan, (x,y) -> x<y ? 1 :0);
+    ops.put(Operation.LessThanOrEqual, (x,y) -> x<=y ? 1 :0);
+    ops.put(Operation.GreaterThan, (x,y) -> x>y ? 1 :0);
+    ops.put(Operation.GreaterThanOrEqual, (x,y) -> x>=y ? 1 :0);
+  }
+
+  public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {
+    var o = new Sequence();
+    var operationFn = ops.get(operation);
+    switch (combiner) {
+      case Combiner.Apply:
+        for (int i = 0; i < y.size(); i++) {
+            o.add(operationFn.apply(x.get(y.get(i) % x.size()), y.get(i % y.size())));
+        }
+        break;
+      case Combiner.LCM:
+        int l = (int)Numbers.lcm(x.size(),y.size());
+        for (int i = 0; i < l; i++) { 
+            o.add(operationFn.apply(x.get(i/(l/x.size())), y.get(i/(l/y.size()))));
+        }
+        break;
+      case Combiner.Product:
+        for (int i = 0; i < x.size(); i++) {
+          for (int j = 0; j < y.size(); j++) {  
+              o.add(operationFn.apply(x.get(i), y.get(j)));
+          }
+        }
+        break;
+      case Combiner.Triangular:
+        for (int i = 0; i < x.size(); i++) {
+          for (int j = 0; j < y.size(); j++) {
+            if (j<=i) {
+              o.add(operationFn.apply(x.get(i), y.get(j)));
+            }
+          }
+        }
+        break;
+      case Combiner.Reduce:
+        for (int i = 0; i < x.size(); i++) {
+          o.add(y.stream().reduce(x.get(i), (a,b) -> operationFn.apply(a, b)));
+        }
+        break;
+    }
+    return o;
+  }
+  
 }
