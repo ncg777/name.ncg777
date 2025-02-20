@@ -1342,6 +1342,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
   public static enum Combiner {
     Product,
     Triangular,
+    Recycle,
     LCM,
     Apply,
     Reduce,
@@ -1418,16 +1419,21 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
   public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {
     var o = new Sequence();
     var operationFn = ops.get(operation);
+    int lcm = (int)Numbers.lcm(x.size(),y.size());
     switch (combiner) {
       case Combiner.Apply:
         for (int i = 0; i < y.size(); i++) {
             o.add(operationFn.apply(x.get(y.get(i) % x.size()), y.get(i % y.size())));
         }
         break;
+      case Combiner.Recycle:
+        for (int i = 0; i < lcm; i++) { 
+            o.add(operationFn.apply(x.get(i%x.size()), y.get(i%y.size())));
+        }
+        break;
       case Combiner.LCM:
-        int l = (int)Numbers.lcm(x.size(),y.size());
-        for (int i = 0; i < l; i++) { 
-            o.add(operationFn.apply(x.get(i/(l/x.size())), y.get(i/(l/y.size()))));
+        for (int i = 0; i < lcm; i++) { 
+            o.add(operationFn.apply(x.get(i/(lcm/x.size())), y.get(i/(lcm/y.size()))));
         }
         break;
       case Combiner.Product:
@@ -1451,6 +1457,8 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           o.add(y.stream().reduce(x.get(i), (a,b) -> operationFn.apply(a, b)));
         }
         break;
+      default:
+        throw new IllegalArgumentException();
     }
     return o;
   }
