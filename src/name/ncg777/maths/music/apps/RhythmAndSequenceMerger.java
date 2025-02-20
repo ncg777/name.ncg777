@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -69,11 +69,11 @@ public class RhythmAndSequenceMerger {
           Sequence s = new Sequence();
           if(parts.length > 1) {s = Sequence.parse(parts[1].trim());}
           sequences.add(s);
-          arr.add(new QuartalNumbersSequence(abc, parts[0].trim()).toBinaryNatural().reverse());
+          arr.add(Quartal.instance.newNaturalSequence(abc, parts[0].trim()).toBinaryNatural().reverse());
         }
         
         BinaryNatural result = BinaryNatural.build(Combination.mergeAll(arr));
-        txtResult.setText(new QuartalNumbersSequence(abc, result).toString());
+        txtResult.setText(Quartal.instance.newNaturalSequence(abc, result).toString());
         
         Sequence s = new Sequence();
         Sequence indices = new Sequence();

@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -66,7 +66,7 @@ public class BitCounter {
           String str = textField.getText().trim();
           var abc = (Cipher.Name)comboBox.getSelectedItem();
           lblCount.setText(
-              Integer.toString((new QuartalNumbersSequence(abc, str)).toBinaryNatural().getK()));
+              Integer.toString((Quartal.instance.newNaturalSequence(abc, str)).toBinaryNatural().getK()));
         }
       }
     });

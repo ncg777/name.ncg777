@@ -11,7 +11,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.SwingConstants;
@@ -112,7 +112,7 @@ public class Application {
           Engine engine = new Engine(chckbxDelta.isSelected());
           HomoPair<Sequence> result = null;
           result = engine.evaluate(
-              (new QuartalNumbersSequence(
+              (Quartal.instance.newNaturalSequence(
                   (Cipher.Name)comboBox_1.getSelectedItem(), 
                   rhythm.getText()
               )).toBinaryNatural(), 

@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -19,7 +19,8 @@ import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
+import name.ncg777.maths.numbers.fixed.Quartal.NaturalSequence;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -78,18 +79,18 @@ public class Expander {
     btnExpand.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
-        var o = QuartalNumbersSequence.rotate(
-            QuartalNumbersSequence.expand(
-                new QuartalNumbersSequence(
+        var o = Quartal.instance.newNaturalSequence(NaturalSequence.rotate(
+            NaturalSequence.expand(
+                Quartal.instance.newNaturalSequence(
                     abc, 
                     txtRhythm.getText()), 
                     (int)spinner.getValue(), 
                     chckbxFill.isSelected(),
-                    List.of(textPattern.getText().split(",")).stream().map(t -> new QuartalNumbersSequence(abc,t)).toList()), 
-                    (int)rot.getValue());
+                    List.of(textPattern.getText().split(",")).stream().map(t -> Quartal.instance.newNaturalSequence(abc,t)).toList()), 
+                    (int)rot.getValue()));
         
         txtResult.setText(o.toString());
-        txtNot.setText(QuartalNumbersSequence.not(o).toString());
+        txtNot.setText(NaturalSequence.not(o).toString());
       }
     });
     

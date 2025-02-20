@@ -13,7 +13,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -117,7 +117,7 @@ public class RexRandomizer {
         }
         int len = nbBars*mult;
         
-        BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryNatural();
+        BinaryNatural r = Quartal.instance.newNaturalSequence((Cipher.Name)comboBox.getSelectedItem(),textRex.getText()).toBinaryNatural();
         
         Sequence c = r.getComposition().asSequence();
         
@@ -162,7 +162,7 @@ public class RexRandomizer {
           
         }
         
-        String ns = (new QuartalNumbersSequence(
+        String ns = (Quartal.instance.newNaturalSequence(
             (Cipher.Name)comboBox.getSelectedItem(),
             BinaryNatural.build(newRhythm, len))).toString();
         

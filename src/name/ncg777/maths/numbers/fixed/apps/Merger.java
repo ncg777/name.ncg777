@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -10,7 +10,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 
 import javax.swing.JTextField;
@@ -64,7 +64,7 @@ public class Merger {
         var arr = new ArrayList<BinaryNatural>();
         for(int i=0; i<lines.length;i++) {
           arr.add(
-              new QuartalNumbersSequence(
+              Quartal.instance.newNaturalSequence(
                   (Cipher.Name)comboBox.getSelectedItem(),
                   lines[i].trim())
           .toBinaryNatural().reverse());
@@ -73,7 +73,7 @@ public class Merger {
         BinaryNatural result = BinaryNatural.build(Combination.mergeAll(arr));
           
         txtResult.setText(
-            (new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(),result)).toString()
+            (Quartal.instance.newNaturalSequence((Cipher.Name)comboBox.getSelectedItem(),result)).toString()
         );
         
       }

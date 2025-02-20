@@ -10,7 +10,7 @@ import javax.swing.SwingConstants;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.SpringLayout;
@@ -77,7 +77,7 @@ public class XRSequenceGenerator {
       
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
-        Sequence comp = (new QuartalNumbersSequence(abc, textRhythm.getText()))
+        Sequence comp = (Quartal.instance.newNaturalSequence(abc, textRhythm.getText()))
             .toBinaryNatural().reverse().getComposition().asSequence();
         boolean useHalf = true;
         

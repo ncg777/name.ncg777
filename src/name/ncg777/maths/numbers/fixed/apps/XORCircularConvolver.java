@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 
 import javax.swing.JTextField;
@@ -70,8 +70,8 @@ public class XORCircularConvolver {
     btnConvolve.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
-        BinaryNatural carrier = new QuartalNumbersSequence(abc, txtCarrier.getText()).toBinaryNatural().reverse();
-        BinaryNatural impulse = new QuartalNumbersSequence(abc, txtImpulse.getText()).toBinaryNatural().reverse();
+        BinaryNatural carrier = Quartal.instance.newNaturalSequence(abc, txtCarrier.getText()).toBinaryNatural().reverse();
+        BinaryNatural impulse = Quartal.instance.newNaturalSequence(abc, txtImpulse.getText()).toBinaryNatural().reverse();
         
         BitSet bs = new BitSet(carrier.getN());
         
@@ -84,7 +84,7 @@ public class XORCircularConvolver {
           }
         }
         txtResult.setText(
-            (new QuartalNumbersSequence(
+            (Quartal.instance.newNaturalSequence(
                 abc,
                 (new BinaryNatural(bs, carrier.getN())).reverse()
             )).toString());

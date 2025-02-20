@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -23,7 +23,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
+import name.ncg777.maths.numbers.fixed.Quartal.NaturalSequence;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -62,7 +63,7 @@ public class Partitioner {
     frmRPartitioner.setBounds(100, 100, 456, 411);
     frmRPartitioner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblR = new JLabel("QuartalNumber:");
+    JLabel lblR = new JLabel("FixedLength:");
     lblR.setFont(new Font("Unifont", Font.PLAIN, 11));
     lblR.setHorizontalAlignment(SwingConstants.RIGHT);
     
@@ -86,7 +87,7 @@ public class Partitioner {
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
         
-        QuartalNumbersSequence r = new QuartalNumbersSequence(abc, txtR.getText().trim());
+        NaturalSequence r = Quartal.instance.newNaturalSequence(abc, txtR.getText().trim());
         BinaryNatural r1 = r.toBinaryNatural();
         Sequence p0 = Sequence.parse(txtPartition.getText());
         Sequence p = p0.asOrdinalsUnipolar().addToEach(-1);
@@ -102,7 +103,7 @@ public class Partitioner {
         
         String strOut = "";
         for(int i=0; i<output.size();i++) {
-          strOut += QuartalNumbersSequence.expand(new QuartalNumbersSequence(abc, output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
+          strOut += Quartal.instance.expand(Quartal.instance.newNaturalSequence(abc, output.get(i)), (int)spinner.getValue(), true).toString() + "\n";
         }
         txtResult.setText(strOut);       
       }

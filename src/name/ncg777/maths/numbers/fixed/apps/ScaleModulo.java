@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 
 public class ScaleModulo {
 
@@ -80,8 +80,8 @@ public class ScaleModulo {
     txtOutput.setColumns(10);
     btnGo.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        txtOutput.setText(new QuartalNumbersSequence(Cipher.Name.Hexadecimal,
-          (new QuartalNumbersSequence(
+        txtOutput.setText(Quartal.instance.newNaturalSequence(Cipher.Name.Hexadecimal,
+          (Quartal.instance.newNaturalSequence(
               Cipher.Name.Hexadecimal, 
               textField.getText().trim()))
             .toNatural().toBinaryNatural().scaleModulo(

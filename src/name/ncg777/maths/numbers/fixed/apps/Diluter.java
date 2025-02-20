@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -10,7 +10,7 @@ import javax.swing.SwingConstants;
 
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 
 import java.awt.Font;
@@ -128,7 +128,7 @@ public class Diluter {
     var abc = (Cipher.Name)comboBox.getSelectedItem();
     var alphabet = Cipher.getAlphabet(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
-    BinaryNatural r = new QuartalNumbersSequence(
+    BinaryNatural r = Quartal.instance.newNaturalSequence(
         abc, 
         str).toBinaryNatural();
  
@@ -163,6 +163,6 @@ public class Diluter {
       }
     }
     
-    textResult.setText((new QuartalNumbersSequence(abc, o.reverse())).toString());
+    textResult.setText((Quartal.instance.newNaturalSequence(abc, o.reverse())).toString());
   }
 }

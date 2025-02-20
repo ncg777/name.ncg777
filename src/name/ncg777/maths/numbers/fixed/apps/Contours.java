@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -19,7 +19,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
+import name.ncg777.maths.numbers.fixed.Quartal.NaturalSequence;
 import name.ncg777.maths.sequences.Sequence;
 
 import java.awt.Color;
@@ -75,17 +76,17 @@ public class Contours {
     btnCalccontours.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
-        QuartalNumbersSequence r4 = new QuartalNumbersSequence(abc, textField.getText());
+        NaturalSequence r4 = Quartal.instance.newNaturalSequence(abc, textField.getText());
         
         txtContour.setText(r4.toBinaryNatural().getContour().toString());
         txtShadowContour.setText(r4.toBinaryNatural().getShadowContour().toString());
         txtComposition.setText(r4.toBinaryNatural().reverse().getComposition().asSequence().toString());
         textFieldBinary.setText(r4.toBinaryNatural().toString());
-        textCompositionPartition.setText(r4.clusterPartition(abc).toString());
+        textCompositionPartition.setText(r4.clusterPartition(4, abc).toString());
         String o = "";
         
-        var clusters = QuartalNumbersSequence.clusterRhythmPartition(abc, r4.toBinaryNatural().decomposeIntoHomogeneousRegions());
-        for(QuartalNumbersSequence r : clusters) {
+        var clusters = NaturalSequence.clusterRhythmPartition(4, abc, r4.toBinaryNatural().decomposeIntoHomogeneousRegions());
+        for(var r : clusters) {
           o += r.toString() + "\n";
         }
         textAreaPartitions.setText(o);

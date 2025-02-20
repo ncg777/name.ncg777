@@ -6,9 +6,9 @@ import java.util.function.Predicate;
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.Natural;
-import name.ncg777.maths.numbers.quartal.QuartalNumber;
+import name.ncg777.maths.numbers.fixed.FixedLength;
 
-public class PredicatedUnion implements BiPredicate<QuartalNumber, QuartalNumber> {
+public class PredicatedUnion implements BiPredicate<FixedLength.NaturalSequence, FixedLength.NaturalSequence> {
   private Predicate<Natural> predicate;
   
   public PredicatedUnion(Cipher cipher, Predicate<Natural> predicate){
@@ -16,7 +16,7 @@ public class PredicatedUnion implements BiPredicate<QuartalNumber, QuartalNumber
   }
   
   @Override
-  public boolean test(QuartalNumber a, QuartalNumber b) {
+  public boolean test(FixedLength.NaturalSequence a, FixedLength.NaturalSequence b) {
     return predicate.test(
         new Natural(
             Cipher.Name.Binary,

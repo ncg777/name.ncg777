@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -12,8 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.Natural;
-import name.ncg777.maths.numbers.quartal.QuartalNumber;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -72,7 +71,7 @@ public class HexadecimalWordDivider {
     spinner.setFont(new Font("Unifont", Font.PLAIN, 11));
     btnDivide.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var r1 = (new QuartalNumbersSequence(
+        var r1 = (Quartal.instance.newNaturalSequence(
             Cipher.Name.Hexadecimal, txtR.getText().trim()))
             .toBinaryNatural();
         int div = (int)spinner.getValue();
@@ -94,13 +93,13 @@ public class HexadecimalWordDivider {
             }
           }
           
-          String output = "";
+          StringBuilder output = new StringBuilder();
           
           for(int i=0;i<div;i++) {
-            var t = new QuartalNumber(Cipher.Name.Hexadecimal, new Natural(Cipher.Name.Hexadecimal, o.get(i).toString()));
-            output += t.toString(true) + "\n";
+            var t = Quartal.instance.newNaturalSequence(Cipher.Name.Hexadecimal, new Natural(Cipher.Name.Hexadecimal, o.get(i).toString()));
+            output.append(t.toString() + "\n");
           }
-          txtResult.setText(output);
+          txtResult.setText(output.toString());
         }
         
         

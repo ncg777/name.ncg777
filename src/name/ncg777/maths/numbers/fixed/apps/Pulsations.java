@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -162,7 +162,7 @@ public class Pulsations {
             acc+=c;
           }
           result.setText(
-              new QuartalNumbersSequence(
+              Quartal.instance.newNaturalSequence(
                   (Cipher.Name)comboBox.getSelectedItem(),
                   rh.reverse()).toString());
         } catch(Exception ex) {

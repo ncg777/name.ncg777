@@ -11,8 +11,8 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.predicates.EntropicDispersion;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.maths.sequences.predicates.PredicatedSequenceAsBinaryWords;
 
@@ -123,7 +123,7 @@ public class SeqGenFixedSum {
             while(true)
             {
               String str_R = txtRhythm.getText().trim();       
-              int n = new QuartalNumbersSequence(
+              int n = Quartal.instance.newNaturalSequence(
                   (Cipher.Name)comboBox.getSelectedItem(), 
                   str_R).toBinaryNatural().reverse().getK();
               

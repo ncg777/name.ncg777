@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -15,7 +15,8 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
+import name.ncg777.maths.numbers.fixed.Quartal.NaturalSequence;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -58,11 +59,11 @@ public class Calculator {
     frmRhythmCalc.setBounds(100, 100, 450, 325);
     frmRhythmCalc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
-    JLabel lblRhythmA = new JLabel("QuartalNumber A :");
+    JLabel lblRhythmA = new JLabel("FixedLength A :");
     lblRhythmA.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblRhythmA.setHorizontalAlignment(SwingConstants.RIGHT);
     
-    JLabel lblRhythmB = new JLabel("QuartalNumber B :");
+    JLabel lblRhythmB = new JLabel("FixedLength B :");
     lblRhythmB.setFont(new Font("Unifont", Font.PLAIN, 12));
     lblRhythmB.setHorizontalAlignment(SwingConstants.RIGHT);
     
@@ -86,25 +87,25 @@ public class Calculator {
     btnCalc.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var abc = comboBox.getSelectedItem();
-        QuartalNumbersSequence a = new QuartalNumbersSequence((Cipher.Name)abc, rhA.getText());
-        QuartalNumbersSequence b = new QuartalNumbersSequence((Cipher.Name)abc, rhB.getText());
+        var a = Quartal.instance.newNaturalSequence((Cipher.Name)abc, rhA.getText());
+        var b = Quartal.instance.newNaturalSequence((Cipher.Name)abc, rhB.getText());
         String o = "";
           
         switch((Operation) operation.getSelectedItem()) {
           case And:
-            o = QuartalNumbersSequence.and(a, b).toString();
+            o = NaturalSequence.and(a, b).toString();
             break;
           case Convolve:
-            o = QuartalNumbersSequence.convolve(a, b).toString();
+            o = NaturalSequence.convolve(a, b).toString();
             break;
           case Or:
-            o = QuartalNumbersSequence.or(a, b).toString();
+            o = NaturalSequence.or(a, b).toString();
             break;
           case Xor:
-            o = QuartalNumbersSequence.xor(a, b).toString();
+            o = NaturalSequence.xor(a, b).toString();
             break;
           case Minus:
-            o = QuartalNumbersSequence.minus(a, b).toString();
+            o = NaturalSequence.minus(a, b).toString();
             break;
         }
        
@@ -122,8 +123,8 @@ public class Calculator {
     JButton btnFlipBits = new JButton("Flip bits");
     btnFlipBits.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        var str = QuartalNumbersSequence.not(
-            new QuartalNumbersSequence(
+        var str = NaturalSequence.not(
+            Quartal.instance.newNaturalSequence(
                 (Cipher.Name)comboBox.getSelectedItem(), 
                 output.getText())).toString();
         

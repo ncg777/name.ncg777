@@ -11,7 +11,7 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.statistics.RandomNumberGenerator;
 
@@ -102,7 +102,7 @@ public class SeqGenContourFollow {
             {
               String str_R = txtRhythm.getText().trim();
               
-              Sequence C = new QuartalNumbersSequence(
+              Sequence C = Quartal.instance.newNaturalSequence(
                   (Cipher.Name)comboBox.getSelectedItem(), 
                   str_R
               ).toBinaryNatural().reverse().getComposition().asSequence();;

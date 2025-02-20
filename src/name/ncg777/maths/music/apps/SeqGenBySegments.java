@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -82,7 +82,7 @@ public class SeqGenBySegments {
         new Thread(() -> {
           btnGenerate.setEnabled(false);
           String str_R = textField.getText().trim();
-          BinaryNatural r = new QuartalNumbersSequence((Cipher.Name)comboBox.getSelectedItem(), str_R).toBinaryNatural().reverse();
+          BinaryNatural r = Quartal.instance.newNaturalSequence((Cipher.Name)comboBox.getSelectedItem(), str_R).toBinaryNatural().reverse();
           
           Sequence C = r.getComposition().asSequence();
           Sequence S = r.getComposition().segment().get(0).asSequence();

@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -74,7 +74,7 @@ public class SequenceGenerator {
           }
           
           binaryNaturals.add(
-              new QuartalNumbersSequence(
+              Quartal.instance.newNaturalSequence(
                   (Cipher.Name)comboBox.getSelectedItem(), 
                   l[0].trim()).toNatural().toBinaryNatural());
           

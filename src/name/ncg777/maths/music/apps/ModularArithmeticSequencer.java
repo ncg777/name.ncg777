@@ -8,7 +8,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
+import name.ncg777.maths.numbers.fixed.Quartal;
+import name.ncg777.maths.numbers.fixed.Quartal.NaturalSequence;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -107,7 +108,7 @@ public class ModularArithmeticSequencer {
         
         var distinct = o.distinct();
         
-        ArrayList<QuartalNumbersSequence> rs = new ArrayList<>();
+        ArrayList<NaturalSequence> rs = new ArrayList<>();
         
         for(int i: distinct) {
           BinaryNatural r = BinaryNatural.build(new BitSet(), n);
@@ -115,12 +116,12 @@ public class ModularArithmeticSequencer {
           for(int j=0;j<n;j++) {
             if(o.get(j).equals(i)) {r.set(j, true);}
           }
-          rs.add(new QuartalNumbersSequence(Cipher.Name.Hexadecimal, r));
+          rs.add(Quartal.instance.newNaturalSequence(Cipher.Name.Hexadecimal, r));
         }
         
         StringBuilder sb = new StringBuilder();
         sb.append(o.toString() + "\n");
-        for(QuartalNumbersSequence rl : rs) {
+        for(NaturalSequence rl : rs) {
           sb.append(rl.toString() + "\n");
         }
         

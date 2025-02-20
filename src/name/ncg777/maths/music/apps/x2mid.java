@@ -19,10 +19,10 @@ import java.awt.SystemColor;
 import javax.swing.border.LineBorder;
 
 import name.ncg777.maths.numbers.Cipher;
+import name.ncg777.maths.numbers.fixed.Quartal;
+import name.ncg777.maths.numbers.fixed.Quartal.NaturalSequence;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.predicates.Even;
-import name.ncg777.maths.numbers.quartal.QuartalNumber;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.SwingConstants;
@@ -83,9 +83,9 @@ public class x2mid {
     btnXmid.setForeground(Color.LIGHT_GRAY);
     btnXmid.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        QuartalNumbersSequence r = new QuartalNumbersSequence(Cipher.Name.Hexadecimal, textField.getText());
+        NaturalSequence r = Quartal.instance.newNaturalSequence(Cipher.Name.Hexadecimal, textField.getText());
         if(chckbxNewCheckBox.isSelected()) {
-          r = QuartalNumbersSequence.expand(r, 2, false);  
+          r = Quartal.instance.expand(r, 2, false);  
         } else {
           if(!(new Even()).apply(r.toNatural().toBinaryNatural())) {
             txtrOutput.setText("BinaryNatural is not even");
@@ -106,13 +106,13 @@ public class x2mid {
           int m = a+(d/2);
           mid.add(m%total);
         }
-        QuartalNumbersSequence o = new QuartalNumbersSequence(Cipher.Name.Hexadecimal);
+        NaturalSequence o = Quartal.instance.newNaturalSequence(Cipher.Name.Hexadecimal);
         for(int i=0;i<r.size();i++){
           TreeSet<Integer> t = new TreeSet<Integer>();
           for(int j=0;j<16;j++){
             if(mid.contains((i*16)+j)){t.add(j);}
           }
-          o.add(new QuartalNumber(Cipher.Name.Hexadecimal, new BinaryNatural(t, 16).toNatural(Cipher.Name.Hexadecimal)));
+          o.add(Quartal.instance.newNatural(Cipher.Name.Hexadecimal, new BinaryNatural(t, 16).toNatural(Cipher.Name.Hexadecimal)));
         }
         txtrOutput.setText(r.toString()+"\n"+o.toString());
       }

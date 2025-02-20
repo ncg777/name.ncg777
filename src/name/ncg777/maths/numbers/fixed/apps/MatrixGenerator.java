@@ -1,4 +1,4 @@
-package name.ncg777.maths.numbers.quartal.apps;
+package name.ncg777.maths.numbers.fixed.apps;
 
 import java.awt.EventQueue;
 
@@ -12,6 +12,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.numbers.Cipher;
+import name.ncg777.maths.numbers.fixed.FixedLength;
+import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.predicates.EntropicDispersion;
 import name.ncg777.maths.numbers.predicates.Even;
@@ -19,8 +21,6 @@ import name.ncg777.maths.numbers.predicates.LowEntropy;
 import name.ncg777.maths.numbers.predicates.Oddity;
 import name.ncg777.maths.numbers.predicates.RelativelyFlat;
 import name.ncg777.maths.numbers.predicates.ShadowContourIsomorphic;
-import name.ncg777.maths.numbers.quartal.QuartalNumber;
-import name.ncg777.maths.numbers.quartal.QuartalNumbersSequence;
 import name.ncg777.maths.numbers.relations.PredicatedDifferences;
 import name.ncg777.maths.numbers.relations.PredicatedJuxtaposition;
 import name.ncg777.maths.sequences.Sequence;
@@ -56,11 +56,16 @@ public class MatrixGenerator {
   private JTextField textFilterModes;
   private JTextField textDiffFilterModes;
 
-  private static TreeMap<Cipher.Name, TreeSet<QuartalNumber>> sets = new TreeMap<>();
+  private static TreeMap<Cipher.Name, TreeSet<Quartal.Natural>> sets = new TreeMap<>();
   
   static {
     for(var n : Cipher.Name.values()) {
-      sets.put(n, QuartalNumber.generate((Cipher.Name)n));
+      List<Quartal.Natural> l = FixedLength.generate(4,(Cipher.Name)n)
+          .stream()
+          .map((s) -> Quartal.instance.newNatural(s)).toList();
+      TreeSet<Quartal.Natural> tr = new TreeSet<Quartal.Natural>();
+      tr.addAll(l);
+      sets.put(n, tr);
     }
   }
   
@@ -104,7 +109,7 @@ public class MatrixGenerator {
   private void initialize() {
     frmQuartalWordMatrixGenerator = new JFrame();
     frmQuartalWordMatrixGenerator.setResizable(false);
-    frmQuartalWordMatrixGenerator.setTitle("QuartalNumber Matrix");
+    frmQuartalWordMatrixGenerator.setTitle("FixedLength Matrix");
     frmQuartalWordMatrixGenerator.setBounds(100, 100, 711, 541);
     frmQuartalWordMatrixGenerator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     
@@ -171,7 +176,7 @@ public class MatrixGenerator {
               TreeSet<BinaryNatural> t = new TreeSet<BinaryNatural>();
               TreeSet<BinaryNatural> t0 = new TreeSet<BinaryNatural>();
              
-              for(QuartalNumber r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryNatural());
+              for(var r : sets.get(comboBox.getSelectedItem())) t0.add(r.toBinaryNatural());
               
               for(BinaryNatural r : t0){
                 if(pred.test(r)) {
@@ -189,7 +194,7 @@ public class MatrixGenerator {
                 if(strFixed[i].trim().length() == 0) continue;
                 
                 output.insertRow(fixedSize);
-                QuartalNumbersSequence r = new QuartalNumbersSequence(
+                var r = Quartal.instance.newNaturalSequence(
                     abc, 
                     strFixed[i].trim());
                 for(int j=0;j<n;j++) {
@@ -296,13 +301,13 @@ public class MatrixGenerator {
               
               if(running) {
 
-                  Matrix<QuartalNumber> tmpMat = new Matrix<QuartalNumber>(m,n);
-                  Matrix<QuartalNumber> tmpMatNot = new Matrix<QuartalNumber>(m,n);
+                  Matrix<Quartal.Natural> tmpMat = new Matrix<Quartal.Natural>(m,n);
+                  Matrix<Quartal.Natural> tmpMatNot = new Matrix<Quartal.Natural>(m,n);
                   for(int i=0;i<m;i++) {
                     for(int j=0;j<n;j++) {
-                      tmpMat.set(i, j, new QuartalNumber(output.get(i, j).toNatural(abc)));
+                      tmpMat.set(i, j, Quartal.instance.newNatural(output.get(i, j).toNatural(abc)));
                       tmpMatNot.set(i, j, 
-                          new QuartalNumber(output.get(i, j).invert().toNatural(abc))
+                          Quartal.instance.newNatural(output.get(i, j).invert().toNatural(abc))
                       );
                     }
                   }
