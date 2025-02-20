@@ -1343,7 +1343,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     Product,
     Triangular,
     Recycle,
-    LCM,
+    Divisive,
     Apply,
     Reduce,
   }
@@ -1431,7 +1431,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
             o.add(operationFn.apply(x.get(i%x.size()), y.get(i%y.size())));
         }
         break;
-      case Combiner.LCM:
+      case Combiner.Divisive:
         for (int i = 0; i < lcm; i++) { 
             o.add(operationFn.apply(x.get(i/(lcm/x.size())), y.get(i/(lcm/y.size()))));
         }
