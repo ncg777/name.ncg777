@@ -1,4 +1,4 @@
-package name.ncg777.maths;
+package name.ncg777.maths.relations;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,7 +11,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.opencsv.exceptions.CsvException;
 
 import name.ncg777.computing.structures.JaggedList;
-import name.ncg777.maths.relations.Relation;
 
 public class FiniteHomoRelation<L extends Comparable<? super L>>
 extends FiniteRelation<L, L> { 

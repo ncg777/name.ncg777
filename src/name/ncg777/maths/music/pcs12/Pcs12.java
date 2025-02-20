@@ -17,9 +17,9 @@ import com.opencsv.exceptions.CsvException;
 
 import name.ncg777.computing.Parsers;
 import name.ncg777.maths.Combination;
-import name.ncg777.maths.FiniteRelation;
 import name.ncg777.maths.ImmutableCombination;
 import name.ncg777.maths.Necklace;
+import name.ncg777.maths.relations.FiniteRelation;
 import name.ncg777.maths.sequences.Sequence;
 
 import com.google.common.collect.ComparisonChain;

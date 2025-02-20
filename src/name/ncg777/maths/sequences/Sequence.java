@@ -23,11 +23,11 @@ import com.google.common.base.Joiner;
 import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.IterableComparator;
-import name.ncg777.maths.FiniteHomoRelation;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.Numbers;
 import name.ncg777.maths.enumerations.PermutationEnumeration;
 import name.ncg777.maths.numbers.BinaryNatural;
+import name.ncg777.maths.relations.FiniteHomoRelation;
 import name.ncg777.statistics.RandomNumberGenerator;
 
 /**

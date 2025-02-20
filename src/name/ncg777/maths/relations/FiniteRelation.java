@@ -1,4 +1,4 @@
-package name.ncg777.maths;
+package name.ncg777.maths.relations;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -39,7 +39,6 @@ import name.ncg777.computing.structures.HeteroPair;
 import name.ncg777.computing.structures.IterableComparator;
 import name.ncg777.computing.structures.JaggedList;
 import name.ncg777.maths.enumerations.HeterogeneousPairEnumeration;
-import name.ncg777.maths.relations.Relation;
 
 /**
  * This class attempts to implement a 

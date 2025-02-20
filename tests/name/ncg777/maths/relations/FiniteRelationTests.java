@@ -1,4 +1,4 @@
-package name.ncg777.maths;
+package name.ncg777.maths.relations;
 
 import java.io.File;
 import java.io.IOException;
