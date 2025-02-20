@@ -1,14 +1,11 @@
 package name.ncg777.maths.numbers.fixed;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import com.fasterxml.jackson.core.sym.Name;
 
 import name.ncg777.maths.Combination;
 import name.ncg777.maths.enumerations.FixedLengthNaturalEnumeration;
@@ -82,6 +79,9 @@ public class FixedLength {
   }
  
   public Natural newNatural(Natural natural) {
+    return new Natural(natural);
+  }
+  public Natural newNatural(name.ncg777.maths.numbers.Natural natural) {
     return new Natural(natural);
   }
   public Natural newNatural(BinaryNatural natural) {
@@ -247,43 +247,17 @@ public class FixedLength {
         }
       }
       
-      NaturalSequence output = null;
-      try {
-        output = a.getClass()
-            .getConstructor(Name.class,BinaryNatural.class)
-            .newInstance(a.alphabetName, o.reverse());
-      } catch (InstantiationException | IllegalAccessException | InvocationTargetException
-          | NoSuchMethodException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName, o.reverse());
       
       return output;
     }
     
     public static NaturalSequence rotate(NaturalSequence r, int t) {
-      try {
-        return r.getClass()
-            .getConstructor(Name.class,BinaryNatural.class)
-            .newInstance(r.alphabetName, BinaryNatural.build(r.toBinaryNatural().rotate(t)).reverse());
-      } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-          | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-        e.printStackTrace();
-        return null;
-      }
+      return of(r.getL()).newNaturalSequence(r.alphabetName, BinaryNatural.build(r.toBinaryNatural().rotate(t)).reverse());
     }
 
     public static NaturalSequence not(NaturalSequence a) {
-      try {
-        return a.getClass()
-            .getConstructor(Name.class,BinaryNatural.class)
-            .newInstance(a.alphabetName, a.toBinaryNatural().invert());
-      } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-          | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-        return null;
-      }
+      return of(a.getL()).newNaturalSequence(a.alphabetName, a.toBinaryNatural().invert());
     }
 
     public static NaturalSequence and(NaturalSequence a, NaturalSequence b) {
@@ -303,35 +277,16 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = null;
-      try {
-        output = a.getFixedLength().getNaturalSequence().getConstructor(
-            name.ncg777.maths.numbers.Cipher.Name.class).newInstance(a.alphabetName);
-      } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-          | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-        e.printStackTrace();
-        return null;
-      }
-      Constructor<? extends Natural> cons;
-      try {
-        cons = a.getFixedLength().getNatural().getConstructor(a.getFixedLength().getNatural());
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+     
       for (int i = 0; i < n; i++) {
-        try {
-          output.add(
-              cons.newInstance(
-                  BinaryNatural.build(
-                      a.get(i).toBinaryNatural().intersect(b.get(i).toBinaryNatural())
-                  ).reverse().toNatural(a.alphabetName)
-              )
-          );
-        } catch (Exception e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+        output.add(
+            of(a.getL()).newNatural(
+                BinaryNatural.build(
+                    a.get(i).toBinaryNatural().intersect(b.get(i).toBinaryNatural())
+                ).reverse().toNatural(a.alphabetName)
+            )
+        );
       }
       return output;
     }
@@ -353,34 +308,16 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = null;
-      try {
-        output = a.getFixedLength().getNaturalSequence().getConstructor(
-            name.ncg777.maths.numbers.Cipher.Name.class).newInstance(a.alphabetName);
-      } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-          | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-        e.printStackTrace();
-        return null;
-      }
-      Constructor<? extends Natural> cons;
-      try {
-        cons = a.getFixedLength().getNatural().getConstructor(a.getFixedLength().getNatural());
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+      
+      
       for (int i = 0; i < n; i++) {
-        try {
-          output.add(cons.newInstance(
-              BinaryNatural.build(
-                  Combination.merge(
-                      a.get(i).toBinaryNatural(), 
-                      b.get(i).toBinaryNatural())).reverse()
-              .toNatural(a.alphabetName)));
-        } catch (Exception e) {
-          e.printStackTrace();
-          return null;
-        }
+        output.add(of(a.getL()).newNatural(
+            BinaryNatural.build(
+                Combination.merge(
+                    a.get(i).toBinaryNatural(), 
+                    b.get(i).toBinaryNatural())).reverse()
+            .toNatural(a.alphabetName)));
       }
       return output;
     }
@@ -402,35 +339,16 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = null;
-      try {
-        output = a.getFixedLength().getNaturalSequence().getConstructor(
-            name.ncg777.maths.numbers.Cipher.Name.class).newInstance(a.alphabetName);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
-      Constructor<? extends Natural> cons;
-      try {
-        cons = a.getFixedLength().getNatural().getConstructor(a.getFixedLength().getNatural());
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+     
       for (int i = 0; i < n; i++) {
-        try {
-          output.add(
-              cons.newInstance(
-                  BinaryNatural.build(
-                      (a.get(i).toBinaryNatural()
-                          .symmetricDifference(b.get(i).toBinaryNatural())))
-                  .reverse().toNatural(a.alphabetName)
-              )
-          );
-         } catch (Exception e) { 
-          e.printStackTrace();
-          return null;
-         }
+        output.add(of(a.getL()).newNatural(
+            BinaryNatural.build(
+                (a.get(i).toBinaryNatural()
+                    .symmetricDifference(b.get(i).toBinaryNatural())))
+            .reverse().toNatural(a.alphabetName)
+            )
+            );
       }
     
       return output;
@@ -453,34 +371,16 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = null;
-      try {
-        output = a.getFixedLength().getNaturalSequence().getConstructor(
-            name.ncg777.maths.numbers.Cipher.Name.class).newInstance(a.alphabetName);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
-      Constructor<? extends Natural> cons;
-      try {
-        cons = a.getFixedLength().getNatural().getConstructor(a.getFixedLength().getNatural());
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+      
       for (int i = 0; i < n; i++) {
-        try {
-          output.add(
-              cons.newInstance(
-                  BinaryNatural.build(
-                      (a.get(i).toBinaryNatural().minus(b.get(i).toBinaryNatural()))
-                  ).reverse().toNatural(a.alphabetName)
-              )
-          );
-        } catch (Exception e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+        output.add(
+            of(a.getL()).newNatural(
+                BinaryNatural.build(
+                    (a.get(i).toBinaryNatural().minus(b.get(i).toBinaryNatural()))
+                ).reverse().toNatural(a.alphabetName)
+            )
+        );
       }
       return output;
     }
@@ -505,19 +405,7 @@ public class FixedLength {
           );
         }
       }
-      Constructor<? extends NaturalSequence> cons;
-      try {
-        cons = a.getFixedLength().getNaturalSequence().getConstructor(name.ncg777.maths.numbers.Cipher.Name.class,BinaryNatural.class);
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
-      try {
-        return cons.newInstance(a.alphabetName, o.reverse());
-      } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-      }
+      return of(a.getL()).newNaturalSequence(a.alphabetName, o.reverse());
     }
 
     public boolean isEquivalentUnderSyncronizedRotation(NaturalSequence other) {
@@ -592,8 +480,7 @@ public class FixedLength {
       var fl = new FixedLength(L);
       NaturalSequence output;
       try {
-        output = fl.getNaturalSequence()
-            .getConstructor(name.ncg777.maths.numbers.Cipher.Name.class).newInstance(alphabetName);
+        output = fl.newNaturalSequence(alphabetName);
       } catch (Exception e) {
         e.printStackTrace();
         return null;
@@ -618,23 +505,7 @@ public class FixedLength {
           }
           k++;
         }
-        
-        Constructor<? extends Natural> cons;
-        try {
-          cons = fl.getNatural().getConstructor(name.ncg777.maths.numbers.Natural.class);
-        } catch (Exception e) {
-          e.printStackTrace();
-          return null;
-        }
-        
-        
-        try {
-          output.add(cons.newInstance(t.toNatural(alphabetName)));
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-            | InvocationTargetException e) {
-          e.printStackTrace();
-          return null;
-        }
+        output.add(of(L).newNatural(t.toNatural(alphabetName)));
       }
       return output;
     }
