@@ -337,4 +337,61 @@ public class Numbers {
   public static long reverseTriangularNumber(int n) {
     return Double.valueOf(Math.floor((Math.sqrt((double)(1+8*n))-1.0)/2.0)).intValue();
   }
+  
+  public static int[] decodeCantor(int v) {
+    int w = (int) Math.floor((-1 + Math.sqrt(1 + 8.0 * v)) / 2);
+    int t = w * (w + 1) / 2;
+    int k2 = v - t; // s
+    int k1 = w - k2; // d'
+    return new int[]{k1, k2};
+  }
+  
+  public static int decodeIntervals(int iPrime) {
+      if (iPrime % 2 == 0) {
+          return iPrime / 2; // d >= 0
+      } else {
+          return -((iPrime + 1) / 2); // d < 0
+      }
+  }
+  
+  public static int cantorIntervalBinaryNumber(int a, int b) {
+      // Step 1: Determine segment length
+      int c = Math.abs(a);
+      int sign = (a >= 0) ? 1 : -1;
+  
+      // Step 2: Decode b into duration d and step s
+      int v = Math.abs(b); // Use absolute value of b for decoding
+      int[] decoded = decodeCantor(v);
+      int iPrime = decoded[0];
+      int s = decoded[1];
+      int i = decodeIntervals(iPrime);
+  
+      // Step 3: Generate binary sequence
+      int[] binaryArray = new int[c];
+      if (i != 0) {
+          int start = (i > 0) ? 0 : c - 1; // Start from 0 or end based on d's sign
+          for (int j = 0; j < s; j++) {
+              int offset = (start + j * i) % c;
+              int adjustedOffset = (offset + c) % c; // Ensure non-negative index
+              binaryArray[adjustedOffset] = 1;
+          }
+      }
+  
+      // Step 4: Invert bits if a is negative
+      if (sign < 0) {
+          for (int j = 0; j < c; j++) {
+              binaryArray[j] = 1 - binaryArray[j];
+          }
+      }
+  
+   // Step 5: Convert binary array to decimal number
+      StringBuilder binaryString = new StringBuilder();
+      for (int j = 0; j < c; j++) {
+          binaryString.append(binaryArray[j]);
+      }
+      int result = Integer.parseInt(binaryString.reverse().toString(), 2);
+
+  
+      return result;
+  }
 }

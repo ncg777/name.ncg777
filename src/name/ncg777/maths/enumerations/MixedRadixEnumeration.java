@@ -153,16 +153,14 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
   }
   
   public static long mapCoordinatesToIndex(int[] v, int[] base) {
-    long o = 0l;
-    int[] base2 = new int[base.length];
-    for(int i=0;i<base.length;i++) {
-      base2[i] = 1;
-      for(int j=0;j<i;j++) {
-        base2[i] *= base[j];
-      }
+    long o = 0;
+    long multiplier = 1;
+
+    for (int i = 0; i < v.length; i++) {
+        o += (long) v[i] * multiplier;
+        multiplier *= base[i]; // Update multiplier for next place value
     }
     
-    for(int i=0;i<v.length;i++) o += (long)(v[i]*base2[i]);
     return o;
   }
 }
