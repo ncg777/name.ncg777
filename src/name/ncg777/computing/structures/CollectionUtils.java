@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -87,6 +88,44 @@ public class CollectionUtils {
       o.add(c);
     }
     return o;
+  }
+  
+  public static List<Integer> getPermutation(int n) {
+    if (n == 0) return Collections.singletonList(0);
+
+    // Handle negatives by shifting into the positive space
+    int adjustedN = n < 0 ? -n : n;
+
+    // Find the smallest k such that k! > adjustedN
+    int k = 1, fact = 1;
+    while (fact <= adjustedN) {
+        k++;
+        fact *= k;
+    }
+    k--; // Adjust k since we overshot
+
+    // Compute Lehmer code from adjustedN
+    List<Integer> lehmerCode = new ArrayList<>();
+    fact /= (k + 1); // Adjust factorial base
+    for (int i = k; i >= 1; i--) {
+        lehmerCode.add(adjustedN / fact);
+        adjustedN %= fact;
+        if (i > 1) fact /= i;
+    }
+
+    // Generate permutation from Lehmer code
+    List<Integer> elements = new ArrayList<>();
+    for (int i = 0; i <= k; i++) elements.add(i);
+
+    List<Integer> permutation = new ArrayList<>();
+    for (int index : lehmerCode) {
+        permutation.add(elements.remove(index));
+    }
+
+    // Handle negatives by reversing the permutation
+    if (n < 0) Collections.reverse(permutation);
+
+    return permutation;
   }
   
   public static <

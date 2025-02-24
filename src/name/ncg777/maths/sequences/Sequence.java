@@ -1379,7 +1379,8 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     LessThanOrEqual,
     GreaterThan,
     GreaterThanOrEqual,
-    CantorIntervalBinaryNumber
+    CantorIntervalBinaryNumber,
+    PermuteBits
   }
   
   static {
@@ -1416,6 +1417,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     ops.put(Operation.GreaterThan, (x,y) -> x>y ? 1 :0);
     ops.put(Operation.GreaterThanOrEqual, (x,y) -> x>=y ? 1 :0);
     ops.put(Operation.CantorIntervalBinaryNumber, (x,y) -> Numbers.cantorIntervalBinaryNumber(x, y));
+    ops.put(Operation.PermuteBits, (x,y) -> Numbers.permuteBits(x, y));
   }
 
   public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {

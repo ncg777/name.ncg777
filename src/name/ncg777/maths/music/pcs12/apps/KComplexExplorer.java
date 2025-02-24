@@ -42,8 +42,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 public class KComplexExplorer {
 
@@ -140,7 +138,7 @@ public class KComplexExplorer {
       textSymmetries.setText("");
       this.current = null; 
       textIntervals.setText("");
-      textTonicDistance.setText("");
+      textKeys.setText("");
     } else {
       textCurrent.setText(ch.toForteNumberString());
       textPitches.setText(ch.combinationString().replaceAll("[,}{]", "").trim()); 
@@ -153,7 +151,8 @@ public class KComplexExplorer {
       if(commonName == null) commonName = "";
       textCommonName.setText(commonName);
       textIntervals.setText(ch.transpose(ch.getTranspose()).getComposition().asSequence().toString());
-      textTonicDistance.setText(Double.toString(ch.calcCenterTuning((int)spinnerCenter.getValue())));
+      
+      textKeys.setText(ch.getPotentialKeys().toString());
       this.current = ch;
     }
   }
@@ -163,8 +162,7 @@ public class KComplexExplorer {
   private JTextField textSymmetries = new JTextField();
   private JTextField textCommonName = new JTextField();
   private JTextField textIntervals = new JTextField();
-  private JTextField textTonicDistance = new JTextField();
-  private JSpinner spinnerCenter = new JSpinner(new SpinnerNumberModel(0, 0, 11, 1));
+  private JTextField textKeys = new JTextField();
   
   private void initMidiSynth() {
     try {
@@ -444,26 +442,18 @@ public class KComplexExplorer {
     textIntervals.setBounds(11, 211, 132, 23);
     frmKComplexExplorer.getContentPane().add(textIntervals);
     
-    JLabel lblNewLabel_6_4_1 = new JLabel("Center tuning");
+    JLabel lblNewLabel_6_4_1 = new JLabel("Potential keys");
     lblNewLabel_6_4_1.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_6_4_1.setFont(new Font("Dialog", Font.PLAIN, 11));
     lblNewLabel_6_4_1.setBounds(10, 430, 132, 23);
     frmKComplexExplorer.getContentPane().add(lblNewLabel_6_4_1);
     
-    textTonicDistance.setHorizontalAlignment(SwingConstants.CENTER);
-    textTonicDistance.setFont(new Font("Dialog", Font.PLAIN, 11));
-    textTonicDistance.setEditable(false);
-    textTonicDistance.setColumns(10);
-    textTonicDistance.setBounds(10, 449, 132, 23);
-    frmKComplexExplorer.getContentPane().add(textTonicDistance);
-    
-    spinnerCenter.setBounds(461, 11, 50, 23);
-    frmKComplexExplorer.getContentPane().add(spinnerCenter);
-    
-    JLabel lblNewLabel_7 = new JLabel("Center:");
-    lblNewLabel_7.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblNewLabel_7.setBounds(405, 15, 46, 14);
-    frmKComplexExplorer.getContentPane().add(lblNewLabel_7);
+    textKeys.setHorizontalAlignment(SwingConstants.CENTER);
+    textKeys.setFont(new Font("Dialog", Font.PLAIN, 11));
+    textKeys.setEditable(false);
+    textKeys.setColumns(10);
+    textKeys.setBounds(10, 449, 132, 23);
+    frmKComplexExplorer.getContentPane().add(textKeys);
     
     JLabel lblNewLabel_2_1 = new JLabel("Supersets");
     lblNewLabel_2_1.setHorizontalAlignment(SwingConstants.CENTER);

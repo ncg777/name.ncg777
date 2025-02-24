@@ -1,10 +1,13 @@
 package name.ncg777.maths;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.TreeMap;
 import static com.google.common.math.IntMath.checkedPow;
 import java.util.TreeSet;
 import java.util.function.Function;
+
+import name.ncg777.computing.structures.CollectionUtils;
 
 
 public class Numbers {
@@ -394,4 +397,27 @@ public class Numbers {
   
       return result;
   }
+  
+  //Function to apply permutation cyclically to the bits of a
+  public static int permuteBits(int a, int b) {
+      List<Integer> permutation = CollectionUtils.getPermutation(b);
+      int permSize = permutation.size();
+      int numBits = Integer.SIZE;
+
+      // Extend the permutation cyclically
+      int[] permMap = new int[numBits];
+      for (int i = 0; i < numBits; i++) {
+          permMap[i] = permutation.get(i % permSize) + (i / permSize) * permSize;
+      }
+
+      int result = 0;
+      for (int i = 0; i < numBits; i++) {
+          int srcBit = (a >> i) & 1;
+          int destBitPos = permMap[i] % numBits;
+          result |= (srcBit << destBitPos);
+      }
+
+      return result;
+  }
+  
 }

@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import com.opencsv.exceptions.CsvException;
 
@@ -310,6 +313,17 @@ public class Pcs12 extends ImmutableCombination implements Serializable {
       o *= (double)m.get(t);
     }
     return Math.pow(o,1.0/(double)s.size());
+  }
+  
+  public Sequence getPotentialKeys() {
+    List<Double> ct = IntStream.range(0,12).boxed()
+        .map((n) -> this.calcCenterTuning(n))
+        .collect(Collectors.toList());
+    double min = Double.MAX_VALUE;
+    for(var d : ct) if(Math.abs(d-1.0) < min) min = Math.abs(d-1.0);
+    var keys = new Sequence();
+    for(int i=0;i<ct.size();i++) if(Math.abs(ct.get(i)-1.0) <= min) keys.add(i);
+    return keys;
   }
   
   private static void fillForteNumbersDict() throws IOException, CsvException {
