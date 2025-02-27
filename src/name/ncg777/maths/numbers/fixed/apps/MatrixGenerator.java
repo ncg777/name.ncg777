@@ -15,6 +15,7 @@ import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.numbers.fixed.FixedLength;
 import name.ncg777.maths.numbers.fixed.Quartal;
 import name.ncg777.maths.numbers.BinaryNatural;
+import name.ncg777.maths.numbers.predicates.DuplePartitioned;
 import name.ncg777.maths.numbers.predicates.EntropicDispersion;
 import name.ncg777.maths.numbers.predicates.Even;
 import name.ncg777.maths.numbers.predicates.LowEntropy;
@@ -151,6 +152,7 @@ public class MatrixGenerator {
             filterModes.add(new Even());
             filterModes.add(new RelativelyFlat());
             filterModes.add(new Ordinal(ordinal_n));
+            filterModes.add(new DuplePartitioned());
             ArrayList<BiPredicate<BinaryNatural, BinaryNatural>> diffModes = new ArrayList<>();
             for(var predicate : filterModes) diffModes.add(new PredicatedDifferences(predicate));
             
@@ -344,11 +346,11 @@ public class MatrixGenerator {
     
     JLabel lblMode = new JLabel("Filters:");
     lblMode.setHorizontalAlignment(SwingConstants.RIGHT);
-    lblMode.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li></ol></html>");
+    lblMode.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li><li>DuplePartitioned</li></ol></html>");
     lblMode.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     
     JLabel lblDiffs = new JLabel("Diffs:");
-    lblDiffs.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li></ol></html>");
+    lblDiffs.setToolTipText("<html><ol><li>Bypass</li><li>ShadowContourIsomorphic</li><li>Oddity</li><li>Entropic dispersion</li><li>Low entropy</li><li>Even</li><li>RelativelyFlat</li><li>Ordinal</li><li>DuplePartitioned</li></ol></html>");
     lblDiffs.setHorizontalAlignment(SwingConstants.RIGHT);
     lblDiffs.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 12));
     comboBox.addActionListener(new ActionListener() {
