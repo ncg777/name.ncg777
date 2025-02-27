@@ -157,13 +157,13 @@ public class FixedLength {
     
     public String toString(boolean insertSpace) {
       StringBuilder sb = new StringBuilder();
-      sb.append(this.get(3));
-      sb.append(this.get(2));
-      if(insertSpace) sb.append(" ");
-      sb.append(this.get(1));
-      sb.append(this.get(0));
+      int i=L;
+      while(--i>=0) {
+        if(insertSpace && i%2==1) sb.append(" ");
+        sb.append(this.get(i));
+      }
       
-      return sb.toString();
+      return sb.toString().trim();
     }
     
     public int compareTo(FixedLength.Natural o) {
