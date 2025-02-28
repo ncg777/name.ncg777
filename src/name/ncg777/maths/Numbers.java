@@ -1,5 +1,7 @@
 package name.ncg777.maths;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
@@ -11,6 +13,34 @@ import name.ncg777.computing.structures.CollectionUtils;
 
 
 public class Numbers {
+
+  public static List<Integer> toBalancedTernary(int n) {
+    if (n == 0) return List.of(0);
+
+    List<Integer> ternary = new ArrayList<>();
+    while (n != 0) {
+        int remainder = n % 3;
+        n /= 3;
+
+        if (remainder == 2) { // Convert 2 to -1 in balanced ternary
+            remainder = -1;
+            n++; // Compensate by adding 1 to n
+        }
+
+        ternary.add(remainder);
+    }
+
+    Collections.reverse(ternary);
+    return ternary;
+  }
+  
+  public static int fromBalancedTernary(List<Integer> ternary) {
+      int n = 0;
+      for (int digit : ternary) {
+          n = n * 3 + digit;
+      }
+      return n;
+  }
 
   public static boolean divides(int k, int n) {
     return n%k==0;
