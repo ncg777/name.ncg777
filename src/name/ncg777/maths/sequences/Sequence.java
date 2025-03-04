@@ -1346,6 +1346,9 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     Divisive,
     Apply,
     Reduce,
+    MixedRadix,
+    Bits,
+    Trits
   }
   
   public static enum Operation {
@@ -1380,7 +1383,12 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     GreaterThan,
     GreaterThanOrEqual,
     CantorIntervalBinaryNumber,
-    PermuteBits
+    PermuteBits,
+    MaxZeroX,
+    MinZeroX,
+    MaxZeroY,
+    MinZeroY,
+    HardThreshold,
   }
   
   static {
@@ -1418,6 +1426,11 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     ops.put(Operation.GreaterThanOrEqual, (x,y) -> x>=y ? 1 :0);
     ops.put(Operation.CantorIntervalBinaryNumber, (x,y) -> Numbers.cantorIntervalBinaryNumber(x, y));
     ops.put(Operation.PermuteBits, (x,y) -> Numbers.permuteBits(x, y));
+    ops.put(Operation.MaxZeroX, (x,y) -> Math.max(0, x));
+    ops.put(Operation.MinZeroX, (x,y) -> Math.min(0, x));
+    ops.put(Operation.MaxZeroY, (x,y) -> Math.max(0, y));
+    ops.put(Operation.MinZeroY, (x,y) -> Math.min(0, y));
+    ops.put(Operation.HardThreshold, (x, y) -> Math.abs(x) > Math.abs(y) ? 0 : x);
   }
 
   public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {
@@ -1461,6 +1474,63 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           o.add(y.stream().reduce(x.get(i), (a,b) -> operationFn.apply(a, b)));
         }
         break;
+      case Combiner.MixedRadix:
+          // This list will collect each combination
+          List<int[]> result = new ArrayList<>();
+          // Initialize the current combination with zeros
+          int[] current = new int[x.size()];
+  
+          while (true) {
+              result.add(Arrays.copyOf(current, current.length));
+  
+              boolean allMatched = true;
+              for (int i = 0; i < x.size(); i++) {
+                  if (Math.abs(current[i]) != Math.abs(x.get(i) - 1)) {
+                      allMatched = false;
+                      break;
+                  }
+              }
+              if (allMatched) {
+                  break;
+              }
+  
+              for (int i = 0; i < x.size(); i++) {
+                  if (x.get(i) == 0) break;
+                  if (Math.abs(current[i]) < Math.abs(x.get(i) - 1)) {
+                      current[i] += (x.get(i) < 0) ? -1 : 1;
+                      break;
+                  } else {
+                      current[i] = 0;
+                  }
+              }
+          
+  
+              for (int[] row : result) {
+                  int combined = 0;
+                  for (int index = 0; index < row.length; index++) {
+                      combined += operationFn.apply(row[index], y.get(index % y.size()));
+                  }
+                  o.add(combined);
+              }
+              break;
+          }
+          break;
+      case Combiner.Bits: 
+          for (int i = 0; i < x.size(); i++) {
+              int[] b = Numbers.toBinary(x.get(i), y.get(i));
+              for (int j = 0; j < b.length; j++) {
+                o.add(operationFn.apply(b[j], (int) Math.pow(2, (y.get(i) < 0) ? j : b.length - 1 - j)));
+              }
+          }
+          break;
+      case Combiner.Trits: 
+          for (int i = 0; i < x.size(); i++) {
+              int[] b = Numbers.toBalancedTernary(x.get(i), y.get(i));
+              for (int j = 0; j < b.length; j++) {
+                o.add(operationFn.apply(b[j], (int) Math.pow(3, (y.get(i) < 0) ? j : b.length - 1 - j)));
+              }
+          }
+          break;
       default:
         throw new IllegalArgumentException();
     }

@@ -14,32 +14,96 @@ import name.ncg777.computing.structures.CollectionUtils;
 
 public class Numbers {
 
-  public static List<Integer> toBalancedTernary(int n) {
-    if (n == 0) return List.of(0);
+  public static int[] toBalancedTernary(int n, int nbdigits) {
+    int digitCount = Math.abs(nbdigits);
+    int[] digits = new int[digitCount];
+    int remaining = n;
 
-    List<Integer> ternary = new ArrayList<>();
-    while (n != 0) {
-        int remainder = n % 3;
-        n /= 3;
+    for (int i = 0; i < digitCount; i++) {
+        // Compute remainder in a positive modulo sense
+        int rem = ((remaining % 3) + 3) % 3;
 
-        if (remainder == 2) { // Convert 2 to -1 in balanced ternary
-            remainder = -1;
-            n++; // Compensate by adding 1 to n
+        // Adjust remainder: in balanced ternary, digits are -1, 0, 1
+        if (rem == 2) {
+            // Represent "2" as -1 and carry forward
+            rem = -1;
+            remaining = (remaining + 1) / 3;
+        } else {
+            remaining = remaining / 3;
         }
-
-        ternary.add(remainder);
+        digits[i] = rem;
     }
 
-    Collections.reverse(ternary);
-    return ternary;
+    // Reverse if digits should be in big-endian order
+    if (nbdigits > 0) {
+        for (int i = 0; i < digitCount / 2; i++) {
+            int temp = digits[i];
+            digits[i] = digits[digitCount - i - 1];
+            digits[digitCount - i - 1] = temp;
+        }
+    }
+    return digits;
   }
   
-  public static int fromBalancedTernary(List<Integer> ternary) {
-      int n = 0;
-      for (int digit : ternary) {
-          n = n * 3 + digit;
+  public static int fromBalancedTernary(int[] trits) {
+      int o = 0;
+      int len = trits.length;
+      for (int i = 0; i < len; i++) {
+          o += trits[i] * Math.pow(3, (len - 1 - i));
       }
-      return n;
+      return o;
+  }
+  
+  public static int[] toBinary(int n, int nbdigits) {
+      if (nbdigits == 0) {
+          return new int[0];
+      }
+  
+      int sign = n < 0 ? -1 : 1;
+      n *= sign; // n is now absolute value
+  
+      List<Integer> binary = new ArrayList<>();
+      int num = Math.abs(n);
+      while (num != 0) {
+          int tmp = sign * (num % 2);
+          binary.add(tmp == 0 ? 0 : tmp);
+          num /= 2;
+      }
+  
+      if (binary.isEmpty()) {
+          binary.add(0);
+      }
+  
+      // Pad with zeros
+      while (binary.size() < Math.abs(nbdigits)) {
+          binary.add(0);
+      }
+  
+      // Truncate if too long
+      if (binary.size() > Math.abs(nbdigits)) {
+          binary = binary.subList(0, Math.abs(nbdigits));
+      }
+  
+      if (nbdigits > 0) {
+          Collections.reverse(binary);
+      }
+  
+      // Convert to primitive int array
+      int[] result = new int[binary.size()];
+      for (int i = 0; i < binary.size(); i++) {
+          result[i] = binary.get(i);
+      }
+  
+      return result;
+  }
+  
+  public static int fromBinary(int[] bits) {
+      int o = 0;
+      int len = bits.length;
+      for (int i = 0; i < len; i++) {
+          o += bits[i] * Math.pow(2, (len - 1 - i));
+      }
+      return o;
   }
 
   public static boolean divides(int k, int n) {
