@@ -1474,47 +1474,47 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           o.add(y.stream().reduce(x.get(i), (a,b) -> operationFn.apply(a, b)));
         }
         break;
-      case Combiner.MixedRadix:
-          // This list will collect each combination
-          List<int[]> result = new ArrayList<>();
-          // Initialize the current combination with zeros
-          int[] current = new int[x.size()];
-  
-          while (true) {
-              result.add(Arrays.copyOf(current, current.length));
-  
-              boolean allMatched = true;
-              for (int i = 0; i < x.size(); i++) {
-                  if (Math.abs(current[i]) != Math.abs(x.get(i) - 1)) {
-                      allMatched = false;
-                      break;
-                  }
-              }
-              if (allMatched) {
-                  break;
-              }
-  
-              for (int i = 0; i < x.size(); i++) {
-                  if (x.get(i) == 0) break;
-                  if (Math.abs(current[i]) < Math.abs(x.get(i) - 1)) {
-                      current[i] += (x.get(i) < 0) ? -1 : 1;
-                      break;
-                  } else {
-                      current[i] = 0;
-                  }
-              }
-          
-  
-              for (int[] row : result) {
-                  int combined = 0;
-                  for (int index = 0; index < row.length; index++) {
-                      combined += operationFn.apply(row[index], y.get(index % y.size()));
-                  }
-                  o.add(combined);
-              }
-              break;
-          }
-          break;
+      case Combiner.MixedRadix: 
+        // This list will collect each combination
+        List<int[]> result = new ArrayList<>();
+        // Initialize the current combination with zeros
+        int[] current = new int[x.size()];
+
+        while (true) {
+            result.add(Arrays.copyOf(current, current.length));
+
+            boolean allMatched = true;
+            for (int i = 0; i < x.size(); i++) {
+                if (Math.abs(current[i]) != Math.abs(x.get(i) - 1)) {
+                    allMatched = false;
+                    break;
+                }
+            }
+            if (allMatched) {
+                break;
+            }
+
+            for (int i = 0; i < x.size(); i++) {
+                if (x.get(i) == 0) break;
+                if (Math.abs(current[i]) < Math.abs(x.get(i) - 1)) {
+                    current[i] += (x.get(i) < 0) ? -1 : 1;
+                    break;
+                } else {
+                    current[i] = 0;
+                }
+            }
+        }
+
+        if (operationFn != null) {
+            for (int[] row : result) {
+                int combined = 0;
+                for (int index = 0; index < row.length; index++) {
+                    combined += operationFn.apply(row[index], y.get(index % y.size()));
+                }
+                o.add(combined);
+            }
+        }
+        break;
       case Combiner.Bits: 
           for (int i = 0; i < x.size(); i++) {
               int[] b = Numbers.toBinary(x.get(i), y.get(i));
