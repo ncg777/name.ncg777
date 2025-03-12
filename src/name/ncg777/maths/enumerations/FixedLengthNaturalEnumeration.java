@@ -7,15 +7,15 @@ import name.ncg777.maths.numbers.fixed.FixedLength;
 import name.ncg777.maths.sequences.Sequence;
 
 public class FixedLengthNaturalEnumeration implements Enumeration<FixedLength.Natural>  {
-  private Cipher.Name alphabetName;
+  private Cipher.Name cipherName;
   private MixedRadixEnumeration mre;
   private int L;
-  public FixedLengthNaturalEnumeration(int L, Cipher.Name alphabetName) {
-    this.alphabetName = alphabetName;
+  public FixedLengthNaturalEnumeration(int L, Cipher.Name cipherName) {
+    this.cipherName = cipherName;
     this.L = L;
-    var alphabet = Cipher.getCipher(alphabetName);
+    var cipher = Cipher.getCipher(cipherName);
     
-    int n = alphabet.size();
+    int n = cipher.size();
     
     int[] base = new int[L];
     for(int i=0;i<L;i++) base[i]=n;
@@ -31,7 +31,7 @@ public class FixedLengthNaturalEnumeration implements Enumeration<FixedLength.Na
   @Override
   public FixedLength.Natural nextElement() {
     try {
-      return FixedLength.newNatural(this.L,alphabetName, new Sequence(mre.nextElement()));
+      return FixedLength.newNatural(this.L,cipherName, new Sequence(mre.nextElement()));
     } catch (Exception e) {
       e.printStackTrace();
       return null;

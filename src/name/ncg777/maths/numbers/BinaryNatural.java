@@ -49,8 +49,8 @@ public class BinaryNatural extends Combination implements Serializable {
     }
   }
   
-  public Natural toNatural(Cipher.Name alphabetName) {
-    return new Natural(alphabetName, this);
+  public Natural toNatural(Cipher.Name cipherName) {
+    return new Natural(cipherName, this);
   }
   
   public List<? extends Combination> decomposeIntoHomogeneousRegions() {

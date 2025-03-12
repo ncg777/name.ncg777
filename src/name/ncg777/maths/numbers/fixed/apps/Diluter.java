@@ -126,7 +126,7 @@ public class Diluter {
   
   private void dilute() {
     var abc = (Cipher.Name)comboBox.getSelectedItem();
-    var alphabet = Cipher.getCipher(abc);
+    var cipher = Cipher.getCipher(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
     BinaryNatural r = Quartal.instance.newNaturalSequence(
         abc, 
@@ -143,8 +143,8 @@ public class Diluter {
       return;
     }
     
-    if(((n/from)*to)% alphabet.size()  != 0) {
-      textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of " + alphabet.size());
+    if(((n/from)*to)% cipher.size()  != 0) {
+      textResult.setText("Length of rhythm 'to' / 'from' is not a multiple of " + cipher.size());
       return;
     }
     

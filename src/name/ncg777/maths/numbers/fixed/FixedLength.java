@@ -21,20 +21,20 @@ public class FixedLength {
   public Class<? extends Natural> getNatural() {return Natural.class;}
   public Class<? extends NaturalSequence> getNaturalSequence() {return NaturalSequence.class;}
   
-  public static Natural newNatural(int L, Cipher.Name alphabetName, Character[] array) {
-    return of(L).newNatural(alphabetName,array);
+  public static Natural newNatural(int L, Cipher.Name cipherName, Character[] array) {
+    return of(L).newNatural(cipherName,array);
   }
   
-  public static Natural newNatural(int L, Cipher.Name alphabetName, String string) {
-    return of(L).newNatural(alphabetName,string);
+  public static Natural newNatural(int L, Cipher.Name cipherName, String string) {
+    return of(L).newNatural(cipherName,string);
   }
   
-  public static Natural newNatural(int L, Cipher.Name alphabetName, List<Character> list) {
-    return of(L).newNatural(alphabetName,list);
+  public static Natural newNatural(int L, Cipher.Name cipherName, List<Character> list) {
+    return of(L).newNatural(cipherName,list);
   }
   
-  public static Natural newNatural(int L, Cipher.Name alphabetName, Sequence sequence) {
-    return of(L).newNatural(alphabetName,sequence);
+  public static Natural newNatural(int L, Cipher.Name cipherName, Sequence sequence) {
+    return of(L).newNatural(cipherName,sequence);
   }
  
   public static Natural newNatural(int L, Natural natural) {
@@ -44,38 +44,38 @@ public class FixedLength {
     return of(L).newNatural(natural);
   }
   
-  public static NaturalSequence newNaturalSequence(int L, Cipher.Name alphabetName) {
-    return of(L).newNaturalSequence(alphabetName);
+  public static NaturalSequence newNaturalSequence(int L, Cipher.Name cipherName) {
+    return of(L).newNaturalSequence(cipherName);
   }
   public static NaturalSequence newNaturalSequence(int L, NaturalSequence seq) {
     return of(L).newNaturalSequence(seq);
   }
-  public static NaturalSequence newNaturalSequence(int L, Cipher.Name alphabetName, String string) {
-    return of(L).newNaturalSequence(alphabetName,string);
+  public static NaturalSequence newNaturalSequence(int L, Cipher.Name cipherName, String string) {
+    return of(L).newNaturalSequence(cipherName,string);
   }
   
-  public static NaturalSequence newNaturalSequence(int L, Cipher.Name alphabetName, name.ncg777.maths.numbers.Natural natural) {
-    return of(L).newNaturalSequence(alphabetName, natural);
+  public static NaturalSequence newNaturalSequence(int L, Cipher.Name cipherName, name.ncg777.maths.numbers.Natural natural) {
+    return of(L).newNaturalSequence(cipherName, natural);
   }
   
-  public static NaturalSequence newNaturalSequence(int L, Cipher.Name alphabetName, BinaryNatural binaryNatural) {
-    return of(L).newNaturalSequence(alphabetName,binaryNatural);
+  public static NaturalSequence newNaturalSequence(int L, Cipher.Name cipherName, BinaryNatural binaryNatural) {
+    return of(L).newNaturalSequence(cipherName,binaryNatural);
   }
   
-  public Natural newNatural(Cipher.Name alphabetName, Character[] array) {
-    return new Natural(alphabetName,array);
+  public Natural newNatural(Cipher.Name cipherName, Character[] array) {
+    return new Natural(cipherName,array);
   }
   
-  public Natural newNatural(Cipher.Name alphabetName, String string) {
-    return new Natural(alphabetName,string);
+  public Natural newNatural(Cipher.Name cipherName, String string) {
+    return new Natural(cipherName,string);
   }
   
-  public Natural newNatural(Cipher.Name alphabetName, List<Character> list) {
-    return new Natural(alphabetName,list);
+  public Natural newNatural(Cipher.Name cipherName, List<Character> list) {
+    return new Natural(cipherName,list);
   }
   
-  public Natural newNatural(Cipher.Name alphabetName, Sequence sequence) {
-    return new Natural(alphabetName,sequence);
+  public Natural newNatural(Cipher.Name cipherName, Sequence sequence) {
+    return new Natural(cipherName,sequence);
   }
  
   public Natural newNatural(Natural natural) {
@@ -88,27 +88,27 @@ public class FixedLength {
     return new Natural(natural);
   }
   
-  public NaturalSequence newNaturalSequence(Cipher.Name alphabetName) {
-    return new NaturalSequence(alphabetName);
+  public NaturalSequence newNaturalSequence(Cipher.Name cipherName) {
+    return new NaturalSequence(cipherName);
   }
   public NaturalSequence newNaturalSequence(NaturalSequence seq) {
     return new NaturalSequence(seq);
   }
-  public NaturalSequence newNaturalSequence(Cipher.Name alphabetName, String string) {
-    return new NaturalSequence(alphabetName,string);
+  public NaturalSequence newNaturalSequence(Cipher.Name cipherName, String string) {
+    return new NaturalSequence(cipherName,string);
   }
   
-  public NaturalSequence newNaturalSequence(Cipher.Name alphabetName, name.ncg777.maths.numbers.Natural natural) {
-    return new NaturalSequence(alphabetName,natural);
+  public NaturalSequence newNaturalSequence(Cipher.Name cipherName, name.ncg777.maths.numbers.Natural natural) {
+    return new NaturalSequence(cipherName,natural);
   }
   
-  public NaturalSequence newNaturalSequence(Cipher.Name alphabetName, BinaryNatural binaryNatural) {
-    return new NaturalSequence(alphabetName,binaryNatural);
+  public NaturalSequence newNaturalSequence(Cipher.Name cipherName, BinaryNatural binaryNatural) {
+    return new NaturalSequence(cipherName,binaryNatural);
   }
   
-  public static TreeSet<FixedLength.Natural> generate(int L, Cipher.Name alphabetName) {
+  public static TreeSet<FixedLength.Natural> generate(int L, Cipher.Name cipherName) {
     TreeSet<FixedLength.Natural> o = new TreeSet<FixedLength.Natural>();
-    var tge = new FixedLengthNaturalEnumeration(L, alphabetName);
+    var tge = new FixedLengthNaturalEnumeration(L, cipherName);
     while(tge.hasMoreElements()) o.add(tge.nextElement());
     return o;
   }
@@ -123,21 +123,21 @@ public class FixedLength {
       if(nat.size()!=getL()) throw new IllegalArgumentException();
     }
     
-    public Natural(Cipher.Name alphabetName, Character[] array) {
-      super(alphabetName, array);
+    public Natural(Cipher.Name cipherName, Character[] array) {
+      super(cipherName, array);
     }
     
-    public Natural(Cipher.Name alphabetName, String string) {
-      super(alphabetName, string.replaceAll("\\s+", ""));
+    public Natural(Cipher.Name cipherName, String string) {
+      super(cipherName, string.replaceAll("\\s+", ""));
       if(string.replaceAll("\\s+", "").length() != L) throw new IllegalArgumentException();
     }
     
-    public Natural(Cipher.Name alphabetName, List<Character> list) {
-      super(alphabetName, list);
+    public Natural(Cipher.Name cipherName, List<Character> list) {
+      super(cipherName, list);
     }
     
-    public Natural(Cipher.Name alphabetName, Sequence sequence) {
-      super(alphabetName, sequence);
+    public Natural(Cipher.Name cipherName, Sequence sequence) {
+      super(cipherName, sequence);
       if(sequence.size()!= L) throw new IllegalArgumentException();
     }
    
@@ -177,38 +177,38 @@ public class FixedLength {
   
   public class NaturalSequence extends ArrayList<FixedLength.Natural> implements Comparable<FixedLength.NaturalSequence> {
     private static final long serialVersionUID = 1L;
-    private Cipher.Name alphabetName;
+    private Cipher.Name cipherName;
     public int getL() {return L;}
     public FixedLength getFixedLength() {return FixedLength.this;}
-    public NaturalSequence(Cipher.Name alphabetName) {
-      this.alphabetName = alphabetName;
+    public NaturalSequence(Cipher.Name cipherName) {
+      this.cipherName = cipherName;
     }
     public NaturalSequence(NaturalSequence seq) {
       super(seq);
-      this.alphabetName = seq.alphabetName;
+      this.cipherName = seq.cipherName;
     }
-    public NaturalSequence(Cipher.Name alphabetName, String string) {
-      this(alphabetName);
+    public NaturalSequence(Cipher.Name cipherName, String string) {
+      this(cipherName);
       string = string.replaceAll("\\s+", "");
 
       if(string.length() % L != 0) throw new IllegalArgumentException();
       
       for(int i=(string.length()/L)-1;i>=0;i--) {
-        this.add(new FixedLength.Natural(alphabetName, 
+        this.add(new FixedLength.Natural(cipherName, 
             (new StringBuilder(string.substring(i*L,(i+1)*L)).toString())));
       }
     }
     
-    public NaturalSequence(Cipher.Name alphabetName, name.ncg777.maths.numbers.Natural natural) {
-      this(alphabetName, natural.toString());
+    public NaturalSequence(Cipher.Name cipherName, name.ncg777.maths.numbers.Natural natural) {
+      this(cipherName, natural.toString());
     }
     
-    public NaturalSequence(Cipher.Name alphabetName, BinaryNatural binaryNatural) {
-      this(alphabetName, binaryNatural.toNatural(alphabetName));
+    public NaturalSequence(Cipher.Name cipherName, BinaryNatural binaryNatural) {
+      this(cipherName, binaryNatural.toNatural(cipherName));
     }
     
     public Natural toNatural() {
-      return new Natural(alphabetName,toString().replaceAll("\\s", ""));
+      return new Natural(cipherName,toString().replaceAll("\\s", ""));
     }
     
     public BinaryNatural toBinaryNatural() {
@@ -247,21 +247,21 @@ public class FixedLength {
         }
       }
       
-      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName, o.reverse());
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.cipherName, o.reverse());
       
       return output;
     }
     
     public static NaturalSequence rotate(NaturalSequence r, int t) {
-      return of(r.getL()).newNaturalSequence(r.alphabetName, BinaryNatural.build(r.toBinaryNatural().rotate(t)).reverse());
+      return of(r.getL()).newNaturalSequence(r.cipherName, BinaryNatural.build(r.toBinaryNatural().rotate(t)).reverse());
     }
 
     public static NaturalSequence not(NaturalSequence a) {
-      return of(a.getL()).newNaturalSequence(a.alphabetName, a.toBinaryNatural().invert());
+      return of(a.getL()).newNaturalSequence(a.cipherName, a.toBinaryNatural().invert());
     }
 
     public static NaturalSequence and(NaturalSequence a, NaturalSequence b) {
-      if(!a.alphabetName.equals(b.alphabetName))
+      if(!a.cipherName.equals(b.cipherName))
         throw new IllegalArgumentException();
       
       int n = (a.size() > b.size()) ? a.size() : b.size();
@@ -277,14 +277,14 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.cipherName);
      
       for (int i = 0; i < n; i++) {
         output.add(
             of(a.getL()).newNatural(
                 BinaryNatural.build(
                     a.get(i).toBinaryNatural().intersect(b.get(i).toBinaryNatural())
-                ).reverse().toNatural(a.alphabetName)
+                ).reverse().toNatural(a.cipherName)
             )
         );
       }
@@ -292,7 +292,7 @@ public class FixedLength {
     }
 
     public static NaturalSequence or(NaturalSequence a, NaturalSequence b) {
-      if(!a.alphabetName.equals(b.alphabetName))
+      if(!a.cipherName.equals(b.cipherName))
         throw new IllegalArgumentException();
       
       int n = (a.size() > b.size()) ? a.size() : b.size();
@@ -308,7 +308,7 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.cipherName);
       
       
       for (int i = 0; i < n; i++) {
@@ -317,13 +317,13 @@ public class FixedLength {
                 Combination.merge(
                     a.get(i).toBinaryNatural(), 
                     b.get(i).toBinaryNatural())).reverse()
-            .toNatural(a.alphabetName)));
+            .toNatural(a.cipherName)));
       }
       return output;
     }
 
     public static NaturalSequence xor(NaturalSequence a, NaturalSequence b) {
-      if(!a.alphabetName.equals(b.alphabetName))
+      if(!a.cipherName.equals(b.cipherName))
         throw new IllegalArgumentException();
       
       int n = (a.size() > b.size()) ? a.size() : b.size();
@@ -339,14 +339,14 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.cipherName);
      
       for (int i = 0; i < n; i++) {
         output.add(of(a.getL()).newNatural(
             BinaryNatural.build(
                 (a.get(i).toBinaryNatural()
                     .symmetricDifference(b.get(i).toBinaryNatural())))
-            .reverse().toNatural(a.alphabetName)
+            .reverse().toNatural(a.cipherName)
             )
             );
       }
@@ -355,7 +355,7 @@ public class FixedLength {
     }
 
     public static NaturalSequence minus(NaturalSequence a, NaturalSequence b) {
-      if(!a.alphabetName.equals(b.alphabetName))
+      if(!a.cipherName.equals(b.cipherName))
         throw new IllegalArgumentException();
       
       int n = (a.size() > b.size()) ? a.size() : b.size();
@@ -371,14 +371,14 @@ public class FixedLength {
         }
       }
 
-      NaturalSequence output = of(a.getL()).newNaturalSequence(a.alphabetName);
+      NaturalSequence output = of(a.getL()).newNaturalSequence(a.cipherName);
       
       for (int i = 0; i < n; i++) {
         output.add(
             of(a.getL()).newNatural(
                 BinaryNatural.build(
                     (a.get(i).toBinaryNatural().minus(b.get(i).toBinaryNatural()))
-                ).reverse().toNatural(a.alphabetName)
+                ).reverse().toNatural(a.cipherName)
             )
         );
       }
@@ -386,7 +386,7 @@ public class FixedLength {
     }
 
     public static NaturalSequence convolve(NaturalSequence a, NaturalSequence b) {
-      if(!a.alphabetName.equals(b.alphabetName))
+      if(!a.cipherName.equals(b.cipherName))
         throw new IllegalArgumentException();
       
       NaturalSequence carrier = a;
@@ -405,13 +405,13 @@ public class FixedLength {
           );
         }
       }
-      return of(a.getL()).newNaturalSequence(a.alphabetName, o.reverse());
+      return of(a.getL()).newNaturalSequence(a.cipherName, o.reverse());
     }
 
     public boolean isEquivalentUnderSyncronizedRotation(NaturalSequence other) {
-      if(!this.alphabetName.equals(other.alphabetName))
+      if(!this.cipherName.equals(other.cipherName))
         throw new IllegalArgumentException();
-      var abc = Cipher.getCipher(this.alphabetName);
+      var abc = Cipher.getCipher(this.cipherName);
       
       if (this.size() != other.size()) return false;
 
@@ -429,9 +429,9 @@ public class FixedLength {
       return false;
     }
 
-    public Sequence clusterPartition(int L,Cipher.Name alphabetName) {
+    public Sequence clusterPartition(int L,Cipher.Name cipherName) {
       var clusters =
-          NaturalSequence.clusterRhythmPartition(L,alphabetName, this.toBinaryNatural().decomposeIntoHomogeneousRegions());
+          NaturalSequence.clusterRhythmPartition(L,cipherName, this.toBinaryNatural().decomposeIntoHomogeneousRegions());
       var rs = new ArrayList<BinaryNatural>();
       for (NaturalSequence r : clusters)
         rs.add(r.toBinaryNatural());
@@ -476,16 +476,16 @@ public class FixedLength {
         return o;
       }
     }
-    public static NaturalSequence fromCombination(int L, Cipher.Name alphabetName, Combination r){
+    public static NaturalSequence fromCombination(int L, Cipher.Name cipherName, Combination r){
       var fl = new FixedLength(L);
       NaturalSequence output;
       try {
-        output = fl.newNaturalSequence(alphabetName);
+        output = fl.newNaturalSequence(cipherName);
       } catch (Exception e) {
         e.printStackTrace();
         return null;
       }
-      var abc = Cipher.getCipher(alphabetName);
+      var abc = Cipher.getCipher(cipherName);
       
       if(!abc.isInformationBinary())
         throw new IllegalArgumentException();
@@ -505,25 +505,25 @@ public class FixedLength {
           }
           k++;
         }
-        output.add(of(L).newNatural(t.toNatural(alphabetName)));
+        output.add(of(L).newNatural(t.toNatural(cipherName)));
       }
       return output;
     }
     
     public static List<NaturalSequence> fromCombinationList(int L,
-        Cipher.Name alphabetName, List<? extends Combination> list) {
+        Cipher.Name cipherName, List<? extends Combination> list) {
       List<NaturalSequence> o = new ArrayList<>();
       
       for(var r : list) {
-        o.add(NaturalSequence.fromCombination(L,alphabetName,r));
+        o.add(NaturalSequence.fromCombination(L,cipherName,r));
       }
       return o;
     }
     
     public static List<NaturalSequence> clusterRhythmPartition(int L,
-        Cipher.Name alphabetName, List<? extends Combination> _partition) {
+        Cipher.Name cipherName, List<? extends Combination> _partition) {
       if(_partition == null) throw new RuntimeException("clusterRhythmPartition:: partition is null.");
-      List<NaturalSequence> partition = NaturalSequence.fromCombinationList(L,alphabetName, _partition);
+      List<NaturalSequence> partition = NaturalSequence.fromCombinationList(L,cipherName, _partition);
       if(partition.size()==1) {
         ArrayList<NaturalSequence> f = new ArrayList<>();
         f.add(partition.get(0));

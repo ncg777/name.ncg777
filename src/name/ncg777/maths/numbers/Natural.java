@@ -12,64 +12,64 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
 
   private static final long serialVersionUID = 1L;
 
-  protected Cipher.Name alphabetName;
+  protected Cipher.Name cipherName;
 
-  public Cipher getAlphabet() {
-    return Cipher.getCipher(alphabetName);
+  public Cipher getCipher() {
+    return Cipher.getCipher(cipherName);
   }
 
-  public Natural(Cipher.Name alphabetName) {
+  public Natural(Cipher.Name cipherName) {
     super();
-    this.alphabetName = alphabetName;
+    this.cipherName = cipherName;
   }
 
   public Natural(Natural natural) {
-    this(natural.alphabetName, natural);
+    this(natural.cipherName, natural);
   }
 
-  public Natural(Cipher.Name alphabetName, Character[] array) {
-    this(alphabetName);
+  public Natural(Cipher.Name cipherName, Character[] array) {
+    this(cipherName);
     for (var c : array)
       this.add(c);
   }
 
-  public Natural(Cipher.Name alphabetName, List<Character> list) {
-    this(alphabetName);
+  public Natural(Cipher.Name cipherName, List<Character> list) {
+    this(cipherName);
     for (var c : list)
       this.add(c);
   }
   
-  public Natural(Cipher.Name alphabetName, String string) {
-    this(alphabetName);
+  public Natural(Cipher.Name cipherName, String string) {
+    this(cipherName);
 
     for (int i=string.length()-1; i >=0 ; i--)
       this.add(string.charAt(i));
    }
 
-  public Natural(Cipher.Name alphabetName, BigInteger natural, int length) {
+  public Natural(Cipher.Name cipherName, BigInteger natural, int length) {
     super();
-    this.alphabetName = alphabetName;
-    var alphabet = Cipher.getCipher(alphabetName);
-    int n = alphabet.size();
+    this.cipherName = cipherName;
+    var cipher = Cipher.getCipher(cipherName);
+    int n = cipher.size();
     if(natural.compareTo(BigInteger.valueOf(n).pow(length)) >= 0)
       throw new IllegalArgumentException("Not enough bits to encode natural.");
     while (length-- > 0) {
       BigInteger r = natural.mod(BigInteger.valueOf(n));
-      this.add(alphabet.get(r.intValue()));
+      this.add(cipher.get(r.intValue()));
       natural = natural.subtract(r).divide(BigInteger.valueOf(n));
     }
   }
 
-  public Natural(Cipher.Name alphabetName, Combination combination) {
-    this.alphabetName = alphabetName;
-    var alphabet = Cipher.getCipher(alphabetName);
+  public Natural(Cipher.Name cipherName, Combination combination) {
+    this.cipherName = cipherName;
+    var cipher = Cipher.getCipher(cipherName);
     
-    if (!alphabet.isInformationBinary())
+    if (!cipher.isInformationBinary())
       throw new UnsupportedOperationException("Cipher size must be a power of 2.");
     
-    int b = (int) alphabet.information();
+    int b = (int) cipher.information();
     if (combination.getN() % b != 0) throw new UnsupportedOperationException(
-        "Combination size must be multiple of information of alphabet.");
+        "Combination size must be multiple of information of cipher.");
     
     int n = combination.getN();
     int length = n / b;
@@ -77,7 +77,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
     ArrayList<Character> tmp = new ArrayList<Character>();
     for (int i = 0; i < length; i++) {
       tmp.add(
-          alphabet.get(
+          cipher.get(
               Integer.parseInt(sb.substring(i * b, (i + 1) * b), 2)
           ));
     }
@@ -89,7 +89,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
     return new BinaryNatural(
         toBigInteger(),
         BigInteger
-          .valueOf(Cipher.getCipher(alphabetName).size())
+          .valueOf(Cipher.getCipher(cipherName).size())
             .pow(this.size())
             .subtract(BigInteger.ONE)
             .bitLength()
@@ -97,13 +97,13 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   }
 
   public BigInteger toBigInteger() {
-    var alphabet = Cipher.getCipher(alphabetName);
+    var cipher = Cipher.getCipher(cipherName);
 
     int k = 0;
     var sequence = this.toSequence();
     BigInteger sum = BigInteger.ZERO;
     while (k++ < sequence.size()) {
-      var p = BigInteger.valueOf(alphabet.size()).pow(k-1);
+      var p = BigInteger.valueOf(cipher.size()).pow(k-1);
       sum = sum.add(BigInteger.valueOf(sequence.get(k-1)).multiply(p));
     }
     return sum;
@@ -132,32 +132,32 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
     return toBinaryNatural().toString();
   }
 
-  public static Natural fromBitstring(Cipher.Name alphabetName, String string) {
-    return BinaryNatural.build(string).toNatural(alphabetName);
+  public static Natural fromBitstring(Cipher.Name cipherName, String string) {
+    return BinaryNatural.build(string).toNatural(cipherName);
   }
 
-  public Natural(Cipher.Name alphabetName, Sequence sequence) {
+  public Natural(Cipher.Name cipherName, Sequence sequence) {
     super();
-    this.alphabetName = alphabetName;
-    var alphabet = Cipher.getCipher(alphabetName);
-    if (!sequence.isNatural() || sequence.getMax() >= alphabet.size())
+    this.cipherName = cipherName;
+    var cipher = Cipher.getCipher(cipherName);
+    if (!sequence.isNatural() || sequence.getMax() >= cipher.size())
       throw new IllegalArgumentException();
     for (var i : sequence)
-      this.add(alphabet.get(i));
+      this.add(cipher.get(i));
   }
 
   public Sequence toSequence() {
-    var alphabet = Cipher.getCipher(alphabetName);
+    var cipher = Cipher.getCipher(cipherName);
     var o = new Sequence();
     for (int i = 0; i < this.size(); i++) {
-      o.add(alphabet.indexOf(this.get(i)));
+      o.add(cipher.indexOf(this.get(i)));
     }
     return o;
   }
 
   public static Natural agglutinate(Natural first, Natural second) {
-    if (!first.getAlphabet().equals(second.getAlphabet())) throw new IllegalArgumentException();
-    var o = new Natural(first.alphabetName, second);
+    if (!first.getCipher().equals(second.getCipher())) throw new IllegalArgumentException();
+    var o = new Natural(first.cipherName, second);
     o.addAll(first);
     return o;
   }
