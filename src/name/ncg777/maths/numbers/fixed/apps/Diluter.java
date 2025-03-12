@@ -126,7 +126,7 @@ public class Diluter {
   
   private void dilute() {
     var abc = (Cipher.Name)comboBox.getSelectedItem();
-    var alphabet = Cipher.getAlphabet(abc);
+    var alphabet = Cipher.getCipher(abc);
     var str = textRhythm.getText().replaceAll("\\s+", "");
     BinaryNatural r = Quartal.instance.newNaturalSequence(
         abc, 

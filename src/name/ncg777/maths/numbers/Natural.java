@@ -15,7 +15,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   protected Cipher.Name alphabetName;
 
   public Cipher getAlphabet() {
-    return Cipher.getAlphabet(alphabetName);
+    return Cipher.getCipher(alphabetName);
   }
 
   public Natural(Cipher.Name alphabetName) {
@@ -49,7 +49,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   public Natural(Cipher.Name alphabetName, BigInteger natural, int length) {
     super();
     this.alphabetName = alphabetName;
-    var alphabet = Cipher.getAlphabet(alphabetName);
+    var alphabet = Cipher.getCipher(alphabetName);
     int n = alphabet.size();
     if(natural.compareTo(BigInteger.valueOf(n).pow(length)) >= 0)
       throw new IllegalArgumentException("Not enough bits to encode natural.");
@@ -62,7 +62,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
 
   public Natural(Cipher.Name alphabetName, Combination combination) {
     this.alphabetName = alphabetName;
-    var alphabet = Cipher.getAlphabet(alphabetName);
+    var alphabet = Cipher.getCipher(alphabetName);
     
     if (!alphabet.isInformationBinary())
       throw new UnsupportedOperationException("Cipher size must be a power of 2.");
@@ -89,7 +89,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
     return new BinaryNatural(
         toBigInteger(),
         BigInteger
-          .valueOf(Cipher.getAlphabet(alphabetName).size())
+          .valueOf(Cipher.getCipher(alphabetName).size())
             .pow(this.size())
             .subtract(BigInteger.ONE)
             .bitLength()
@@ -97,7 +97,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   }
 
   public BigInteger toBigInteger() {
-    var alphabet = Cipher.getAlphabet(alphabetName);
+    var alphabet = Cipher.getCipher(alphabetName);
 
     int k = 0;
     var sequence = this.toSequence();
@@ -139,7 +139,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   public Natural(Cipher.Name alphabetName, Sequence sequence) {
     super();
     this.alphabetName = alphabetName;
-    var alphabet = Cipher.getAlphabet(alphabetName);
+    var alphabet = Cipher.getCipher(alphabetName);
     if (!sequence.isNatural() || sequence.getMax() >= alphabet.size())
       throw new IllegalArgumentException();
     for (var i : sequence)
@@ -147,7 +147,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
   }
 
   public Sequence toSequence() {
-    var alphabet = Cipher.getAlphabet(alphabetName);
+    var alphabet = Cipher.getCipher(alphabetName);
     var o = new Sequence();
     for (int i = 0; i < this.size(); i++) {
       o.add(alphabet.indexOf(this.get(i)));

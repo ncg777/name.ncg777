@@ -13,7 +13,7 @@ public class FixedLengthNaturalEnumeration implements Enumeration<FixedLength.Na
   public FixedLengthNaturalEnumeration(int L, Cipher.Name alphabetName) {
     this.alphabetName = alphabetName;
     this.L = L;
-    var alphabet = Cipher.getAlphabet(alphabetName);
+    var alphabet = Cipher.getCipher(alphabetName);
     
     int n = alphabet.size();
     

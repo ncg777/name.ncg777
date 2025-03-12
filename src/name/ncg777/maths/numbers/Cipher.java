@@ -43,7 +43,7 @@ public class Cipher extends ArrayList<Character> {
     return checkedPow(2, (int)Math.round(information())) == size();
   }
   
-  static public Cipher getAlphabet(Name name) { return Ciphers.get(name); }
+  static public Cipher getCipher(Name name) { return Ciphers.get(name); }
   
   public Cipher(Character[] characters) {
     for(Character c : characters) {

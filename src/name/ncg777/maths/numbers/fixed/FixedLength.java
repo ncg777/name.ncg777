@@ -411,7 +411,7 @@ public class FixedLength {
     public boolean isEquivalentUnderSyncronizedRotation(NaturalSequence other) {
       if(!this.alphabetName.equals(other.alphabetName))
         throw new IllegalArgumentException();
-      var abc = Cipher.getAlphabet(this.alphabetName);
+      var abc = Cipher.getCipher(this.alphabetName);
       
       if (this.size() != other.size()) return false;
 
@@ -485,7 +485,7 @@ public class FixedLength {
         e.printStackTrace();
         return null;
       }
-      var abc = Cipher.getAlphabet(alphabetName);
+      var abc = Cipher.getCipher(alphabetName);
       
       if(!abc.isInformationBinary())
         throw new IllegalArgumentException();
