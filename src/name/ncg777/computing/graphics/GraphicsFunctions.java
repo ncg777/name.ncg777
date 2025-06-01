@@ -2,6 +2,7 @@ package name.ncg777.computing.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -156,6 +157,7 @@ public class GraphicsFunctions {
   public record MixedCoordinates(Cartesian cartesian, Polar polar) {};
   
   public static void drawColorField2D(Graphics2D g, Function<MixedCoordinates, Color> color, int width, int height) {
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     for (int x = 0; x < width; x++) {
         double xnorm = (x / (double) width - 0.5) * 2.0;
         for (int y = 0; y < height; y++) {
@@ -469,9 +471,9 @@ public class GraphicsFunctions {
       double from_inclusive, 
       double to_exclusive,
       Function<Double,Double> deltaf) {
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     for(double t=from_inclusive; t<to_exclusive; t+=deltaf.apply(t)) {
       var delta = deltaf.apply(t);
-      
       
       drawf.accept(new DrawingContext(g, t, p, scale, translate, delta));
     }
