@@ -3,10 +3,12 @@ Until further notice, this application is a prototype. Some of these apps may be
 
 First, you should extract the zip file wherever you want.
 
-To run the main menu application that lets one open the apps with graphical interfaces, run the name.ncg777.cmd (windows) or name.ncg777.sh (linux) script.
+To run the main menu application that lets one open the apps with graphical interfaces, simply double click on the jar file or run the name.ncg777.cmd (windows) or name.ncg777.sh (linux) script.
 
 # Enumeration Scripts Documentation
-Arguments' names cannot be specified and are just determined positionally at the moment.
+For the enumeration scripts to work, the full path to the name.ncg777.jar file needs to be in your CLASSPATH environment variable.
+
+Arguments' names cannot be specified and are just determined positionally.
 
 The int[] type is printed or parsed as space-separated lists of integers (ex: "1 2 3") or JSON array-like strings (ex: "[1, 2, 3]").
 

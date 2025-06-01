@@ -129,7 +129,7 @@ public class FixedLength {
     
     public Natural(Cipher.Name cipherName, String string) {
       super(cipherName, string.replaceAll("\\s+", ""));
-      if(string.replaceAll("\\s+", "").length() != L) throw new IllegalArgumentException();
+      if(string.replaceAll("\\s+", "").length() % L != 0) throw new IllegalArgumentException();
     }
     
     public Natural(Cipher.Name cipherName, List<Character> list) {
