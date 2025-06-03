@@ -102,7 +102,7 @@ public class ReflectiveEnumerationPrinter implements Callable<Integer> {
           return (new Sequence((Integer[])obj)).toString();
         }
         if (obj instanceof Sequence) {
-          return ((Sequence)obj).toString(true);
+          return ((Sequence)obj).toString(false);
         }
         if (obj instanceof List) {
             return ((List<?>) obj).stream()
