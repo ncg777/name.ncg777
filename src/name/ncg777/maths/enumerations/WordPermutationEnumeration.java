@@ -3,6 +3,7 @@ package name.ncg777.maths.enumerations;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Combination;
 
 /**
@@ -92,6 +93,12 @@ public class WordPermutationEnumeration implements Enumeration<int[]> {
           pos.remove((int)j);
         }
       }
+    }
+    
+    for (int i = 0; i < x.length / 2; i++) {
+      int temp = x[i];
+      x[i] = x[x.length - i - 1];
+      x[x.length - i - 1] = temp;
     }
     return x;
   }

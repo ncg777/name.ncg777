@@ -19,10 +19,10 @@ public class WordPermutationEnumerationTests extends TestCase {
     int[] rk = {1,2,3};
     
     var wpe = new WordPermutationEnumeration(rk);
-    int[] e1 = {2,2,2,1,1,0};
+    int[] e1 = {0,1,1,2,2,2};
     var we1 = wpe.nextElement();
     assertTrue(Arrays.equals(we1, e1));
-    int[] e2 = {2,2,2,1,0,1};
+    int[] e2 = {1,0,1,2,2,2};
     var we2 = wpe.nextElement();
     System.out.println(new Sequence(we2));
     assertTrue(Arrays.equals(we2, e2));
