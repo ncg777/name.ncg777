@@ -22,7 +22,6 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoWriter;
 
-import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.MatrixOfDoubles;
@@ -172,7 +171,7 @@ public class GraphicsFunctions {
             ));
             
             g.setColor(c);
-            g.fillRect(x - 1, y-1, 3, 3);
+            g.fill(new Ellipse2D.Double(x-1, y-1, 3, 3));
         }
     }
   }
@@ -180,7 +179,7 @@ public class GraphicsFunctions {
   public static void matrixDisk(
       Graphics2D g, 
       MatrixOfDoubles mat, 
-      BiFunction<Cartesian, Double, Color> color, 
+      BiFunction<MixedCoordinates, Double, Color> color, 
       int width, 
       int height, 
       boolean interpolate) {
@@ -188,9 +187,6 @@ public class GraphicsFunctions {
     int n = mat.columnCount();
 
     drawColorField2D(g, (params) -> {
-      double x = params.cartesian().x;
-      double y = params.cartesian().y;
-
       // Compute polar indices
       double di = params.polar().r * m;
       double adjustedDi = Math.sqrt(di / m) * m; // Uniform area distribution
@@ -223,7 +219,7 @@ public class GraphicsFunctions {
         vo = bilinearInterpolation(phi, phj, v00, v10, v01, v11);
       }
 
-      return color.apply(new Cartesian(x, y), vo);
+      return color.apply(params, vo);
     }, width, height);
   }
   
@@ -369,26 +365,13 @@ public class GraphicsFunctions {
     };
   }
   
-  
-  public static void drawParametric2DWithLateralBars(
-      Graphics2D g, 
-      Function<Double,HomoPair<Double>> _p,
-      double from_inclusive, 
-      double to_exclusive,
-      Function<Double,Cartesian> scale,
-      Function<Double,Cartesian> translate,
-      Function<Double,Double> width,
-      BiFunction<Double,Double,Color> color) {
-    
-  }
-  
   public static void drawParametric2DWithLateralBars(
       Graphics2D g, 
       Function<Double,Cartesian> _p,
       double from_inclusive, 
       double to_exclusive,
-      Function<Double,Cartesian> scale,
-      Function<Double,Cartesian> translate,
+      Supplier<Cartesian> scale,
+      Supplier<Cartesian> translate,
       Function<Double,Double> width,
       BiFunction<Double,Double,Color> color,
       Function<Double,Double> deltaf) {
@@ -400,10 +383,10 @@ public class GraphicsFunctions {
         (DrawingContext ctx) -> 
           {
             var t = ctx.t();
-            var sc = ctx.scale().apply(t);
+            var sc = ctx.scale().get();
             double sx = sc.x();
             double sy = sc.y();
-            var tr = ctx.translate().apply(t);
+            var tr = ctx.translate().get();
             double tx = tr.x();
             double ty = tr.y();
             var point = ctx.p().apply(t);
@@ -459,14 +442,14 @@ public class GraphicsFunctions {
       Graphics2D g, 
       double t, 
       Function<Double,Cartesian> p, 
-      Function<Double,Cartesian> scale,
-      Function<Double,Cartesian> translate, double delta) {};
+      Supplier<Cartesian> scale,
+      Supplier<Cartesian> translate, double delta) {};
       
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
-      Function<Double,Cartesian> scale,
-      Function<Double,Cartesian> translate,
+      Supplier<Cartesian> scale,
+      Supplier<Cartesian> translate,
       Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive,
@@ -491,8 +474,8 @@ public class GraphicsFunctions {
       Function<Double,Cartesian> p,
       Consumer<DrawingContext> drawf) {
     drawParametric2D(g, p, 
-        (t) -> new Cartesian(defaultScaleX,defaultScaleY), 
-        (t) -> new Cartesian(defaultTranslateX, defaultTranslateY),
+        () -> new Cartesian(defaultScaleX,defaultScaleY), 
+        () -> new Cartesian(defaultTranslateX, defaultTranslateY),
         drawf, 
         defaultFrom, 
         defaultTo,
@@ -506,8 +489,8 @@ public class GraphicsFunctions {
       double from_inclusive, 
       double to_exclusive) {
     drawParametric2D(g, p, 
-        (t) -> new Cartesian(defaultScaleX,defaultScaleY), 
-        (t) -> new Cartesian(defaultTranslateX, defaultTranslateY),
+        () -> new Cartesian(defaultScaleX,defaultScaleY), 
+        () -> new Cartesian(defaultTranslateX, defaultTranslateY),
         drawf, 
         from_inclusive, to_exclusive, 
         (t) -> defaultDelta);
@@ -516,12 +499,12 @@ public class GraphicsFunctions {
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
-      Function<Double,Cartesian> scale, 
+      Supplier<Cartesian> scale, 
       Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive) {
     drawParametric2D(g, p,scale,
-        (t) -> new Cartesian(defaultTranslateX, defaultTranslateY), 
+        () -> new Cartesian(defaultTranslateX, defaultTranslateY), 
         drawf, 
         from_inclusive, to_exclusive, 
         (t) -> defaultDelta);
@@ -530,8 +513,8 @@ public class GraphicsFunctions {
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
-      Function<Double,Cartesian> scale,
-      Function<Double,Cartesian> translate,
+      Supplier<Cartesian> scale,
+      Supplier<Cartesian> translate,
       Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive) {
