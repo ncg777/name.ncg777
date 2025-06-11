@@ -30,6 +30,7 @@ import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.MatrixOfDoubles;
+import name.ncg777.maths.enumerations.MixedRadixEnumeration;
 
 public class GraphicsFunctions {
   static {
@@ -375,252 +376,43 @@ public class GraphicsFunctions {
     };
   }
   
-  public static void drawParametric2DWithLateralBars(
-      Graphics2D g, 
-      Function<Double,Cartesian> _p,
-      double from_inclusive, 
-      double to_exclusive,
-      Supplier<Cartesian> scale,
-      Supplier<Cartesian> translate,
-      Function<Double,Double> width,
-      BiFunction<Double,Double,Color> color,
-      Function<Double,Double> deltaf) {
-    drawParametric2D(
-        g, 
-        _p,
-        scale,
-        translate,
-        (DrawingContext ctx) -> 
-          {
-            var t = ctx.t();
-            var sc = ctx.scale().get();
-            double sx = sc.x();
-            double sy = sc.y();
-            var tr = ctx.translate().get();
-            double tx = tr.x();
-            double ty = tr.y();
-            var point = ctx.p().apply(t);
-            double A_x = (sx*point.x())+tx;
-            double A_y = (sy*point.y())+ty;
-            
-            var pointp = ctx.p().apply(t+ctx.delta());
-            double B_x = (sx*pointp.x())+tx;
-            double B_y = (sy*pointp.y())+ty;
-            
-            double x_ccw = A_x - (B_y-A_y);
-            double y_ccw = A_y + (B_x-A_x);
-            double x_cw = A_x + (B_y-A_y);
-            double y_cw = A_y - (B_x-A_x);
-            
-            double w = width.apply(t);
-            double f = w /
-                (2.0*Math.sqrt(
-                    Math.pow(((B_x-A_x)), 2.0) + 
-                    Math.pow(((B_y-A_y)), 2.0)));
-            
-            x_ccw = A_x+f*sx*(x_ccw-A_x);
-            y_ccw = A_y+f*sy*(y_ccw-A_y);
-            x_cw = A_x+f*sx*(x_cw-A_x);
-            y_cw = A_y+f*sy*(y_cw-A_y);
-            
-            double dx = x_ccw-A_x;
-            double dy = y_ccw-A_y;
-            double l = Math.sqrt(Math.pow(dx, 2.0)+Math.pow(dy, 2.0));
-            double invl = 1.0/l;
-            
-            double interX = 0.0;
-            double interY = 0.0;
-            // For the clockwise side (from the center to x_cw, y_cw)
-            for (double u = 0; u <= 1; u += invl) { // Can adjust step size for finer control
-                Color c = color.apply(t, u); // Use the gradient function
-                g.setColor(c);
-                g.setPaint(c);
-                interX = A_x + u * (x_cw - A_x);
-                interY = A_y + u * (y_cw - A_y);
-                g.fill(new Ellipse2D.Double(interX-1, interY-1, 3, 3));
-                interX = A_x + u * (x_ccw - A_x);
-                interY = A_y + u * (y_ccw - A_y);
-                g.fill(new Ellipse2D.Double(interX-1, interY-1, 3, 3)); 
-            }
-        },
-      from_inclusive,
-      to_exclusive,
-      deltaf);
-  }
-  
   public record DrawingContext(
       Graphics2D g, 
-      double t, 
-      Function<Double,Cartesian> p, 
+      double[] t, 
+      Function<double[],Cartesian> p, 
       Supplier<Cartesian> scale,
-      Supplier<Cartesian> translate, 
-      double delta) {};
-     
-  /**
-   * Maps t in [0,1] to a vector in [0,1]^n using sinusoidal oscillations.
-   * Each coordinate oscillates with a different frequency.
-   * 
-   * @param t The parameter in [0,1].
-   * @param n The number of dimensions.
-   * @return A double array of length n, each element in [0,1].
-   */
-  public static double[] tToSinusoidalVector(double t, int n) {
-      double[] v = new double[n];
-      for (int i = 0; i < n; i++) {
-          v[i] = 0.5 + 0.5 * Math.sin(2 * Math.PI * (i + 1) * t);
-      }
-      return v;
-  }    
-  
-  /**
-   * Chebyshev Polynomial Embedding
-   * Maps t in [0,1] to the first n Chebyshev polynomials evaluated at x=2t-1.
-   * T_0(x) = 1
-   * T_1(x) = x
-   * T_n(x) = 2x*T_{n-1}(x) - T_{n-2}(x)
-   */
-  public static double[] tToChebyshevVector(double t, int n) {
-      double[] v = new double[n];
-      double x = 2 * t - 1; // Map [0,1] to [-1,1]
-      if (n > 0) v[0] = 1;
-      if (n > 1) v[1] = x;
-      for (int i = 2; i < n; i++) {
-          v[i] = 2 * x * v[i - 1] - v[i - 2];
-      }
-      return v;
-  }
+      Supplier<Cartesian> translate) {};
 
-  /**
-   * Generalized Lissajous Embedding
-   * Allows custom frequencies and phase shifts for each coordinate.
-   */
-  public static double[] tToLissajousVector(double t, double[] freq, double[] phase) {
-      int n = freq.length;
-      double[] v = new double[n];
-      for (int i = 0; i < n; i++) {
-          v[i] = 0.5 + 0.5 * Math.sin(2 * Math.PI * freq[i] * t + phase[i]);
-      }
-      return v;
-  }
-
-  /**
-   * Spherical Embedding (3D)
-   * Maps t in [0,1] to a point on the unit sphere.
-   * Covers the sphere as t goes from 0 to 1.
-   */
-  public static double[] tToSphericalVector(double t) {
-      double theta = 2 * Math.PI * t;
-      double phi = Math.acos(1 - 2 * t); // Uniform sampling
-      double x = Math.sin(phi) * Math.cos(theta);
-      double y = Math.sin(phi) * Math.sin(theta);
-      double z = Math.cos(phi);
-      return new double[] { x, y, z };
-  }
-
-  /**
-   * Legendre Polynomial Embedding
-   * Maps t in [0,1] to the first n Legendre polynomials evaluated at x=2t-1.
-   * P_0(x) = 1
-   * P_1(x) = x
-   * P_2(x) = (3x^2 - 1)/2
-   * P_3(x) = (5x^3 - 3x)/2
-   * and so on (recurrence)
-   */
-  public static double[] tToLegendreVector(double t, int n) {
-      double[] v = new double[n];
-      double x = 2 * t - 1; // Map [0,1] to [-1,1]
-      if (n > 0) v[0] = 1;
-      if (n > 1) v[1] = x;
-      for (int i = 2; i < n; i++) {
-          v[i] = ((2 * i - 1) * x * v[i - 1] - (i - 1) * v[i - 2]) / i;
-      }
-      return v;
-  }
-  
   public static void drawParametric2D(
       Graphics2D g, 
-      Function<Double,Cartesian> p,
+      Function<double[],Cartesian> p,
       Supplier<Cartesian> scale,
       Supplier<Cartesian> translate,
       Consumer<DrawingContext> drawf,
-      double from_inclusive, 
-      double to_exclusive,
-      Function<Double,Double> deltaf) {
+      double[] lbound,
+      double[] ubound,
+      int[] subdiv) {
+    int dim = lbound.length;
+    if(ubound.length != dim || subdiv.length != dim) 
+      throw new IllegalArgumentException("Non-matching dimensions");
+    
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    for(double t=from_inclusive; t<to_exclusive; t+=deltaf.apply(t)) {
-      var delta = deltaf.apply(t);
-      
-      drawf.accept(new DrawingContext(g, t, p, scale, translate, delta));
+    
+    double[] delta = new double[dim];
+    for(int i=0;i<dim;i++) delta[i] = ubound[i]-lbound[i];
+    
+    double[] increments = new double[dim];
+    for(int i=0;i<dim;i++) increments[i] = delta[i]/(subdiv[i]);
+    
+    int[] subdiv_plus_1 = new int[dim];
+    for(int i=0;i<dim;i++) subdiv_plus_1[i] = subdiv[i]+1;
+    
+    var mre = new MixedRadixEnumeration(subdiv_plus_1);
+    while(mre.hasMoreElements()) {
+      var e = mre.nextElement();
+      double[] t = new double[dim];
+      for(int i=0;i<dim;i++) t[i] = lbound[i]+(e[i]*increments[i]);
+      drawf.accept(new DrawingContext(g, t, p, scale, translate));
     }
-  }
-  
-  private static double defaultFrom = 0.0;
-  private static double defaultTo = 1.0;
-  private static double defaultTranslateX = 0.0;
-  private static double defaultTranslateY = 0.0;
-  private static double defaultScaleX = 1.0;
-  private static double defaultScaleY = 1.0;
-  private static double defaultDelta = 0.000005;
-  
-  public static void drawParametric2D(
-      Graphics2D g, 
-      Function<Double,Cartesian> p,
-      Consumer<DrawingContext> drawf) {
-    drawParametric2D(
-        g, 
-        p, 
-        () -> new Cartesian(defaultScaleX,defaultScaleY), 
-        () -> new Cartesian(defaultTranslateX, defaultTranslateY),
-        drawf, 
-        defaultFrom, 
-        defaultTo,
-        (t) -> defaultDelta);
-  }
-  
-  public static void drawParametric2D(
-      Graphics2D g, 
-      Function<Double,Cartesian> p,
-      Consumer<DrawingContext> drawf,
-      double from_inclusive, 
-      double to_exclusive) {
-    drawParametric2D(g, p, 
-        () -> new Cartesian(defaultScaleX,defaultScaleY), 
-        () -> new Cartesian(defaultTranslateX, defaultTranslateY),
-        drawf, 
-        from_inclusive, to_exclusive, 
-        (t) -> defaultDelta);
-  }
-  
-  public static void drawParametric2D(
-      Graphics2D g, 
-      Function<Double,Cartesian> p,
-      Supplier<Cartesian> scale, 
-      Consumer<DrawingContext> drawf,
-      double from_inclusive, 
-      double to_exclusive) {
-    drawParametric2D(g, p,scale,
-        () -> new Cartesian(defaultTranslateX, defaultTranslateY), 
-        drawf, 
-        from_inclusive, to_exclusive, 
-        (t) -> defaultDelta);
-  }
-  
-  public static void drawParametric2D(
-      Graphics2D g, 
-      Function<Double,Cartesian> p,
-      Supplier<Cartesian> scale,
-      Supplier<Cartesian> translate,
-      Consumer<DrawingContext> drawf,
-      double from_inclusive, 
-      double to_exclusive) {
-    drawParametric2D(
-        g, 
-        p,
-        scale, 
-        translate, 
-        drawf, 
-        from_inclusive, 
-        to_exclusive, 
-        (t) -> defaultDelta);
   }
 }
