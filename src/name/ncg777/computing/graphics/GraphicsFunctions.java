@@ -472,6 +472,71 @@ public class GraphicsFunctions {
       return v;
   }    
   
+  /**
+   * Chebyshev Polynomial Embedding
+   * Maps t in [0,1] to the first n Chebyshev polynomials evaluated at x=2t-1.
+   * T_0(x) = 1
+   * T_1(x) = x
+   * T_n(x) = 2x*T_{n-1}(x) - T_{n-2}(x)
+   */
+  public static double[] tToChebyshevVector(double t, int n) {
+      double[] v = new double[n];
+      double x = 2 * t - 1; // Map [0,1] to [-1,1]
+      if (n > 0) v[0] = 1;
+      if (n > 1) v[1] = x;
+      for (int i = 2; i < n; i++) {
+          v[i] = 2 * x * v[i - 1] - v[i - 2];
+      }
+      return v;
+  }
+
+  /**
+   * Generalized Lissajous Embedding
+   * Allows custom frequencies and phase shifts for each coordinate.
+   */
+  public static double[] tToLissajousVector(double t, double[] freq, double[] phase) {
+      int n = freq.length;
+      double[] v = new double[n];
+      for (int i = 0; i < n; i++) {
+          v[i] = 0.5 + 0.5 * Math.sin(2 * Math.PI * freq[i] * t + phase[i]);
+      }
+      return v;
+  }
+
+  /**
+   * Spherical Embedding (3D)
+   * Maps t in [0,1] to a point on the unit sphere.
+   * Covers the sphere as t goes from 0 to 1.
+   */
+  public static double[] tToSphericalVector(double t) {
+      double theta = 2 * Math.PI * t;
+      double phi = Math.acos(1 - 2 * t); // Uniform sampling
+      double x = Math.sin(phi) * Math.cos(theta);
+      double y = Math.sin(phi) * Math.sin(theta);
+      double z = Math.cos(phi);
+      return new double[] { x, y, z };
+  }
+
+  /**
+   * Legendre Polynomial Embedding
+   * Maps t in [0,1] to the first n Legendre polynomials evaluated at x=2t-1.
+   * P_0(x) = 1
+   * P_1(x) = x
+   * P_2(x) = (3x^2 - 1)/2
+   * P_3(x) = (5x^3 - 3x)/2
+   * and so on (recurrence)
+   */
+  public static double[] tToLegendreVector(double t, int n) {
+      double[] v = new double[n];
+      double x = 2 * t - 1; // Map [0,1] to [-1,1]
+      if (n > 0) v[0] = 1;
+      if (n > 1) v[1] = x;
+      for (int i = 2; i < n; i++) {
+          v[i] = ((2 * i - 1) * x * v[i - 1] - (i - 1) * v[i - 2]) / i;
+      }
+      return v;
+  }
+  
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
