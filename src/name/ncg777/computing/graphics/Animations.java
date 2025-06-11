@@ -328,6 +328,9 @@ public class Animations {
             (t) -> new Cartesian(t[0], t[1]),
             () -> new Cartesian(width/2, height/2),
             () -> new Cartesian(width*0.25, height*0.25),
+            lbound, 
+            ubound,
+            subdiv,
             (ctx) -> {
               var p = ctx.p().apply(ctx.t());
               
@@ -342,11 +345,7 @@ public class Animations {
                   p.y()*ctx.scale().get().y()+ctx.translate().get().y(), 
                   10*ntime+10, 
                   10*ntime+10));
-            },
-            lbound, 
-            ubound,
-            subdiv
-            );
+            });
         ++k;
         return GraphicsFunctions.bufferedImageToMat(img);
       }
@@ -397,6 +396,9 @@ public class Animations {
           },
           () -> new Cartesian(1, 1), // scale (already scaled in mapping)
           () -> new Cartesian(0, 0), // translate (already translated in mapping)
+          lbound,
+          ubound,
+          subdiv,
           (ctx) -> {
             var t = ctx.t();
             var p = ctx.p().apply(t);
@@ -418,10 +420,7 @@ public class Animations {
             double sizePhase = (phase + r) % 1.0; // also depends on r for variety
             double rr = 10 + 10 * (0.5 + 0.5 * Math.sin(sizePhase * 2 * Math.PI));
             ctx.g().fill(new Ellipse2D.Double(p.x() - rr / 2.0, p.y() - rr / 2.0, rr, rr));
-          },
-          lbound,
-          ubound,
-          subdiv
+          }
         );
         ++k;
         return GraphicsFunctions.bufferedImageToMat(img);

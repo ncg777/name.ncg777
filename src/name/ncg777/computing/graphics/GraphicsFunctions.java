@@ -388,10 +388,10 @@ public class GraphicsFunctions {
       Function<double[],Cartesian> p,
       Supplier<Cartesian> scale,
       Supplier<Cartesian> translate,
-      Consumer<DrawingContext> drawf,
       double[] lbound,
       double[] ubound,
-      int[] subdiv) {
+      int[] subdiv,
+      Consumer<DrawingContext> drawf) {
     int dim = lbound.length;
     if(ubound.length != dim || subdiv.length != dim) 
       throw new IllegalArgumentException("Non-matching dimensions");
