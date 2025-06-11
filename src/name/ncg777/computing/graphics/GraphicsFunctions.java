@@ -9,10 +9,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
+
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Core;
@@ -22,6 +26,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoWriter;
 
+import name.ncg777.computing.structures.HomoPair;
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.MatrixOfDoubles;
@@ -157,21 +162,26 @@ public class GraphicsFunctions {
   
   public static void drawColorField2D(Graphics2D g, Function<MixedCoordinates, Color> color, int width, int height) {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    Map<HomoPair<Integer>, Color> map = new TreeMap<HomoPair<Integer>, Color>();
+    IntStream.range(0, width*height).parallel().forEach(i -> {
+      int x = i % width;
+      int y = i / width;
+      double xnorm = (x / (double) width - 0.5) * 2.0;
+      double ynorm = (y / (double) height - 0.5) * 2.0;
+      double r = Math.sqrt(xnorm * xnorm + ynorm * ynorm);
+      double th = Math.atan2(ynorm, xnorm);
+      synchronized(map) {
+        map.put(HomoPair.makeHomoPair(x, y), color.apply(new MixedCoordinates(
+            new Cartesian(xnorm, ynorm),
+            new Polar(r, th)
+        )));
+      }
+    });
+    
     for (int x = 0; x < width; x++) {
-        double xnorm = (x / (double) width - 0.5) * 2.0;
         for (int y = 0; y < height; y++) {
-            double ynorm = (y / (double) height - 0.5) * 2.0;
-
-            double r = Math.sqrt(xnorm * xnorm + ynorm * ynorm);
-            double th = Math.atan2(ynorm, xnorm); // Fixed normalized coordinate usage
-
-            Color c = color.apply(new MixedCoordinates(
-                new Cartesian(xnorm, ynorm),
-                new Polar(r, th)
-            ));
-            
-            g.setColor(c);
-            g.fill(new Ellipse2D.Double(x-1, y-1, 3, 3));
+          g.setColor(map.get(HomoPair.makeHomoPair(x, y)));
+          g.fill(new Ellipse2D.Double(x, y, 1, 1));            
         }
     }
   }
