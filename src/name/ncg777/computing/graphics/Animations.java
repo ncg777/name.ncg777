@@ -311,7 +311,7 @@ public class Animations {
       int k = 0;
       double[] lbound = {0.0,0.0};
       double[] ubound = {1.0,1.0};
-      int[] subdiv = {10, 10};
+      int[] subdiv = {10,10};
       
       public boolean hasMoreElements() {
         return k<upper;
