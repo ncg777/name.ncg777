@@ -453,8 +453,25 @@ public class GraphicsFunctions {
       double t, 
       Function<Double,Cartesian> p, 
       Supplier<Cartesian> scale,
-      Supplier<Cartesian> translate, double delta) {};
-      
+      Supplier<Cartesian> translate, 
+      double delta) {};
+     
+  /**
+   * Maps t in [0,1] to a vector in [0,1]^n using sinusoidal oscillations.
+   * Each coordinate oscillates with a different frequency.
+   * 
+   * @param t The parameter in [0,1].
+   * @param n The number of dimensions.
+   * @return A double array of length n, each element in [0,1].
+   */
+  public static double[] tToSinusoidalVector(double t, int n) {
+      double[] v = new double[n];
+      for (int i = 0; i < n; i++) {
+          v[i] = 0.5 + 0.5 * Math.sin(2 * Math.PI * (i + 1) * t);
+      }
+      return v;
+  }    
+  
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
@@ -479,11 +496,14 @@ public class GraphicsFunctions {
   private static double defaultScaleX = 1.0;
   private static double defaultScaleY = 1.0;
   private static double defaultDelta = 0.000005;
+  
   public static void drawParametric2D(
       Graphics2D g, 
       Function<Double,Cartesian> p,
       Consumer<DrawingContext> drawf) {
-    drawParametric2D(g, p, 
+    drawParametric2D(
+        g, 
+        p, 
         () -> new Cartesian(defaultScaleX,defaultScaleY), 
         () -> new Cartesian(defaultTranslateX, defaultTranslateY),
         drawf, 
@@ -528,10 +548,14 @@ public class GraphicsFunctions {
       Consumer<DrawingContext> drawf,
       double from_inclusive, 
       double to_exclusive) {
-    drawParametric2D(g, p,scale, 
+    drawParametric2D(
+        g, 
+        p,
+        scale, 
         translate, 
         drawf, 
-        from_inclusive, to_exclusive, 
+        from_inclusive, 
+        to_exclusive, 
         (t) -> defaultDelta);
   }
 }
