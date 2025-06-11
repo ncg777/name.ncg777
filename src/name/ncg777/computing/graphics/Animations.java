@@ -353,4 +353,79 @@ public class Animations {
     };
   }
   
+  /**
+   * Animation: 2D polar grid, each branch follows a sinusoidal path in theta as a function of r,
+   * using drawParametric2D. The animation spins in one (positive) direction only.
+   * Both color and circle size loop endlessly and seamlessly with time (first frame == last frame).
+   * Color scheme is now perfectly cyclical using HSB.
+   */
+  public static Enumeration<Mat> polarGridWavyBranchesParametric(int width, int height, double fps, double dur) {
+    return new Enumeration<Mat>() {
+      final int upper = (int)(dur * fps);
+      int k = 0;
+      final double[] lbound = {0.0, 0.0}; // r, theta
+      final double[] ubound = {1.0, 2.0 * Math.PI};
+      final int[] subdiv = {10, 10}; // radial, angular
+
+      public boolean hasMoreElements() { return k < upper; }
+
+      public Mat nextElement() {
+        // Use a phase that loops perfectly over all frames so frame 0 == frame N
+        final double phase = (double) k / (double) upper; // [0,1)
+        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        var g = img.createGraphics();
+        g.rotate(phase * Math.PI * 2.0, (double) (width / 2), (double) (height / 2));
+        final double cx = width / 2.0;
+        final double cy = height / 2.0;
+        final double maxR = Math.min(width, height) * 0.45;
+
+        // Sinusoidal theta modulation parameters
+        final double amplitude = 0.35; // radians (wiggle amplitude)
+        final double omega = 6.0 * Math.PI; // frequency (number of wiggles along r)
+        final double speed = 2.0 * Math.PI; // time speed
+
+        GraphicsFunctions.drawParametric2D(
+          g,
+          (t) -> {
+            double r = t[0];
+            double theta0 = t[1];
+            // The sinusoidal offset is a function of r, animated by phase
+            double theta = theta0 + amplitude * Math.sin(omega * r + phase * speed);
+            double x = cx + (r * maxR) * Math.cos(theta);
+            double y = cy + (r * maxR) * Math.sin(theta);
+            return new Cartesian(x, y);
+          },
+          () -> new Cartesian(1, 1), // scale (already scaled in mapping)
+          () -> new Cartesian(0, 0), // translate (already translated in mapping)
+          (ctx) -> {
+            var t = ctx.t();
+            var p = ctx.p().apply(t);
+            double r = t[0];
+            double theta0 = t[1];
+            double theta = theta0 + amplitude * Math.sin(omega * r + phase * speed);
+            double r_mod = r;
+
+            // --- Perfectly cyclical color using HSB ---
+            // Color hue is a function of (r, theta, phase), so it loops in phase
+            float hue = (float)((phase + r + theta0 / (2.0 * Math.PI)) % 1.0);
+            float saturation = 0.9f;
+            float brightness = 1.0f;
+            Color cyclicalColor = Color.getHSBColor(hue, saturation, brightness);
+
+            ctx.g().setColor(cyclicalColor);
+
+            // Loop circle size endlessly and smoothly
+            double sizePhase = (phase + r) % 1.0; // also depends on r for variety
+            double rr = 10 + 10 * (0.5 + 0.5 * Math.sin(sizePhase * 2 * Math.PI));
+            ctx.g().fill(new Ellipse2D.Double(p.x() - rr / 2.0, p.y() - rr / 2.0, rr, rr));
+          },
+          lbound,
+          ubound,
+          subdiv
+        );
+        ++k;
+        return GraphicsFunctions.bufferedImageToMat(img);
+      }
+    };
+  }
 }
