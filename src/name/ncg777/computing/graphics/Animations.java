@@ -10,6 +10,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
@@ -404,8 +405,6 @@ public class Animations {
             var p = ctx.p().apply(t);
             double r = t[0];
             double theta0 = t[1];
-            double theta = theta0 + amplitude * Math.sin(omega * r + phase * speed);
-            double r_mod = r;
 
             // --- Perfectly cyclical color using HSB ---
             // Color hue is a function of (r, theta, phase), so it loops in phase
