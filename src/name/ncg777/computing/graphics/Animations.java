@@ -18,7 +18,12 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 public class Animations {
   public static class Helpers {
@@ -408,6 +413,110 @@ public class Animations {
         );
         ++k;
         return GraphicsFunctions.bufferedImageToMat(img);
+      }
+    };
+  }
+  
+  /**
+   * Returns an Enumeration<Mat> of animated frames showing a projected grid of disks,
+   * with the camera orbiting the sphere and always looking at its center.
+   *
+   * @param width      Width of each frame.
+   * @param height     Height of each frame.
+   * @param density    Density of the disk grid on the sphere.
+   * @param fps        Frames per second.
+   * @param duration   Animation duration in seconds.
+   */
+  public static Enumeration<Mat> diskGridProjection(int width, int height, int density, double fps, double duration) {
+    return new Enumeration<Mat>() {
+      private final int frameCount = (int)Math.round(duration * fps);
+      private int frame = 0;
+      private final double scale = Math.min(width, height) * 0.4;
+
+      @Override
+      public boolean hasMoreElements() {
+        return frame < frameCount;
+      }
+
+      @Override
+      public Mat nextElement() {
+        if (!hasMoreElements()) throw new java.util.NoSuchElementException();
+
+        double t = 2 * Math.PI * frame / frameCount;
+        Mat mat = new Mat(height, width, CvType.CV_8UC4, new Scalar(0, 0, 0, 0));
+        drawDiskGridProjectionOnMat(mat, t, density, scale, width, height);
+        frame++;
+        return mat;
+      }
+
+      /**
+       * Draws the current animation frame. The camera orbits the sphere and always looks at the center.
+       */
+      private void drawDiskGridProjectionOnMat(Mat mat, double time, int density, double renderScale, int width, int height) {
+        final double sphereRadius = 1.0;
+        final double baseDiskSize = 40.0;
+        final double epsilon = 0.001;
+
+        // Camera orbits the sphere, always looking at the origin.
+        double camDistance = 5.0;
+        // Camera position on a tilted orbit (ellipse for some vertical modulation)
+        Vector3D camera = new Vector3D(
+          camDistance * Math.cos(time),
+          camDistance * Math.sin(time),
+          2.0 * Math.sin(0.5 * time)
+        );
+        Vector3D center = new Vector3D(0, 0, 0);
+
+        // Camera "look direction" is always toward the center
+        Vector3D lookDir = center.subtract(camera).normalize();
+
+        // Projection plane: passes through the center, perpendicular to the look direction
+        Vector3D planeNormal = lookDir;
+        Vector3D planePoint = center;
+
+        // Spherical grid (skip poles for better spacing)
+        for (int i = 1; i < density; i++) {
+          double theta = Math.PI * i / density;
+          for (int j = 0; j < density; j++) {
+            double phi = 2 * Math.PI * j / density;
+            double x = sphereRadius * Math.sin(theta) * Math.cos(phi);
+            double y = sphereRadius * Math.sin(theta) * Math.sin(phi);
+            double z = sphereRadius * Math.cos(theta);
+            Vector3D spherePoint = new Vector3D(x, y, z);
+
+            double[] proj;
+            try {
+              proj = GraphicsFunctions.perspectiveProjectionWithDistance(
+                spherePoint, camera, planeNormal, planePoint
+              );
+            } catch (IllegalArgumentException e) {
+              // The ray is parallel to the plane; skip this disk.
+              continue;
+            }
+
+            double u = proj[0] * renderScale + width / 2.0;
+            double v = proj[1] * renderScale + height / 2.0;
+            double distance = proj[2];
+
+            double diskSize = baseDiskSize / (distance + epsilon);
+
+            // Color and alpha
+            float hue = (float) (phi / (2 * Math.PI));
+            float brightness = (float) Math.max(0.2, 1.0 - distance / 10.0);
+            float saturation = 0.8f;
+            Color color = Color.getHSBColor(hue, saturation, brightness);
+            int alpha = Math.min(255, (int) (255 * (1.0 - distance / 10.0)));
+
+            drawSolidCircle(mat, u, v, diskSize, color, alpha);
+          }
+        }
+      }
+
+      private void drawSolidCircle(Mat mat, double cx, double cy, double radius, Color color, int alpha) {
+        Scalar rgba = new Scalar(color.getBlue(), color.getGreen(), color.getRed(), alpha);
+        Point center = new Point(cx, cy);
+        int thickness = -1; // filled
+        Imgproc.circle(mat, center, (int) Math.round(radius), rgba, thickness, Imgproc.LINE_AA, 0);
       }
     };
   }
