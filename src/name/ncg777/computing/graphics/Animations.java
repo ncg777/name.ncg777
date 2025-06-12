@@ -486,7 +486,7 @@ public class Animations {
 
             double[] proj;
             try {
-              proj = GraphicsFunctions.perspectiveProjectionWithDistance(
+              proj = GraphicsFunctions.perspectiveProjection(
                 spherePoint, camera, planeNormal, planePoint
               );
             } catch (IllegalArgumentException e) {

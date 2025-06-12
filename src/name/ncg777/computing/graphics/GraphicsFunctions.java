@@ -428,7 +428,7 @@ public class GraphicsFunctions {
    *                    - index 1 is the v-coordinate on the plane, and
    *                    - index 2 is the distance from the camera to the projection (intersection) point.
    */
-  public static double[] perspectiveProjectionWithDistance(Vector3D point, Vector3D camera, 
+  public static double[] perspectiveProjection(Vector3D point, Vector3D camera, 
                                                              Vector3D planeNormal, Vector3D planePoint) {
       // Compute the vector representing the ray from the camera to the point.
       Vector3D rayDir = point.subtract(camera);
@@ -464,5 +464,75 @@ public class GraphicsFunctions {
       double distance = intersection.distance(camera);
       
       return new double[]{ uCoord, vCoord, distance };
+  }
+  
+  /**
+   * Computes a camera perspective projection of a 3D point.
+   * This function projects the given 3D point onto a view plane
+   * defined by the target position (which acts as the center of the image plane)
+   * and oriented according to the camera's forward, right, and up vectors.
+   * 
+   * @param point   The 3D point to project.
+   * @param camera  The camera position.
+   * @param target  The target point the camera is looking at. This point lies on the
+   *                image (projection) plane.
+   * @param up      The camera's up vector.
+   * @return A double array where:
+   *         - index 0 is the x-coordinate in the camera's image plane (right direction),
+   *         - index 1 is the y-coordinate in the camera's image plane (up direction),
+   *         - index 2 is the distance from the camera to the projected point.
+   */
+  public static double[] cameraPerspectiveProjection(Vector3D point, Vector3D camera, 
+                                                                   Vector3D target, Vector3D up) {
+      // Calculate the camera's forward, right, and true-up vectors.
+      Vector3D forward = target.subtract(camera).normalize();
+      Vector3D right = forward.crossProduct(up).normalize();
+      Vector3D trueUp = right.crossProduct(forward).normalize();
+
+      // Define the image plane as the plane passing through the target with normal equal to the forward vector.
+      Vector3D planePoint = target;
+      Vector3D planeNormal = forward;
+      
+      // Compute the ray from the camera to the point.
+      Vector3D rayDir = point.subtract(camera);
+      
+      // Find t such that camera + rayDir * t lies on the image plane.
+      double denominator = rayDir.dotProduct(planeNormal);
+      if (Math.abs(denominator) < 1e-6) {
+          throw new IllegalArgumentException("The ray is parallel to the image plane; cannot compute projection.");
+      }
+      double t = (planePoint.subtract(camera)).dotProduct(planeNormal) / denominator;
+      
+      // Compute the intersection of the ray with the image plane.
+      Vector3D intersection = camera.add(rayDir.scalarMultiply(t));
+      
+      // Compute local coordinates within the image plane.
+      Vector3D diff = intersection.subtract(planePoint);
+      double xCoord = diff.dotProduct(right);
+      double yCoord = diff.dotProduct(trueUp);
+      
+      // Compute the distance from the camera to the intersection.
+      double distance = intersection.distance(camera);
+      
+      return new double[]{ xCoord, yCoord, distance };
+  }
+  
+  /**
+   * Determines whether a projected 2D point lies within the view boundaries.
+   *
+   * @param projection A double array with:
+   *                   - index 0: the x-coordinate,
+   *                   - index 1: the y-coordinate,
+   *                   - index 2: the distance from the camera.
+   * @param minX The minimum x-bound (left edge).
+   * @param maxX The maximum x-bound (right edge).
+   * @param minY The minimum y-bound (top edge).
+   * @param maxY The maximum y-bound (bottom edge).
+   * @return true if the x and y coordinates are within the bounds; false otherwise.
+   */
+  public static boolean isInView(double[] projection, double minX, double maxX, double minY, double maxY) {
+      double x = projection[0];
+      double y = projection[1];
+      return (x >= minX && x <= maxX && y >= minY && y <= maxY);
   }
 }
