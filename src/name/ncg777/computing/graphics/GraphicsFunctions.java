@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -378,14 +379,12 @@ public class GraphicsFunctions {
   
   public record DrawingContext(
       Graphics2D g, 
-      double[] t, 
-      Function<double[],Cartesian> p, 
+      double[] t,
       Supplier<Cartesian> scale,
       Supplier<Cartesian> translate) {};
 
   public static void drawParametric2D(
-      Graphics2D g, 
-      Function<double[],Cartesian> p,
+      Graphics2D g,
       Supplier<Cartesian> scale,
       Supplier<Cartesian> translate,
       double[] lbound,
@@ -412,7 +411,58 @@ public class GraphicsFunctions {
       var e = mre.nextElement();
       double[] t = new double[dim];
       for(int i=0;i<dim;i++) t[i] = lbound[i]+(e[i]*increments[i]);
-      drawf.accept(new DrawingContext(g, t, p, scale, translate));
+      drawf.accept(new DrawingContext(g, t, scale, translate));
     }
+  }
+  
+  /**
+   * Projects a 3D point onto a specified plane along the ray from the camera and returns the
+   * local 2D coordinates on the plane as well as the distance from the camera to the projection point.
+   *
+   * @param point       The 3D point to project.
+   * @param camera      The camera position.
+   * @param planeNormal The normal vector of the projection plane (should be normalized).
+   * @param planePoint  A point on the projection plane.
+   * @return            A double array where:
+   *                    - index 0 is the u-coordinate on the plane,
+   *                    - index 1 is the v-coordinate on the plane, and
+   *                    - index 2 is the distance from the camera to the projection (intersection) point.
+   */
+  public static double[] perspectiveProjectionWithDistance(Vector3D point, Vector3D camera, 
+                                                             Vector3D planeNormal, Vector3D planePoint) {
+      // Compute the vector representing the ray from the camera to the point.
+      Vector3D rayDir = point.subtract(camera);
+
+      // Calculate the scalar t at which the ray intersects the plane.
+      double denominator = rayDir.dotProduct(planeNormal);
+      if (Math.abs(denominator) < 1e-6) {
+          throw new IllegalArgumentException("The ray is parallel to the plane; cannot compute perspective projection.");
+      }
+      
+      double t = (planePoint.subtract(camera)).dotProduct(planeNormal) / denominator;
+
+      // Compute the intersection point between the ray and the plane.
+      Vector3D intersection = camera.add(rayDir.scalarMultiply(t));
+
+      // Create an orthonormal basis for the plane.
+      // Choose an arbitrary vector that is not parallel to the plane normal.
+      Vector3D arbitrary = Math.abs(planeNormal.dotProduct(new Vector3D(0, 0, 1))) > 0.9 
+                                ? new Vector3D(0, 1, 0) 
+                                : new Vector3D(0, 0, 1);
+                                
+      // u is perpendicular to the plane normal.
+      Vector3D u = planeNormal.crossProduct(arbitrary).normalize();
+      // v is perpendicular to both planeNormal and u.
+      Vector3D v = planeNormal.crossProduct(u).normalize();
+      
+      // Determine the local 2D coordinates by projecting the intersection onto u and v.
+      Vector3D diff = intersection.subtract(planePoint);
+      double uCoord = diff.dotProduct(u);
+      double vCoord = diff.dotProduct(v);
+      
+      // Compute the physical distance from the camera to the intersection point.
+      double distance = intersection.distance(camera);
+      
+      return new double[]{ uCoord, vCoord, distance };
   }
 }

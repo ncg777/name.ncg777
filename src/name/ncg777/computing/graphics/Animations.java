@@ -1,33 +1,23 @@
 package name.ncg777.computing.graphics;
 
-import static org.hamcrest.CoreMatchers.sameInstance;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import name.ncg777.computing.graphics.GraphicsFunctions.Cartesian;
-import name.ncg777.computing.graphics.GraphicsFunctions.DrawingContext;
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
-import org.apache.commons.math3.distribution.IntegerDistribution;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
-import org.apache.commons.math3.distribution.UniformRealDistribution;
 import org.opencv.core.Mat;
 
 public class Animations {
@@ -326,14 +316,14 @@ public class Animations {
         g.rotate(ntime*Math.PI*2.0, (double)(width/2), (double)(height/2));
         GraphicsFunctions.drawParametric2D(
             g,
-            (t) -> new Cartesian(t[0], t[1]),
             () -> new Cartesian(width/2, height/2),
             () -> new Cartesian(width*0.25, height*0.25),
             lbound, 
             ubound,
             subdiv,
             (ctx) -> {
-              var p = ctx.p().apply(ctx.t());
+              var t = ctx.t();
+              var p = new Cartesian(t[0],t[1]);
               
               g.setColor(new Color(
                   (int)((0.5+(Math.sin(p.x()*ntime*2*Math.PI)*0.5))*255.0), 
@@ -386,15 +376,6 @@ public class Animations {
 
         GraphicsFunctions.drawParametric2D(
           g,
-          (t) -> {
-            double r = t[0];
-            double theta0 = t[1];
-            // The sinusoidal offset is a function of r, animated by phase
-            double theta = theta0 + amplitude * Math.sin(omega * r + phase * speed);
-            double x = cx + (r * maxR) * Math.cos(theta);
-            double y = cy + (r * maxR) * Math.sin(theta);
-            return new Cartesian(x, y);
-          },
           () -> new Cartesian(1, 1), // scale (already scaled in mapping)
           () -> new Cartesian(0, 0), // translate (already translated in mapping)
           lbound,
@@ -402,9 +383,13 @@ public class Animations {
           subdiv,
           (ctx) -> {
             var t = ctx.t();
-            var p = ctx.p().apply(t);
             double r = t[0];
             double theta0 = t[1];
+            // The sinusoidal offset is a function of r, animated by phase
+            double theta = theta0 + amplitude * Math.sin(omega * r + phase * speed);
+            var p = new Cartesian(
+                cx + (r * maxR) * Math.cos(theta),
+                cy + (r * maxR) * Math.sin(theta));
 
             // --- Perfectly cyclical color using HSB ---
             // Color hue is a function of (r, theta, phase), so it loops in phase
