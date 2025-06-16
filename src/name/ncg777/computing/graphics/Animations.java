@@ -309,6 +309,10 @@ public class Animations {
       double[] lbound = {0.0,0.0};
       double[] ubound = {1.0,1.0};
       int[] subdiv = {10,10};
+      double scaleX = (double)width/2.0;
+      double scaleY = (double)height/2.0;
+      double transX = width*0.25;
+      double transY = height*0.25;
       
       public boolean hasMoreElements() {
         return k<upper;
@@ -321,26 +325,21 @@ public class Animations {
         var g = img.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.rotate(ntime*Math.PI*2.0, (double)(width/2), (double)(height/2));
-        double scaleX = (double)width/2.0;
-        double scaleY = (double)height/2.0;
-        double transX = width*0.25;
-        double transY = height*0.25;
+        
         GraphicsFunctions.drawParametric2D(
             lbound, 
             ubound,
             subdiv,
             (t) -> {
-              var p = new Cartesian(t[0],t[1]);
-              
               g.setColor(new Color(
-                  (int)((0.5+(Math.sin(p.x()*ntime*2*Math.PI)*0.5))*255.0), 
-                  (int)((0.5+(Math.cos(p.x()*ntime*2*Math.PI)*0.4))*255.0), 
-                  (int)((0.5+(Math.sin(p.y()*ntime*2*Math.PI)*0.5))*255.0), 
+                  (int)((0.5+(Math.sin(t[0]*ntime*2*Math.PI)*0.5))*255.0), 
+                  (int)((0.5+(Math.cos(t[0]*ntime*2*Math.PI)*0.4))*255.0), 
+                  (int)((0.5+(Math.sin(t[1]*ntime*2*Math.PI)*0.5))*255.0), 
                   255));
 
               g.fill(new Ellipse2D.Double(
-                  p.x()*scaleX+transX, 
-                  p.y()*scaleY+transY, 
+                  t[0]*scaleX+transX, 
+                  t[1]*scaleY+transY, 
                   10*ntime+10, 
                   10*ntime+10));
             });
