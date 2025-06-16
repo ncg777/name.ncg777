@@ -377,18 +377,11 @@ public class GraphicsFunctions {
     };
   }
   
-  public record DrawingContext(
-      double[] t,
-      Supplier<Cartesian> scale,
-      Supplier<Cartesian> translate) {};
-
   public static void drawParametric2D(
-      Supplier<Cartesian> scale,
-      Supplier<Cartesian> translate,
       double[] lbound,
       double[] ubound,
       int[] subdiv,
-      Consumer<DrawingContext> drawf) {
+      Consumer<double[]> drawf) {
     int dim = lbound.length;
     if(ubound.length != dim || subdiv.length != dim) 
       throw new IllegalArgumentException("Non-matching dimensions");
@@ -407,7 +400,7 @@ public class GraphicsFunctions {
       var e = mre.nextElement();
       double[] t = new double[dim];
       for(int i=0;i<dim;i++) t[i] = lbound[i]+(e[i]*increments[i]);
-      drawf.accept(new DrawingContext(t, scale, translate));
+      drawf.accept(t);
     }
   }
   

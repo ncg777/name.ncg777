@@ -321,14 +321,15 @@ public class Animations {
         var g = img.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.rotate(ntime*Math.PI*2.0, (double)(width/2), (double)(height/2));
+        double scaleX = (double)width/2.0;
+        double scaleY = (double)height/2.0;
+        double transX = width*0.25;
+        double transY = height*0.25;
         GraphicsFunctions.drawParametric2D(
-            () -> new Cartesian(width/2, height/2),
-            () -> new Cartesian(width*0.25, height*0.25),
             lbound, 
             ubound,
             subdiv,
-            (ctx) -> {
-              var t = ctx.t();
+            (t) -> {
               var p = new Cartesian(t[0],t[1]);
               
               g.setColor(new Color(
@@ -338,8 +339,8 @@ public class Animations {
                   255));
 
               g.fill(new Ellipse2D.Double(
-                  p.x()*ctx.scale().get().x()+ctx.translate().get().x(), 
-                  p.y()*ctx.scale().get().y()+ctx.translate().get().y(), 
+                  p.x()*scaleX+transX, 
+                  p.y()*scaleY+transY, 
                   10*ntime+10, 
                   10*ntime+10));
             });
@@ -382,13 +383,10 @@ public class Animations {
         final double speed = 2.0 * Math.PI; // time speed
 
         GraphicsFunctions.drawParametric2D(
-          () -> new Cartesian(1, 1), // scale (already scaled in mapping)
-          () -> new Cartesian(0, 0), // translate (already translated in mapping)
           lbound,
           ubound,
           subdiv,
-          (ctx) -> {
-            var t = ctx.t();
+          (t) -> {
             double r = t[0];
             double theta0 = t[1];
             // The sinusoidal offset is a function of r, animated by phase
