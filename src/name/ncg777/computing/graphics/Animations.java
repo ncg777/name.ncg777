@@ -3,6 +3,7 @@ package name.ncg777.computing.graphics;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -318,9 +319,9 @@ public class Animations {
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
         var g = img.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.rotate(ntime*Math.PI*2.0, (double)(width/2), (double)(height/2));
         GraphicsFunctions.drawParametric2D(
-            g,
             () -> new Cartesian(width/2, height/2),
             () -> new Cartesian(width*0.25, height*0.25),
             lbound, 
@@ -336,7 +337,7 @@ public class Animations {
                   (int)((0.5+(Math.sin(p.y()*ntime*2*Math.PI)*0.5))*255.0), 
                   255));
 
-              ctx.g().fill(new Ellipse2D.Double(
+              g.fill(new Ellipse2D.Double(
                   p.x()*ctx.scale().get().x()+ctx.translate().get().x(), 
                   p.y()*ctx.scale().get().y()+ctx.translate().get().y(), 
                   10*ntime+10, 
@@ -369,6 +370,7 @@ public class Animations {
         final double phase = (double) k / (double) upper; // [0,1)
         var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         var g = img.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.rotate(phase * Math.PI * 2.0, (double) (width / 2), (double) (height / 2));
         final double cx = width / 2.0;
         final double cy = height / 2.0;
@@ -380,7 +382,6 @@ public class Animations {
         final double speed = 2.0 * Math.PI; // time speed
 
         GraphicsFunctions.drawParametric2D(
-          g,
           () -> new Cartesian(1, 1), // scale (already scaled in mapping)
           () -> new Cartesian(0, 0), // translate (already translated in mapping)
           lbound,
@@ -403,12 +404,12 @@ public class Animations {
             float brightness = 1.0f;
             Color cyclicalColor = Color.getHSBColor(hue, saturation, brightness);
 
-            ctx.g().setColor(cyclicalColor);
+            g.setColor(cyclicalColor);
 
             // Loop circle size endlessly and smoothly
             double sizePhase = (phase + r) % 1.0; // also depends on r for variety
             double rr = 10 + 10 * (0.5 + 0.5 * Math.sin(sizePhase * 2 * Math.PI));
-            ctx.g().fill(new Ellipse2D.Double(p.x() - rr / 2.0, p.y() - rr / 2.0, rr, rr));
+            g.fill(new Ellipse2D.Double(p.x() - rr / 2.0, p.y() - rr / 2.0, rr, rr));
           }
         );
         ++k;
