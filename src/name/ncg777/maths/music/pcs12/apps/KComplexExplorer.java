@@ -152,7 +152,7 @@ public class KComplexExplorer {
       textCommonName.setText(commonName);
       textIntervals.setText(ch.transpose(ch.getTranspose()).getComposition().asSequence().toString());
       
-      textKeys.setText(ch.getPotentialKeys().toString());
+      textKeys.setText(ch.getTensionPartition().toString());
       this.current = ch;
     }
   }
@@ -442,7 +442,7 @@ public class KComplexExplorer {
     textIntervals.setBounds(11, 211, 132, 23);
     frmKComplexExplorer.getContentPane().add(textIntervals);
     
-    JLabel lblNewLabel_6_4_1 = new JLabel("Potential keys");
+    JLabel lblNewLabel_6_4_1 = new JLabel("Tension partition");
     lblNewLabel_6_4_1.setHorizontalAlignment(SwingConstants.CENTER);
     lblNewLabel_6_4_1.setFont(new Font("Dialog", Font.PLAIN, 11));
     lblNewLabel_6_4_1.setBounds(10, 430, 132, 23);

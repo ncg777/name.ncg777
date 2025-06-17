@@ -315,15 +315,20 @@ public class Pcs12 extends ImmutableCombination implements Serializable {
     return Math.pow(o,1.0/(double)s.size());
   }
   
-  public Sequence getPotentialKeys() {
-    List<Double> ct = IntStream.range(0,12).boxed()
+  public Sequence getTensionPartition() {
+    List<Double> ct = this.asSequence().stream()
         .map((n) -> this.calcCenterTuning(n))
         .collect(Collectors.toList());
-    double min = Double.MAX_VALUE;
-    for(var d : ct) if(Math.abs(d-1.0) < min) min = Math.abs(d-1.0);
-    var keys = new Sequence();
-    for(int i=0;i<ct.size();i++) if(Math.abs(ct.get(i)-1.0) <= min) keys.add(i);
-    return keys;
+    TreeSet<Double> values = new TreeSet<Double>();
+    for(Double d: ct) { values.add(Math.abs(1.0-d));}
+    TreeMap<Double, Integer> map = new TreeMap<>();
+    {
+      int i=0;
+      for(Double d : values) { map.put(d, i++); }
+    }
+    Sequence o = new Sequence();
+    for(Double d : ct) { o.add(map.get(Math.abs(1.0-d))); }
+    return o;
   }
   
   private static void fillForteNumbersDict() throws IOException, CsvException {
