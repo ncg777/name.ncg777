@@ -140,7 +140,6 @@ public class Combiner {
       textSymmetries.setText("");
       this.current = null;
       textIntervals.setText("");
-      textTonicDistance.setText("");
     } else {
       textCurrent.setText(ch.toForteNumberString());
       textPitches.setText(ch.combinationString().replaceAll("[,}{]", "").trim()); 
@@ -152,7 +151,6 @@ public class Combiner {
       if(commonName == null) commonName = "";
       textCommonName.setText(commonName);
       textIntervals.setText(ch.transpose(-ch.getTranspose()).getComposition().asSequence().toString());
-      textTonicDistance.setText(Double.toString(ch.calcCenterTuning((int)spinnerCenter.getValue())));
       this.current = ch;
     }
     
@@ -238,7 +236,6 @@ public class Combiner {
   private JTextField textSymmetries;
   private JTextField textCommonName;
   private JTextField textIntervals;
-  private JTextField textTonicDistance;
   private JSpinner spinnerCenter;
   
   private void initMidiSynth() {
@@ -609,20 +606,6 @@ public class Combiner {
     textIntervals.setColumns(10);
     textIntervals.setBounds(195, 249, 132, 23);
     frmChordCombiner.getContentPane().add(textIntervals);
-    
-    JLabel lblNewLabel_6_4_1 = new JLabel("Center tuning");
-    lblNewLabel_6_4_1.setHorizontalAlignment(SwingConstants.CENTER);
-    lblNewLabel_6_4_1.setFont(new Font("Dialog", Font.PLAIN, 11));
-    lblNewLabel_6_4_1.setBounds(194, 507, 132, 23);
-    frmChordCombiner.getContentPane().add(lblNewLabel_6_4_1);
-    
-    textTonicDistance = new JTextField();
-    textTonicDistance.setHorizontalAlignment(SwingConstants.CENTER);
-    textTonicDistance.setFont(new Font("Dialog", Font.PLAIN, 11));
-    textTonicDistance.setEditable(false);
-    textTonicDistance.setColumns(10);
-    textTonicDistance.setBounds(194, 526, 132, 23);
-    frmChordCombiner.getContentPane().add(textTonicDistance);
     
     spinnerCenter = new JSpinner();
     spinnerCenter.setModel(new SpinnerNumberModel(0, 0, 11, 1));
