@@ -1,8 +1,13 @@
 package name.ncg777.maths.enumerations;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import name.ncg777.maths.relations.FiniteHomoRelation;
 import name.ncg777.maths.sequences.Sequence;
 /**
  * Enumerates all values of the mixed radix base given as parameter.
@@ -162,5 +167,48 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     }
     
     return o;
+  }
+  
+  public static FiniteHomoRelation<Sequence> getNeighborRelation(List<int[]> points) {
+    // Group points by equivalence class based on the sum of their components
+    Map<Integer, List<Sequence>> equivalenceClasses = new HashMap<>();
+    for (int[] point : points) {
+        int sum = Arrays.stream(point).sum();
+        equivalenceClasses.computeIfAbsent(sum, k -> new ArrayList<>()).add(new Sequence(point));
+    }
+
+    // Create the relation
+    FiniteHomoRelation<Sequence> relation = new FiniteHomoRelation<>();
+
+    // Compare points in successive equivalence classes
+    for (int k : equivalenceClasses.keySet()) {
+        List<Sequence> currentClass = equivalenceClasses.get(k);
+        List<Sequence> nextClass = equivalenceClasses.get(k + 1);
+
+        if (nextClass != null) {
+            for (Sequence seq1 : currentClass) {
+                for (Sequence seq2 : nextClass) {
+                    if (areNeighbors(seq1, seq2)) {
+                        relation.add(seq1, seq2);
+                    }
+                }
+            }
+        }
+    }
+
+    return relation;
+  }
+
+  // Predicate to check if two sequences are neighbors
+  private static boolean areNeighbors(Sequence seq1, Sequence seq2) {
+      int diffCount = 0;
+      for (int i = 0; i < seq1.size(); i++) {
+          if (Math.abs(seq1.get(i) - seq2.get(i)) == 1) {
+              diffCount++;
+          } else if (!seq1.get(i).equals(seq2.get(i))) {
+              return false;
+          }
+      }
+      return diffCount == 1;
   }
 }
