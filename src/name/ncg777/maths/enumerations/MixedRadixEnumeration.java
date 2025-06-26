@@ -2,10 +2,12 @@ package name.ncg777.maths.enumerations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import name.ncg777.maths.relations.FiniteHomoRelation;
 import name.ncg777.maths.sequences.Sequence;
@@ -169,7 +171,39 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     return o;
   }
   
-  public static FiniteHomoRelation<Sequence> getNeighborRelation(List<int[]> points) {
+  /**
+   * Creates a TreeSet<int[]> using a lexicographic comparator and enumerates all points
+   * based on the given base.
+   *
+   * @param base the mixed radix base used for enumeration
+   * @return a TreeSet<int[]> containing all enumerated points
+   */
+  public static TreeSet<int[]> getPointSet(int[] base) {
+      // Lexicographic comparator for int[]
+      Comparator<int[]> comparator = (arr1, arr2) -> {
+          for (int i = 0; i < Math.min(arr1.length, arr2.length); i++) {
+              if (arr1[i] != arr2[i]) {
+                  return Integer.compare(arr1[i], arr2[i]);
+              }
+          }
+          return Integer.compare(arr1.length, arr2.length);
+      };
+
+      // Create a TreeSet with the comparator
+      TreeSet<int[]> treeSet = new TreeSet<>(comparator);
+
+      // Create the MixedRadixEnumeration instance
+      MixedRadixEnumeration enumeration = new MixedRadixEnumeration(base);
+
+      // Add each enumerated point to the TreeSet
+      while (enumeration.hasMoreElements()) {
+          treeSet.add(enumeration.nextElement());
+      }
+
+      return treeSet;
+  }
+  
+  public static FiniteHomoRelation<Sequence> getNeighborRelation(Iterable<int[]> points) {
     // Group points by equivalence class based on the sum of their components
     Map<Integer, List<Sequence>> equivalenceClasses = new HashMap<>();
     for (int[] point : points) {
