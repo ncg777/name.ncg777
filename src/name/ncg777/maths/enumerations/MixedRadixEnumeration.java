@@ -203,6 +203,54 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
       return treeSet;
   }
   
+  /**
+   * Generates a TreeSet<double[]> for a parametric space defined by lbound, ubound, and subdiv.
+   *
+   * @param lbound The lower bounds for each dimension.
+   * @param ubound The upper bounds for each dimension.
+   * @param subdiv The number of subdivisions for each dimension.
+   * @return A TreeSet<double[]> containing the generated points in lexicographic order.
+   */
+  public static TreeSet<double[]> getPointSet(double[] lbound, double[] ubound, int[] subdiv) {
+      // Validate inputs
+      if (lbound.length != ubound.length || lbound.length != subdiv.length) {
+          throw new IllegalArgumentException("Dimensions of lbound, ubound, and subdiv must match.");
+      }
+
+      int dim = lbound.length;
+
+      // Calculate increments (step sizes for each dimension)
+      double[] increments = new double[dim];
+      for (int i = 0; i < dim; i++) {
+          increments[i] = (ubound[i] - lbound[i]) / subdiv[i];
+      }
+
+      // Lexicographic comparator for double[]
+      Comparator<double[]> comparator = (arr1, arr2) -> {
+          for (int i = 0; i < Math.min(arr1.length, arr2.length); i++) {
+              if (Double.compare(arr1[i], arr2[i]) != 0) {
+                  return Double.compare(arr1[i], arr2[i]);
+              }
+          }
+          return Integer.compare(arr1.length, arr2.length);
+      };
+
+      // Create a TreeSet with the comparator
+      TreeSet<double[]> treeSet = new TreeSet<>(comparator);
+
+      var mre = new MixedRadixEnumeration(subdiv); // Use MixedRadixEnumeration to iterate through indices
+      while (mre.hasMoreElements()) {
+          var indices = mre.nextElement();
+          double[] point = new double[dim];
+          for (int i = 0; i < dim; i++) {
+              point[i] = lbound[i] + (indices[i] * increments[i]);
+          }
+          treeSet.add(point);
+      }
+
+      return treeSet;
+  }  
+  
   public static FiniteHomoRelation<Sequence> getNeighborRelation(Iterable<int[]> points) {
     // Group points by equivalence class based on the sum of their components
     Map<Integer, List<Sequence>> equivalenceClasses = new HashMap<>();
