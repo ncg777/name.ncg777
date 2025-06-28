@@ -3,7 +3,6 @@ package name.ncg777.maths.enumerations;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import name.ncg777.computing.structures.CollectionUtils;
 import name.ncg777.maths.Combination;
 
 /**

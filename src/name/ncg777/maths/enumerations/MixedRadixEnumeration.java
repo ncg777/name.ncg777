@@ -2,13 +2,14 @@ package name.ncg777.maths.enumerations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import name.ncg777.computing.structures.ImmutableDoubleArray;
+import name.ncg777.computing.structures.ImmutableIntArray;
 import name.ncg777.maths.relations.FiniteHomoRelation;
 import name.ncg777.maths.sequences.Sequence;
 /**
@@ -172,104 +173,118 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
   }
   
   /**
-   * Creates a TreeSet<int[]> using a lexicographic comparator and enumerates all points
+   * Creates a TreeSet<ImmutableIntArray> using a lexicographic comparator and enumerates all points
    * based on the given base.
    *
    * @param base the mixed radix base used for enumeration
-   * @return a TreeSet<int[]> containing all enumerated points
+   * @return a TreeSet<ImmutableIntArray> containing all enumerated points
    */
-  public static TreeSet<int[]> getPointSet(int[] base) {
-      // Lexicographic comparator for int[]
-      Comparator<int[]> comparator = (arr1, arr2) -> {
-          for (int i = 0; i < Math.min(arr1.length, arr2.length); i++) {
-              if (arr1[i] != arr2[i]) {
-                  return Integer.compare(arr1[i], arr2[i]);
-              }
-          }
-          return Integer.compare(arr1.length, arr2.length);
-      };
+  public static TreeSet<ImmutableIntArray> getPointSet(int[] base) {
 
       // Create a TreeSet with the comparator
-      TreeSet<int[]> treeSet = new TreeSet<>(comparator);
+      TreeSet<ImmutableIntArray> treeSet = new TreeSet<>();
 
       // Create the MixedRadixEnumeration instance
       MixedRadixEnumeration enumeration = new MixedRadixEnumeration(base);
 
       // Add each enumerated point to the TreeSet
       while (enumeration.hasMoreElements()) {
-          treeSet.add(enumeration.nextElement());
+          treeSet.add(new ImmutableIntArray(enumeration.nextElement()));
       }
 
       return treeSet;
   }
   
   /**
-   * Generates a TreeSet<double[]> for a parametric space defined by lbound, ubound, and subdiv.
+   * Generates a TreeSet<ImmutableDoubleArray> for a parametric space defined by lbound, ubound, and subdiv.
    *
    * @param lbound The lower bounds for each dimension.
    * @param ubound The upper bounds for each dimension.
    * @param subdiv The number of subdivisions for each dimension.
-   * @return A TreeSet<double[]> containing the generated points in lexicographic order.
+   * @return A TreeSet<ImmutableDoubleArray> containing the generated points in lexicographic order.
    */
-  public static TreeSet<double[]> getPointSet(double[] lbound, double[] ubound, int[] subdiv) {
-      // Validate inputs
-      if (lbound.length != ubound.length || lbound.length != subdiv.length) {
-          throw new IllegalArgumentException("Dimensions of lbound, ubound, and subdiv must match.");
-      }
-
+  public static TreeSet<ImmutableDoubleArray> getPointSet(double[] lbound, double[] ubound, int[] subdiv) {
       int dim = lbound.length;
+      
+      double[] increments = getIncrements(lbound, ubound, subdiv);
+      
+      TreeSet<ImmutableDoubleArray> treeSet = new TreeSet<>();
 
-      // Calculate increments (step sizes for each dimension)
-      double[] increments = new double[dim];
+      int[] subdivPlusOne = new int[dim];
       for (int i = 0; i < dim; i++) {
-          increments[i] = (ubound[i] - lbound[i]) / subdiv[i];
+          subdivPlusOne[i] = subdiv[i] + 1;
       }
 
-      // Lexicographic comparator for double[]
-      Comparator<double[]> comparator = (arr1, arr2) -> {
-          for (int i = 0; i < Math.min(arr1.length, arr2.length); i++) {
-              if (Double.compare(arr1[i], arr2[i]) != 0) {
-                  return Double.compare(arr1[i], arr2[i]);
-              }
-          }
-          return Integer.compare(arr1.length, arr2.length);
-      };
-
-      // Create a TreeSet with the comparator
-      TreeSet<double[]> treeSet = new TreeSet<>(comparator);
-
-      var mre = new MixedRadixEnumeration(subdiv); // Use MixedRadixEnumeration to iterate through indices
+      var mre = new MixedRadixEnumeration(subdivPlusOne);
       while (mre.hasMoreElements()) {
           var indices = mre.nextElement();
           double[] point = new double[dim];
           for (int i = 0; i < dim; i++) {
               point[i] = lbound[i] + (indices[i] * increments[i]);
           }
-          treeSet.add(point);
+          treeSet.add(new ImmutableDoubleArray(point));
       }
 
       return treeSet;
-  }  
+  }
   
-  public static FiniteHomoRelation<Sequence> getNeighborRelation(Iterable<int[]> points) {
-    // Group points by equivalence class based on the sum of their components
-    Map<Integer, List<Sequence>> equivalenceClasses = new HashMap<>();
-    for (int[] point : points) {
-        int sum = Arrays.stream(point).sum();
-        equivalenceClasses.computeIfAbsent(sum, k -> new ArrayList<>()).add(new Sequence(point));
+  private static double[] getIncrements(double[] lbound, double[] ubound, int[] subdiv) {
+    if (lbound.length != ubound.length || lbound.length != subdiv.length) {
+        throw new IllegalArgumentException("Dimensions of lbound, ubound, and subdiv must match.");
+    }
+    int dim = lbound.length;
+    double[] increments = new double[dim];
+    for (int i = 0; i < dim; i++) {
+        increments[i] = (ubound[i] - lbound[i]) / subdiv[i];
+    }
+    return increments;
+  }
+  
+  public static FiniteHomoRelation<ImmutableDoubleArray> getNeighborRelation(double[] lbound, double[] ubound, int[] subdiv) {
+    int dim = lbound.length;
+
+    double[] increments = getIncrements(lbound,ubound,subdiv);
+
+    int[] subdivPlusOne = new int[dim];
+    for (int i = 0; i < dim; i++) {
+        subdivPlusOne[i] = subdiv[i] + 1;
     }
 
-    // Create the relation
-    FiniteHomoRelation<Sequence> relation = new FiniteHomoRelation<>();
+    var pointSet = getPointSet(subdivPlusOne);
+    var nr = getNeighborRelation(pointSet);
+    
+    var o = new FiniteHomoRelation<ImmutableDoubleArray>();
+    for(var p : nr) {
+      var f = new double[dim];
+      var s = new double[dim];
+      
+      for(int i=0;i<dim;i++) {
+        f[i] = p.getFirst().get(i)*increments[i];
+        s[i] = p.getSecond().get(i)*increments[i];
+      }
+      o.add(new ImmutableDoubleArray(f), new ImmutableDoubleArray(s));
+    }
 
-    // Compare points in successive equivalence classes
+    return o;
+  }
+  
+  public static FiniteHomoRelation<ImmutableIntArray> getNeighborRelation(Iterable<ImmutableIntArray> points) {
+    Map<Integer, List<ImmutableIntArray>> equivalenceClasses = new HashMap<>();
+    for (ImmutableIntArray point : points) {
+        int sum = 0;
+        for(int i=0;i<point.size();i++) sum += point.get(i);
+        equivalenceClasses.computeIfAbsent(sum, k -> new ArrayList<>()).add(point);
+    }
+
+    FiniteHomoRelation<ImmutableIntArray> relation = new FiniteHomoRelation<>();
+
     for (int k : equivalenceClasses.keySet()) {
-        List<Sequence> currentClass = equivalenceClasses.get(k);
-        List<Sequence> nextClass = equivalenceClasses.get(k + 1);
+        List<ImmutableIntArray> currentClass = equivalenceClasses.get(k);
+        List<ImmutableIntArray> nextClass = equivalenceClasses.get(k + 1);
 
         if (nextClass != null) {
-            for (Sequence seq1 : currentClass) {
-                for (Sequence seq2 : nextClass) {
+            for (ImmutableIntArray seq1 : currentClass) {
+                for (ImmutableIntArray seq2 : nextClass) {
                     if (areNeighbors(seq1, seq2)) {
                         relation.add(seq1, seq2);
                     }
@@ -281,13 +296,12 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     return relation;
   }
 
-  // Predicate to check if two sequences are neighbors
-  private static boolean areNeighbors(Sequence seq1, Sequence seq2) {
+  private static boolean areNeighbors(ImmutableIntArray seq1, ImmutableIntArray seq2) {
       int diffCount = 0;
       for (int i = 0; i < seq1.size(); i++) {
           if (Math.abs(seq1.get(i) - seq2.get(i)) == 1) {
               diffCount++;
-          } else if (!seq1.get(i).equals(seq2.get(i))) {
+          } else if (seq1.get(i) != seq2.get(i)) {
               return false;
           }
       }
