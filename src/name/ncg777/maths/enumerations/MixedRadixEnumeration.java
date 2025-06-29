@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.function.Consumer;
 
 import name.ncg777.computing.structures.ImmutableDoubleArray;
 import name.ncg777.computing.structures.ImmutableIntArray;
@@ -223,6 +224,17 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
       }
 
       return treeSet;
+  }
+  
+  public static void consumePointSet(
+      double[] lbound,
+      double[] ubound,
+      int[] subdiv,
+      Consumer<ImmutableDoubleArray> consumer) {
+    var ps = getPointSet(lbound, ubound, subdiv);
+    for(var p : ps) {
+      consumer.accept(p);
+    }
   }
   
   private static double[] getIncrements(double[] lbound, double[] ubound, int[] subdiv) {

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -28,11 +27,9 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoWriter;
 
 import name.ncg777.computing.structures.HomoPair;
-import name.ncg777.computing.structures.ImmutableDoubleArray;
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.MatrixOfDoubles;
-import name.ncg777.maths.enumerations.MixedRadixEnumeration;
 
 public class GraphicsFunctions {
   static {
@@ -376,17 +373,6 @@ public class GraphicsFunctions {
 
         return new Color(red, green, blue, alpha);
     };
-  }
-  
-  public static void consumePointSet(
-      double[] lbound,
-      double[] ubound,
-      int[] subdiv,
-      Consumer<ImmutableDoubleArray> consumer) {
-    var ps = MixedRadixEnumeration.getPointSet(lbound, ubound, subdiv);
-    for(var p : ps) {
-      consumer.accept(p);
-    }
   }
   
   /**

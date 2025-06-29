@@ -332,7 +332,7 @@ public class Animations {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.rotate(ntime*Math.PI*2.0, (double)(width/2), (double)(height/2));
         
-        GraphicsFunctions.consumePointSet(
+        MixedRadixEnumeration.consumePointSet(
             lbound, 
             ubound,
             subdiv,
@@ -387,7 +387,7 @@ public class Animations {
         final double omega = 6.0 * Math.PI; // frequency (number of wiggles along r)
         final double speed = 2.0 * Math.PI; // time speed
 
-        GraphicsFunctions.consumePointSet(
+        MixedRadixEnumeration.consumePointSet(
           lbound,
           ubound,
           subdiv,
