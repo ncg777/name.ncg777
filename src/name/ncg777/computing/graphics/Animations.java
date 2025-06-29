@@ -326,20 +326,20 @@ public class Animations {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.rotate(ntime*Math.PI*2.0, (double)(width/2), (double)(height/2));
         
-        GraphicsFunctions.drawParametric2D(
+        GraphicsFunctions.consumePointSet(
             lbound, 
             ubound,
             subdiv,
             (t) -> {
               g.setColor(new Color(
-                  (int)((0.5+(Math.sin(t[0]*ntime*2*Math.PI)*0.5))*255.0), 
-                  (int)((0.5+(Math.cos(t[0]*ntime*2*Math.PI)*0.4))*255.0), 
-                  (int)((0.5+(Math.sin(t[1]*ntime*2*Math.PI)*0.5))*255.0), 
+                  (int)((0.5+(Math.sin(t.get(0)*ntime*2*Math.PI)*0.5))*255.0), 
+                  (int)((0.5+(Math.cos(t.get(0)*ntime*2*Math.PI)*0.4))*255.0), 
+                  (int)((0.5+(Math.sin(t.get(1)*ntime*2*Math.PI)*0.5))*255.0), 
                   255));
 
               g.fill(new Ellipse2D.Double(
-                  t[0]*scaleX+transX, 
-                  t[1]*scaleY+transY, 
+                  t.get(0)*scaleX+transX, 
+                  t.get(1)*scaleY+transY, 
                   10*ntime+10, 
                   10*ntime+10));
             });
@@ -381,13 +381,13 @@ public class Animations {
         final double omega = 6.0 * Math.PI; // frequency (number of wiggles along r)
         final double speed = 2.0 * Math.PI; // time speed
 
-        GraphicsFunctions.drawParametric2D(
+        GraphicsFunctions.consumePointSet(
           lbound,
           ubound,
           subdiv,
           (t) -> {
-            double r = t[0];
-            double theta0 = t[1];
+            double r = t.get(0);
+            double theta0 = t.get(1);
             // The sinusoidal offset is a function of r, animated by phase
             double theta = theta0 + amplitude * Math.sin(omega * r + phase * speed);
             var p = new Cartesian(

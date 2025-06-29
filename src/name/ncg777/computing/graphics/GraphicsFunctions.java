@@ -28,6 +28,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoWriter;
 
 import name.ncg777.computing.structures.HomoPair;
+import name.ncg777.computing.structures.ImmutableDoubleArray;
 import name.ncg777.computing.structures.Pixel32Bits;
 import name.ncg777.maths.Matrix;
 import name.ncg777.maths.MatrixOfDoubles;
@@ -377,30 +378,14 @@ public class GraphicsFunctions {
     };
   }
   
-  public static void drawParametric2D(
+  public static void consumePointSet(
       double[] lbound,
       double[] ubound,
       int[] subdiv,
-      Consumer<double[]> drawf) {
-    int dim = lbound.length;
-    if(ubound.length != dim || subdiv.length != dim) 
-      throw new IllegalArgumentException("Non-matching dimensions");
-    
-    double[] delta = new double[dim];
-    for(int i=0;i<dim;i++) delta[i] = ubound[i]-lbound[i];
-    
-    double[] increments = new double[dim];
-    for(int i=0;i<dim;i++) increments[i] = delta[i]/(subdiv[i]);
-    
-    int[] subdiv_plus_1 = new int[dim];
-    for(int i=0;i<dim;i++) subdiv_plus_1[i] = subdiv[i]+1;
-    
-    var mre = new MixedRadixEnumeration(subdiv_plus_1);
-    while(mre.hasMoreElements()) {
-      var e = mre.nextElement();
-      double[] t = new double[dim];
-      for(int i=0;i<dim;i++) t[i] = lbound[i]+(e[i]*increments[i]);
-      drawf.accept(t);
+      Consumer<ImmutableDoubleArray> consumer) {
+    var ps = MixedRadixEnumeration.getPointSet(lbound, ubound, subdiv);
+    for(var p : ps) {
+      consumer.accept(p);
     }
   }
   
