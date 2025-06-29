@@ -259,8 +259,8 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
       var s = new double[dim];
       
       for(int i=0;i<dim;i++) {
-        f[i] = p.getFirst().get(i)*increments[i];
-        s[i] = p.getSecond().get(i)*increments[i];
+        f[i] = lbound[i]+p.getFirst().get(i)*increments[i];
+        s[i] = lbound[i]+p.getSecond().get(i)*increments[i];
       }
       o.add(new ImmutableDoubleArray(f), new ImmutableDoubleArray(s));
     }

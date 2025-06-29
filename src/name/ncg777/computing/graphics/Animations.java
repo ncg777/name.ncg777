@@ -8,13 +8,19 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 import java.util.function.Consumer;
 
 import name.ncg777.computing.graphics.GraphicsFunctions.Cartesian;
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
+import name.ncg777.computing.structures.ImmutableDoubleArray;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
+import name.ncg777.maths.enumerations.MixedRadixEnumeration;
+
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
@@ -517,5 +523,149 @@ public class Animations {
         Imgproc.circle(mat, center, (int) Math.round(radius), rgba, thickness, Imgproc.LINE_AA, 0);
       }
     };
+  }
+  
+  /**
+   * Animation: 3D cubic grid, projected to 2D, where grid points rotate in 3D and are
+   * connected to neighbors with lines. Colors and node sizes are perfectly periodic and
+   * parametrized for endless possibilities. The animation loops seamlessly.
+   *
+   * @param width         Width of each frame.
+   * @param height        Height of each frame.
+   * @param subdivisions  Number of grid subdivisions in each dimension (min 10).
+   * @param fps           Frames per second.
+   * @param duration      Duration in seconds.
+   * @param spinX         Number of full rotations around X axis per loop.
+   * @param spinY         Number of full rotations around Y axis per loop.
+   * @param spinZ         Number of full rotations around Z axis per loop.
+   * @param lineAlpha     Alpha (opacity) for neighbor lines [0-255].
+   * @param nodeAlpha     Alpha (opacity) for grid point nodes [0-255].
+   * @param colorCycles   Number of color cycles (hue turns) per loop.
+   * @param morphAmount   Amplitude of morphing the cube into a "pulsing" ball (0=simple cube, 1=full morph).
+   * @return              Enumeration of Mat frames.
+   */
+  public static Enumeration<Mat> cubicGrid3DAnimation(
+      int width, int height,
+      int subdivisions,
+      double fps, double duration,
+      double spinX, double spinY, double spinZ,
+      int lineAlpha, int nodeAlpha,
+      double colorCycles,
+      double morphAmount
+  ) {
+      final int frames = (int) Math.round(duration * fps);
+      final double cx = width / 2.0, cy = height / 2.0;
+      final double scale = Math.min(width, height) * 0.36;
+
+      // Define 3D grid in [−1,1]^3
+      final double[] lbound = {-1.0, -1.0, -1.0};
+      final double[] ubound = {1.0, 1.0, 1.0};
+      final int[] subdiv = {subdivisions, subdivisions, subdivisions};
+
+      // Get all points and neighbor relation (static, reused)
+      final TreeSet<ImmutableDoubleArray> points = MixedRadixEnumeration.getPointSet(lbound, ubound, subdiv);
+      final var neighbors = MixedRadixEnumeration.getNeighborRelation(lbound, ubound, subdiv);
+
+      return new Enumeration<Mat>() {
+          int k = 0;
+
+          public boolean hasMoreElements() { return k < frames; }
+
+          public Mat nextElement() {
+              double phase = (double) k / frames; // [0,1)
+              double angleX = spinX * 2 * Math.PI * phase;
+              double angleY = spinY * 2 * Math.PI * phase;
+              double angleZ = spinZ * 2 * Math.PI * phase;
+              double morph = morphAmount * (0.5 + 0.5 * Math.sin(phase * 2 * Math.PI));
+
+              // Precompute rotation matrix
+              double[][] rot = rotationMatrix3D(angleX, angleY, angleZ);
+
+              // Project all points to 2D, store mapping for lines and colors
+              Map<ImmutableDoubleArray, double[]> projected = new HashMap<>();
+              for (ImmutableDoubleArray p : points) {
+                  double[] v = {p.get(0), p.get(1), p.get(2)};
+                  // Morph the cube into a "pulsing" sphere (blow-your-mind mode)
+                  if (morphAmount > 0.0) {
+                      double r = Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+                      double s = Math.pow(r, 3);
+                      double morphR = (1-morph) + morph * s;
+                      for (int i = 0; i < 3; i++) v[i] *= morphR;
+                  }
+                  double[] rv = rotate3D(v, rot);
+                  // Perspective: move camera back a bit for depth
+                  double camZ = 3.0;
+                  double depth = rv[2] + camZ;
+                  double px = cx + scale * rv[0] / depth;
+                  double py = cy + scale * rv[1] / depth;
+                  projected.put(p, new double[]{px, py, rv[2]});
+              }
+
+              // Create image and draw
+              BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+              Graphics2D g = img.createGraphics();
+              g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+              // 1. Draw neighbor lines (behind points)
+              for (var edge : neighbors) {
+                  ImmutableDoubleArray a = edge.getFirst();
+                  ImmutableDoubleArray b = edge.getSecond();
+                  double[] pa = projected.get(a);
+                  double[] pb = projected.get(b);
+                  if (pa == null || pb == null) {
+                      System.err.println("Missing projection for: " + (pa == null ? a : b));
+                      continue; // or throw
+                  }
+                  // Dynamic color based on edge midpoint and time
+                  double[] mid = {(a.get(0)+b.get(0))/2, (a.get(1)+b.get(1))/2, (a.get(2)+b.get(2))/2};
+                  double midR = Math.sqrt(mid[0]*mid[0] + mid[1]*mid[1] + mid[2]*mid[2]);
+                  float hue = (float) ((phase + colorCycles * midR + 0.55 * Math.atan2(mid[1], mid[0]) / (2*Math.PI)) % 1.0);
+                  Color lineColor = Color.getHSBColor(hue, 0.7f, 1.0f);
+                  g.setColor(new Color(lineColor.getRed(), lineColor.getGreen(), lineColor.getBlue(), lineAlpha));
+                  g.setStroke(new BasicStroke(1.2f));
+                  g.draw(new java.awt.geom.Line2D.Double(pa[0], pa[1], pb[0], pb[1]));
+              }
+
+              // 2. Draw points
+              for (ImmutableDoubleArray p : points) {
+                  double[] pp = projected.get(p);
+                  double d = Math.sqrt(p.get(0)*p.get(0) + p.get(1)*p.get(1) + p.get(2)*p.get(2));
+                  float hue = (float) ((phase + colorCycles * d + 0.4 * Math.atan2(p.get(1), p.get(0)) / (2*Math.PI)) % 1.0);
+                  float sat = 0.75f + 0.2f * (float)Math.sin(phase * 2 * Math.PI + d * 8);
+                  float bright = 0.8f + 0.2f * (float)Math.cos(phase * 2 * Math.PI + d * 5);
+                  Color c = Color.getHSBColor(hue, sat, bright);
+                  int alpha = nodeAlpha;
+                  int size = (int)(7 + 21 * (0.5 + 0.5 * Math.sin(2*Math.PI*phase + d*6 + pp[2]*0.8)));
+                  g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha));
+                  g.fill(new java.awt.geom.Ellipse2D.Double(pp[0]-size/2.0, pp[1]-size/2.0, size, size));
+              }
+
+              ++k;
+              return GraphicsFunctions.bufferedImageToMat(img);
+          }
+
+          // 3x3 rotation matrix: Rz * Ry * Rx
+          private double[][] rotationMatrix3D(double ax, double ay, double az) {
+              double sx = Math.sin(ax), cx = Math.cos(ax);
+              double sy = Math.sin(ay), cy = Math.cos(ay);
+              double sz = Math.sin(az), cz = Math.cos(az);
+              double[][] Rx = { {1,0,0}, {0,cx,-sx}, {0,sx,cx} };
+              double[][] Ry = { {cy,0,sy}, {0,1,0}, {-sy,0,cy} };
+              double[][] Rz = { {cz,-sz,0}, {sz,cz,0}, {0,0,1} };
+              return multiply3x3(Rz, multiply3x3(Ry, Rx));
+          }
+          private double[][] multiply3x3(double[][] A, double[][] B) {
+              double[][] r = new double[3][3];
+              for (int i=0;i<3;i++) for (int j=0;j<3;j++) for (int k=0;k<3;k++) r[i][j] += A[i][k]*B[k][j];
+              return r;
+          }
+          private double[] rotate3D(double[] v, double[][] R) {
+              return new double[] {
+                  R[0][0]*v[0] + R[0][1]*v[1] + R[0][2]*v[2],
+                  R[1][0]*v[0] + R[1][1]*v[1] + R[1][2]*v[2],
+                  R[2][0]*v[0] + R[2][1]*v[1] + R[2][2]*v[2]
+              };
+          }
+      };
   }
 }
