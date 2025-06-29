@@ -1,11 +1,8 @@
 package name.ncg777.maths.enumerations;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 
 import name.ncg777.computing.structures.ImmutableDoubleArray;
@@ -250,8 +247,7 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
         subdivPlusOne[i] = subdiv[i] + 1;
     }
 
-    var pointSet = getPointSet(subdivPlusOne);
-    var nr = getNeighborRelation(pointSet);
+    var nr = getNeighborRelation(subdivPlusOne);
     
     var o = new FiniteHomoRelation<ImmutableDoubleArray>();
     for(var p : nr) {
@@ -268,43 +264,25 @@ public class MixedRadixEnumeration implements Enumeration<int[]> {
     return o;
   }
   
-  public static FiniteHomoRelation<ImmutableIntArray> getNeighborRelation(Iterable<ImmutableIntArray> points) {
-    Map<Integer, List<ImmutableIntArray>> equivalenceClasses = new HashMap<>();
-    for (ImmutableIntArray point : points) {
-        int sum = 0;
-        for(int i=0;i<point.size();i++) sum += point.get(i);
-        equivalenceClasses.computeIfAbsent(sum, k -> new ArrayList<>()).add(point);
-    }
+  public static FiniteHomoRelation<ImmutableIntArray> getNeighborRelation(int[] base) {
+    var pointSet = getPointSet(base);
 
     FiniteHomoRelation<ImmutableIntArray> relation = new FiniteHomoRelation<>();
 
-    for (int k : equivalenceClasses.keySet()) {
-        List<ImmutableIntArray> currentClass = equivalenceClasses.get(k);
-        List<ImmutableIntArray> nextClass = equivalenceClasses.get(k + 1);
-
-        if (nextClass != null) {
-            for (ImmutableIntArray seq1 : currentClass) {
-                for (ImmutableIntArray seq2 : nextClass) {
-                    if (areNeighbors(seq1, seq2)) {
-                        relation.add(seq1, seq2);
-                    }
-                }
-            }
-        }
+    for (var point : pointSet) {
+       for(int i=0;i<base.length;i++) {
+         if((point.get(i)+1) < base[i]) {
+           int[] s = new int[base.length];
+           for(int j=0;j<base.length;j++) {
+             if(j==i) s[j] = point.get(j)+1;
+             else s[j] = point.get(j);
+           }
+           relation.add(point, new ImmutableIntArray(s));
+         }
+       }
     }
 
     return relation;
   }
 
-  private static boolean areNeighbors(ImmutableIntArray seq1, ImmutableIntArray seq2) {
-      int diffCount = 0;
-      for (int i = 0; i < seq1.size(); i++) {
-          if (Math.abs(seq1.get(i) - seq2.get(i)) == 1) {
-              diffCount++;
-          } else if (seq1.get(i) != seq2.get(i)) {
-              return false;
-          }
-      }
-      return diffCount == 1;
-  }
 }
