@@ -2,7 +2,6 @@ package name.ncg777.maths.enumerations;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.TreeSet;
