@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import name.ncg777.maths.sequences.Sequence;
+import name.ncg777.computing.structures.ImmutableIntArray;
 
 public class BitSequenceEnumeration implements Enumeration<Sequence> {
   private BitSetEnumeration e;
@@ -36,29 +37,23 @@ public class BitSequenceEnumeration implements Enumeration<Sequence> {
   
   /**
    * Generates all points in a hypercube of the given dimension.
-   * Each point is represented as a binary sequence (Sequence object).
+   * Each point is represented as an ImmutableIntArray.
    * 
    * @param dimension the number of bits in the hypercube
    * @return a set containing all binary sequences representing points in the hypercube
    * @throws IllegalArgumentException if dimension is negative or zero
    */
-  public static Set<Sequence> getPointSet(int dimension) {
+  public static Set<ImmutableIntArray> getPointSet(int dimension) {
     if (dimension <= 0) {
       throw new IllegalArgumentException("Dimension must be positive");
     }
     
-    Set<Sequence> points = new TreeSet<>((s1, s2) -> {
-      // Compare sequences lexicographically
-      for (int i = 0; i < Math.min(s1.size(), s2.size()); i++) {
-        int cmp = Integer.compare(s1.get(i), s2.get(i));
-        if (cmp != 0) return cmp;
-      }
-      return Integer.compare(s1.size(), s2.size());
-    });
+    Set<ImmutableIntArray> points = new TreeSet<>();
     
     BitSequenceEnumeration enumeration = new BitSequenceEnumeration(dimension);
     while (enumeration.hasMoreElements()) {
-      points.add(enumeration.nextElement());
+      Sequence seq = enumeration.nextElement();
+      points.add(sequenceToImmutableIntArray(seq));
     }
     
     return points;
@@ -73,20 +68,20 @@ public class BitSequenceEnumeration implements Enumeration<Sequence> {
    * @return a map where each key is a point and values are its neighbors
    * @throws IllegalArgumentException if dimension is negative or zero
    */
-  public static Map<Sequence, List<Sequence>> getHypercubeNeighborRelation(int dimension) {
+  public static Map<ImmutableIntArray, List<ImmutableIntArray>> getHypercubeNeighborRelation(int dimension) {
     if (dimension <= 0) {
       throw new IllegalArgumentException("Dimension must be positive");
     }
     
-    Set<Sequence> points = getPointSet(dimension);
-    Map<Sequence, List<Sequence>> neighborRelation = new HashMap<>();
+    Set<ImmutableIntArray> points = getPointSet(dimension);
+    Map<ImmutableIntArray, List<ImmutableIntArray>> neighborRelation = new HashMap<>();
     
     // For each point, find its neighbors
-    for (Sequence point : points) {
-      List<Sequence> neighbors = new ArrayList<>();
+    for (ImmutableIntArray point : points) {
+      List<ImmutableIntArray> neighbors = new ArrayList<>();
       
       // Check all other points to see if they are neighbors
-      for (Sequence otherPoint : points) {
+      for (ImmutableIntArray otherPoint : points) {
         if (areNeighbors(point, otherPoint)) {
           neighbors.add(otherPoint);
         }
@@ -99,17 +94,17 @@ public class BitSequenceEnumeration implements Enumeration<Sequence> {
   }
   
   /**
-   * Helper method to determine if two sequences are neighbors
+   * Helper method to determine if two ImmutableIntArrays are neighbors
    * (differ by exactly one bit).
    */
-  private static boolean areNeighbors(Sequence s1, Sequence s2) {
+  private static boolean areNeighbors(ImmutableIntArray s1, ImmutableIntArray s2) {
     if (s1.size() != s2.size()) {
       return false;
     }
     
     int differences = 0;
     for (int i = 0; i < s1.size(); i++) {
-      if (!s1.get(i).equals(s2.get(i))) {
+      if (s1.get(i) != s2.get(i)) {
         differences++;
         if (differences > 1) {
           return false; // More than one difference, not neighbors
@@ -118,5 +113,16 @@ public class BitSequenceEnumeration implements Enumeration<Sequence> {
     }
     
     return differences == 1; // Exactly one difference means they are neighbors
+  }
+  
+  /**
+   * Helper method to convert a Sequence to an ImmutableIntArray.
+   */
+  private static ImmutableIntArray sequenceToImmutableIntArray(Sequence seq) {
+    int[] arr = new int[seq.size()];
+    for (int i = 0; i < seq.size(); i++) {
+      arr[i] = seq.get(i);
+    }
+    return new ImmutableIntArray(arr);
   }
 }
