@@ -2,13 +2,7 @@ package name.ncg777.maths.enumerations;
 
 import java.util.BitSet;
 import java.util.Enumeration;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.BiPredicate;
 
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.computing.structures.ImmutableIntArray;
@@ -75,35 +69,30 @@ public class BitSequenceEnumeration implements Enumeration<Sequence> {
       throw new IllegalArgumentException("Dimension must be positive");
     }
     
-    TreeSet<ImmutableIntArray> points = getPointSet(dimension);
+    FiniteHomoRelation<ImmutableIntArray> relation = new FiniteHomoRelation<>();
     
-    // Create a BiPredicate that determines if two points are neighbors
-    BiPredicate<ImmutableIntArray, ImmutableIntArray> neighborPredicate = 
-        (point1, point2) -> areNeighbors(point1, point2);
-    
-    return new FiniteHomoRelation<>(points, neighborPredicate);
-  }
-  
-  /**
-   * Helper method to determine if two ImmutableIntArrays are neighbors
-   * (differ by exactly one bit).
-   */
-  private static boolean areNeighbors(ImmutableIntArray s1, ImmutableIntArray s2) {
-    if (s1.size() != s2.size()) {
-      return false;
-    }
-    
-    int differences = 0;
-    for (int i = 0; i < s1.size(); i++) {
-      if (s1.get(i) != s2.get(i)) {
-        differences++;
-        if (differences > 1) {
-          return false; // More than one difference, not neighbors
+    // Generate all points and their neighbors efficiently: O(n * 2^n)
+    BitSequenceEnumeration enumeration = new BitSequenceEnumeration(dimension);
+    while (enumeration.hasMoreElements()) {
+      Sequence seq = enumeration.nextElement();
+      ImmutableIntArray point = sequenceToImmutableIntArray(seq);
+      
+      // For each point, generate neighbors by flipping each bit
+      for (int i = 0; i < dimension; i++) {
+        int[] neighborArray = new int[dimension];
+        for (int j = 0; j < dimension; j++) {
+          neighborArray[j] = seq.get(j);
         }
+        // Flip the i-th bit
+        neighborArray[i] = 1 - neighborArray[i];
+        ImmutableIntArray neighbor = new ImmutableIntArray(neighborArray);
+        
+        // Add the relation pair
+        relation.add(point, neighbor);
       }
     }
     
-    return differences == 1; // Exactly one difference means they are neighbors
+    return relation;
   }
   
   /**
