@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiPredicate;
 
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.computing.structures.ImmutableIntArray;
+import name.ncg777.maths.relations.FiniteHomoRelation;
 
 public class BitSequenceEnumeration implements Enumeration<Sequence> {
   private BitSetEnumeration e;
@@ -40,15 +42,15 @@ public class BitSequenceEnumeration implements Enumeration<Sequence> {
    * Each point is represented as an ImmutableIntArray.
    * 
    * @param dimension the number of bits in the hypercube
-   * @return a set containing all binary sequences representing points in the hypercube
+   * @return a TreeSet containing all binary sequences representing points in the hypercube
    * @throws IllegalArgumentException if dimension is negative or zero
    */
-  public static Set<ImmutableIntArray> getPointSet(int dimension) {
+  public static TreeSet<ImmutableIntArray> getPointSet(int dimension) {
     if (dimension <= 0) {
       throw new IllegalArgumentException("Dimension must be positive");
     }
     
-    Set<ImmutableIntArray> points = new TreeSet<>();
+    TreeSet<ImmutableIntArray> points = new TreeSet<>();
     
     BitSequenceEnumeration enumeration = new BitSequenceEnumeration(dimension);
     while (enumeration.hasMoreElements()) {
@@ -65,32 +67,21 @@ public class BitSequenceEnumeration implements Enumeration<Sequence> {
    * defined by flipping one bit at a time.
    * 
    * @param dimension the number of bits in the hypercube
-   * @return a map where each key is a point and values are its neighbors
+   * @return a FiniteHomoRelation where each point is related to its neighbors
    * @throws IllegalArgumentException if dimension is negative or zero
    */
-  public static Map<ImmutableIntArray, List<ImmutableIntArray>> getHypercubeNeighborRelation(int dimension) {
+  public static FiniteHomoRelation<ImmutableIntArray> getHypercubeNeighborRelation(int dimension) {
     if (dimension <= 0) {
       throw new IllegalArgumentException("Dimension must be positive");
     }
     
-    Set<ImmutableIntArray> points = getPointSet(dimension);
-    Map<ImmutableIntArray, List<ImmutableIntArray>> neighborRelation = new HashMap<>();
+    TreeSet<ImmutableIntArray> points = getPointSet(dimension);
     
-    // For each point, find its neighbors
-    for (ImmutableIntArray point : points) {
-      List<ImmutableIntArray> neighbors = new ArrayList<>();
-      
-      // Check all other points to see if they are neighbors
-      for (ImmutableIntArray otherPoint : points) {
-        if (areNeighbors(point, otherPoint)) {
-          neighbors.add(otherPoint);
-        }
-      }
-      
-      neighborRelation.put(point, neighbors);
-    }
+    // Create a BiPredicate that determines if two points are neighbors
+    BiPredicate<ImmutableIntArray, ImmutableIntArray> neighborPredicate = 
+        (point1, point2) -> areNeighbors(point1, point2);
     
-    return neighborRelation;
+    return new FiniteHomoRelation<>(points, neighborPredicate);
   }
   
   /**
