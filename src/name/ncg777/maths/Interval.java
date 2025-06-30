@@ -41,7 +41,9 @@ public class Interval<T extends Comparable<? super T>> implements Comparable<Int
   public boolean isLeftOpen() {return !this.includesMinimum;}
   public boolean isRightOpen() {return !this.includesMaximum;}
   public boolean isHalfOpen() {return this.includesMaximum != this.includesMinimum;}
-  public boolean isEmpty() { return this.minimum.equals(maximum) && !this.includesMinimum && !this.includesMaximum; }
+  public boolean isEmpty() { 
+    return this.minimum == null && this.maximum == null; 
+  }
   public boolean isClosed() { return this.includesMinimum && this.includesMaximum; }
   public boolean isOpen() { return !this.includesMinimum && !this.includesMaximum;}
   public boolean isDegenerate() { return this.minimum.equals(this.maximum) && this.includesMinimum && this.includesMaximum;}
