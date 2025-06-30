@@ -1389,6 +1389,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     MaxZeroY,
     MinZeroY,
     HardThreshold,
+    RandInt,
   }
   
   static {
@@ -1431,6 +1432,12 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     ops.put(Operation.MaxZeroY, (x,y) -> Math.max(0, y));
     ops.put(Operation.MinZeroY, (x,y) -> Math.min(0, y));
     ops.put(Operation.HardThreshold, (x, y) -> Math.abs(x) > Math.abs(y) ? 0 : x);
+    ops.put(Operation.RandInt, (x, y) -> {
+      int min = Math.min(x, y);
+      int max = Math.max(x, y);
+      if (min == max) return min;
+      return RandomNumberGenerator.nextInt(max - min + 1) + min;
+    });
   }
 
   public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {
@@ -1438,29 +1445,29 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     var operationFn = ops.get(operation);
     int lcm = (int)Numbers.lcm(x.size(),y.size());
     switch (combiner) {
-      case Combiner.Apply:
+      case Apply:
         for (int i = 0; i < y.size(); i++) {
             o.add(operationFn.apply(x.get(y.get(i) % x.size()), y.get(i % y.size())));
         }
         break;
-      case Combiner.Recycle:
+      case Recycle:
         for (int i = 0; i < lcm; i++) { 
             o.add(operationFn.apply(x.get(i%x.size()), y.get(i%y.size())));
         }
         break;
-      case Combiner.Divisive:
+      case Divisive:
         for (int i = 0; i < lcm; i++) { 
             o.add(operationFn.apply(x.get(i/(lcm/x.size())), y.get(i/(lcm/y.size()))));
         }
         break;
-      case Combiner.Product:
+      case Product:
         for (int i = 0; i < x.size(); i++) {
           for (int j = 0; j < y.size(); j++) {  
               o.add(operationFn.apply(x.get(i), y.get(j)));
           }
         }
         break;
-      case Combiner.Triangular:
+      case Triangular:
         for (int i = 0; i < x.size(); i++) {
           for (int j = 0; j < y.size(); j++) {
             if (j<=i) {
@@ -1469,12 +1476,12 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           }
         }
         break;
-      case Combiner.Reduce:
+      case Reduce:
         for (int i = 0; i < x.size(); i++) {
           o.add(y.stream().reduce(x.get(i), (a,b) -> operationFn.apply(a, b)));
         }
         break;
-      case Combiner.MixedRadix: 
+      case MixedRadix: 
         // This list will collect each combination
         List<int[]> result = new ArrayList<>();
         // Initialize the current combination with zeros
@@ -1515,7 +1522,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
             }
         }
         break;
-      case Combiner.Bits: 
+      case Bits: 
           for (int i = 0; i < x.size(); i++) {
               int[] b = Numbers.toBinary(x.get(i), y.get(i));
               for (int j = 0; j < b.length; j++) {
@@ -1523,7 +1530,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
               }
           }
           break;
-      case Combiner.Trits: 
+      case Trits: 
           for (int i = 0; i < x.size(); i++) {
               int[] b = Numbers.toBalancedTernary(x.get(i), y.get(i));
               for (int j = 0; j < b.length; j++) {

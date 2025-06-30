@@ -3,6 +3,7 @@ package name.ncg777.maths.numbers;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import name.ncg777.maths.Combination;
@@ -82,7 +83,8 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
           ));
     }
     
-    this.addAll(tmp.reversed());
+    Collections.reverse(tmp);
+    this.addAll(tmp);
   }
 
   public BinaryNatural toBinaryNatural() {
@@ -171,7 +173,7 @@ public class Natural extends ArrayList<Character> implements Serializable, Compa
     }
     if (t > 0) {
       do {
-        o.add(0, o.removeLast());
+        o.add(0, o.remove(o.size()-1));
       } while (--t > 0);
     }
     return o;

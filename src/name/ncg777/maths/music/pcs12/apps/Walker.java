@@ -105,7 +105,7 @@ public class Walker {
     List<String> cs = new ArrayList<String>();
     cs.addAll(Pcs12.getForteChordDict().keySet());
     cs.sort(Pcs12.ForteStringComparator);
-    cs = cs.reversed();
+    Collections.reverse(cs);
     cbxScale = new JComboBox<String>(new DefaultComboBoxModel<String>(cs.toArray(new String[0])));
     frmChordPleasure = new JFrame();
     frmChordPleasure.setTitle("Pcs12 Walker");
