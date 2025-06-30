@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-import name.ncg777.computing.Backtracker;
+import name.ncg777.computing.RecursiveOptimizer;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.statistics.SegmentationScore;
 
@@ -35,7 +35,7 @@ import name.ncg777.statistics.SegmentationScore;
  *
  * @see Combination
  * @see SegmentationScore
- * @see Backtracker
+ * @see RecursiveOptimizer
  */
 public class Composition extends Combination {
   private static final long serialVersionUID = 1L;
@@ -132,8 +132,8 @@ public class Composition extends Combination {
   
   
   public List<Composition> segment() {
-    Backtracker<Composition> b =
-        Backtracker.Maximizer((c) -> Composition.refinements(c),
+    RecursiveOptimizer<Composition> b =
+        RecursiveOptimizer.Maximizer((c) -> Composition.refinements(c),
             (c) -> {
         Sequence s = Composition.this.asSequence();
         
@@ -147,7 +147,7 @@ public class Composition extends Combination {
       });
     List<Composition> o = new ArrayList<Composition>();
     
-    b.backtrack(new Composition(getK()+1), o);
+    b.optimize(new Composition(getK()+1), o);
     return o;
     
   }

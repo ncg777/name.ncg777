@@ -7,7 +7,7 @@ import java.util.function.Function;
 import org.apache.commons.math3.util.Precision;
 
 /**
- * The {@code Backtracker} class implements a backtracking algorithm for searching through
+ * The {@code RecursiveOptimizer} class implements an algorithm for searching through
  * combinatorial problems, allowing for the evaluation of solutions based on a provided 
  * scoring function. It can be configured to either minimize or maximize the score based 
  * on the criteria specified during instantiation.
@@ -20,13 +20,13 @@ import org.apache.commons.math3.util.Precision;
  * corresponding score (double).</li>
  * </ul>
  * 
- * <p>The backtracking algorithm explores all possible states by recursively traversing through 
+ * <p>The algorithm explores all possible states by recursively traversing through 
  * the state space defined by the {@code next_function}. It retains the best states based on 
  * evaluation scores according to the optimization direction (minimization or maximization).</p>
  * 
  * <p>Usage example:</p>
  * <pre>
- * Backtracker<MyStateType> backtracker = Backtracker.Minimizer(
+ * RecursiveOptimizer<MyStateType> backtracker = RecursiveOptimizer.Minimizer(
  *     state -> getNextStates(state),
  *     state -> evaluateScore(state));
  * 
@@ -35,7 +35,7 @@ import org.apache.commons.math3.util.Precision;
  * 
  * @param <T> The type representing the state in the backtracking process.
  */
-public class Backtracker<T> {
+public class RecursiveOptimizer<T> {
 
   private Function<T, List<T>> next_function;
   private Function<T, Double> evaluation_function;
@@ -46,23 +46,23 @@ public class Backtracker<T> {
 
   private MIN_OR_MAX min_or_max;
 
-  public static <T> Backtracker<T> Minimizer(Function<T, List<T>> next_function,
+  public static <T> RecursiveOptimizer<T> Minimizer(Function<T, List<T>> next_function,
       Function<T, Double> evaluation_function) {
-    return new Backtracker<T>(next_function, evaluation_function, MIN_OR_MAX.MIN);
+    return new RecursiveOptimizer<T>(next_function, evaluation_function, MIN_OR_MAX.MIN);
   }
 
-  public static <T> Backtracker<T> Maximizer(Function<T, List<T>> next_function,
+  public static <T> RecursiveOptimizer<T> Maximizer(Function<T, List<T>> next_function,
       Function<T, Double> evaluation_function) {
-    return new Backtracker<T>(next_function, evaluation_function, MIN_OR_MAX.MAX);
+    return new RecursiveOptimizer<T>(next_function, evaluation_function, MIN_OR_MAX.MAX);
   }
 
-  public List<T> backtrack(T start) {
+  public List<T> optimize(T start) {
     List<T> o = new ArrayList<T>();
-    backtrack(start, o);
+    optimize(start, o);
     return o;
   }
 
-  public Double backtrack(T start, List<T> out_list) {
+  public Double optimize(T start, List<T> out_list) {
     double score = Precision.round(evaluation_function.apply(start), 8);
 
     List<T> n = next_function.apply(start);
@@ -93,7 +93,7 @@ public class Backtracker<T> {
     for (int i = 0; i < n.size(); i++) {
       l2.add(new ArrayList<T>());
       if (scores[i] == opt) {
-        scores_opt[i] = backtrack(n.get(i), l2.get(i));
+        scores_opt[i] = optimize(n.get(i), l2.get(i));
         if (scores_opt[i] != null && (min_or_max == MIN_OR_MAX.MAX && scores_opt[i] > opt)
             || (min_or_max == MIN_OR_MAX.MIN && scores_opt[i] < opt)) {
           opt = scores_opt[i];
@@ -110,7 +110,7 @@ public class Backtracker<T> {
 
   }
 
-  private Backtracker(Function<T, List<T>> next_function, Function<T, Double> evaluation_function,
+  private RecursiveOptimizer(Function<T, List<T>> next_function, Function<T, Double> evaluation_function,
       MIN_OR_MAX m) {
     if (m == null || next_function == null || evaluation_function == null) {
       throw new IllegalArgumentException();
