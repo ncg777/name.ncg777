@@ -84,7 +84,7 @@ public class MetaCompositionEnumeration  implements Enumeration<String> {
           break;
         case '>':
           o.add(strs.stream().reduce("", (a,b) -> a+b));
-          strs.removeLast();
+          strs.remove(strs.size()-1);
           break;
         default:
           strs.add(String.valueOf(s.charAt(i)));

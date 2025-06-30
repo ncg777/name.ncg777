@@ -1389,6 +1389,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     MaxZeroY,
     MinZeroY,
     HardThreshold,
+    RandInt,
   }
   
   static {
@@ -1431,6 +1432,12 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     ops.put(Operation.MaxZeroY, (x,y) -> Math.max(0, y));
     ops.put(Operation.MinZeroY, (x,y) -> Math.min(0, y));
     ops.put(Operation.HardThreshold, (x, y) -> Math.abs(x) > Math.abs(y) ? 0 : x);
+    ops.put(Operation.RandInt, (x, y) -> {
+      int min = Math.min(x, y);
+      int max = Math.max(x, y);
+      if (min == max) return min;
+      return RandomNumberGenerator.nextInt(max - min + 1) + min;
+    });
   }
 
   public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {

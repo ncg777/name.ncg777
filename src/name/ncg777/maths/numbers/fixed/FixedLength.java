@@ -2,6 +2,7 @@ package name.ncg777.maths.numbers.fixed;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -543,7 +544,8 @@ public class FixedLength {
         o.add(s);
       }
       
-      return o.reversed();
+      Collections.reverse(o);
+      return o;
     }
 
     @Override
