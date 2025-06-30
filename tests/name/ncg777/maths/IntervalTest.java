@@ -221,9 +221,10 @@ public class IntervalTest extends TestCase {
         
         try {
             interval1.mergeWith(interval2);
-            fail("Expected exception for non-overlapping intervals");
-        } catch (UnsupportedOperationException e) {
-            // Expected
+            fail("Expected InvalidIntervalOperationException for non-overlapping intervals");
+        } catch (name.ncg777.maths.exceptions.InvalidIntervalOperationException e) {
+            // Expected - verify the message is descriptive
+            assertTrue(e.getMessage().contains("Cannot merge non-overlapping intervals"));
         }
     }
 
