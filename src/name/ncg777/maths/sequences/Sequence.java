@@ -1372,8 +1372,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     ReverseImplication,
     Xor,
     Xnor,
-    ShiftLeft,
-    ShiftRight,
+    ShiftBits,
     LCM,
     GCD,
     Equal,
@@ -1392,6 +1391,79 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     RandInt,
   }
   
+  private static int maxBinaryDigits(int a, int b) {
+    int absA = Math.abs(a);
+    int absB = Math.abs(b);
+    // Special case: 0 requires 1 digit
+    int digitsA = absA == 0 ? 1 : (int) (Math.floor(Math.log(absA) / Math.log(2)) + 1);
+    int digitsB = absB == 0 ? 1 : (int) (Math.floor(Math.log(absB) / Math.log(2)) + 1);
+    return Math.max(digitsA, digitsB);
+  }
+  
+  private static int applyBitwise(
+      int x,
+      int y,
+      java.util.function.BiFunction<Boolean, Boolean, Boolean> op
+  ) {
+      int nbdigits = maxBinaryDigits(x, y);
+      int[] bx = Numbers.toBinary(x, nbdigits);
+      int[] by = Numbers.toBinary(y, nbdigits);
+  
+      // Map -1/1 to true, 0 to false
+      boolean[] boolx = new boolean[nbdigits];
+      boolean[] booly = new boolean[nbdigits];
+      for (int i = 0; i < nbdigits; i++) {
+          boolx[i] = bx[i] != 0;
+          booly[i] = by[i] != 0;
+      }
+  
+      // Apply the boolean operation bitwise
+      boolean[] resultBool = new boolean[nbdigits];
+      for (int i = 0; i < nbdigits; i++) {
+          resultBool[i] = op.apply(boolx[i], booly[i]);
+      }
+  
+      // Map booleans back to 1 (true) and 0 (false)
+      int[] resultBits = new int[nbdigits];
+      for (int i = 0; i < nbdigits; i++) {
+          resultBits[i] = resultBool[i] ? 1 : 0;
+      }
+  
+      int signX = Integer.signum(x);
+      signX = signX == 0 ? 1 : signX;
+  
+      int signY = Integer.signum(y);
+      signY = signY == 0 ? 1 : signY;
+  
+      // The sign is the product of the signs of x and y
+      int sign = signX * signY;
+  
+      // Convert back to integer
+      int result = sign * Numbers.fromBinary(resultBits);
+  
+      return result == -0 ? 0 : result;
+  }
+  
+  /**
+  * Shifts the bits of a number left or right using Numbers.toBinary and Numbers.fromBinary.
+  * @param n The number to shift.
+  * @param positions The number of positions to shift (positive = left, negative = right).
+  * @return The shifted number.
+  */
+  private static int shift(int n, int positions) {
+     if (positions == 0) return n;
+     if (positions > 0) {
+         return (int) (n * Math.pow(2, positions));
+     } else {
+         // Arithmetic shift for negative numbers, logical for positive
+         if (n >= 0) {
+             return (int) Math.floor(n / Math.pow(2, -positions));
+         } else {
+             return (int) -Math.floor(Math.abs(n) / Math.pow(2, -positions));
+         }
+     }
+  }
+  
   static {
     ops = new TreeMap<Operation,BiFunction<Integer,Integer,Integer>>();
     
@@ -1407,16 +1479,15 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     ops.put(Operation.Max, (x,y) -> Math.max(x,y));
     ops.put(Operation.Modulo, (x,y) -> x%y);
     ops.put(Operation.Bounce, (x,y) -> x%(2*y) <= y ? x%(2*y) : ((2*y)-(x%(2*y))));
-    ops.put(Operation.And, (x,y) -> x&y);
-    ops.put(Operation.Nand, (x,y) -> ~(x&y));
-    ops.put(Operation.Or, (x,y) -> x|y);
-    ops.put(Operation.Nor, (x,y) -> ~(x|y));
-    ops.put(Operation.Implication, (x,y) -> (~x)|y);
-    ops.put(Operation.ReverseImplication, (x,y) -> (~y)|x);
-    ops.put(Operation.Xor, (x,y) -> x^y);
-    ops.put(Operation.Xnor, (x,y) -> ~(x^y));
-    ops.put(Operation.ShiftLeft, (x,y) -> (x<<y));
-    ops.put(Operation.ShiftRight, (x,y) -> (x>>y));
+    ops.put(Operation.And, (x, y) -> applyBitwise(x,y, (a,b) -> a && b));
+    ops.put(Operation.Nand, (x, y) -> applyBitwise(x,y, (a,b) -> !(a && b)));
+    ops.put(Operation.Or, (x, y) -> applyBitwise(x,y, (a,b) -> a || b));
+    ops.put(Operation.Nor, (x, y) -> applyBitwise(x,y, (a,b) -> !(a || b)));
+    ops.put(Operation.Implication, (x, y) -> applyBitwise(x,y, (a,b) -> (!a) || b));
+    ops.put(Operation.ReverseImplication, (x, y) -> applyBitwise(x,y, (a,b) -> (!b) || a));
+    ops.put(Operation.Xor, (x, y) -> applyBitwise(x,y, (a,b) -> a != b));
+    ops.put(Operation.Xnor, (x, y) -> applyBitwise(x,y, (a,b) -> a == b));
+    ops.put(Operation.ShiftBits, (x, y) -> shift(x, y));
     ops.put(Operation.LCM, (x,y) -> (int)Numbers.lcm(x, y));
     ops.put(Operation.GCD, (x,y) -> (int)Numbers.gcd(x, y));
     ops.put(Operation.Equal, (x,y) -> x==y ? 1 :0);
