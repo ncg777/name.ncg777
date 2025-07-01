@@ -1,0 +1,1 @@
+javaw -jar name.ncg777.jar
