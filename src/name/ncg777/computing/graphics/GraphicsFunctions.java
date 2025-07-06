@@ -158,6 +158,39 @@ public class GraphicsFunctions {
       return o < 0 ? -1 : o > 0 ? 1 : 0;
     }
   };
+  
+  /**
+   * Converts Polar coordinates to Cartesian coordinates.
+   *
+   * @param polar The Polar coordinate object (r, theta).
+   * @return A new Cartesian coordinate object (x, y).
+   */
+  public static Cartesian toCartesian(Polar polar) {
+    // x = r * cos(theta)
+    double x = polar.r() * Math.cos(polar.theta());
+    // y = r * sin(theta)
+    double y = polar.r() * Math.sin(polar.theta());
+    return new Cartesian(x, y);
+  }
+
+  /**
+   * Converts Cartesian coordinates to Polar coordinates.
+   *
+   * The radius 'r' is calculated as the square root of (x^2 + y^2).
+   * The angle 'theta' is calculated using Math.atan2(y, x), which correctly
+   * handles all four quadrants and special cases like x=0.
+   *
+   * @param cartesian The Cartesian coordinate object (x, y).
+   * @return A new Polar coordinate object (r, theta).
+   */
+  public static Polar toPolar(Cartesian cartesian) {
+    // r = sqrt(x^2 + y^2)
+    double r = Math.sqrt(Math.pow(cartesian.x(), 2) + Math.pow(cartesian.y(), 2));
+    // theta = atan2(y, x)
+    double theta = Math.atan2(cartesian.y(), cartesian.x());
+    return new Polar(r, theta);
+  }
+  
   public record MixedCoordinates(Cartesian cartesian, Polar polar) {};
   
   public static void drawColorField2D(Graphics2D g, Function<MixedCoordinates, Color> color, int width, int height) {
