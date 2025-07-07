@@ -1585,7 +1585,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
               for (int j = 0; j < y.size(); j++) {
                 for (int i = 0; i < x.size(); i++) {
                     if(z==0) o.add(0);
-                    o.set((((i*y.size())-(y.size()-1)+j)+o.size())%o.size(), operationFn.apply(x.get(i), y.get(j)));
+                    o.set((((j*x.size())-(x.size()-1)+i)+o.size())%o.size(), operationFn.apply(x.get(i), y.get(j)));
                 }
             }
         }
