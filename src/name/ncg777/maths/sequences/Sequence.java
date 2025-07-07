@@ -1341,7 +1341,12 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
   private static Map<Operation,BiFunction<Integer, Integer, Integer>> ops;
   public static enum Combiner {
     Product,
+    SwappedProduct,
+    NegativeProduct,
+    SwappedNegativeProduct,
+    Convolution,
     Triangular,
+    SwappedTriangular,
     Recycle,
     Divisive,
     Apply,
@@ -1556,9 +1561,45 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           }
         }
         break;
+      case SwappedProduct:
+        for (int j = 0; j < y.size(); j++) { 
+          for (int i = 0; i < x.size(); i++) {
+              o.add(operationFn.apply(x.get(i), y.get(j)));
+          }
+        }
+        break;
+      case NegativeProduct:
+        for(int z=0;z<2;z++) {
+            for (int i = 0; i < x.size(); i++) {
+                for (int j = 0; j < y.size(); j++) {
+                    if(z==0) o.add(0);
+                    o.set((((i*y.size())-(y.size()-1)+j)+o.size())%o.size(), operationFn.apply(x.get(i), y.get(j)));
+                }
+            }
+        }
+        break;
+      case SwappedNegativeProduct:
+        for(int z=0;z<2;z++) {
+              for (int j = 0; j < y.size(); j++) {
+                for (int i = 0; i < x.size(); i++) {
+                    if(z==0) o.add(0);
+                    o.set((((i*y.size())-(y.size()-1)+j)+o.size())%o.size(), operationFn.apply(x.get(i), y.get(j)));
+                }
+            }
+        }
+        break;
       case Triangular:
         for (int i = 0; i < x.size(); i++) {
           for (int j = 0; j < y.size(); j++) {
+            if (j<=i) {
+              o.add(operationFn.apply(x.get(i), y.get(j)));
+            }
+          }
+        }
+        break;
+      case SwappedTriangular:
+        for (int j = 0; j < y.size(); j++) {
+          for (int i = 0; i < x.size(); i++) {
             if (j<=i) {
               o.add(operationFn.apply(x.get(i), y.get(j)));
             }
