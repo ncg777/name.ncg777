@@ -1370,6 +1370,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     Max,
     Modulo,
     Bounce,
+    Distance,
     And,
     Nand,
     Or,
@@ -1485,6 +1486,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     ops.put(Operation.Max, (x,y) -> Math.max(x,y));
     ops.put(Operation.Modulo, (x,y) -> x%y);
     ops.put(Operation.Bounce, (x,y) -> x%(2*y) <= y ? x%(2*y) : ((2*y)-(x%(2*y))));
+    ops.put(Operation.Distance, (x,y) -> Math.abs(y-x));
     ops.put(Operation.And, (x, y) -> applyBitwise(x,y, (a,b) -> a && b));
     ops.put(Operation.Nand, (x, y) -> applyBitwise(x,y, (a,b) -> !(a && b)));
     ops.put(Operation.Or, (x, y) -> applyBitwise(x,y, (a,b) -> a || b));
