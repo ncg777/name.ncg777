@@ -1602,7 +1602,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
       case SwappedTriangular:
         for (int j = 0; j < y.size(); j++) {
           for (int i = 0; i < x.size(); i++) {
-            if (j<=i) {
+            if (i<=j) {
               o.add(operationFn.apply(x.get(i), y.get(j)));
             }
           }
