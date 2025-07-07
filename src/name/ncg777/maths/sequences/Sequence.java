@@ -1348,7 +1348,8 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     Reduce,
     MixedRadix,
     Bits,
-    Trits
+    Trits,
+    IterateBetween,
   }
   
   public static enum Operation {
@@ -1518,12 +1519,29 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     switch (combiner) {
       case Apply:
         for (int i = 0; i < y.size(); i++) {
-            o.add(operationFn.apply(x.get(y.get(i) % x.size()), y.get(i % y.size())));
+          int index = y.get(i);
+          while(index < 0) index+=x.size();
+          while(index >= x.size()) index-=x.size();
+          o.add(operationFn.apply(x.get(index), y.get(i % y.size())));
         }
         break;
       case Recycle:
         for (int i = 0; i < lcm; i++) { 
             o.add(operationFn.apply(x.get(i%x.size()), y.get(i%y.size())));
+        }
+        break;
+      case IterateBetween:
+        for (int i = 0; i < lcm; i++) {
+          int d = Math.abs(y.get(i%y.size())-x.get(i%x.size()));
+          int delta = 1;
+          if(y.get(i%y.size())<x.get(i%x.size())) delta = -1;
+          for(int j=0;j<d;j++) {
+            int a = x.get(i%x.size())+j*delta;
+            int b = y.get(i%y.size())+j*(-delta);
+            if(j==0) b=a;
+            o.add(operationFn.apply(a,b));  
+          }
+          
         }
         break;
       case Divisive:
