@@ -13,13 +13,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import name.ncg777.computing.graphics.GraphicsFunctions.Cartesian;
+import name.ncg777.computing.graphics.GraphicsFunctions.Polar;
 import name.ncg777.computing.graphics.shapes.OscillatingCircle;
 import name.ncg777.computing.structures.ImmutableDoubleArray;
 import name.ncg777.maths.HadamardMatrix;
 import name.ncg777.maths.MatrixOfDoubles;
 import name.ncg777.maths.enumerations.MixedRadixEnumeration;
+import name.ncg777.maths.relations.FiniteHomoRelation;
 
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -668,4 +671,55 @@ public class Animations {
           }
       };
   }
+  
+  public static Enumeration<Mat> f20250708(int width, int height, double fps, double dur, int n) {
+    return new Enumeration<Mat>() {
+      final int upper = (int)(dur * fps);
+      int k = 0;
+      final double[] lbound = {0.0};
+      final double[] ubound = {1.0};
+      final int[] subdiv = {2000};
+      final double scale = ((double)Math.min(width, height))*0.45;
+      final int transX = width/2;
+      final int transY = height/2;
+      final Function<Double,Double> transformation = (Double theta) -> {
+        return Math.sin(theta*2.0*Math.PI)*Math.PI*2.0;
+      };
+      FiniteHomoRelation<ImmutableDoubleArray> nr = MixedRadixEnumeration.getNeighborRelation(lbound, ubound, subdiv);
+      
+      public boolean hasMoreElements() { return k < upper; }
+
+      public Mat nextElement() {
+        final double phase = (double) k / (double) upper;
+        var img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        var g = img.createGraphics();
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, width, height);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        g.setColor(Color.WHITE);
+        g.setStroke(new BasicStroke(3.0f));
+        for(int i=0; i<n ;i++) {
+          double delta = Math.PI*2.0/(double)n;
+          g.rotate(delta, transX, transY);
+          for(var tp : nr) {
+            var theta1 = transformation.apply(tp.getFirst().get(0));
+            var theta2 = transformation.apply(tp.getSecond().get(0));
+            var r1 = (Math.sin(tp.getFirst().get(0)*2.0*Math.PI + phase*2.0*Math.PI))*scale;
+            var r2 = (Math.sin(tp.getSecond().get(0)*2.0*Math.PI + phase*2.0*Math.PI))*scale;
+            var p1 = GraphicsFunctions.toCartesian(new Polar(r1, theta1));
+            var p2 = GraphicsFunctions.toCartesian(new Polar(r2, theta2));
+
+            g.setColor(new Color(Color.HSBtoRGB((float)(tp.getFirst().get(0)), (float)(0.75+0.25*Math.cos(delta+Math.PI*phase*2.0)), 0.8f)));
+            g.drawLine((int)(p1.x())+transX, (int)(p1.y())+transY, (int)(p2.x())+transX, (int)(p2.y())+transY);
+          }
+        }
+        
+        
+        ++k;
+        return GraphicsFunctions.bufferedImageToMat(img);
+      }
+    };
+  }
+  
 }
