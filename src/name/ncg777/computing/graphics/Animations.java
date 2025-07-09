@@ -739,42 +739,44 @@ public class Animations {
       File wavFile,
       int width,
       int height,
-      double fps   // output frame rate (frames per second)
+      double bpm,  // tempo in beats per minute (used to calculate 8 bars' duration)
+      double fps   // animation frame rate
   ) throws Exception {
   
-    // === Load and Decode Audio ===
+    // === Load Audio ===
     AudioInputStream stream = AudioSystem.getAudioInputStream(wavFile);
     AudioFormat format = stream.getFormat();
   
     int sampleRate = (int) format.getSampleRate();
     int channels = format.getChannels();
-    boolean isBigEndian = format.isBigEndian();
     int bytesPerSample = format.getSampleSizeInBits() / 8;
-    byte[] audioBytes = stream.readAllBytes();
+    boolean isBigEndian = format.isBigEndian();
   
-    // Extract the first channel samples
-    int totalSamples = audioBytes.length / (bytesPerSample * channels);
-    double[] samples = new double[totalSamples];
+    byte[] audioBytes = stream.readAllBytes();
     ByteBuffer bb = ByteBuffer.wrap(audioBytes);
     bb.order(isBigEndian ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN);
   
+    int totalSamples = audioBytes.length / (bytesPerSample * channels);
+    double[] samples = new double[totalSamples];
+  
     for (int i = 0; i < totalSamples; i++) {
         if (bytesPerSample == 2) {
-            short sample = bb.getShort(i * channels * bytesPerSample);
+            short sample = bb.getShort(i * bytesPerSample * channels);
             samples[i] = sample / 32768.0;
         } else {
             throw new UnsupportedOperationException("Only 16-bit audio supported.");
         }
     }
   
-    // === FFT Processing ===
-    int windowSize = 256;
+    // === FFT Parameters ===
+    int windowSize = 1024;
     int hopSize = windowSize / 2;
     int fftBins = windowSize / 2;
     FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
   
+    // === Compute FFT Frames ===
     List<double[]> fftFrames = new ArrayList<>();
-    for (int i = 0; i + windowSize < samples.length; i += hopSize) {
+    for (int i = 0; i + windowSize <= samples.length; i += hopSize) {
         double[] window = Arrays.copyOfRange(samples, i, i + windowSize);
         Complex[] spectrum = fft.transform(window, TransformType.FORWARD);
   
@@ -785,19 +787,19 @@ public class Animations {
         fftFrames.add(magnitudes);
     }
   
-    // === Create Zero-Padded Logarithmic Matrix ===
-    int logBands = 32;
-    int barsVisible = 32;
-    int beatsPerBar = 4;
+    // === Matrix Configuration ===
+    int logBands = 64;
+    int beats = 8 * 4; // 8 bars, 4 beats per bar
+    double secondsPerBeat = 60.0 / bpm;
+    int timeCols = (int) Math.ceil(beats * secondsPerBeat * fps); // number of columns for 8 bars
+    double[][] matrixData = new double[logBands][timeCols];
   
-    double[][] matrixData = new double[logBands][barsVisible * beatsPerBar];
-  
-    // === Timing Calculations ===
-    double secondsPerFrame = 1.0 / fps;
+    // === Animation Time Step ===
     double fftFramesPerSecond = (double) sampleRate / hopSize;
-    double fftFramesPerVideoFrame = fftFramesPerSecond * secondsPerFrame;
+    double fftFramesPerVideoFrame = fftFramesPerSecond / fps;
   
     return new Enumeration<>() {
+        int frameIndex = 0;
         double fftCursor = 0.0;
   
         public boolean hasMoreElements() {
@@ -805,16 +807,15 @@ public class Animations {
         }
   
         public Mat nextElement() {
-            int fftFrameIndex = (int) fftCursor;
-            double[] fftFrame = fftFrames.get(fftFrameIndex);
+            int fftIndex = (int) fftCursor;
+            double[] fftFrame = fftFrames.get(fftIndex);
   
-            // Shift matrix left, append new log-band column
+            // Shift matrix left, add new column
             for (int band = 0; band < logBands; band++) {
-                for (int col = 0; col < matrixData[0].length - 1; col++) {
+                for (int col = 0; col < timeCols - 1; col++) {
                     matrixData[band][col] = matrixData[band][col + 1];
                 }
   
-                // Logarithmic frequency band mapping
                 int low = (int) Math.pow(fftBins, (double) band / logBands);
                 int high = (int) Math.pow(fftBins, (double) (band + 1) / logBands);
                 low = Math.max(0, Math.min(low, fftFrame.length - 1));
@@ -823,13 +824,15 @@ public class Animations {
                 double avg = 0.0;
                 for (int j = low; j < high; j++) avg += fftFrame[j];
                 avg /= (high - low);
-                matrixData[band][matrixData[0].length - 1] = avg;
+                matrixData[band][timeCols - 1] = avg;
             }
   
-            // === Render Disk Frame ===
+            // === Draw Rotating Disk ===
+            double t = (double) frameIndex / fftFrames.size();
             BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = img.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.rotate(t * 2.0 * Math.PI, width / 2.0, height / 2.0);
   
             GraphicsFunctions.matrixDisk(
                 g,
@@ -841,10 +844,13 @@ public class Animations {
             );
   
             fftCursor += fftFramesPerVideoFrame;
+            frameIndex++;
+  
             return GraphicsFunctions.bufferedImageToMat(img);
         }
     };
   }
+
 
   
 }
