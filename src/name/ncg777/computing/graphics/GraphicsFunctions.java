@@ -221,13 +221,13 @@ public class GraphicsFunctions {
   
   public static void matrixDisk(
       Graphics2D g, 
-      MatrixOfDoubles mat, 
+      double[][] mat, 
       BiFunction<MixedCoordinates, Double, Color> color, 
       int width, 
       int height, 
       boolean interpolate) {
-    int m = mat.rowCount();
-    int n = mat.columnCount();
+    int m = mat.length;
+    int n = mat[0].length;
 
     drawColorField2D(g, (params) -> {
       // Compute polar indices
@@ -246,7 +246,7 @@ public class GraphicsFunctions {
       double phj = dj - fj;
 
       // Fetch base value
-      double vo = (fi >= 0 && fi < m) ? mat.get(fi, fj) : 0.0;
+      double vo = (fi >= 0 && fi < m) ? mat[fi][fj] : 0.0;
 
       if (interpolate) {
         // Neighbor indices for interpolation
@@ -254,9 +254,9 @@ public class GraphicsFunctions {
         int fjp = wrapIndex(fj + 1, n);
 
         double v00 = vo;
-        double v10 = (fip < m) ? mat.get(fip, fj) : 0.0;
-        double v01 = (fi >= 0 && fi < m) ? mat.get(fi, fjp) : 0.0;
-        double v11 = (fip < m) ? mat.get(fip, fjp) : 0.0;
+        double v10 = (fip < m) ? mat[fip][fj] : 0.0;
+        double v01 = (fi >= 0 && fi < m) ? mat[fi][fjp] : 0.0;
+        double v11 = (fip < m) ? mat[fip][fjp] : 0.0;
 
         // Bilinear interpolation
         vo = bilinearInterpolation(phi, phj, v00, v10, v01, v11);

@@ -6,7 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +18,10 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import name.ncg777.computing.graphics.GraphicsFunctions.Cartesian;
 import name.ncg777.computing.graphics.GraphicsFunctions.Polar;
@@ -24,11 +32,15 @@ import name.ncg777.maths.MatrixOfDoubles;
 import name.ncg777.maths.enumerations.MixedRadixEnumeration;
 import name.ncg777.maths.relations.FiniteHomoRelation;
 
+import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.math3.transform.DftNormalization;
+import org.apache.commons.math3.transform.FastFourierTransformer;
+import org.apache.commons.math3.transform.TransformType;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -176,8 +188,9 @@ public class Animations {
    * @return
    */
   public static Enumeration<Mat> hadamard(int n, int width, int height, double fps, double dur, boolean interpolate) {
-    final MatrixOfDoubles mat = HadamardMatrix.getMatrix(n).toMatrixOfDoubles();
-    mat.apply((v) -> v==1.0 ? 1.0 : 0);
+    final MatrixOfDoubles mat0 = HadamardMatrix.getMatrix(n).toMatrixOfDoubles();
+    mat0.apply((v) -> v==1.0 ? 1.0 : 0);
+    final double[][] mat = mat0.toDoubleArray();
     return new Enumeration<Mat>() {
       int upper = (int)(dur*fps);
       int k = 0;
@@ -721,5 +734,117 @@ public class Animations {
       }
     };
   }
+  
+  public static Enumeration<Mat> fftDiskAnimation(
+      File wavFile,
+      int width,
+      int height,
+      double fps   // output frame rate (frames per second)
+  ) throws Exception {
+  
+    // === Load and Decode Audio ===
+    AudioInputStream stream = AudioSystem.getAudioInputStream(wavFile);
+    AudioFormat format = stream.getFormat();
+  
+    int sampleRate = (int) format.getSampleRate();
+    int channels = format.getChannels();
+    boolean isBigEndian = format.isBigEndian();
+    int bytesPerSample = format.getSampleSizeInBits() / 8;
+    byte[] audioBytes = stream.readAllBytes();
+  
+    // Extract the first channel samples
+    int totalSamples = audioBytes.length / (bytesPerSample * channels);
+    double[] samples = new double[totalSamples];
+    ByteBuffer bb = ByteBuffer.wrap(audioBytes);
+    bb.order(isBigEndian ? ByteOrder.BIG_ENDIAN : ByteOrder.LITTLE_ENDIAN);
+  
+    for (int i = 0; i < totalSamples; i++) {
+        if (bytesPerSample == 2) {
+            short sample = bb.getShort(i * channels * bytesPerSample);
+            samples[i] = sample / 32768.0;
+        } else {
+            throw new UnsupportedOperationException("Only 16-bit audio supported.");
+        }
+    }
+  
+    // === FFT Processing ===
+    int windowSize = 256;
+    int hopSize = windowSize / 2;
+    int fftBins = windowSize / 2;
+    FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
+  
+    List<double[]> fftFrames = new ArrayList<>();
+    for (int i = 0; i + windowSize < samples.length; i += hopSize) {
+        double[] window = Arrays.copyOfRange(samples, i, i + windowSize);
+        Complex[] spectrum = fft.transform(window, TransformType.FORWARD);
+  
+        double[] magnitudes = new double[fftBins];
+        for (int j = 0; j < fftBins; j++) {
+            magnitudes[j] = spectrum[j].abs();
+        }
+        fftFrames.add(magnitudes);
+    }
+  
+    // === Create Zero-Padded Logarithmic Matrix ===
+    int logBands = 32;
+    int barsVisible = 32;
+    int beatsPerBar = 4;
+  
+    double[][] matrixData = new double[logBands][barsVisible * beatsPerBar];
+  
+    // === Timing Calculations ===
+    double secondsPerFrame = 1.0 / fps;
+    double fftFramesPerSecond = (double) sampleRate / hopSize;
+    double fftFramesPerVideoFrame = fftFramesPerSecond * secondsPerFrame;
+  
+    return new Enumeration<>() {
+        double fftCursor = 0.0;
+  
+        public boolean hasMoreElements() {
+            return (int) fftCursor < fftFrames.size();
+        }
+  
+        public Mat nextElement() {
+            int fftFrameIndex = (int) fftCursor;
+            double[] fftFrame = fftFrames.get(fftFrameIndex);
+  
+            // Shift matrix left, append new log-band column
+            for (int band = 0; band < logBands; band++) {
+                for (int col = 0; col < matrixData[0].length - 1; col++) {
+                    matrixData[band][col] = matrixData[band][col + 1];
+                }
+  
+                // Logarithmic frequency band mapping
+                int low = (int) Math.pow(fftBins, (double) band / logBands);
+                int high = (int) Math.pow(fftBins, (double) (band + 1) / logBands);
+                low = Math.max(0, Math.min(low, fftFrame.length - 1));
+                high = Math.max(low + 1, Math.min(high, fftFrame.length));
+  
+                double avg = 0.0;
+                for (int j = low; j < high; j++) avg += fftFrame[j];
+                avg /= (high - low);
+                matrixData[band][matrixData[0].length - 1] = avg;
+            }
+  
+            // === Render Disk Frame ===
+            BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = img.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+  
+            GraphicsFunctions.matrixDisk(
+                g,
+                matrixData,
+                (coords, v) -> new Color(0, 0, (int) Math.min(255, v * 255), (int) Math.min(255, v * 255)),
+                width,
+                height,
+                true
+            );
+  
+            fftCursor += fftFramesPerVideoFrame;
+            return GraphicsFunctions.bufferedImageToMat(img);
+        }
+    };
+  }
+
   
 }
