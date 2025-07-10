@@ -229,6 +229,26 @@ public class SequenceTests extends TestCase {
         int val2 = result.get(1);
         assertTrue("RandInt result should be between -10 and -5", val2 >= -10 && val2 <= -5);
     }
+    
+    @Test
+    public void testProjectBits() {
+        Sequence x = new Sequence(Arrays.asList(1, 1, 2, 2));
+        Sequence y = new Sequence(Arrays.asList(5, -5));
+        
+        Sequence result = Sequence.combine(Combiner.Recycle, Operation.ProjectBits, x, y);
+        
+        int val1 = result.get(0);
+        assertTrue("ProjectBit result should be 1", val1 == 1);
+        
+        int val2 = result.get(1);
+        assertTrue("ProjectBit result should be -1", val2 == -1);
+        
+        int val3 = result.get(2);
+        assertTrue("ProjectBit result should be 4", val3 == 4);
+        
+        int val4 = result.get(3);
+        assertTrue("ProjectBit result should be -4", val4 == -4);
+    }
 
     @Test
     public void testRandIntDistribution() {

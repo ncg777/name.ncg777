@@ -1396,6 +1396,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     MinZeroY,
     HardThreshold,
     RandInt,
+    ProjectBits,
   }
   
   private static int maxBinaryDigits(int a, int b) {
@@ -1449,6 +1450,41 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
       int result = sign * Numbers.fromBinary(resultBits);
   
       return result == -0 ? 0 : result;
+  }
+  
+  private static int projectBits(int a, int b) {
+    int absA = Math.abs(a);
+    int absB = Math.abs(b);
+    
+    int nbDigits = absB == 0 ? 1 : (int) (Math.floor(Math.log(absB) / Math.log(2)) + 1);
+    
+    var binA = Numbers.toBinary(absA, nbDigits);
+    var binB = Numbers.toBinary(absB, nbDigits);
+    
+    int[] oArr = new int[nbDigits];
+    Arrays.fill(oArr, 0);
+    
+    int cursor = 0;
+    for(int i=nbDigits-1;i>=0;i--) {
+      if(binB[i] == 1) {
+        if(cursor < binA.length && binA[nbDigits-cursor++-1] == 1) {
+          oArr[i] = 1; 
+        }
+      }
+    }
+    
+    int o = Numbers.fromBinary(oArr);
+    
+    int signA = Integer.signum(a);
+    signA = signA == 0 ? 1 : signA;
+
+    int signB = Integer.signum(b);
+    signB = signB == 0 ? 1 : signB;
+
+    // The sign is the product of the signs of x and y
+    int sign = signA * signB;
+    
+    return o * sign;
   }
   
   /**
@@ -1517,6 +1553,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
       if (min == max) return min;
       return RandomNumberGenerator.nextInt(max - min + 1) + min;
     });
+    ops.put(Operation.ProjectBits, (x, y) -> projectBits(x, y));
   }
 
   public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {
