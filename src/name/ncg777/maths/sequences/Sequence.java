@@ -1380,6 +1380,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     Xor,
     Xnor,
     ShiftBits,
+    ProjectBits,
     LCM,
     GCD,
     Equal,
@@ -1396,7 +1397,6 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     MinZeroY,
     HardThreshold,
     RandInt,
-    ProjectBits,
   }
   
   private static int maxBinaryDigits(int a, int b) {
