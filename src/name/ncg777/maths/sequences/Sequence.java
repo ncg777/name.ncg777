@@ -1338,23 +1338,17 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     return this.get(t);
   }
   
-  private static Map<Operation,BiFunction<Integer, Integer, Integer>> ops;
+  private static Map<Operation,BiFunction<Integer, Integer, int[]>> ops;
   public static enum Combiner {
     Product,
     SwappedProduct,
-    NegativeProduct,
-    SwappedNegativeProduct,
     Convolution,
     Triangular,
     SwappedTriangular,
     Recycle,
     Divisive,
     Apply,
-    Reduce,
     MixedRadix,
-    Bits,
-    Trits,
-    IterateBetween,
   }
   
   public static enum Operation {
@@ -1391,12 +1385,11 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     GreaterThanOrEqual,
     CantorIntervalBinaryNumber,
     PermuteBits,
-    MaxZeroX,
-    MinZeroX,
-    MaxZeroY,
-    MinZeroY,
     HardThreshold,
     RandInt,
+    IterateBetween,
+    Bits,
+    Trits,
   }
   
   private static int maxBinaryDigits(int a, int b) {
@@ -1508,52 +1501,60 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
   }
   
   static {
-    ops = new TreeMap<Operation,BiFunction<Integer,Integer,Integer>>();
+    ops = new TreeMap<Operation,BiFunction<Integer,Integer,int[]>>();
     
-    ops.put(Operation.Add, (x,y) -> x+y);
-    ops.put(Operation.Subtract, (x,y) -> x-y);
-    ops.put(Operation.Multiply, (x,y) -> x*y);
-    ops.put(Operation.Divide, (x,y) -> x/y);
-    ops.put(Operation.X, (x,y) -> x);
-    ops.put(Operation.Y, (x,y) -> y);
-    ops.put(Operation.Power, (x,y) -> (int)Math.round(Math.pow(x,y)));
-    ops.put(Operation.Log, (x,y) -> (int)Math.floor(Math.log(x)/Math.log(y)));
-    ops.put(Operation.Min, (x,y) -> Math.min(x,y));
-    ops.put(Operation.Max, (x,y) -> Math.max(x,y));
-    ops.put(Operation.Modulo, (x,y) -> x%y);
-    ops.put(Operation.Bounce, (x,y) -> x%(2*y) <= y ? x%(2*y) : ((2*y)-(x%(2*y))));
-    ops.put(Operation.Distance, (x,y) -> Math.abs(y-x));
-    ops.put(Operation.And, (x, y) -> applyBitwise(x,y, (a,b) -> a && b));
-    ops.put(Operation.Nand, (x, y) -> applyBitwise(x,y, (a,b) -> !(a && b)));
-    ops.put(Operation.Or, (x, y) -> applyBitwise(x,y, (a,b) -> a || b));
-    ops.put(Operation.Nor, (x, y) -> applyBitwise(x,y, (a,b) -> !(a || b)));
-    ops.put(Operation.Implication, (x, y) -> applyBitwise(x,y, (a,b) -> (!a) || b));
-    ops.put(Operation.ReverseImplication, (x, y) -> applyBitwise(x,y, (a,b) -> (!b) || a));
-    ops.put(Operation.Xor, (x, y) -> applyBitwise(x,y, (a,b) -> a != b));
-    ops.put(Operation.Xnor, (x, y) -> applyBitwise(x,y, (a,b) -> a == b));
-    ops.put(Operation.ShiftBits, (x, y) -> shift(x, y));
-    ops.put(Operation.LCM, (x,y) -> (int)Numbers.lcm(x, y));
-    ops.put(Operation.GCD, (x,y) -> (int)Numbers.gcd(x, y));
-    ops.put(Operation.Equal, (x,y) -> x==y ? 1 :0);
-    ops.put(Operation.NotEqual, (x,y) -> x!=y ? 1 :0);
-    ops.put(Operation.LessThan, (x,y) -> x<y ? 1 :0);
-    ops.put(Operation.LessThanOrEqual, (x,y) -> x<=y ? 1 :0);
-    ops.put(Operation.GreaterThan, (x,y) -> x>y ? 1 :0);
-    ops.put(Operation.GreaterThanOrEqual, (x,y) -> x>=y ? 1 :0);
-    ops.put(Operation.CantorIntervalBinaryNumber, (x,y) -> Numbers.cantorIntervalBinaryNumber(x, y));
-    ops.put(Operation.PermuteBits, (x,y) -> Numbers.permuteBits(x, y));
-    ops.put(Operation.MaxZeroX, (x,y) -> Math.max(0, x));
-    ops.put(Operation.MinZeroX, (x,y) -> Math.min(0, x));
-    ops.put(Operation.MaxZeroY, (x,y) -> Math.max(0, y));
-    ops.put(Operation.MinZeroY, (x,y) -> Math.min(0, y));
-    ops.put(Operation.HardThreshold, (x, y) -> Math.abs(x) > Math.abs(y) ? 0 : x);
+    ops.put(Operation.Add, (x,y) -> new int[] {x+y});
+    ops.put(Operation.Subtract, (x,y) -> new int[] {x-y});
+    ops.put(Operation.Multiply, (x,y) -> new int[] {x*y});
+    ops.put(Operation.Divide, (x,y) -> new int[] {x/y});
+    ops.put(Operation.X, (x,y) -> new int[] {x});
+    ops.put(Operation.Y, (x,y) -> new int[] {y});
+    ops.put(Operation.Power, (x,y) -> new int[] {(int)Math.round(Math.pow(x,y))});
+    ops.put(Operation.Log, (x,y) -> new int[] {(int)Math.floor(Math.log(x)/Math.log(y))});
+    ops.put(Operation.Min, (x,y) -> new int[] {Math.min(x,y)});
+    ops.put(Operation.Max, (x,y) -> new int[] {Math.max(x,y)});
+    ops.put(Operation.Modulo, (x,y) -> new int[] {x%y});
+    ops.put(Operation.Bounce, (x,y) -> new int[] {x%(2*y) <= y ? x%(2*y) : ((2*y)-(x%(2*y)))});
+    ops.put(Operation.Distance, (x,y) -> new int[] {Math.abs(y-x)});
+    ops.put(Operation.And, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> a && b)});
+    ops.put(Operation.Nand, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> !(a && b))});
+    ops.put(Operation.Or, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> a || b)});
+    ops.put(Operation.Nor, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> !(a || b))});
+    ops.put(Operation.Implication, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> (!a) || b)});
+    ops.put(Operation.ReverseImplication, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> (!b) || a)});
+    ops.put(Operation.Xor, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> a != b)});
+    ops.put(Operation.Xnor, (x, y) -> new int[] {applyBitwise(x,y, (a,b) -> a == b)});
+    ops.put(Operation.ShiftBits, (x, y) -> new int[] {shift(x, y)});
+    ops.put(Operation.LCM, (x,y) -> new int[] {(int)Numbers.lcm(x, y)});
+    ops.put(Operation.GCD, (x,y) -> new int[] {(int)Numbers.gcd(x, y)});
+    ops.put(Operation.Equal, (x,y) -> new int[] {x==y ? 1 :0});
+    ops.put(Operation.NotEqual, (x,y) -> new int[] {x!=y ? 1 :0});
+    ops.put(Operation.LessThan, (x,y) -> new int[] {x<y ? 1 :0});
+    ops.put(Operation.LessThanOrEqual, (x,y) -> new int[] {x<=y ? 1 :0});
+    ops.put(Operation.GreaterThan, (x,y) -> new int[] {x>y ? 1 :0});
+    ops.put(Operation.GreaterThanOrEqual, (x,y) -> new int[] {x>=y ? 1 :0});
+    ops.put(Operation.CantorIntervalBinaryNumber, (x,y) -> new int[] {Numbers.cantorIntervalBinaryNumber(x, y)});
+    ops.put(Operation.PermuteBits, (x,y) -> new int[] {Numbers.permuteBits(x, y)});
+    ops.put(Operation.HardThreshold, (x, y) -> new int[] {Math.abs(x) > Math.abs(y) ? 0 : x});
     ops.put(Operation.RandInt, (x, y) -> {
       int min = Math.min(x, y);
       int max = Math.max(x, y);
-      if (min == max) return min;
-      return RandomNumberGenerator.nextInt(max - min + 1) + min;
+      if (min == max) return new int[] {min};
+      return new int[] {RandomNumberGenerator.nextInt(max - min + 1) + min};
     });
-    ops.put(Operation.ProjectBits, (x, y) -> projectBits(x, y));
+    ops.put(Operation.ProjectBits, (x, y) -> new int[] {projectBits(x, y)});
+    ops.put(Operation.IterateBetween, (x,y) -> {
+      int d = y-x;
+      int delta = 1;
+      if(y<x) delta = -1;
+      int[] o = new int[d];
+      for(int j=0;j<d;j++) {
+        o[j] = x+j*delta;
+      }
+      return o;
+    });
+    ops.put(Operation.Bits, (x,y) -> Numbers.toBinary(x, y));
+    ops.put(Operation.Trits, (x,y) -> Numbers.toBalancedTernary(x, y));
   }
 
   public static Sequence combine(Combiner combiner, Operation operation, Sequence x, Sequence y) {
@@ -1566,64 +1567,43 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           int index = y.get(i);
           while(index < 0) index+=x.size();
           while(index >= x.size()) index-=x.size();
-          o.add(operationFn.apply(x.get(index), y.get(i % y.size())));
+          o.addAll(new Sequence(operationFn.apply(x.get(index), y.get(i % y.size()))));
         }
         break;
       case Recycle:
         for (int i = 0; i < lcm; i++) { 
-            o.add(operationFn.apply(x.get(i%x.size()), y.get(i%y.size())));
-        }
-        break;
-      case IterateBetween:
-        for (int i = 0; i < lcm; i++) {
-          int d = Math.abs(y.get(i%y.size())-x.get(i%x.size()));
-          int delta = 1;
-          if(y.get(i%y.size())<x.get(i%x.size())) delta = -1;
-          for(int j=0;j<d;j++) {
-            int a = x.get(i%x.size())+j*delta;
-            int b = y.get(i%y.size())+j*(-delta);
-            if(j==0) b=a;
-            o.add(operationFn.apply(a,b));  
-          }
-          
+            o.addAll(new Sequence(operationFn.apply(x.get(i%x.size()), y.get(i%y.size()))));
         }
         break;
       case Divisive:
         for (int i = 0; i < lcm; i++) { 
-            o.add(operationFn.apply(x.get(i/(lcm/x.size())), y.get(i/(lcm/y.size()))));
+            o.addAll(new Sequence(operationFn.apply(x.get(i/(lcm/x.size())), y.get(i/(lcm/y.size())))));
         }
         break;
       case Product:
         for (int i = 0; i < x.size(); i++) {
           for (int j = 0; j < y.size(); j++) {  
-              o.add(operationFn.apply(x.get(i), y.get(j)));
+              o.addAll(new Sequence(operationFn.apply(x.get(i), y.get(j))));
           }
         }
         break;
       case SwappedProduct:
         for (int j = 0; j < y.size(); j++) { 
           for (int i = 0; i < x.size(); i++) {
-              o.add(operationFn.apply(x.get(i), y.get(j)));
+              o.addAll(new Sequence(operationFn.apply(x.get(i), y.get(j))));
           }
         }
         break;
-      case NegativeProduct:
-        for(int z=0;z<2;z++) {
-            for (int i = 0; i < x.size(); i++) {
-                for (int j = 0; j < y.size(); j++) {
-                    if(z==0) o.add(0);
-                    o.set((((i*y.size())-(y.size()-1)+j)+o.size())%o.size(), operationFn.apply(x.get(i), y.get(j)));
-                }
-            }
-        }
-        break;
-      case SwappedNegativeProduct:
-        for(int z=0;z<2;z++) {
-              for (int j = 0; j < y.size(); j++) {
-                for (int i = 0; i < x.size(); i++) {
-                    if(z==0) o.add(0);
-                    o.set((((j*x.size())-(x.size()-1)+i)+o.size())%o.size(), operationFn.apply(x.get(i), y.get(j)));
-                }
+      case Convolution:
+        for (int i = 0; i < x.size(); i++) o.add(0);
+        for (int i = 0; i < o.size(); i++) {
+            for (int j = 0; j < y.size(); j++) {
+              var v = operationFn.apply(x.get(i), y.get(j));
+              for(int k=0;k<v.length;k++) {
+                  o.set((i + j + k) % o.size(),
+                      o.get((i + j + k) % o.size()) + v[k]);
+              }
+              
             }
         }
         break;
@@ -1631,7 +1611,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
         for (int i = 0; i < x.size(); i++) {
           for (int j = 0; j < y.size(); j++) {
             if (j<=i) {
-              o.add(operationFn.apply(x.get(i), y.get(j)));
+              o.addAll(new Sequence(operationFn.apply(x.get(i), y.get(j))));
             }
           }
         }
@@ -1640,14 +1620,9 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
         for (int j = 0; j < y.size(); j++) {
           for (int i = 0; i < x.size(); i++) {
             if (i<=j) {
-              o.add(operationFn.apply(x.get(i), y.get(j)));
+              o.addAll(new Sequence(operationFn.apply(x.get(i), y.get(j))));
             }
           }
-        }
-        break;
-      case Reduce:
-        for (int i = 0; i < x.size(); i++) {
-          o.add(y.stream().reduce(x.get(i), (a,b) -> operationFn.apply(a, b)));
         }
         break;
       case MixedRadix: 
@@ -1685,28 +1660,12 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
             for (int[] row : result) {
                 int combined = 0;
                 for (int index = 0; index < row.length; index++) {
-                    combined += operationFn.apply(row[index], y.get(index % y.size()));
+                    combined += new Sequence(operationFn.apply(row[index], y.get(index % y.size()))).sum();
                 }
                 o.add(combined);
             }
         }
         break;
-      case Bits: 
-          for (int i = 0; i < x.size(); i++) {
-              int[] b = Numbers.toBinary(x.get(i), y.get(i));
-              for (int j = 0; j < b.length; j++) {
-                o.add(operationFn.apply(b[j], (int) Math.pow(2, (y.get(i) < 0) ? j : b.length - 1 - j)));
-              }
-          }
-          break;
-      case Trits: 
-          for (int i = 0; i < x.size(); i++) {
-              int[] b = Numbers.toBalancedTernary(x.get(i), y.get(i));
-              for (int j = 0; j < b.length; j++) {
-                o.add(operationFn.apply(b[j], (int) Math.pow(3, (y.get(i) < 0) ? j : b.length - 1 - j)));
-              }
-          }
-          break;
       default:
         throw new IllegalArgumentException();
     }

@@ -691,12 +691,12 @@ public class Animations {
       int k = 0;
       final double[] lbound = {0.0};
       final double[] ubound = {1.0};
-      final int[] subdiv = {2000};
+      final int[] subdiv = {4096};
       final double scale = ((double)Math.min(width, height))*0.45;
       final int transX = width/2;
       final int transY = height/2;
       final Function<Double,Double> transformation = (Double theta) -> {
-        return Math.sin(theta*2.0*Math.PI)*Math.PI*2.0;
+        return (1.0 + 0.25*Math.sin((2.0+1.0*(Math.sin(2.0*Math.PI*Math.sin(theta*1024.0*Math.PI)/4.0)))*theta*0.95*Math.PI))*Math.PI;
       };
       FiniteHomoRelation<ImmutableDoubleArray> nr = MixedRadixEnumeration.getNeighborRelation(lbound, ubound, subdiv);
       
@@ -711,7 +711,7 @@ public class Animations {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         g.setColor(Color.WHITE);
-        g.setStroke(new BasicStroke(2.0f));
+        g.setStroke(new BasicStroke(1.0f));
         for(int i=0; i<n ;i++) {
           double delta = Math.PI*2.0/(double)n;
           g.rotate(delta, transX, transY);
@@ -723,7 +723,7 @@ public class Animations {
             var p1 = GraphicsFunctions.toCartesian(new Polar(r1, theta1));
             var p2 = GraphicsFunctions.toCartesian(new Polar(r2, theta2));
 
-            g.setColor(new Color(Color.HSBtoRGB((float)(tp.getFirst().get(0)), (float)(0.9+0.1*Math.cos(delta+Math.PI*phase*2.0)), 0.95f)));
+            g.setColor(new Color(Color.HSBtoRGB((float)(0.5+0.5*Math.sin((float)(tp.getFirst().get(0))*Math.PI*2.0*4.0)), (float)(0.8+0.2*Math.cos(delta+Math.PI*phase*2.0)), 0.99f)));
             g.drawLine((int)Math.round(p1.x())+transX, (int)Math.round(p1.y())+transY, (int)Math.round(p2.x())+transX, (int)Math.round(p2.y())+transY);
           }
         }
