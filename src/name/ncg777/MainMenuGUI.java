@@ -43,6 +43,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.music.pcs12.apps.KComplexExplorer",name.ncg777.maths.music.pcs12.apps.KComplexExplorer.class);
     addAppButton(panel, "maths.music.pcs12.apps.MatrixGenerator",name.ncg777.maths.music.pcs12.apps.MatrixGenerator.class);
     addAppButton(panel, "maths.music.pcs12.apps.Permutator",name.ncg777.maths.music.pcs12.apps.Permutator.class);
+    addAppButton(panel, "maths.music.pcs12.apps.Polychord",name.ncg777.maths.music.pcs12.apps.Polychord.class);
     addAppButton(panel, "maths.music.pcs12.apps.RandomWalker1",name.ncg777.maths.music.pcs12.apps.RandomWalker1.class);
     addAppButton(panel, "maths.music.pcs12.apps.Rotator",name.ncg777.maths.music.pcs12.apps.Rotator.class);
     addAppButton(panel, "maths.music.pcs12.apps.SequenceMerger",name.ncg777.maths.music.pcs12.apps.SequenceMerger.class);
