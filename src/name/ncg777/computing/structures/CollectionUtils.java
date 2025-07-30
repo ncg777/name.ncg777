@@ -90,93 +90,75 @@ public class CollectionUtils {
     return o;
   }
   
+  /**
+   * Returns the nth permutation (lexicographic order) of [0, 1, 2, ..., k]
+   * where k is minimal so that k! > n and n >= 0.
+   * For n < 0, returns the reverse of the corresponding permutation for -n.
+   * Throws IllegalArgumentException if n is too large for the permutation size.
+   */
   public static List<Integer> getPermutation(int n) {
-    // Special case for n == 0
-    if (n == 0) return Collections.singletonList(0);
+      if (n == 0) return Arrays.asList(0);
 
-    // Handle negatives by shifting into the positive space
-    int adjustedN = Math.abs(n);
+      int absN = Math.abs(n);
 
-    // Find smallest k such that k! > adjustedN
-    int k = 1, fact = 1;
-    while (fact <= adjustedN) {
-        k++;
-        fact *= k;
-    }
-    k--; // Adjust k since we overshot
+      // Find minimal k such that k! > absN
+      int k = 1;
+      int fact = 1;
+      while (fact <= absN) {
+          k++;
+          fact *= k;
+      }
+      k--; // overshot
 
-    // If adjustedN >= k!, it's not a valid permutation index
-    if (adjustedN >= fact / (k + 1) * (k + 1))
-        throw new IllegalArgumentException("n is too large to generate a permutation of size " + (k+1));
-
-    // Compute Lehmer code from adjustedN
-    List<Integer> lehmerCode = new ArrayList<>();
-    int remaining = adjustedN;
-    fact /= (k + 1); // Start with k! for k+1 elements
-    for (int i = k; i >= 1; i--) {
-        lehmerCode.add(remaining / fact);
-        remaining %= fact;
-        if (i > 1) fact /= i;
-    }
-
-    // Generate permutation from Lehmer code
-    List<Integer> elements = new ArrayList<>();
-    for (int i = 0; i <= k; i++) elements.add(i);
-
-    List<Integer> permutation = new ArrayList<>();
-    for (int idx : lehmerCode) {
-        permutation.add(elements.remove(idx));
-    }
-    // Add the last element
-    permutation.add(elements.get(0));
-
-    // Handle negatives by reversing the permutation
-    if (n < 0) Collections.reverse(permutation);
-
-    return permutation;
-  }
-  
-  //Returns the number that would generate the given permutation using getPermutation(n)
-  public static int getPermutationNumber(List<Integer> permutation) {
-      int k = permutation.size() - 1;
-      List<Integer> perm = new ArrayList<>(permutation);
-
-      // Detect if the permutation is the reversed version (i.e., negative n).
-      boolean wasReversed = false;
-      List<Integer> sorted = new ArrayList<>(perm);
-      Collections.sort(sorted);
-      List<Integer> reversedSorted = new ArrayList<>(sorted);
-      Collections.reverse(reversedSorted);
-      if (perm.equals(reversedSorted)) {
-          wasReversed = true;
-          Collections.reverse(perm);
+      int totalPerms = fact / (k + 1) * (k + 1); // (k+1)!
+      if (absN >= totalPerms) {
+          throw new IllegalArgumentException("n is too large to generate a permutation of size " + (k + 1));
       }
 
-      // Lehmer code extraction
+      // Build Lehmer code
       List<Integer> lehmerCode = new ArrayList<>();
+      int remaining = absN;
+      fact /= (k + 1); // Start with k! for k+1 elements
+      for (int i = k; i >= 1; i--) {
+          lehmerCode.add(remaining / fact);
+          remaining %= fact;
+          if (i > 1) fact /= i;
+      }
+
+      // Build permutation from Lehmer code
       List<Integer> elements = new ArrayList<>();
       for (int i = 0; i <= k; i++) elements.add(i);
 
-      for (int i = 0; i < perm.size(); i++) {
-          int idx = elements.indexOf(perm.get(i));
-          lehmerCode.add(idx);
-          elements.remove(idx);
+      List<Integer> permutation = new ArrayList<>();
+      for (int code : lehmerCode) {
+          permutation.add(elements.remove(code));
       }
+      permutation.add(elements.get(0)); // add last remaining element
 
-      // Convert Lehmer code to number
-      int n = 0;
-      int fact = 1;
-      for (int i = k; i >= 1; i--) fact *= i + 1; // fact = (k+1)!
+      // For negative n, reverse the permutation
+      if (n < 0) Collections.reverse(permutation);
 
-      for (int i = 0; i < lehmerCode.size(); i++) {
-          fact /= (k + 1 - i);
-          n += lehmerCode.get(i) * fact;
-      }
-
-      if (wasReversed) n = -n;
-      return n;
+      return permutation;
   }
   
+  public static int getPermutationNumber(List<Integer> perm) {
+    int n = perm.size();
+    List<Integer> elements = new ArrayList<>();
+    for (int i = 0; i < n; i++) elements.add(i);
+
+    int number = 0;
+    int fact = 1;
+    for (int i = 2; i <= n; i++) fact *= i; // n!
+    fact /= n; // (n-1)!
+
+    for (int i = 0; i < n - 1; i++) {
+        int idx = elements.indexOf(perm.get(i));
+        number += idx * fact;
+        elements.remove(idx);
+        if (i < n - 2) fact /= (n - 1 - i);
+    }
+    return number;
+  }
   public static <
   A extends Comparable<? super A>,
   B extends Comparable<? super B>> 
