@@ -82,7 +82,10 @@ public class Polychord {
     btnCalc.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         var scale = Pcs12.parseForte(comboBox.getSelectedItem().toString());
+        
         var scaleseq = scale.asSequence();
+        var shift = scaleseq.indexOf(scale.getTranspose());
+        final var scaleseqrot = scaleseq.rotate(-shift);
         var chstr = textChords.getText().trim().split("\\s+");
         var chlist = new ArrayList<Pcs12>();
         for(int i = 0;i<chstr.length;i++) {chlist.add(Pcs12.parseForte(chstr[i]));}
@@ -94,7 +97,7 @@ public class Polychord {
         for(int i=0;i<chlist.size();i++) {
           int mult = (int)Math.round(Math.pow(2, i*scale.getK()));
           var ch = chlist.get(i).asSequence();
-          var indexes = new ArrayList<Integer>(ch.stream().map((v) -> scaleseq.indexOf(v)).toList());
+          var indexes = new ArrayList<Integer>(ch.stream().map((v) -> scaleseqrot.indexOf(v)).toList());
           int k = 0;
           for(var x : indexes) {
             if(x==-1) continue;
