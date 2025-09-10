@@ -15,7 +15,7 @@ public class RelativelyFlat implements StandardAndGuavaPredicate<BinaryNatural> 
     if (!h.apply(input)) {
       return false;
     }
-
+    if(input.getK() < 1) return false;
     Sequence a = input.getIntervalVector();
     a.removeIf((v) -> v == 0);
     
