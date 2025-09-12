@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -315,6 +316,320 @@ public class Animations {
     }, new NormalDistribution(mean_lifetime, lifetime_stdev),nb_individuals,width,height,fps,total_duration);
   }
 
+  /**
+   * Wrapper: apply psychedelic HSV color cycling and a rotating kaleidoscope in OpenCV to any base animation.
+   * The wrapper loops perfectly (phase in [0,1) across dur*fps frames).
+   *
+   * @param baseSupplier     Supplies the base animation frames (Mat CV_8UC4).
+   * @param width            Frame width.
+   * @param height           Frame height.
+   * @param fps              Frames per second.
+   * @param dur              Duration in seconds.
+   * @param kaleidoSegments  Number of kaleidoscopic mirrored segments (>= 2).
+   * @param kaleidoTurnsPerLoop  Kaleidoscope rotation turns per full loop.
+   * @param hueCyclesPerLoop     Hue rotations per full loop (HSV).
+   * @param satBase          Base multiplicative saturation factor (1.0 = unchanged).
+   * @param satAmp           Saturation modulation amplitude (e.g., 0.35).
+   * @param valBase          Base multiplicative value factor (1.0 = unchanged).
+   * @param valAmp           Value modulation amplitude (e.g., 0.25).
+   * @return                 Enumeration of processed frames.
+   */
+  public static Enumeration<Mat> wrapWithKaleidoAndPsychedelic(
+      Supplier<Enumeration<Mat>> baseSupplier,
+      int width, int height,
+      double fps, double dur,
+      int kaleidoSegments,
+      double kaleidoTurnsPerLoop,
+      double hueCyclesPerLoop,
+      double satBase, double satAmp,
+      double valBase, double valAmp
+  ) {
+    final int upper = (int) Math.round(dur * fps);
+    final Enumeration<Mat> base = baseSupplier.get();
+
+    return new Enumeration<Mat>() {
+      int k = 0;
+
+      @Override
+      public boolean hasMoreElements() {
+        return k < upper && base.hasMoreElements();
+      }
+
+      @Override
+      public Mat nextElement() {
+        if (!hasMoreElements()) throw new java.util.NoSuchElementException();
+        double phase = (double) k / (double) upper; // [0,1)
+
+        Mat src = base.nextElement(); // Expect CV_8UC4
+        Mat out = GraphicsFunctions.applyPsychedelicThenKaleido(
+          src,
+          phase,
+          hueCyclesPerLoop,
+          kaleidoSegments,
+          kaleidoTurnsPerLoop,
+          satBase, satAmp,
+          valBase, valAmp
+        );
+
+        // Free source if not reused
+        src.release();
+        k++;
+        return out;
+      }
+    };
+  }
+
+  /**
+   * Convenience example: take the 'hadamard' animation and post-process it with kaleidoscopic psychedelic effects.
+   */
+  public static Enumeration<Mat> hadamardKaleidoPsychedelic(
+      int n,
+      int width, int height,
+      double fps, double dur,
+      int kaleidoSegments,
+      double kaleidoTurnsPerLoop,
+      double hueCyclesPerLoop, boolean interpolate
+  ) {
+    return wrapWithKaleidoAndPsychedelic(
+      () -> hadamard(n, width, height, fps, dur, interpolate),
+      width, height, fps, dur,
+      kaleidoSegments,
+      kaleidoTurnsPerLoop,
+      hueCyclesPerLoop,
+      1.0, 0.35, // saturation: base 1.0, +/-0.35
+      1.0, 0.25  // value: base 1.0, +/-0.25
+    );
+  }
+  
+  /**
+   * Wrapper: apply a time-varying swirl/vortex (OpenCV remap) on top of any base animation.
+   * The swirl strength follows a sine wave so the effect loops seamlessly (strength=0 at start/end).
+   *
+   * @param baseSupplier        Supplies base frames (CV_8UC4).
+   * @param width               Frame width.
+   * @param height              Frame height.
+   * @param fps                 Frames per second.
+   * @param dur                 Duration in seconds.
+   * @param radiusFactor        Swirl radius as a fraction of min(width,height). Example: 0.48
+   * @param maxStrengthTurns    Max angular deflection at center, in turns (1 turn = 2π radians).
+   * @param swirlCyclesPerLoop  Number of sine cycles of strength per full loop (integer recommended).
+   * @param exponent            Radial falloff exponent (>1 tighter near center).
+   * @return                    Enumeration of processed frames.
+   */
+  public static Enumeration<Mat> wrapWithSwirlVortex(
+      Supplier<Enumeration<Mat>> baseSupplier,
+      int width, int height,
+      double fps, double dur,
+      double radiusFactor,
+      double maxStrengthTurns,
+      double swirlCyclesPerLoop,
+      double exponent
+  ) {
+    final int upper = (int) Math.round(dur * fps);
+    final Enumeration<Mat> base = baseSupplier.get();
+    final double cx = width / 2.0;
+    final double cy = height / 2.0;
+    final double radius = Math.min(width, height) * radiusFactor;
+    final double turnsToRadians = 2.0 * Math.PI;
+
+    return new Enumeration<Mat>() {
+      int k = 0;
+
+      @Override
+      public boolean hasMoreElements() {
+        return k < upper && base.hasMoreElements();
+      }
+
+      @Override
+      public Mat nextElement() {
+        if (!hasMoreElements()) throw new java.util.NoSuchElementException();
+        double phase = (double) k / (double) upper; // [0,1)
+
+        // Time-varying strength that returns to 0 at the loop boundary
+        double wave = Math.sin(2.0 * Math.PI * swirlCyclesPerLoop * phase);
+        double strengthRadians = maxStrengthTurns * turnsToRadians * wave;
+
+        Mat src = base.nextElement(); // Expect CV_8UC4
+        Mat out = GraphicsFunctions.applySwirlVortex(
+            src, cx, cy, radius, strengthRadians, exponent
+        );
+
+        src.release();
+        k++;
+        return out;
+      }
+    };
+  }
+  
+  /**
+   * 3 vertex clouds + 1 center cloud of oscillating droplets.
+   * - The triangle of vertex clouds spins around the canvas center.
+   * - Each cloud spins on itself (rotates its per-droplet offsets).
+   * - Droplets are spread with Gaussian offsets and get time-varying, looping noise.
+   * - All motion is periodic in params.t so the animation loops seamlessly.
+   */
+  public static Enumeration<Mat> dropletsTriangle(
+      int nb_individuals,
+      double total_duration,
+      double mean_lifetime,
+      double lifetime_stdev,
+      double base_radius,
+      boolean draw_contour,
+      int nb_partials,
+      double max_partial,
+      int max_nb_turns_in_lifetime,
+      int width,
+      int height,
+      double fps) {
+
+    // Geometry/dispersion
+    final int clouds = 4; // 3 vertices + 1 center
+    final double triangleSpacingFactor = 0.31; // distance of vertex clouds from center
+    final double cloudSpreadPx = Math.min(width, height) * 0.09; // static per-droplet spread
+    final double noiseAmpPx = Math.min(width, height) * 0.1;    // time-varying noise amplitude
+    final double triangleTurnsPerLoop = 3.0; // triangle spins once per loop
+
+    int nbcols = nb_individuals;
+
+    // Distributions for per-droplet params
+    var colord = new UniformIntegerDistribution(0, nbcols - 1);
+    var orientation = new UniformIntegerDistribution(0, 1);
+    var nd = new NormalDistribution(0.0, 0.25);
+    var pd = new NormalDistribution(0.0, max_partial);
+    var td = new NormalDistribution(Math.PI, Math.PI);
+    var turns = new UniformIntegerDistribution(0, Math.max(1, max_nb_turns_in_lifetime));
+    var noiseFreqDist = new UniformIntegerDistribution(1, 5); // integer cycles per loop to ensure perfect loop
+
+    // Per-cloud self-spin (turns per loop and direction)
+    var cloudTurnsDist = new UniformIntegerDistribution(1, Math.max(1, Math.min(6, max_nb_turns_in_lifetime > 0 ? max_nb_turns_in_lifetime : 3)));
+    var dirDist = new UniformIntegerDistribution(0, 1);
+    double[] cloudSelfTurnsPerLoop = new double[clouds];
+    double[] cloudSelfDir = new double[clouds];
+    for (int c = 0; c < clouds; c++) {
+      cloudSelfTurnsPerLoop[c] = cloudTurnsDist.sample(); // 1..min(6, max)
+      cloudSelfDir[c] = dirDist.sample() == 0 ? -1.0 : 1.0;
+    }
+
+    // Per-droplet parameters
+    List<Integer> ind_colors = new ArrayList<>();
+    List<Double> radii = new ArrayList<>();
+    List<double[]> partials = new ArrayList<>();
+    List<Double> thetas = new ArrayList<>();       // internal shape phase
+    List<Double> orientationsArr = new ArrayList<>(); // internal shape rotation speed/sign
+    int[] cloudOf = new int[nb_individuals];
+
+    // Static Gaussian offsets to create each cloud
+    var offsetDist = new NormalDistribution(0.0, cloudSpreadPx);
+    double[] offsetX = new double[nb_individuals];
+    double[] offsetY = new double[nb_individuals];
+
+    // Looping positional noise params per droplet
+    int[] noiseFreqX = new int[nb_individuals];
+    int[] noiseFreqY = new int[nb_individuals];
+    double[] noisePhaseX = new double[nb_individuals];
+    double[] noisePhaseY = new double[nb_individuals];
+
+    for (int i = 0; i < nb_individuals; i++) {
+      ind_colors.add(colord.sample());
+      radii.add(base_radius * (0.5 + 0.5 * nd.sample()));
+
+      int p2 = (int) (Math.pow(2.0, nb_partials - 1)) + 1;
+      var pr = new double[p2];
+      for (int j = 0; j < nb_partials; j++) {
+        double s = pd.sample();
+        pr[(int) Math.pow(2.0, j)] = (s < 0 || s > 1) ? 0.0 : s;
+      }
+      partials.add(pr);
+
+      thetas.add(td.sample());
+      orientationsArr.add((double) (turns.sample() * (-1 + orientation.sample() * 2)));
+
+      // Distribute evenly across 4 clouds (0..2 vertices, 3 = center)
+      cloudOf[i] = i % clouds;
+
+      // Static Gaussian offsets (cloud spread)
+      offsetX[i] = offsetDist.sample();
+      offsetY[i] = offsetDist.sample();
+
+      // Looping noise (use integer frequencies for perfect looping)
+      noiseFreqX[i] = noiseFreqDist.sample();
+      noiseFreqY[i] = noiseFreqDist.sample();
+      // Pseudo-random phases derived from 'thetas' to avoid needing an extra RNG
+      noisePhaseX[i] = (thetas.get(i) * 0.73) % (2.0 * Math.PI);
+      noisePhaseY[i] = (thetas.get(i) * 1.19) % (2.0 * Math.PI);
+    }
+
+    ColorSequence cs = new ColorSequence(nbcols);
+    final double cx = width / 2.0;
+    final double cy = height / 2.0;
+    final double triangleRadius = Math.min(width, height) * triangleSpacingFactor;
+
+    return Helpers.BivariateNormalProcess((params) -> {
+      // Global phase in [0,1); all motion is a function of this so the animation loops.
+      final double phase = params.t;
+
+      // Triangle (vertex clouds) spin
+      final double triangleSpin = triangleTurnsPerLoop * 2.0 * Math.PI * phase;
+
+      // Compute 3 triangle vertices (0..2), plus a center cloud (index 3)
+      double[] triX = new double[clouds];
+      double[] triY = new double[clouds];
+      for (int k = 0; k < 3; k++) {
+        double angle = triangleSpin + k * (2.0 * Math.PI / 3.0);
+        triX[k] = cx + triangleRadius * Math.cos(angle);
+        triY[k] = cy + triangleRadius * Math.sin(angle);
+      }
+      // Center cloud (fixed at center)
+      triX[3] = cx;
+      triY[3] = cy;
+
+      // Life-based opacity/size envelope (as in droplets())
+      final double a = 0.49999 * (1.0 + Math.sin(-(Math.PI / 2.0) + (params.life) * Math.PI * 2.0));
+      Color c = cs.get((int) (((double) params.individual / (double) nb_individuals) * ((double) nbcols)));
+      Color c2 = new Color((int) (c.getRed() * a), (int) (c.getGreen() * a), (int) (c.getBlue() * a), (int) (a * 32.0));
+      params.g.setPaint(c2);
+
+      int i = params.individual;
+      double rr = radii.get(i) * a;
+
+      // Cloud center for this droplet's assigned cloud
+      int cloud = cloudOf[i];
+
+      // Per-cloud self-rotation (turns per loop, signed)
+      double selfPhi = cloudSelfDir[cloud] * cloudSelfTurnsPerLoop[cloud] * 2.0 * Math.PI * phase;
+      double cosp = Math.cos(selfPhi), sinp = Math.sin(selfPhi);
+
+      // Rotate the static Gaussian offset by cloud self-spin
+      double rox = offsetX[i] * cosp - offsetY[i] * sinp;
+      double roy = offsetX[i] * sinp + offsetY[i] * cosp;
+
+      // Add smooth, looping positional noise (independent for x and y)
+      double nx = noiseAmpPx * Math.sin(2.0 * Math.PI * (noiseFreqX[i] * phase) + noisePhaseX[i]);
+      double ny = noiseAmpPx * Math.cos(2.0 * Math.PI * (noiseFreqY[i] * phase) + noisePhaseY[i]);
+
+      // Final position
+      double x = triX[cloud] + rox + nx;
+      double y = triY[cloud] + roy + ny;
+
+      // Keep consistent with existing droplets(): pass (center - rr/2)
+      var e = new OscillatingCircle(
+          x - rr / 2.0,
+          y - rr / 2.0,
+          rr,
+          partials.get(i),
+          orientationsArr.get(i) * (params.life * Math.PI * 2.0) + thetas.get(i));
+
+      params.g.fill(e);
+
+      if (draw_contour) {
+        params.g.setStroke(new BasicStroke(1.1f));
+        params.g.setColor(new Color((int) (a * 255.0), (int) (a * 255.0), (int) (a * 255.0), (int) (a * 255.0)));
+        params.g.draw(e);
+      }
+    }, new NormalDistribution(mean_lifetime, lifetime_stdev), nb_individuals, width, height, fps, total_duration);
+  }
+  
+  
   /**
    * 20250611
    * 

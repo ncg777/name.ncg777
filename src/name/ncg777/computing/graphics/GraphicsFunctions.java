@@ -22,6 +22,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoWriter;
@@ -527,5 +528,242 @@ public class GraphicsFunctions {
       double x = projection[0];
       double y = projection[1];
       return (x >= minX && x <= maxX && y >= minY && y <= maxY);
+  }
+  
+  /**
+   * Cycles hue, boosts saturation/value over time (phase in [0,1)), returns BGRA.
+   * - src must be CV_8UC4 (BGRA).
+   * - hueCyclesPerLoop: number of full hue rotations per full phase loop.
+   * - satBase/valBase: multiplicative base (1.0 keeps original), satAmp/valAmp: +/- modulation.
+   */
+  public static Mat applyPsychedelicHSV(Mat srcBGRA,
+                                        double hueCyclesPerLoop,
+                                        double phase,
+                                        double satBase, double satAmp,
+                                        double valBase, double valAmp) {
+    if (srcBGRA.type() != CvType.CV_8UC4) {
+      throw new IllegalArgumentException("applyPsychedelicHSV expects CV_8UC4 (BGRA) input");
+    }
+
+    Mat bgr = new Mat();
+    Imgproc.cvtColor(srcBGRA, bgr, Imgproc.COLOR_BGRA2BGR);
+
+    Mat hsv = new Mat();
+    Imgproc.cvtColor(bgr, hsv, Imgproc.COLOR_BGR2HSV);
+
+    // Build per-frame parameters
+    int hueShift = (int) Math.round(((phase * hueCyclesPerLoop) % 1.0) * 180.0); // OpenCV H in [0,180)
+    double sFactor = satBase + satAmp * Math.sin(2.0 * Math.PI * phase);
+    double vFactor = valBase + valAmp * Math.cos(2.0 * Math.PI * phase);
+
+    byte[] data = new byte[(int) (hsv.total() * hsv.channels())];
+    hsv.get(0, 0, data);
+
+    for (int i = 0; i < data.length; i += 3) {
+      int H = data[i] & 0xFF;
+      int S = data[i + 1] & 0xFF;
+      int V = data[i + 2] & 0xFF;
+
+      // Hue shift modulo 180
+      int Hn = (H + hueShift) % 180;
+
+      // Saturation/value scaling
+      int Sn = (int) Math.round(Math.max(0.0, Math.min(255.0, S * sFactor)));
+      int Vn = (int) Math.round(Math.max(0.0, Math.min(255.0, V * vFactor)));
+
+      data[i] = (byte) Hn;
+      data[i + 1] = (byte) Sn;
+      data[i + 2] = (byte) Vn;
+    }
+
+    hsv.put(0, 0, data);
+
+    Mat bgrOut = new Mat();
+    Imgproc.cvtColor(hsv, bgrOut, Imgproc.COLOR_HSV2BGR);
+
+    // Restore alpha
+    List<Mat> bgraChannels = new java.util.ArrayList<>(4);
+    Core.split(srcBGRA, bgraChannels); // BGRA
+    Mat alpha = bgraChannels.get(3);
+
+    Mat dstBGRA = new Mat();
+    List<Mat> bgrChannels = new java.util.ArrayList<>(3);
+    Core.split(bgrOut, bgrChannels); // B,G,R
+    bgrChannels.add(alpha); // append original alpha
+    Core.merge(bgrChannels, dstBGRA); // BGRA
+
+    // Cleanup
+    bgr.release();
+    hsv.release();
+    bgrOut.release();
+
+    return dstBGRA;
+  }
+
+  /**
+   * Kaleidoscope effect by folding angles into N mirrored segments around the center.
+   * - src must be CV_8UC4 (BGRA). Output is CV_8UC4.
+   * - segments >= 2
+   * - angleOffset: radians, rotates the kaleidoscope
+   */
+  public static Mat applyKaleidoscope(Mat srcBGRA, int segments, double angleOffset) {
+    if (srcBGRA.type() != CvType.CV_8UC4) {
+      throw new IllegalArgumentException("applyKaleidoscope expects CV_8UC4 (BGRA) input");
+    }
+    if (segments < 2) {
+      throw new IllegalArgumentException("segments must be >= 2");
+    }
+
+    int rows = srcBGRA.rows();
+    int cols = srcBGRA.cols();
+    float cx = (cols - 1) / 2.0f;
+    float cy = (rows - 1) / 2.0f;
+
+    Mat mapX = new Mat(rows, cols, CvType.CV_32FC1);
+    Mat mapY = new Mat(rows, cols, CvType.CV_32FC1);
+    float[] mapXData = new float[rows * cols];
+    float[] mapYData = new float[rows * cols];
+
+    final double twoPi = Math.PI * 2.0;
+    final double segWidth = twoPi / segments;
+
+    int idx = 0;
+    for (int y = 0; y < rows; y++) {
+      float dy = y - cy;
+      for (int x = 0; x < cols; x++) {
+        float dx = x - cx;
+
+        double r = Math.hypot(dx, dy);
+        double theta = Math.atan2(dy, dx) - angleOffset;
+        // Normalize to [0, 2π)
+        theta = theta % twoPi;
+        if (theta < 0) theta += twoPi;
+
+        int seg = (int) Math.floor(theta / segWidth);
+        double local = theta - seg * segWidth;
+        if ((seg & 1) == 1) {
+          local = segWidth - local; // mirror odd segments
+        }
+
+        double finalAngle = local; // folded into base wedge
+        float sx = (float) (cx + r * Math.cos(finalAngle + angleOffset));
+        float sy = (float) (cy + r * Math.sin(finalAngle + angleOffset));
+
+        mapXData[idx] = sx;
+        mapYData[idx] = sy;
+        idx++;
+      }
+    }
+
+    mapX.put(0, 0, mapXData);
+    mapY.put(0, 0, mapYData);
+
+    Mat dst = new Mat();
+    Imgproc.remap(
+        srcBGRA, dst,
+        mapX, mapY,
+        Imgproc.INTER_LINEAR,
+        Core.BORDER_CONSTANT,
+        new Scalar(0, 0, 0, 0) // transparent border
+    );
+
+    mapX.release();
+    mapY.release();
+
+    return dst;
+  }
+
+  /**
+   * OpenCV Swirl/Vortex effect (BGRA in, BGRA out).
+   * angleOffset(r) = strengthRadians * pow((1 - r/radius), exponent), applied for r < radius.
+   * Positive strengthRadians swirls counter-clockwise near the center; effect decays to 0 at r=radius.
+   *
+   * @param srcBGRA         Input Mat (CV_8UC4, BGRA).
+   * @param cx              Swirl center X in pixels.
+   * @param cy              Swirl center Y in pixels.
+   * @param radius          Swirl radius in pixels.
+   * @param strengthRadians Max angular deflection (in radians) at the center (r=0).
+   * @param exponent        Decay exponent; 1 = linear. >1 = tighter near center.
+   * @return                Output Mat (CV_8UC4, BGRA) with swirl applied.
+   */
+  public static Mat applySwirlVortex(Mat srcBGRA,
+                                     double cx, double cy,
+                                     double radius,
+                                     double strengthRadians,
+                                     double exponent) {
+    if (srcBGRA.type() != CvType.CV_8UC4) {
+      throw new IllegalArgumentException("applySwirlVortex expects CV_8UC4 (BGRA) input");
+    }
+    int rows = srcBGRA.rows();
+    int cols = srcBGRA.cols();
+
+    Mat mapX = new Mat(rows, cols, CvType.CV_32FC1);
+    Mat mapY = new Mat(rows, cols, CvType.CV_32FC1);
+    float[] mapXData = new float[rows * cols];
+    float[] mapYData = new float[rows * cols];
+
+    double rMax = Math.max(1.0, radius);
+    int idx = 0;
+    for (int y = 0; y < rows; y++) {
+      double dy = y - cy;
+      for (int x = 0; x < cols; x++) {
+        double dx = x - cx;
+        double r = Math.hypot(dx, dy);
+
+        float sx, sy;
+        if (r < rMax) {
+          double norm = 1.0 - (r / rMax);
+          double weight = Math.pow(Math.max(0.0, norm), Math.max(0.0, exponent));
+          double angle = Math.atan2(dy, dx) + strengthRadians * weight;
+
+          double cs = Math.cos(angle);
+          double sn = Math.sin(angle);
+          sx = (float) (cx + r * cs);
+          sy = (float) (cy + r * sn);
+        } else {
+          sx = (float) x;
+          sy = (float) y;
+        }
+
+        mapXData[idx] = sx;
+        mapYData[idx] = sy;
+        idx++;
+      }
+    }
+
+    mapX.put(0, 0, mapXData);
+    mapY.put(0, 0, mapYData);
+
+    Mat dst = new Mat();
+    Imgproc.remap(
+        srcBGRA, dst,
+        mapX, mapY,
+        Imgproc.INTER_LINEAR,
+        Core.BORDER_CONSTANT,
+        new org.opencv.core.Scalar(0, 0, 0, 0) // transparent borders
+    );
+
+    mapX.release();
+    mapY.release();
+    return dst;
+  }
+
+  /**
+   * Convenience combiner: Psychedelic HSV then Kaleidoscope.
+   * - hueCyclesPerLoop: number of hue spins per [0,1) phase loop
+   * - kaleidoTurnsPerLoop: kaleidoscope rotation turns per loop
+   */
+  public static Mat applyPsychedelicThenKaleido(Mat srcBGRA,
+                                                double phase,
+                                                double hueCyclesPerLoop,
+                                                int segments,
+                                                double kaleidoTurnsPerLoop,
+                                                double satBase, double satAmp,
+                                                double valBase, double valAmp) {
+    Mat psy = applyPsychedelicHSV(srcBGRA, hueCyclesPerLoop, phase, satBase, satAmp, valBase, valAmp);
+    double angleOffset = (phase * kaleidoTurnsPerLoop) * 2.0 * Math.PI;
+    Mat out = applyKaleidoscope(psy, segments, angleOffset);
+    psy.release();
+    return out;
   }
 }
