@@ -19,6 +19,7 @@ import java.util.TreeSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.Random;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -126,6 +127,195 @@ public class Animations {
         }
       };
     }
+  }
+
+  /**
+   * Neon radial sine isoclines animation with multiple random components and phase noise.
+   * - Background is black, colors are vivid (neon-like) using HSB with high saturation/value.
+   * - The scalar field is a sum of radial sine waves with randomized frequencies/amplitudes.
+   * - Isoclines are rendered by mapping the field through a high-contrast stripe function.
+   * - Additional randomized, looping phase noise is applied (angular, radial, and temporal).
+   * - The animation loops seamlessly in time (use of integer time cycles).
+   *
+   * Contract
+   * - Inputs: canvas size (width/height), timing (fps/dur), component count, isocline density,
+   *           stripe thickness, noise amount, RNG seed for determinism.
+   * - Output: Enumeration<Mat> of BGRA frames sized width x height.
+   * - Error modes: none (parameters are sanitized where needed).
+   *
+   * @param width           frame width
+   * @param height          frame height
+   * @param fps             frames per second
+   * @param dur             duration in seconds
+   * @param components      number of radial sine components to sum (e.g., 4..9)
+   * @param isoBands        number of isocline bands across the normalized field (e.g., 24..96)
+   * @param lineThickness   thickness control for isoclines in [0.02..0.5] (smaller = thinner lines)
+   * @param noiseAmount     phase noise amplitude (radians), e.g., 0.05..0.35
+   * @param seed            RNG seed for reproducibility
+   * @return                frames enumeration
+   */
+  public static Enumeration<Mat> radialSineIsoclinesNeon(
+      int width, int height,
+      double fps, double dur,
+      int components,
+      int isoBands,
+      double lineThickness,
+      double noiseAmount,
+      long seed) {
+    final int upper = (int) Math.max(1, Math.round(dur * fps));
+
+    // Bounds for frequencies/amplitudes
+    // Lower frequencies for slower, smoother radial structures
+    final int fMin = 1;           // integer cycles across unit radius (ensures clean rings)
+    final int fMax = 4;
+    final double aMin = 0.20;
+    final double aMax = 0.85;
+
+    // Time and angular noise integer cycle bounds (ensures seamless loops)
+    // Reduce to make motion slower/softer
+    final int tCyclesMin = 0, tCyclesMax = 2;     // time cycles per loop for each component
+    final int nThetaMin = 1, nThetaMax = 4;       // angular noise waves
+    final int nTimeMin  = 1, nTimeMax  = 2;       // temporal noise waves
+    final int nRadMin   = 0, nRadMax   = 2;       // radial noise waves
+
+    final Random rng = new Random(seed);
+
+    // Per-component randomized parameters
+  final int[] freq = new int[components];
+    final double[] amp  = new double[components];
+    final double[] phi0 = new double[components];
+    final int[] tCycles = new int[components];
+    final int[] nTheta  = new int[components];
+    final int[] nTime   = new int[components];
+    final int[] nRad    = new int[components];
+    final double[] nPhi = new double[components];
+
+    double ampSum = 0.0;
+    for (int i = 0; i < components; i++) {
+  freq[i] = fMin + rng.nextInt(Math.max(1, fMax - fMin + 1));
+      amp[i]  = aMin + (aMax - aMin) * rng.nextDouble();
+      // balance amplitudes to avoid over-saturation
+      amp[i] *= 1.0 / Math.max(1.0, Math.sqrt(components));
+      ampSum += Math.abs(amp[i]);
+
+      phi0[i] = rng.nextDouble() * 2.0 * Math.PI;
+      tCycles[i] = tCyclesMin + rng.nextInt(Math.max(1, tCyclesMax - tCyclesMin + 1));
+      nTheta[i]  = nThetaMin  + rng.nextInt(Math.max(1, nThetaMax - nThetaMin + 1));
+      nTime[i]   = nTimeMin   + rng.nextInt(Math.max(1, nTimeMax  - nTimeMin  + 1));
+      nRad[i]    = nRadMin    + rng.nextInt(Math.max(1, nRadMax   - nRadMin   + 1));
+      nPhi[i]    = rng.nextDouble() * 2.0 * Math.PI;
+    }
+    final double ampNorm = ampSum > 1e-9 ? ampSum : 1.0;
+
+    final double lt = Math.max(0.01, Math.min(0.75, lineThickness));
+  // Contrast control for core line and a wider "glow" skirt
+  final double gammaCore = 1.5; 
+  final double gammaGlow = 2.2;
+
+    return new Enumeration<Mat>() {
+      int k = 0;
+
+      @Override
+      public boolean hasMoreElements() { return k < upper; }
+
+      @Override
+      public Mat nextElement() {
+        if (!hasMoreElements()) throw new java.util.NoSuchElementException();
+  // Use (upper-1) in the denominator so last frame hits phase=1.0 exactly,
+  // making frame 0 and the final frame identical for a perfect loop.
+  final double phase = (upper > 1) ? ((double) k) / ((double) (upper - 1)) : 0.0; // [0,1]
+
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // Fill black background
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, width, height);
+
+        // Draw neon stripes with per-pixel color function
+        GraphicsFunctions.drawColorField2D(g, (params) -> {
+          // Normalize radius to [0,1] using r = sqrt((x^2 + y^2)/2)
+          double x = params.cartesian().x();
+          double y = params.cartesian().y();
+          double rn = Math.sqrt((x*x + y*y) / 2.0);
+          double th = params.polar().theta(); // [-pi,pi]
+
+          // Accumulate radial sine components with phase noise
+          double s = 0.0;
+          for (int i = 0; i < components; i++) {
+            double tTerm = 2.0 * Math.PI * (tCycles[i] * phase);
+            // Scale angular noise by rn to avoid center discontinuity; keep low time cycles for smoothness
+            double angNoise = Math.sin(nTheta[i] * th + 2.0 * Math.PI * (nTime[i] * phase) + nPhi[i]);
+            double radNoise = Math.sin(2.0 * Math.PI * (nRad[i] * rn + (nTime[i] + 1) * phase) + 0.37 * nPhi[i]);
+            double noise = noiseAmount * (rn * angNoise + 0.4 * radNoise);
+            s += amp[i] * Math.sin(2.0 * Math.PI * (freq[i] * rn) + phi0[i] + tTerm + noise);
+          }
+
+          // Normalize field roughly to [-1,1]
+          double v = s / ampNorm;
+
+          // Stripe function: bright where sin(pi * isoBands * v) ~ 0
+          double stripeArg = isoBands * v;
+          double line = Math.abs(Math.sin(Math.PI * stripeArg)); // [0,1]
+          // High-contrast core plus softer skirt for neon-like glow
+          double core = Math.max(0.0, 1.0 - (line / lt));
+          core = Math.pow(core, gammaCore);
+          double glow = Math.max(0.0, 1.0 - (line / (lt * 2.8)));
+          glow = Math.pow(glow, gammaGlow);
+          double intensity = Math.min(1.0, core + 0.45 * glow);
+
+          // Soft edge fade to remove border discontinuity
+          double rfStart = 0.985, rfEnd = 1.0;
+          if (rn > rfStart) {
+            double t = Math.min(1.0, Math.max(0.0, (rn - rfStart) / (rfEnd - rfStart)));
+            intensity *= (1.0 - t);
+          }
+
+          // Neon HSB color: vivid, time/space-varying, and continuous across the angle seam.
+          // IMPORTANT: Avoid using raw theta (th/(2π)) directly to prevent wrap discontinuity.
+          // Use only continuous functions of angle: sin(th*k), cos(th*k) which have no 2π seam.
+          double base = 0.25 * phase; // integer-cycle ramp guarantees loop
+          // Angle harmonics (continuous around 2π)
+          double ang1 = Math.sin(th);           // 1-fold
+          double ang2 = Math.cos(2.0 * th);     // 2-fold
+          double ang3 = Math.sin(3.0 * th);     // 3-fold
+          // Time harmonics (integer cycles -> seamless)
+          double t1 = Math.sin(2.0 * Math.PI * (1.0 * phase));
+          double t2 = Math.cos(2.0 * Math.PI * (2.0 * phase));
+          // Compose hue from smooth ingredients
+          double hue = base
+                     + 0.24 * rn
+                     + 0.18 * v
+                     + 0.12 * ang1
+                     + 0.08 * ang2
+                     + 0.06 * ang3
+                     + 0.07 * t1
+                     + 0.05 * t2
+                     + 0.06 * Math.sin(2.0 * Math.PI * (0.25 * rn + 1.0 * phase));
+          hue = hue - Math.floor(hue); // wrap [0,1)
+          float sat = (float)Math.min(1.0, 0.9 + 0.1 * intensity); // pop on the lines
+          // Keep background black: no base brightness, only from intensity/glow
+          float bri = (float) Math.min(1.0, 0.95 * intensity + 0.35 * glow);
+          Color c = Color.getHSBColor((float) hue, sat, bri);
+          return new Color(c.getRed(), c.getGreen(), c.getBlue(), 255);
+        }, width, height);
+
+        k++;
+        return GraphicsFunctions.bufferedImageToMat(img);
+      }
+    };    
+  }
+
+  /**
+   * Convenience overload with sensible defaults for a quick neon radial isoclines animation.
+   * components=6, isoBands=48, lineThickness=0.12, noiseAmount=0.18, seed=randomized.
+   */
+  public static Enumeration<Mat> radialSineIsoclinesNeon(
+      int width, int height,
+      double fps, double dur) {
+    long seed = System.nanoTime();
+  return radialSineIsoclinesNeon(width, height, fps, dur,
+    24, 3, 0.333, 0.95, seed);
   }
 
   /**
@@ -358,7 +548,8 @@ public class Animations {
       @Override
       public Mat nextElement() {
         if (!hasMoreElements()) throw new java.util.NoSuchElementException();
-        double phase = (double) k / (double) upper; // [0,1)
+        // Use [0,1] inclusive so last frame equals first frame for a perfect loop
+        double phase = (upper > 1) ? ((double) k) / ((double) (upper - 1)) : 0.0;
 
         Mat src = base.nextElement(); // Expect CV_8UC4
         Mat out = GraphicsFunctions.applyPsychedelicThenKaleido(
@@ -398,6 +589,54 @@ public class Animations {
       hueCyclesPerLoop,
       1.0, 0.35, // saturation: base 1.0, +/-0.35
       1.0, 0.25  // value: base 1.0, +/-0.25
+    );
+  }
+
+  /**
+   * Kaleidoscopic variant of the neon radial isoclines animation (colors unchanged, kaleidoscope only).
+   * This preserves the neon color palette while creating a mandala-like symmetry.
+   * The loop is perfect thanks to phase = k/(upper-1) in the wrapper.
+   */
+  public static Enumeration<Mat> radialSineIsoclinesNeonKaleido(
+      int width, int height,
+      double fps, double dur,
+      int kaleidoSegments,
+      double kaleidoTurnsPerLoop
+  ) {
+    // Keep colors unchanged: hueCycles=0, satAmp=0, valAmp=0
+    return wrapWithKaleidoAndPsychedelic(
+        () -> radialSineIsoclinesNeon(width, height, fps, dur),
+        width, height, fps, dur,
+        kaleidoSegments,
+        kaleidoTurnsPerLoop,
+        2.0,    // hueCyclesPerLoop
+        0.8, 0.2, // saturation base/amp
+        0.8, 0.2  // value base/amp
+    );
+  }
+
+  /**
+   * Full-control kaleidoscopic variant of the neon radial isoclines animation.
+   */
+  public static Enumeration<Mat> radialSineIsoclinesNeonKaleido(
+      int width, int height,
+      double fps, double dur,
+      int components,
+      int isoBands,
+      double lineThickness,
+      double noiseAmount,
+      long seed,
+      int kaleidoSegments,
+      double kaleidoTurnsPerLoop
+  ) {
+    return wrapWithKaleidoAndPsychedelic(
+        () -> radialSineIsoclinesNeon(width, height, fps, dur, components, isoBands, lineThickness, noiseAmount, seed),
+        width, height, fps, dur,
+        kaleidoSegments,
+        kaleidoTurnsPerLoop,
+        0.0,    // hueCyclesPerLoop (no hue shift)
+        1.0, 0.0, // saturation base/amp (unchanged)
+        1.0, 0.0  // value base/amp (unchanged)
     );
   }
   
