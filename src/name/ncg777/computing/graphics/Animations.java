@@ -274,7 +274,8 @@ public class Animations {
           // Neon HSB color: vivid, time/space-varying, and continuous across the angle seam.
           // IMPORTANT: Avoid using raw theta (th/(2π)) directly to prevent wrap discontinuity.
           // Use only continuous functions of angle: sin(th*k), cos(th*k) which have no 2π seam.
-          double base = 0.25 * phase; // integer-cycle ramp guarantees loop
+          // Do NOT use a linear phase ramp in hue (e.g., c*phase) because it won't match at 0 and 1.
+          // Only use integer-cycle periodic terms so hue(0) == hue(1).
           // Angle harmonics (continuous around 2π)
           double ang1 = Math.sin(th);           // 1-fold
           double ang2 = Math.cos(2.0 * th);     // 2-fold
@@ -283,8 +284,7 @@ public class Animations {
           double t1 = Math.sin(2.0 * Math.PI * (1.0 * phase));
           double t2 = Math.cos(2.0 * Math.PI * (2.0 * phase));
           // Compose hue from smooth ingredients
-          double hue = base
-                     + 0.24 * rn
+          double hue = 0.24 * rn
                      + 0.18 * v
                      + 0.12 * ang1
                      + 0.08 * ang2
