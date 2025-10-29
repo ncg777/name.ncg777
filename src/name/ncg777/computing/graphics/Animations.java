@@ -234,11 +234,16 @@ public class Animations {
 
         // Draw neon stripes with per-pixel color function
         GraphicsFunctions.drawColorField2D(g, (params) -> {
+          // Isotropic coordinates: scale normalized coords so 1 unit equals the same pixel length
+          // along x and y. Using factors (width/min) and (height/min) ensures Δx_iso = Δy_iso = 2/min per pixel.
+          double minDim = (double) Math.min(width, height);
+          double ax = ((double) width) / minDim;
+          double ay = ((double) height) / minDim;
+          double x = params.cartesian().x() * ax;
+          double y = params.cartesian().y() * ay;
           // Normalize radius to [0,1] using r = sqrt((x^2 + y^2)/2)
-          double x = params.cartesian().x();
-          double y = params.cartesian().y();
           double rn = Math.sqrt((x*x + y*y) / 2.0);
-          double th = params.polar().theta(); // [-pi,pi]
+          double th = Math.atan2(y, x); // continuous angle [-pi,pi]
 
           // Accumulate radial sine components with phase noise
           double s = 0.0;
