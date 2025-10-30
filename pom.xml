@@ -12,8 +12,15 @@
 				<directory>resources</directory>
 				<targetPath>resources</targetPath>
 				<includes>
-					<include>**/*.csv</include>
-					<include>**/*.bin</include>
+					<include>**/*.*</include>
+					<include>**/shaders/*.*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>resources/shaders</directory>
+				<targetPath>resources/shaders</targetPath>
+				<includes>
+					<include>**/shaders/*.*</include>
 				</includes>
 			</resource>
 		</resources>
@@ -125,6 +132,42 @@
 		    <groupId>org.openpnp</groupId>
 		    <artifactId>opencv</artifactId>
 		    <version>4.9.0-0</version>
+		</dependency>
+		<!-- In <dependencies> -->
+		<dependency>
+		  <groupId>org.lwjgl</groupId>
+		  <artifactId>lwjgl</artifactId>
+		  <version>3.3.3</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.lwjgl</groupId>
+		  <artifactId>lwjgl-glfw</artifactId>
+		  <version>3.3.3</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.lwjgl</groupId>
+		  <artifactId>lwjgl-opengl</artifactId>
+		  <version>3.3.3</version>
+		</dependency>
+		
+		<!-- Natives for Windows -->
+		<dependency>
+		  <groupId>org.lwjgl</groupId>
+		  <artifactId>lwjgl</artifactId>
+		  <version>3.3.3</version>
+		  <classifier>natives-windows</classifier>
+		</dependency>
+		<dependency>
+		  <groupId>org.lwjgl</groupId>
+		  <artifactId>lwjgl-glfw</artifactId>
+		  <version>3.3.3</version>
+		  <classifier>natives-windows</classifier>
+		</dependency>
+		<dependency>
+		  <groupId>org.lwjgl</groupId>
+		  <artifactId>lwjgl-opengl</artifactId>
+		  <version>3.3.3</version>
+		  <classifier>natives-windows</classifier>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
