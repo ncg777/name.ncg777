@@ -211,6 +211,6 @@ public class NeonIsoclinesGL {
     int width = 1280, height = 720, fps = 60;
     double dur = 8.0;
     runWindow(width, height, fps, dur,
-      16, 4, 0.10f, 0.16f, System.nanoTime(), true);
+      64, 8, 0.25f, 2.5f, System.nanoTime(), true);
   }
 }
