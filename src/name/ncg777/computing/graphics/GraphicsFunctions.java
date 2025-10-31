@@ -121,7 +121,7 @@ public class GraphicsFunctions {
   
   public static void writeAnimation(String filename, Supplier<Enumeration<Mat>> frames, int width, int height, double fps, int hardLimit) {
     var vw = new VideoWriter();
-    vw.open(filename,VideoWriter.fourcc('A', 'V', 'C', '1'),fps, new Size(width, height), true);
+    vw.open(filename,VideoWriter.fourcc('H', '2', '6', '4'),fps, new Size(width, height), true);
     if (!vw.isOpened()) {
       System.err.println("Failed to open the VideoWriter!");
       return;
