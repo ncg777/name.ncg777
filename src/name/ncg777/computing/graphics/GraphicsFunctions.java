@@ -132,6 +132,7 @@ public class GraphicsFunctions {
     while(e.hasMoreElements()) {
       var frame = e.nextElement();
       vw.write(frame);
+      frame.release();
       System.out.print("\rWriting frame " + Integer.toString(++k));
       
       if(hardLimit>0 && k>=hardLimit) break;
