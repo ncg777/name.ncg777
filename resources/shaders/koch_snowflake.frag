@@ -91,24 +91,30 @@ void main() {
     float dist = kochSnowflakeDistance(uv, uScale, uIterations);
     
     // Create line visualization with glow
-    float lineWidth = 0.002;
-    float glowWidth = 0.02;
+    const float lineWidth = 0.002;
+    const float lineOuterMult = 1.5;
+    const float lineInnerMult = 0.5;
+    const float distanceScale = 50.0;
+    const float timeScale = 2.0;
+    const float glowMix = 0.4;
+    const float edgeGlowMult = 0.3;
     
     // Core line
-    float line = smoothstep(lineWidth * 1.5, lineWidth * 0.5, dist);
+    float line = smoothstep(lineWidth * lineOuterMult, lineWidth * lineInnerMult, dist);
     
     // Glow effect
-    float glow = exp(-dist * 50.0 * uGlowIntensity);
+    float glow = exp(-dist * distanceScale * uGlowIntensity);
     
     // Color mixing based on distance and time
-    float colorMix = sin(dist * 50.0 - uTime * 2.0) * 0.5 + 0.5;
+    float colorMix = sin(dist * distanceScale - uTime * timeScale) * 0.5 + 0.5;
     vec3 color = mix(uColorPrimary, uColorSecondary, colorMix);
     
     // Combine effects
-    vec3 finalColor = color * (line + glow * 0.4);
+    vec3 finalColor = color * (line + glow * glowMix);
     
     // Add extra glow at the edges
-    finalColor += vec3(0.2, 0.3, 0.5) * glow * uGlowIntensity * 0.3;
+    const vec3 edgeGlowColor = vec3(0.2, 0.3, 0.5);
+    finalColor += edgeGlowColor * glow * uGlowIntensity * edgeGlowMult;
     
     FragColor = vec4(finalColor, 1.0);
 }
