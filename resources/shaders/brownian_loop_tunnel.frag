@@ -81,11 +81,40 @@ void main() {
     vec3 dynamicHue = 0.5 + 0.5 * cos(vec3(0.0, 0.6, 1.2) + a * 2.0 + n * 2.0 + uColorCycle * t);
     vec3 col = mix(baseHue, dynamicHue, 0.7);
 
-    // --- Apply stripe pattern and enhanced fog/glow ---
-    col *= mix(1.6, 0.5, stripe); // slightly stronger stripe contrast
+    // --- Stripes as white bands instead of dark bands ---
+    float stripeMask = stripe;
+    col = mix(col, vec3(1.0), 0.6 * stripeMask);
 
-    float fog = exp(-r * uFogDensity);
-    float glow = pow(fog, 2.0);   // tighter, brighter center glow
+    // --- Screen-space refraction via FBM gradient ---
+    float fogBase = exp(-r * uFogDensity);
+    float glowBase = pow(fogBase, 2.0);
+    float e = 0.003 * max(0.5, uNoiseScale);
+    vec2 grad;
+    grad.x = fbm(np + vec2(e, 0.0)) - fbm(np - vec2(e, 0.0));
+    grad.y = fbm(np + vec2(0.0, e)) - fbm(np - vec2(0.0, e));
+    vec2 normal2D = normalize(grad + vec2(1e-6));
+    float refractStrength = 0.03; // tweakable
+    vec2 uvR = uv + normal2D * refractStrength * (0.3 + 0.7 * glowBase);
+
+    // Re-evaluate pattern at refracted coordinates
+    float rR = length(uvR);
+    float aR = atan(uvR.y, uvR.x);
+    aR += uTwist * rR;
+    vec2 dirR = vec2(cos(aR), sin(aR));
+    vec2 npR = dirR * (0.75 * uNoiseScale) + vec2(0.0, t * 0.3) + rR * (2.0 * uNoiseScale);
+    float nR = fbm(npR);
+    float zR = mod(t + rR * 3.0, 3.0);
+    float stripeR = smoothstep(0.3, 0.5, sin(aR * 8.0 + zR * 6.28318));
+    vec3 dynamicHueR = 0.5 + 0.5 * cos(vec3(0.0, 0.6, 1.2) + aR * 2.0 + nR * 2.0 + uColorCycle * t);
+    vec3 colR = mix(baseHue, dynamicHueR, 0.7);
+    colR = mix(colR, vec3(1.0), 0.6 * stripeR);
+
+    // Blend refracted sample
+    col = mix(col, colR, 0.6);
+
+    // --- Enhanced fog/glow and contrast ---
+    float fog = fogBase;
+    float glow = glowBase;   // tighter, brighter center glow
 
     // Increase near contrast (bright near, darker far)
     col *= mix(0.6, 1.6, fog);
