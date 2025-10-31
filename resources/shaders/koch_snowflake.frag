@@ -1,6 +1,16 @@
 #version 330 core
 out vec4 FragColor;
 
+// Koch Snowflake Distance Field Shader
+// This implements the Koch snowflake fractal using a distance field approach.
+// The Koch snowflake is traditionally defined using an L-system:
+//   Axiom: F--F--F
+//   Rule: F -> F+F--F+F
+// However, instead of using string rewriting, this shader computes the
+// distance field directly through recursive geometric subdivision:
+// Each line segment is divided into 4 segments forming a triangular bump.
+// This approach is more efficient for real-time rendering.
+
 uniform vec2  uResolution;     // viewport size (pixels)
 uniform float uTime;           // animation time in seconds
 uniform int   uIterations;     // Koch snowflake iterations (e.g., 3-6)
