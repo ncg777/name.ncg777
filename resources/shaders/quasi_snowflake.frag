@@ -96,14 +96,25 @@ void main() {
   p *= rot2(uRotation);
   float q1 = quasi(p * 2.8 + 0.3*vec2(cos(uTime*0.17), sin(uTime*0.21)), 9);
   float q2 = quasi(p.yx * 3.1 + 0.2*vec2(sin(uTime*0.13), cos(uTime*0.19)), 7);
-  vec2 pWarp = p + 0.08 * vec2(q1, q2);
+  // Animate warp amplitude for continuous shape morphing
+  float warpAmp = 0.06 + 0.045 * (0.5 + 0.5 * sin(uTime * 0.57));
+  vec2 pWarp = p + warpAmp * vec2(q1, q2);
 
-  // Koch snowflake edge distance
-  int it = min(uIterations, 8);
-  float d = kochSnowflakeDist(pWarp, 0.75, it);
+  // Koch snowflake edge distance with animated radius and fractional-iteration blending
+  float maxIt = float(clamp(uIterations, 1, 8));
+  float minIt = max(1.0, maxIt - 3.0);
+  float iAnim = mix(minIt, maxIt, 0.5 + 0.5 * sin(uTime * 0.27));
+  int i0 = int(floor(iAnim));
+  int i1 = min(i0 + 1, 8);
+  float itMix = fract(iAnim);
+
+  float radius = 0.70 + 0.12 * sin(uTime * 0.41);
+  float d0 = kochSnowflakeDist(pWarp, radius, i0);
+  float d1 = kochSnowflakeDist(pWarp, radius, i1);
+  float d = mix(d0, d1, itMix);
 
   // Edge + glow
-  float lineWidth = 0.0045;
+  float lineWidth = 0.0035 + 0.0015 * (0.5 + 0.5 * sin(uTime * 0.77));
   float edge = smoothstep(lineWidth, 0.0, d);
   float glow = exp(-14.0 * d) * uGlowIntensity;
 
