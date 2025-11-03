@@ -1,57 +1,13 @@
 package name.ncg777.computing.graphics.gl;
 
-import org.lwjgl.*;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.system.*;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 
-import java.io.*;
-import java.nio.*;
 import java.util.Enumeration;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL33C.*;
-import static org.lwjgl.system.MemoryUtil.*;
 
 public class KochSnowflakeGL {
-
-  // ---------- Utility methods ----------
-
-  private static int compileShader(int type, String src) {
-    int s = glCreateShader(type);
-    glShaderSource(s, src);
-    glCompileShader(s);
-    if (glGetShaderi(s, GL_COMPILE_STATUS) == GL_FALSE) {
-      throw new RuntimeException("Shader compile error: " + glGetShaderInfoLog(s));
-    }
-    return s;
-  }
-
-  private static int linkProgram(String vs, String fs) {
-    int v = compileShader(GL_VERTEX_SHADER, vs);
-    int f = compileShader(GL_FRAGMENT_SHADER, fs);
-    int p = glCreateProgram();
-    glAttachShader(p, v);
-    glAttachShader(p, f);
-    glLinkProgram(p);
-    if (glGetProgrami(p, GL_LINK_STATUS) == GL_FALSE) {
-      throw new RuntimeException("Program link error: " + glGetProgramInfoLog(p));
-    }
-    glDeleteShader(v);
-    glDeleteShader(f);
-    return p;
-  }
-
-  private static String loadResource(String path) {
-    try (InputStream is = KochSnowflakeGL.class.getClassLoader().getResourceAsStream(path)) {
-      if (is == null) throw new RuntimeException("Missing resource: " + path);
-      return new String(is.readAllBytes());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
 
   // ---------- Windowed live renderer ----------
 
@@ -60,24 +16,14 @@ public class KochSnowflakeGL {
                                float glowIntensity, float[] colorPrimary,
                                float[] colorSecondary, boolean vsync) {
 
-    if (!glfwInit()) throw new IllegalStateException("GLFW init failed");
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    long win = GLUtils.createWindow(width, height, "Koch Snowflake", true);
+    GLUtils.makeContextCurrent(win, vsync);
 
-    long win = glfwCreateWindow(width, height, "Koch Snowflake", NULL, NULL);
-    if (win == NULL) throw new RuntimeException("Window creation failed");
+    int prog = GLUtils.programFromResources(
+      "resources/shaders/fullscreen.vert",
+      "resources/shaders/koch_snowflake.frag");
 
-    glfwMakeContextCurrent(win);
-    GL.createCapabilities();
-    glfwSwapInterval(vsync ? 1 : 0);
-
-    String vs = loadResource("resources/shaders/fullscreen.vert");
-    String fs = loadResource("resources/shaders/koch_snowflake.frag");
-    int prog = linkProgram(vs, fs);
-
-    int vao = glGenVertexArrays();
-    glBindVertexArray(vao);
+    int vao = GLUtils.createFullscreenTriangleVAO();
 
     // Uniform locations
     int locRes            = glGetUniformLocation(prog, "uResolution");
@@ -124,8 +70,7 @@ public class KochSnowflakeGL {
 
     glDeleteVertexArrays(vao);
     glDeleteProgram(prog);
-    glfwDestroyWindow(win);
-    glfwTerminate();
+    GLUtils.destroyWindowAndTerminate(win);
   }
 
   // ---------- Offscreen enumeration renderer ----------
@@ -134,22 +79,13 @@ public class KochSnowflakeGL {
                                                   int iterations, float scale, float rotation,
                                                   float glowIntensity, float[] colorPrimary,
                                                   float[] colorSecondary) {
-    if (!glfwInit()) throw new IllegalStateException("GLFW init failed");
-    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    long win = GLUtils.createWindow(width, height, "", false);
+    GLUtils.makeContextCurrent(win);
 
-    long win = glfwCreateWindow(width, height, "", NULL, NULL);
-    if (win == NULL) throw new RuntimeException("Hidden window creation failed");
-    glfwMakeContextCurrent(win);
-    GL.createCapabilities();
-
-    String vs = loadResource("resources/shaders/fullscreen.vert");
-    String fs = loadResource("resources/shaders/koch_snowflake.frag");
-    int prog = linkProgram(vs, fs);
-    int vao = glGenVertexArrays();
-    glBindVertexArray(vao);
+    int prog = GLUtils.programFromResources(
+      "resources/shaders/fullscreen.vert",
+      "resources/shaders/koch_snowflake.frag");
+    int vao = GLUtils.createFullscreenTriangleVAO();
 
     int locRes            = glGetUniformLocation(prog, "uResolution");
     int locTime           = glGetUniformLocation(prog, "uTime");
@@ -187,25 +123,13 @@ public class KochSnowflakeGL {
         glUniform3f(locColorSecondary, colorSecondary[0], colorSecondary[1], colorSecondary[2]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
-        ByteBuffer buf = BufferUtils.createByteBuffer(width * height * 4);
-        glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buf);
-
-        Mat mat = new Mat(height, width, CvType.CV_8UC4);
-        int stride = width * 4;
-        byte[] row = new byte[stride];
-        for (int y = 0; y < height; y++) {
-          int srcY = height - 1 - y;
-          buf.position(srcY * stride);
-          buf.get(row);
-          mat.put(y, 0, row);
-        }
+        Mat mat = GLUtils.readFramebufferToMatRGBA(width, height);
 
         frame++;
         if (!hasMoreElements()) {
           glDeleteVertexArrays(vao);
           glDeleteProgram(prog);
-          glfwDestroyWindow(win);
-          glfwTerminate();
+          GLUtils.destroyWindowAndTerminate(win);
         }
         return mat;
       }
