@@ -15,6 +15,9 @@ uniform float uColorCycle;    // hue shift speed
 uniform float uFogDensity;    // fog falloff factor
 uniform vec3  uBaseColor;     // base hue of tunnel
 
+// Constants
+const float TAU = 6.28318530718; // 2π
+
 // === HASHED VALUE NOISE + FBM ===
 float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -45,7 +48,7 @@ float fbm(vec2 p) {
 // === PERIODIC TIME FUNCTION FOR SEAMLESS LOOP ===
 float loopTime(float t, float duration) {
     float phase = mod(t, duration) / duration; // 0 → 1
-    return phase * 6.28318530718; // map to 0 → 2π
+    return phase * TAU; // map to 0 → 2π
 }
 
 // === MAIN ===
@@ -55,7 +58,8 @@ void main() {
     float aspect = iResolution.x / iResolution.y;
 
     // --- Time that loops perfectly ---
-    float t = loopTime(iTime * uSpeed, uLoopDuration);
+    float t = loopTime(iTime * uSpeed, uLoopDuration); // 0..2π
+    float phase = t / TAU; // 0..1
 
     // --- Polar coordinates ---
     float r = length(uv);
@@ -64,17 +68,20 @@ void main() {
     // --- Add twisting down the tunnel ---
     a += uTwist * r;
 
-    // --- Brownian noise distortion ---
+    // --- Brownian noise distortion (time-periodic) ---
     // Use periodic angular coordinates to avoid seam at -π/π
     vec2 dir = vec2(cos(a), sin(a));
-    vec2 np = dir * (0.75 * uNoiseScale) + vec2(0.0, t * 0.3) + r * (2.0 * uNoiseScale);
+    // Periodic time offset on a circle so values at t=0 and t=2π match
+    vec2 tOff = vec2(cos(t), sin(t)) * (0.6 * uNoiseScale);
+    vec2 np = dir * (0.75 * uNoiseScale) + tOff + r * (2.0 * uNoiseScale);
     float n = fbm(np);
     r += uNoiseAmp * n;
     a += uNoiseAmp * 0.5 * n;
 
     // --- Tunnel pattern (looping stripes) ---
-    float z = mod(t + r * 3.0, 3.0);
-    float stripe = smoothstep(0.3, 0.5, sin(a * 8.0 + z * 6.28318));
+    // Ensure stripe phase depends on a 0..1 quantity that loops seamlessly
+    float stripePhase = fract(phase + r * 0.5);
+    float stripe = smoothstep(0.3, 0.5, sin(a * 8.0 + stripePhase * TAU));
 
     // --- Dynamic color based on angle, noise, and time ---
     vec3 baseHue = uBaseColor;
@@ -101,10 +108,10 @@ void main() {
     float aR = atan(uvR.y, uvR.x);
     aR += uTwist * rR;
     vec2 dirR = vec2(cos(aR), sin(aR));
-    vec2 npR = dirR * (0.75 * uNoiseScale) + vec2(0.0, t * 0.3) + rR * (2.0 * uNoiseScale);
+    vec2 npR = dirR * (0.75 * uNoiseScale) + tOff + rR * (2.0 * uNoiseScale);
     float nR = fbm(npR);
-    float zR = mod(t + rR * 3.0, 3.0);
-    float stripeR = smoothstep(0.3, 0.5, sin(aR * 8.0 + zR * 6.28318));
+    float stripePhaseR = fract(phase + rR * 0.5);
+    float stripeR = smoothstep(0.3, 0.5, sin(aR * 8.0 + stripePhaseR * TAU));
     vec3 dynamicHueR = 0.5 + 0.5 * cos(vec3(0.0, 0.6, 1.2) + aR * 2.0 + nR * 2.0 + uColorCycle * t);
     vec3 colR = mix(baseHue, dynamicHueR, 0.7);
     colR = mix(colR, vec3(1.0), 0.6 * stripeR);
