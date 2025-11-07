@@ -68,12 +68,8 @@ void main() {
   int cycleShift = uCycleIndex % 6;
   vec3 baseColor = palette[(frame + cycleShift) % 6];
 
-  // Triangular brightness wave over the entire 6-frame cycle (0->1->0).
-  // Use continuous cyc rather than discrete frame to allow smooth fade if driver
-  // passes interpolated phases.
-  float tri = 1.0 - abs(cyc * 2.0 - 1.0); // 0 at 0,1; 1 at 0.5
-  // Sharpen to emphasize strobe pop while preserving some fade (adjust exponent)
-  float brightness = pow(tri, 3.0);
+  // Constant high brightness (remove strobe luminance variation).
+  float brightness = 0.90;
 
   // Geometry: union of N equidistant disks. Arrange on a ring that spins and breathes.
   float bound = 0.95;           // expanded base bound closer to screen edge
@@ -151,20 +147,25 @@ void main() {
   // Slight normalization boost so multi-disk unions remain bright but clamp to 1.
   if (disks > 1) unionG = min(1.0, unionG * (1.0 + 0.20 * float(disks - 1)));
 
-  // Background: pale gray rather than black.
-  vec3 bg = vec3(0.92);
+  // Black background and more vivid colors: boost saturation of the base color
+  // using a simple luminance-preserving stretch toward the pure hue.
+  float satBoost = 1.5;
+  float luma = dot(baseColor, vec3(0.299, 0.587, 0.114));
+  vec3 gray = vec3(luma);
+  vec3 vividColor = clamp(gray + (baseColor - gray) * satBoost, 0.0, 1.0);
 
-  // Make colors a bit more vivid and shift fade toward colorful output.
-  // Boost saturation of baseColor and allow unionG to modulate saturation slightly with brightness.
-  float vivid = 1.15; // saturation/brightness boost factor
-  vec3 vividColor = clamp(baseColor * vivid, 0.0, 1.0);
-  // Blend more color into darks by raising unionG slightly with brightness
-  float colorful = clamp(unionG * (0.85 + 0.30 * brightness), 0.0, 1.0);
-  // Compose final color over pale background
-  vec3 color = mix(bg, vividColor, colorful) * brightness;
+  // Make the light more colorful by slightly boosting the Gaussian union with brightness.
+  float unionBoost = 1.15 + 0.20 * brightness;
+  float uG = min(1.0, unionG * unionBoost);
+
+  // White-centered gradient: fade from white at the center(s) to the vivid color toward edges.
+  // Use unionG (pre-boost spatial mask) to drive whiteness so overlaps are bright white too.
+  float whiteFac = pow(unionG, 1.2); // >1 sharpens white core slightly
+  vec3 shaded = mix(vividColor, vec3(1.0), whiteFac);
+  vec3 color = shaded * uG * brightness;
 
   // Ensure we never leak residual light in blackout frames (epsilon clamp)
-  if (brightness < 0.015) color = bg;
+  if (brightness < 0.015) color = vec3(0.0);
 
   // Gamma correct for display (optional; comment out if already handled in pipeline)
   color = gammaCorrect(color);

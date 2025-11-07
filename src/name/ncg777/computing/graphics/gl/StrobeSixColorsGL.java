@@ -150,7 +150,7 @@ public class StrobeSixColorsGL {
 
   public static void main(String[] args) {
   int width = 1280, height = 720, fps = 30;
-  double dur = 1.0; // one full strobe/shape cycle lasts 'dur' seconds; frequency = 1/dur
+  double dur = 24.0; // one full strobe/shape cycle lasts 'dur' seconds; frequency = 1/dur
     runWindow(width, height, fps, dur, System.nanoTime(), true);
   }
 }
