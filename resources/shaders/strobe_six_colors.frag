@@ -9,6 +9,9 @@ uniform vec2  uResolution;  // viewport resolution (pixels)
 uniform float uPhase;       // [0,1) normalized phase of the 6-frame cycle OR continuous
 uniform float uSeed;        // seed for subtle pattern variance
 uniform int   uCycleIndex;  // increments each completed 6-frame cycle to rotate colors
+uniform int   uShapeCycleLength; // number of shape steps per cycle (default 6)
+uniform int   uPackedCounts;     // optional nibble-packed sequence of disk counts (up to 8 steps)
+uniform int   uSeqMode;          // 0: linear 1..N, 1: powers of 2, 2: powers of 3
 
 // Small hash helpers (not performance critical for fullscreen @ 30fps)
 float hash11(float n) { return fract(sin(n) * 43758.5453123); }
@@ -35,11 +38,29 @@ void main() {
     // Temporarily store base components; finalize after defining tCycle.
   }
 
-  // Cycle math: ensure consistent 6-frame indexing even if uPhase hits 1.0 exactly
-  float cyc = fract(uPhase + 1e-6);        // guard against exact 1.0 producing frame 6
-  float framesF = cyc * 6.0;               // 0 .. <6
-  int frame = int(floor(framesF));         // 0..5
-  int disks = frame + 1;                   // 1..6 disks
+  // Cycle math: map phase to shape frame index; fallback length=6.
+  float cyc = fract(uPhase + 1e-6);
+  int scl = (uShapeCycleLength > 0) ? uShapeCycleLength : 6;
+  float framesF = cyc * float(scl);        // 0 .. < scl
+  int frame = int(floor(framesF));         // 0 .. scl-1
+
+  // Determine disk count sequence for this frame.
+  const int MAX_DISKS = 24; // upper bound for loops
+  int disks;
+  if (uPackedCounts != 0) {
+    int nib = (uPackedCounts >> (frame * 4)) & 0xF; // 4 bits per entry
+    disks = max(1, nib);
+  } else if (uSeqMode == 1) {
+    // powers of 2
+    disks = int(round(pow(2.0, float(frame))));
+  } else if (uSeqMode == 2) {
+    // powers of 3
+    disks = int(round(pow(3.0, float(frame))));
+  } else {
+    // linear 1..scl
+    disks = frame + 1;
+  }
+  disks = min(disks, MAX_DISKS);
   float tCycle = float(uCycleIndex) + cyc; // continuous cycle time for motion
 
   // Finalize global spin & swirl now that tCycle is available.
@@ -130,9 +151,9 @@ void main() {
     float g = exp(- (rc * rc) * inv2Sig2);
     oneMinusUnion *= (1.0 - g);
   } else {
-    float spinTurnsPerCycle = 0.5; // 180 degrees per full luminance cycle
+    float spinTurnsPerCycle = 0.5; // 180 degrees per cycle of brightness
     float dTheta = 6.28318530718 * spinTurnsPerCycle * tCycle;
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < MAX_DISKS; ++i) {
       if (i >= disks) break;
       float baseAng = (6.28318530718 / Nf) * float(i);
       float ang = baseAng + dTheta;

@@ -23,7 +23,10 @@ public class StrobeSixColorsGL {
    * @param vsync  true to use swap interval vsync, false for manual pacing
    */
   public static void runWindow(int width, int height, int fps, double durSeconds,
-                               long seed, boolean vsync) {
+                               long seed, boolean vsync,
+                               int shapeCycleLength,
+                               int seqMode,
+                               int packedCounts) {
     long win = GLUtils.createWindow(width, height, "Six-Color Strobe (GL)", true);
     GLUtils.makeContextCurrent(win, vsync);
 
@@ -36,7 +39,10 @@ public class StrobeSixColorsGL {
     int locRes   = glGetUniformLocation(prog, "uResolution");
     int locPhase = glGetUniformLocation(prog, "uPhase");
     int locSeed  = glGetUniformLocation(prog, "uSeed");
-    int locCycle = glGetUniformLocation(prog, "uCycleIndex");
+  int locCycle     = glGetUniformLocation(prog, "uCycleIndex");
+  int locShapeLen  = glGetUniformLocation(prog, "uShapeCycleLength");
+  int locPacked    = glGetUniformLocation(prog, "uPackedCounts");
+  int locSeqMode   = glGetUniformLocation(prog, "uSeqMode");
 
   // One full cycle spans the animation duration: framesPerCycle ≈ fps * durSeconds
   int framesPerCycle = Math.max(1, (int)Math.round(fps * durSeconds));
@@ -59,9 +65,12 @@ public class StrobeSixColorsGL {
 
       glUseProgram(prog);
       glUniform2f(locRes, width, height);
-      glUniform1f(locPhase, phase);
+    glUniform1f(locPhase, phase);
       glUniform1f(locSeed, (float)(seed % 1_000_003L));
     glUniform1i(locCycle, cycleIndex);
+    glUniform1i(locShapeLen, shapeCycleLength);
+    glUniform1i(locSeqMode, seqMode);
+    glUniform1i(locPacked, packedCounts);
       glDrawArrays(GL_TRIANGLES, 0, 3);
 
       glfwSwapBuffers(win);
@@ -86,6 +95,20 @@ public class StrobeSixColorsGL {
   }
 
   /**
+   * Helper: pack an array of up to 8 positive counts (each 1..15) into a 32-bit int
+   * using 4-bit nibbles. index 0 goes into least-significant nibble.
+   */
+  public static int packCounts(int... counts) {
+    int v = 0;
+    int n = Math.min(counts.length, 8);
+    for (int i = 0; i < n; i++) {
+      int c = Math.max(1, Math.min(15, counts[i]));
+      v |= (c & 0xF) << (i * 4);
+    }
+    return v;
+  }
+
+  /**
    * Offscreen enumeration of stroboscopic frames as OpenCV Mats (RGBA 8UC4).
    * Creates a hidden context, renders each frame, reads back pixels, and cleans up at end.
   * Phase repeats every framesPerCycle frames. One cycle length = durSeconds (frequency = 1/durSeconds).
@@ -98,7 +121,10 @@ public class StrobeSixColorsGL {
    * @return Enumeration over Mats; last nextElement auto-destroys GL resources
    */
   public static Enumeration<Mat> asMatEnumeration(int width, int height, double fps, double durSeconds,
-                                                  long seed) {
+                                                  long seed,
+                                                  int shapeCycleLength,
+                                                  int seqMode,
+                                                  int packedCounts) {
     long win = GLUtils.createWindow(width, height, "", false);
     GLUtils.makeContextCurrent(win);
 
@@ -110,7 +136,10 @@ public class StrobeSixColorsGL {
     int locRes   = glGetUniformLocation(prog, "uResolution");
     int locPhase = glGetUniformLocation(prog, "uPhase");
     int locSeed  = glGetUniformLocation(prog, "uSeed");
-    int locCycle = glGetUniformLocation(prog, "uCycleIndex");
+  int locCycle     = glGetUniformLocation(prog, "uCycleIndex");
+  int locShapeLen  = glGetUniformLocation(prog, "uShapeCycleLength");
+  int locPacked    = glGetUniformLocation(prog, "uPackedCounts");
+  int locSeqMode   = glGetUniformLocation(prog, "uSeqMode");
 
   final int total = Math.max(1, (int)Math.round(durSeconds * fps));
   final int framesPerCycle = total; // exactly one cycle across the provided duration
@@ -130,9 +159,12 @@ public class StrobeSixColorsGL {
 
         glUseProgram(prog);
         glUniform2f(locRes, width, height);
-        glUniform1f(locPhase, phase);
+    glUniform1f(locPhase, phase);
         glUniform1f(locSeed, (float)(seed % 1_000_003L));
     glUniform1i(locCycle, cycleIndex);
+    glUniform1i(locShapeLen, shapeCycleLength);
+    glUniform1i(locSeqMode, seqMode);
+    glUniform1i(locPacked, packedCounts);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         Mat mat = GLUtils.readFramebufferToMatRGBA(width, height);
@@ -151,6 +183,12 @@ public class StrobeSixColorsGL {
   public static void main(String[] args) {
   int width = 1280, height = 720, fps = 30;
   double dur = 24.0; // one full strobe/shape cycle lasts 'dur' seconds; frequency = 1/dur
-    runWindow(width, height, fps, dur, System.nanoTime(), true);
+    // Example: sequence using powers of 2 for 6 steps (seqMode=1) or packed custom counts.
+    int shapeCycleLength = 8; // demonstrate extended cycle
+    // Build an interesting mixed sequence: 1,3,2,4,6,8,12,16 (will clamp if > MAX_DISKS in shader)
+    int packedCounts = packCounts(1,2,4,8,16,8,4,2);
+    int seqMode = 0; // ignored because packedCounts != 0
+    runWindow(width, height, fps, dur, System.nanoTime(), true,
+              shapeCycleLength, seqMode, packedCounts);
   }
 }
