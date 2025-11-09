@@ -105,52 +105,39 @@ void main() {
   // Constant high brightness (remove strobe luminance variation).
   float brightness = 0.90;
 
-  // Geometry: union of N equidistant disks. Arrange on a ring that spins and breathes.
-  float bound = 0.95;           // expanded base bound closer to screen edge
-  float seed = uSeed * 0.001;   // small influence if we want slight variation later
-
-  // Base ring radius and animated variants (spin + radial breathing)
+  // Geometry: re-layout as a "domino" rectangle (approx 2:1 aspect, two square halves) instead of a ring.
+  // We keep soft Gaussian disks and morph logic. Disks are distributed in two vertical columns (left/right halves).
+  // For visual familiarity with domino pips we stack rows per half; when counts change we fade rows in/out.
+  float bound = 0.90;           // overall extent inside the tile
+  float seed = uSeed * 0.001;
   float Nf = max(1.0, float(maxCount));
-  float centerR0 = 0.60 * bound;
-  // Radial in/out once per cycle with small amplitude
-  float radAmp = 0.30 * bound;  // larger breathing to help reach edges
-  float ringR = clamp(centerR0 + radAmp * sin(6.28318530718 * (1.0 * tCycle) + seed * 3.7), 0.0, bound - 0.05);
-  // Seamless morph of center radius when transitioning to/from a single disk.
-  float mCenter = 1.0;
-  if (countA == 1 && countB > 1) {
-    mCenter = smoothstep(0.0, 1.0, stepFrac);
-  } else if (countA > 1 && countB == 1) {
-    mCenter = 1.0 - smoothstep(0.0, 1.0, stepFrac);
-  }
-  float centerRvar = mix(0.0, ringR, mCenter);
 
-  // Disk radius determined by area heuristic and spacing on the current ring radius
-  float drArea  = bound / max(1.0, sqrt(effectiveCount));
-  float drSpace;
-  if (countA == 1 && countB == 1) {
-    drSpace = bound;
-  } else {
-    float sinSeg = sin(3.141592653589793 / Nf);
-    drSpace = 0.9 * centerRvar * sinSeg; // limit overlap based on spacing
-  }
-  float dr = min(bound - centerRvar, min(drArea, drSpace));
-  dr = max(0.05, dr);
-  // Single disk: add a gentle breathing of its own radius
-  if (countA == 1 && countB == 1) {
+  // Domino dimensions (centered): width ≈ 2 * height.
+  float domH = bound;           // height of domino area
+  float domW = 2.0 * domH;      // width of domino area
+  // Ensure we stay inside tile pitch (tilePitch=2) by scaling down if needed.
+  float scaleDom = min(1.0, 0.95 / max(domH * 0.5, domW * 0.5));
+  domH *= scaleDom; domW *= scaleDom;
+
+  // Split counts between left and right halves (left gets the extra when odd)
+  int countLeft  = (maxCount + 1) / 2;
+  int countRight = maxCount / 2;
+  // Row counts for current morph endpoints (to compute spacing fairly for both A & B counts)
+  int rowsLeft  = countLeft;
+  int rowsRight = countRight;
+
+  // Derive disk radius from vertical spacing & horizontal half-width.
+  float halfW = domW * 0.5; // half the domino width = width of one square half
+  float halfSide = halfW;   // half's side length (since halves are square by construction)
+  float margin = 0.06 * halfSide; // internal padding
+  float vSpaceLeft  = (rowsLeft  > 0) ? (halfSide - 2.0 * margin) / float(rowsLeft)  : (halfSide - 2.0 * margin);
+  float vSpaceRight = (rowsRight > 0) ? (halfSide - 2.0 * margin) / float(rowsRight) : (halfSide - 2.0 * margin);
+  float dr = min( (vSpaceLeft  * 0.5), (vSpaceRight * 0.5) );
+  dr = min(dr, (halfSide * 0.5 - margin) * 0.9); // also respect horizontal room
+  dr = max(0.04, dr);
+  // Gentle breathing for a single disk case.
+  if (maxCount == 1) {
     dr *= 0.90 + 0.10 * (0.5 + 0.5 * sin(6.28318530718 * tCycle + seed * 5.3));
-  }
-
-  // Edge reach scaling: occasionally scale up so outermost disk rim touches screen edge.
-  // We define current extent (center radius + disk radius). If less than 1.0, we can scale up.
-  float curExtent = centerRvar + dr;             // how far motif currently extends (approx)
-  float edgeTarget = 1.00;                       // screen edge in normalized space
-  float reachPhase = 0.5 + 0.5 * sin(6.28318530718 * (0.33 * tCycle) + seed * 1.7); // slower than luminance
-  float scaleUp = edgeTarget / max(0.0001, curExtent);
-  // Only scale when needed and modulated by reachPhase so it animates expanding/contracting.
-  if (scaleUp > 1.0) {
-    float s = mix(1.0, min(scaleUp, 1.25), reachPhase); // clamp to avoid excessive overshoot
-    centerRvar *= s;
-    dr        *= s;
   }
 
   // Signed distance to union of disks (AA via fwidth)
@@ -168,8 +155,8 @@ void main() {
   vec2 q = mod(p + 0.5 * tilePitch, tilePitch) - 0.5 * tilePitch; // local coords centered at tile
 
   // Build union with per-disk weights to morph between countA and countB, and accumulate per-disk colors.
-  float spinTurnsPerCycle = 0.5; // 180 degrees per cycle of brightness
-  float dTheta = 6.28318530718 * spinTurnsPerCycle * tCycle;
+  // No angular spin for domino layout; retain a subtle micro-jitter using seed & time for organic feel.
+  float jitterPhase = sin(2.0 * tCycle + seed * 13.17);
   vec3 sumC = vec3(0.0);
   float sumG = 0.0;
   for (int i = 0; i < MAX_DISKS; ++i) {
@@ -204,9 +191,23 @@ void main() {
     } else {
       ci = mix(colorA, colorB, stepFrac);
     }
-    float baseAng = (6.28318530718 / Nf) * float(i);
-    float ang = baseAng + dTheta;
-    vec2 c = vec2(cos(ang), sin(ang)) * centerRvar;
+    // Compute domino position.
+    bool isLeft = (i < countLeft);
+    int row = isLeft ? i : (i - countLeft);
+    int rows = isLeft ? rowsLeft : rowsRight;
+    // y in [-halfSide/2, halfSide/2]
+    float y = 0.0;
+    if (rows > 0) {
+      float fy = (float(row) + 0.5) / float(rows); // (0,1]
+      y = (fy - 0.5) * (halfSide - 2.0 * margin);
+    }
+    float xHalfCenter = (isLeft ? -0.5 : 0.5) * domW * 0.5; // centers at -domW/4 and +domW/4
+    float x = xHalfCenter + 0.0; // could add per-row x jitter later
+    // Mild per-disk jitter to reduce perfect grid artifacts (scaled by disk weight w later implicitly via alpha)
+    float j = (hash11(float(i) + uSeed) - 0.5) * 0.15 * dr;
+    x += j * 0.7;
+    y += j * 0.5 + 0.02 * dr * jitterPhase;
+    vec2 c = vec2(x, y);
     float rc = length(q - c);
     float g = exp(- (rc * rc) * inv2Sig2) * w;
     oneMinusUnion *= (1.0 - g);
