@@ -10,6 +10,9 @@ uniform float uGain;           // amp attenuation per octave (0..1)
 uniform int   uIsoBands;       // contour bands (e.g., 24..96)
 uniform float uLineThickness;  // ~0.05..0.35 (dimensionless)
 uniform float uSeed;           // seed for procedural params
+uniform float uBubbleAmp;      // amplitude of bubbling vertical displacement
+uniform float uBubbleFreq;     // number of bubbling cycles per loop
+uniform float uBubbleDetail;   // scales domain for bubble noise (detail)
 
 // Constants
 const float PI  = 3.14159265358979323846;
@@ -79,6 +82,14 @@ void main() {
   float h = clamp(base, 0.0, 1.0);
   h = pow(h, 1.15);
 
+  // Bubbling displacement: loop-safe temporal wave modulated by localized noise
+  float bubbleDet = max(0.25, uBubbleDetail);
+  vec2 bubbleTimeShift = vec2(cos(TAU * (uPhase + 0.43)), sin(TAU * (uPhase + 0.43))) * (0.55 * bubbleDet);
+  float bubbleNoise = fbm(world * bubbleDet + bubbleTimeShift, max(1, uOctaves), max(1.01, uLacunarity), clamp(uGain, 0.01, 0.99));
+  float bubbleWave = sin(TAU * (uBubbleFreq * uPhase) + bubbleNoise * PI);
+  float hBubbled = h + uBubbleAmp * bubbleWave * (0.35 + 0.65 * bubbleNoise);
+  hBubbled = clamp(hBubbled, 0.0, 1.0);
+
   // Screen-space gradient (for shading and hue)
   float e = 1.25 / minDim; // small isotropic step
   float hx = fbm(world + vec2(e, 0.0), uOctaves, uLacunarity, uGain) - fbm(world - vec2(e, 0.0), uOctaves, uLacunarity, uGain);
@@ -87,7 +98,7 @@ void main() {
 
   // Isoclines (contours) on height
   int   bands = max(1, uIsoBands);
-  float line  = abs(sin(PI * float(bands) * h));
+  float line  = abs(sin(PI * float(bands) * hBubbled));
   float lt    = clamp(uLineThickness, 0.02, 0.75);
 
   // Topo-like core line + soft glow
@@ -101,12 +112,12 @@ void main() {
   intensity *= vignette;
 
   // Hue varies with height and slope, with a slow time spin
-  float hue = fract(0.65 * h + 0.15 * slope + 0.1 * sin(TAU * uPhase));
+  float hue = fract(0.65 * hBubbled + 0.15 * slope + 0.1 * sin(TAU * uPhase));
   float sat = mix(0.65, 1.0, intensity);
   float bri = mix(0.15, 1.0, intensity);
 
   // Slight earthy shift while keeping neon feel
-  hue = fract(hue + 0.04 * sin(TAU * (uPhase + h)));
+  hue = fract(hue + 0.04 * sin(TAU * (uPhase + hBubbled)) + 0.03 * bubbleWave);
 
   vec3 rgb = hsv2rgb(vec3(hue, sat, bri));
   FragColor = vec4(rgb, 1.0);

@@ -15,6 +15,7 @@ public class TerrainIsoclinesGL {
   public static void runWindow(int width, int height, int fps, double durSeconds,
                                float scale, int octaves, float lacunarity, float gain,
                                int isoBands, float lineThickness,
+                               float bubbleAmp, float bubbleFreq, float bubbleDetail,
                                long seed, boolean vsync) {
     long win = GLUtils.createWindow(width, height, "Terrain Isoclines (GL)", true);
     GLUtils.makeContextCurrent(win, vsync);
@@ -34,6 +35,9 @@ public class TerrainIsoclinesGL {
     int locBands = glGetUniformLocation(prog, "uIsoBands");
     int locLT    = glGetUniformLocation(prog, "uLineThickness");
     int locSeed  = glGetUniformLocation(prog, "uSeed");
+    int locBAmp  = glGetUniformLocation(prog, "uBubbleAmp");
+    int locBFreq = glGetUniformLocation(prog, "uBubbleFreq");
+    int locBDet  = glGetUniformLocation(prog, "uBubbleDetail");
 
     int totalFrames = Math.max(1, (int)Math.round(durSeconds * fps));
     int frame = 0;
@@ -55,6 +59,9 @@ public class TerrainIsoclinesGL {
       glUniform1i(locBands, isoBands);
       glUniform1f(locLT, lineThickness);
       glUniform1f(locSeed, (float)(seed % 1_000_003L));
+      glUniform1f(locBAmp, bubbleAmp);
+      glUniform1f(locBFreq, bubbleFreq);
+      glUniform1f(locBDet, bubbleDetail);
 
       glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -83,7 +90,9 @@ public class TerrainIsoclinesGL {
   // Optional offscreen enumeration for OpenCV video pipelines
   public static Enumeration<Mat> asMatEnumeration(int width, int height, double fps, double durSeconds,
                                                   float scale, int octaves, float lacunarity, float gain,
-                                                  int isoBands, float lineThickness, long seed) {
+                                                  int isoBands, float lineThickness,
+                                                  float bubbleAmp, float bubbleFreq, float bubbleDetail,
+                                                  long seed) {
     long win = GLUtils.createWindow(width, height, "", false);
     GLUtils.makeContextCurrent(win);
 
@@ -101,6 +110,9 @@ public class TerrainIsoclinesGL {
     int locBands = glGetUniformLocation(prog, "uIsoBands");
     int locLT    = glGetUniformLocation(prog, "uLineThickness");
     int locSeed  = glGetUniformLocation(prog, "uSeed");
+    int locBAmp  = glGetUniformLocation(prog, "uBubbleAmp");
+    int locBFreq = glGetUniformLocation(prog, "uBubbleFreq");
+    int locBDet  = glGetUniformLocation(prog, "uBubbleDetail");
 
     final int total = Math.max(1, (int)Math.round(durSeconds * fps));
     return new Enumeration<Mat>() {
@@ -124,6 +136,9 @@ public class TerrainIsoclinesGL {
         glUniform1i(locBands, isoBands);
         glUniform1f(locLT, lineThickness);
         glUniform1f(locSeed, (float)(seed % 1_000_003L));
+        glUniform1f(locBAmp, bubbleAmp);
+        glUniform1f(locBFreq, bubbleFreq);
+        glUniform1f(locBDet, bubbleDetail);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         Mat mat = GLUtils.readFramebufferToMatRGBA(width, height);
@@ -144,12 +159,15 @@ public class TerrainIsoclinesGL {
     int width = 1280, height = 720, fps = 60;
     double dur = 8.0;
     runWindow(width, height, fps, dur,
-      4.0f,   // scale
+      2.0f,   // scale
       3,      // octaves
-      1.05f,  // lacunarity
+      1.35f,  // lacunarity
       0.52f,  // gain
-      48,     // isoBands
-      0.20f,  // lineThickness
+      12,     // isoBands
+      0.22f,  // lineThickness
+      0.28f,  // bubbleAmp
+      1.75f,  // bubbleFreq (cycles per loop)
+      1.25f,  // bubbleDetail (noise scaling)
       System.nanoTime(), true);
   }
 }
