@@ -9,6 +9,6 @@ import name.ncg777.maths.sequences.Sequence;
 public class Consonant implements StandardAndGuavaPredicate<Pcs12> {
   public boolean apply(@Nonnull Pcs12 input) {
     Sequence IV = input.getIntervalVector();
-    return IV.get(0) == 0 && IV.get(5)==0;
+    return IV.get(0) == 0;
   }
 }
