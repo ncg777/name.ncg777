@@ -131,11 +131,66 @@ public class NeonIsoclinesGL {
     };
   }
 
-  // Quick demo main
+  // Interactive demo main with keyboard controls
   public static void main(String[] args) {
     int width = 1280, height = 720, fps = 60;
     double dur = 8.0;
-    runWindow(width, height, fps, dur,
-      64, 8, 0.25f, 2.5f, System.nanoTime(), true);
+    final float[] params = { 64f, 8f, 0.25f, 2.5f }; // components, isoBands, lineThickness, noiseAmount
+    final long seed = System.nanoTime();
+
+    long win = GLUtils.createWindow(width, height, "Neon Isoclines (GL) - Interactive", true);
+    GLUtils.makeContextCurrent(win, true);
+
+    glfwSetKeyCallback(win, (window, key, scancode, action, mods) -> {
+      if (action != GLFW_PRESS && action != GLFW_REPEAT) return;
+      float step = (mods & GLFW_MOD_SHIFT) != 0 ? 10f : 1f;
+      switch (key) {
+        case GLFW_KEY_Q -> params[0] = Math.max(1, params[0] + step);   // components +
+        case GLFW_KEY_A -> params[0] = Math.max(1, params[0] - step);   // components -
+        case GLFW_KEY_W -> params[1] = Math.max(1, params[1] + step);   // isoBands +
+        case GLFW_KEY_S -> params[1] = Math.max(1, params[1] - step);   // isoBands -
+        case GLFW_KEY_E -> params[2] = Math.min(1f, params[2] + 0.02f); // lineThickness +
+        case GLFW_KEY_D -> params[2] = Math.max(0.01f, params[2] - 0.02f); // lineThickness -
+        case GLFW_KEY_R -> params[3] = params[3] + 0.1f;                // noiseAmount +
+        case GLFW_KEY_F -> params[3] = Math.max(0f, params[3] - 0.1f);  // noiseAmount -
+      }
+    });
+
+    int prog = GLUtils.programFromResources(
+      "resources/shaders/fullscreen.vert",
+      "resources/shaders/neon_isoclines.frag");
+    int vao = GLUtils.createFullscreenTriangleVAO();
+
+    int locRes = glGetUniformLocation(prog, "uResolution");
+    int locPhase = glGetUniformLocation(prog, "uPhase");
+    int locComp = glGetUniformLocation(prog, "uComponents");
+    int locBands = glGetUniformLocation(prog, "uIsoBands");
+    int locLT = glGetUniformLocation(prog, "uLineThickness");
+    int locNoise = glGetUniformLocation(prog, "uNoiseAmount");
+    int locSeed = glGetUniformLocation(prog, "uSeed");
+
+    int totalFrames = Math.max(1, (int)Math.round(dur * fps));
+    int frame = 0;
+    while (!glfwWindowShouldClose(win)) {
+      float phase = totalFrames > 1 ? (float)frame / (float)(totalFrames - 1) : 0f;
+      glViewport(0, 0, width, height);
+      glClearColor(0f, 0f, 0f, 1f);
+      glClear(GL_COLOR_BUFFER_BIT);
+      glUseProgram(prog);
+      glUniform2f(locRes, width, height);
+      glUniform1f(locPhase, phase);
+      glUniform1i(locComp, (int)params[0]);
+      glUniform1i(locBands, (int)params[1]);
+      glUniform1f(locLT, params[2]);
+      glUniform1f(locNoise, params[3]);
+      glUniform1f(locSeed, (float)(seed % 1000003L));
+      glDrawArrays(GL_TRIANGLES, 0, 3);
+      glfwSwapBuffers(win);
+      glfwPollEvents();
+      frame = (frame + 1) % totalFrames;
+    }
+    glDeleteVertexArrays(vao);
+    glDeleteProgram(prog);
+    GLUtils.destroyWindowAndTerminate(win);
   }
 }

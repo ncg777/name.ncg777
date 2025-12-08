@@ -136,20 +136,80 @@ public class KochSnowflakeGL {
     };
   }
 
-  // ---------- Quick demo ----------
+  // ---------- Interactive demo ----------
 
   public static void main(String[] args) {
     int width = 1280, height = 720, fps = 60;
     double duration = 10.0;
+    // iterations, scale, rotation, glowIntensity, primR, primG, primB, secR, secG, secB
+    final float[] params = { 4f, 0.8f, 0.2f, 2.0f, 0.2f, 0.6f, 1.0f, 1.0f, 0.3f, 0.6f };
 
-    runWindow(width, height, fps, duration,
-      4,                                     // iterations
-      0.8f,                                  // scale
-      0.2f,                                  // rotation speed
-      2.0f,                                  // glow intensity
-      new float[]{0.2f, 0.6f, 1.0f},         // primary color (blue)
-      new float[]{1.0f, 0.3f, 0.6f},         // secondary color (pink)
-      true                                   // vsync
-    );
+    long win = GLUtils.createWindow(width, height, "Koch Snowflake - Interactive", true);
+    GLUtils.makeContextCurrent(win, true);
+
+    glfwSetKeyCallback(win, (window, key, scancode, action, mods) -> {
+      if (action != GLFW_PRESS && action != GLFW_REPEAT) return;
+      float step = (mods & GLFW_MOD_SHIFT) != 0 ? 0.5f : 0.1f;
+      switch (key) {
+        case GLFW_KEY_1 -> params[0] = Math.min(8, params[0] + 1);        // iterations +
+        case GLFW_KEY_2 -> params[0] = Math.max(1, params[0] - 1);        // iterations -
+        case GLFW_KEY_3 -> params[1] = Math.min(3f, params[1] + step);    // scale +
+        case GLFW_KEY_4 -> params[1] = Math.max(0.1f, params[1] - step);  // scale -
+        case GLFW_KEY_5 -> params[2] += step;                             // rotation +
+        case GLFW_KEY_6 -> params[2] -= step;                             // rotation -
+        case GLFW_KEY_7 -> params[3] += step;                             // glowIntensity +
+        case GLFW_KEY_8 -> params[3] = Math.max(0f, params[3] - step);    // glowIntensity -
+        case GLFW_KEY_Q -> params[4] = Math.min(1f, params[4] + 0.05f);   // primR +
+        case GLFW_KEY_A -> params[4] = Math.max(0f, params[4] - 0.05f);   // primR -
+        case GLFW_KEY_W -> params[5] = Math.min(1f, params[5] + 0.05f);   // primG +
+        case GLFW_KEY_S -> params[5] = Math.max(0f, params[5] - 0.05f);   // primG -
+        case GLFW_KEY_E -> params[6] = Math.min(1f, params[6] + 0.05f);   // primB +
+        case GLFW_KEY_D -> params[6] = Math.max(0f, params[6] - 0.05f);   // primB -
+        case GLFW_KEY_R -> params[7] = Math.min(1f, params[7] + 0.05f);   // secR +
+        case GLFW_KEY_F -> params[7] = Math.max(0f, params[7] - 0.05f);   // secR -
+        case GLFW_KEY_T -> params[8] = Math.min(1f, params[8] + 0.05f);   // secG +
+        case GLFW_KEY_G -> params[8] = Math.max(0f, params[8] - 0.05f);   // secG -
+        case GLFW_KEY_Y -> params[9] = Math.min(1f, params[9] + 0.05f);   // secB +
+        case GLFW_KEY_H -> params[9] = Math.max(0f, params[9] - 0.05f);   // secB -
+      }
+    });
+
+    int prog = GLUtils.programFromResources(
+      "resources/shaders/fullscreen.vert",
+      "resources/shaders/koch_snowflake.frag");
+    int vao = GLUtils.createFullscreenTriangleVAO();
+
+    int locRes            = glGetUniformLocation(prog, "uResolution");
+    int locTime           = glGetUniformLocation(prog, "uTime");
+    int locIterations     = glGetUniformLocation(prog, "uIterations");
+    int locScale          = glGetUniformLocation(prog, "uScale");
+    int locRotation       = glGetUniformLocation(prog, "uRotation");
+    int locGlowIntensity  = glGetUniformLocation(prog, "uGlowIntensity");
+    int locColorPrimary   = glGetUniformLocation(prog, "uColorPrimary");
+    int locColorSecondary = glGetUniformLocation(prog, "uColorSecondary");
+
+    double startTime = System.nanoTime() / 1e9;
+    while (!glfwWindowShouldClose(win)) {
+      double elapsed = (System.nanoTime() / 1e9 - startTime);
+      float t = (float)(elapsed % duration);
+      glViewport(0, 0, width, height);
+      glClearColor(0f, 0f, 0f, 1f);
+      glClear(GL_COLOR_BUFFER_BIT);
+      glUseProgram(prog);
+      glUniform2f(locRes, width, height);
+      glUniform1f(locTime, t);
+      glUniform1i(locIterations, (int)params[0]);
+      glUniform1f(locScale, params[1]);
+      glUniform1f(locRotation, params[2]);
+      glUniform1f(locGlowIntensity, params[3]);
+      glUniform3f(locColorPrimary, params[4], params[5], params[6]);
+      glUniform3f(locColorSecondary, params[7], params[8], params[9]);
+      glDrawArrays(GL_TRIANGLES, 0, 3);
+      glfwSwapBuffers(win);
+      glfwPollEvents();
+    }
+    glDeleteVertexArrays(vao);
+    glDeleteProgram(prog);
+    GLUtils.destroyWindowAndTerminate(win);
   }
 }

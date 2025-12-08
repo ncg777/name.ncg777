@@ -172,22 +172,98 @@ public class PolarRoseGL {
     };
   }
 
-  // Quick demo main
+  // Interactive demo main with keyboard controls
   public static void main(String[] args) {
     int width = 1280, height = 720, fps = 60;
     double dur = 8.0;
-    runWindow(width, height, fps, dur,
-      7,      // symmetry (n)
-      64,    // subdivisions
-      0.9f,    // scale
-      0.5f,   // sinAmp
-      3.0f,    // baseFreq
-      0.5f,    // modAmp
-      512.0f, // modFreq
-      5.0f,    // modDiv
-      0.95f,   // thetaScale
-      1.0f,    // lineWidth (pixels)
-      2.0f,    // hueCycles
-      System.nanoTime(), true);
+    // symmetry, subdivisions, scale, sinAmp, baseFreq, modAmp, modFreq, modDiv, thetaScale, lineWidth, hueCycles
+    final float[] params = { 7f, 64f, 0.9f, 0.5f, 3.0f, 0.5f, 512.0f, 5.0f, 0.95f, 1.0f, 2.0f };
+    final long seed = System.nanoTime();
+
+    long win = GLUtils.createWindow(width, height, "Polar Rose (GL) - Interactive", true);
+    GLUtils.makeContextCurrent(win, true);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glfwSetKeyCallback(win, (window, key, scancode, action, mods) -> {
+      if (action != GLFW_PRESS && action != GLFW_REPEAT) return;
+      float step = (mods & GLFW_MOD_SHIFT) != 0 ? 10f : 1f;
+      switch (key) {
+        case GLFW_KEY_1 -> params[0] = Math.max(1, params[0] + 1);        // symmetry +
+        case GLFW_KEY_2 -> params[0] = Math.max(1, params[0] - 1);        // symmetry -
+        case GLFW_KEY_3 -> params[1] = Math.max(8, params[1] + step * 8); // subdivisions +
+        case GLFW_KEY_4 -> params[1] = Math.max(8, params[1] - step * 8); // subdivisions -
+        case GLFW_KEY_5 -> params[2] = Math.min(2f, params[2] + 0.05f);   // scale +
+        case GLFW_KEY_6 -> params[2] = Math.max(0.1f, params[2] - 0.05f); // scale -
+        case GLFW_KEY_Q -> params[3] += 0.05f;                            // sinAmp +
+        case GLFW_KEY_A -> params[3] = Math.max(0f, params[3] - 0.05f);   // sinAmp -
+        case GLFW_KEY_W -> params[4] += 0.5f;                             // baseFreq +
+        case GLFW_KEY_S -> params[4] = Math.max(0.5f, params[4] - 0.5f);  // baseFreq -
+        case GLFW_KEY_E -> params[5] += 0.1f;                             // modAmp +
+        case GLFW_KEY_D -> params[5] = Math.max(0f, params[5] - 0.1f);    // modAmp -
+        case GLFW_KEY_R -> params[6] *= 1.5f;                             // modFreq *
+        case GLFW_KEY_F -> params[6] = Math.max(1f, params[6] / 1.5f);    // modFreq /
+        case GLFW_KEY_T -> params[7] += 0.5f;                             // modDiv +
+        case GLFW_KEY_G -> params[7] = Math.max(0.5f, params[7] - 0.5f);  // modDiv -
+        case GLFW_KEY_Y -> params[8] = Math.min(2f, params[8] + 0.05f);   // thetaScale +
+        case GLFW_KEY_H -> params[8] = Math.max(0.1f, params[8] - 0.05f); // thetaScale -
+        case GLFW_KEY_U -> params[9] += 0.25f;                            // lineWidth +
+        case GLFW_KEY_J -> params[9] = Math.max(0.25f, params[9] - 0.25f);// lineWidth -
+        case GLFW_KEY_I -> params[10] += 0.5f;                            // hueCycles +
+        case GLFW_KEY_K -> params[10] = Math.max(0.5f, params[10] - 0.5f);// hueCycles -
+      }
+    });
+
+    int prog = GLUtils.programFromResources(
+      "resources/shaders/fullscreen.vert",
+      "resources/shaders/polar_rose.frag");
+    int vao = GLUtils.createFullscreenTriangleVAO();
+
+    int locRes   = glGetUniformLocation(prog, "uResolution");
+    int locPhase = glGetUniformLocation(prog, "uPhase");
+    int locSym   = glGetUniformLocation(prog, "uSymmetry");
+    int locSubd  = glGetUniformLocation(prog, "uSubdivisions");
+    int locScale = glGetUniformLocation(prog, "uScale");
+    int locSinAmp    = glGetUniformLocation(prog, "uSinAmp");
+    int locBaseFreq  = glGetUniformLocation(prog, "uBaseFreq");
+    int locModAmp    = glGetUniformLocation(prog, "uModAmp");
+    int locModFreq   = glGetUniformLocation(prog, "uModFreq");
+    int locModDiv    = glGetUniformLocation(prog, "uModDiv");
+    int locThetaScale= glGetUniformLocation(prog, "uThetaScale");
+    int locLineWidth = glGetUniformLocation(prog, "uLineWidth");
+    int locHueCycles = glGetUniformLocation(prog, "uHueCycles");
+    int locSeed  = glGetUniformLocation(prog, "uSeed");
+
+    int totalFrames = Math.max(1, (int)Math.round(dur * fps));
+    int frame = 0;
+    while (!glfwWindowShouldClose(win)) {
+      float phase = totalFrames > 1 ? (float)frame / (float)(totalFrames - 1) : 0f;
+      glViewport(0, 0, width, height);
+      glClearColor(0f, 0f, 0f, 1f);
+      glClear(GL_COLOR_BUFFER_BIT);
+      glUseProgram(prog);
+      glUniform2f(locRes, width, height);
+      glUniform1f(locPhase, phase);
+      glUniform1i(locSym, (int)params[0]);
+      glUniform1i(locSubd, (int)params[1]);
+      glUniform1f(locScale, params[2]);
+      glUniform1f(locSinAmp, params[3]);
+      glUniform1f(locBaseFreq, params[4]);
+      glUniform1f(locModAmp, params[5]);
+      glUniform1f(locModFreq, params[6]);
+      glUniform1f(locModDiv, params[7]);
+      glUniform1f(locThetaScale, params[8]);
+      glUniform1f(locLineWidth, params[9]);
+      glUniform1f(locHueCycles, params[10]);
+      glUniform1f(locSeed, (float)(seed % 1_000_003L));
+      glDrawArrays(GL_TRIANGLES, 0, 3);
+      glfwSwapBuffers(win);
+      glfwPollEvents();
+      frame = (frame + 1) % totalFrames;
+    }
+    glDeleteVertexArrays(vao);
+    glDeleteProgram(prog);
+    GLUtils.destroyWindowAndTerminate(win);
   }
 }
