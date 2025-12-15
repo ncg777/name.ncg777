@@ -1,8 +1,11 @@
 package name.ncg777.computing.graphics.gl;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -135,7 +138,54 @@ public class GLAnimationLauncher {
       """
     ));
 
+    ANIMATIONS.put("FFT Disk", new AnimationEntry(
+      () -> {
+        String audioPath = chooseAudioFilePath();
+        if (audioPath == null || audioPath.isBlank()) return;
+        try {
+          FFTDiskGL.runWindow(1280, 720, audioPath);
+        } catch (Exception e) {
+          throw new RuntimeException(e);
+        }
+      },
+      """
+      FFT Disk Controls:
+      ─────────────────
+      ESC or close window to exit.
+      """
+    ));
+
     
+  }
+
+  private static String chooseAudioFilePath() {
+    final String[] selected = new String[1];
+    try {
+      SwingUtilities.invokeAndWait(() -> {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Select audio file for FFT Disk");
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(true);
+        chooser.setFileFilter(new FileNameExtensionFilter(
+          "WAV audio (*.wav)",
+          "wav"));
+
+        int result = chooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+          File file = chooser.getSelectedFile();
+          if (file != null) {
+            selected[0] = file.getAbsolutePath();
+          }
+        }
+      });
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      return null;
+    } catch (InvocationTargetException e) {
+      return null;
+    }
+
+    return selected[0];
   }
 
   private record AnimationEntry(Runnable launcher, String controls) {}

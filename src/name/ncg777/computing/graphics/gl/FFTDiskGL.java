@@ -11,6 +11,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
+import org.opencv.core.Mat;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -19,6 +20,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.Enumeration;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -221,6 +223,192 @@ public class FFTDiskGL {
         private FloatBuffer fftBuffer;
 
         private String audioFilePath = "example.wav";
+
+        // Offscreen enumeration for OpenCV pipelines (no audio playback; frames follow audio progression)
+        public static Enumeration<Mat> asMatEnumeration(int width, int height, double fps, String filename)
+                throws IOException, UnsupportedAudioFileException {
+            if (filename == null || filename.isBlank()) {
+                throw new IllegalArgumentException("filename is required");
+            }
+            if (fps <= 0) {
+                throw new IllegalArgumentException("fps must be > 0");
+            }
+
+            // === Load audio into mono samples ===
+            File audioFile = new File(filename);
+            AudioInputStream stream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = stream.getFormat();
+            int sampleRate = (int) format.getSampleRate();
+            int channels = format.getChannels();
+            int bytesPerSample = format.getSampleSizeInBits() / 8;
+            boolean isBigEndian = format.isBigEndian();
+
+            byte[] audioBytes = stream.readAllBytes();
+            stream.close();
+            java.nio.ByteBuffer bb = java.nio.ByteBuffer.wrap(audioBytes);
+            bb.order(isBigEndian ? java.nio.ByteOrder.BIG_ENDIAN : java.nio.ByteOrder.LITTLE_ENDIAN);
+
+            int totalSamples = audioBytes.length / Math.max(1, (bytesPerSample * Math.max(1, channels)));
+            double[] samples = new double[totalSamples];
+            for (int i = 0; i < totalSamples; i++) {
+                if (bytesPerSample == 2) {
+                    short sample = bb.getShort(i * bytesPerSample * channels);
+                    samples[i] = sample / 32768.0;
+                } else {
+                    samples[i] = 0;
+                }
+            }
+            final double audioDurationSeconds = (double) totalSamples / Math.max(1.0, (double) sampleRate);
+
+            // === Precompute FFT frames ===
+            int windowSize = 2048;
+            int hopSize = windowSize / 2;
+            int fftBins = windowSize / 2;
+            FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
+
+            double[] hann = new double[windowSize];
+            for (int i = 0; i < windowSize; i++) {
+                hann[i] = 0.5 * (1.0 - Math.cos((2.0 * Math.PI * i) / (windowSize - 1)));
+            }
+
+            List<double[]> fftFrames = new ArrayList<>();
+            for (int i = 0; i + windowSize <= samples.length; i += hopSize) {
+                double[] window = java.util.Arrays.copyOfRange(samples, i, i + windowSize);
+                for (int j = 0; j < windowSize; j++) {
+                    window[j] *= hann[j];
+                }
+                Complex[] spectrum = fft.transform(window, TransformType.FORWARD);
+                double[] magnitudes = new double[fftBins];
+                for (int j = 0; j < fftBins; j++) {
+                    magnitudes[j] = spectrum[j].abs() / windowSize;
+                }
+                fftFrames.add(magnitudes);
+            }
+            if (fftFrames.isEmpty()) {
+                // Avoid division by zero downstream; still render black frames.
+                fftFrames.add(new double[fftBins]);
+            }
+
+            float bpm = BPMDetection.detectBPM(filename);
+            if (bpm <= 0) bpm = 120f;
+            double secondsPerBeat = 60.0 / bpm;
+            double eightBarsSeconds = 32.0 * secondsPerBeat;
+            if (eightBarsSeconds < 8.0) eightBarsSeconds = 8.0;
+            if (eightBarsSeconds > 32.0) eightBarsSeconds = 32.0;
+
+            final int logBands = 128;
+            final int timeCols = (int) Math.ceil(eightBarsSeconds * fps);
+            final double[][] matrixData = new double[logBands][Math.max(1, timeCols)];
+
+            // === Offscreen GL setup ===
+            long win = GLUtils.createWindow(width, height, "", false);
+            GLUtils.makeContextCurrent(win);
+
+            int prog = GLUtils.programFromResources(
+                    "resources/shaders/fullscreen.vert",
+                    "resources/shaders/fft_disk.frag");
+            int vao = GLUtils.createFullscreenTriangleVAO();
+
+            int locRes = glGetUniformLocation(prog, "uResolution");
+            int locRotation = glGetUniformLocation(prog, "uRotation");
+            int locTimeCols = glGetUniformLocation(prog, "uTimeCols");
+            int locLogBands = glGetUniformLocation(prog, "uLogBands");
+            int locWriteCol = glGetUniformLocation(prog, "uWriteCol");
+            int locMatrixTex = glGetUniformLocation(prog, "uMatrixTex");
+
+            int matrixTex = glGenTextures();
+            glBindTexture(GL_TEXTURE_2D, matrixTex);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            FloatBuffer initData = BufferUtils.createFloatBuffer(Math.max(1, timeCols) * logBands);
+            for (int i = 0; i < Math.max(1, timeCols) * logBands; i++) {
+                initData.put(0f);
+            }
+            initData.flip();
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, Math.max(1, timeCols), logBands, 0, GL_RED, GL_FLOAT, initData);
+
+            final int totalFrames = Math.max(1, (int) Math.round(audioDurationSeconds * fps));
+            final FloatBuffer texData = BufferUtils.createFloatBuffer(Math.max(1, timeCols) * logBands);
+
+            return new Enumeration<Mat>() {
+                int k = 0;
+
+                @Override
+                public boolean hasMoreElements() {
+                    return k < totalFrames;
+                }
+
+                @Override
+                public Mat nextElement() {
+                    if (!hasMoreElements()) throw new java.util.NoSuchElementException();
+
+                    double progress = totalFrames > 1 ? (double) k / (double) (totalFrames - 1) : 0.0;
+                    progress = Math.max(0.0, Math.min(progress, 1.0));
+
+                    int fftIndex = (int) (progress * (fftFrames.size() - 1));
+                    fftIndex = Math.max(0, Math.min(fftIndex, fftFrames.size() - 1));
+                    double[] fftFrame = fftFrames.get(fftIndex);
+
+                    // Shift matrix left, add new column at right
+                    for (int band = 0; band < logBands; band++) {
+                        for (int col = 0; col < Math.max(1, timeCols) - 1; col++) {
+                            matrixData[band][col] = matrixData[band][col + 1];
+                        }
+
+                        int low = (int) Math.pow(fftBins, (double) band / logBands);
+                        int high = (int) Math.pow(fftBins, (double) (band + 1) / logBands);
+                        low = Math.max(0, Math.min(low, fftFrame.length - 1));
+                        high = Math.max(low + 1, Math.min(high, fftFrame.length));
+
+                        double avg = 0.0;
+                        for (int j = low; j < high; j++) avg += fftFrame[j];
+                        avg /= (high - low);
+                        matrixData[band][Math.max(1, timeCols) - 1] = avg;
+                    }
+
+                    glViewport(0, 0, width, height);
+                    glClearColor(0f, 0f, 0f, 1f);
+                    glClear(GL_COLOR_BUFFER_BIT);
+
+                    glUseProgram(prog);
+                    glUniform2f(locRes, width, height);
+                    glUniform1f(locRotation, 0.0f);
+                    glUniform1i(locTimeCols, Math.max(1, timeCols));
+                    glUniform1i(locLogBands, logBands);
+                    glUniform1i(locWriteCol, Math.max(1, timeCols) - 1);
+
+                    texData.clear();
+                    for (int band = 0; band < logBands; band++) {
+                        for (int col = 0; col < Math.max(1, timeCols); col++) {
+                            texData.put((float) matrixData[band][col]);
+                        }
+                    }
+                    texData.flip();
+
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, matrixTex);
+                    glUniform1i(locMatrixTex, 0);
+                    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, Math.max(1, timeCols), logBands, GL_RED, GL_FLOAT, texData);
+
+                    glBindVertexArray(vao);
+                    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+                    Mat mat = GLUtils.readFramebufferToMatRGBA(width, height);
+
+                    k++;
+                    if (!hasMoreElements()) {
+                        glDeleteTextures(matrixTex);
+                        glDeleteVertexArrays(vao);
+                        glDeleteProgram(prog);
+                        GLUtils.destroyWindowAndTerminate(win);
+                    }
+                    return mat;
+                }
+            };
+        }
 
         /**
          * Animation-style entrypoint consistent with other GL demos.
