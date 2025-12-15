@@ -76,8 +76,8 @@ void main() {
   v = clamp(v * 40.0, 0.0, 1.0);
   v = pow(v, 1.35);
 
-  // Radial color gradient: red (inner) → violet (outer)
-  float hue = mix(0.0, 0.78, clamp(bandF, 0.0, 1.0));
+  // Radial color gradient: red (inner) → blue (outer)
+  float hue = mix(0.0, 2.0/3.0, clamp(bandF, 0.0, 1.0));
   vec3 rgb = hsv2rgb(vec3(hue, 1.0, 1.0));
   fragColor = vec4(rgb * v, v);
 }

@@ -96,7 +96,9 @@ public final class GLUtils {
 
   public static Mat readFramebufferToMatRGBA(int width, int height) {
     ByteBuffer buf = BufferUtils.createByteBuffer(width * height * 4);
-    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+    // OpenCV convention is BGRA for CV_8UC4; reading BGRA avoids channel swaps
+    // when frames are written via VideoWriter or converted with matToBufferedImage.
+    glReadPixels(0, 0, width, height, GL_BGRA, GL_UNSIGNED_BYTE, buf);
 
     Mat mat = new Mat(height, width, CvType.CV_8UC4);
     int stride = width * 4;
