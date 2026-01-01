@@ -58,7 +58,7 @@ public class GLAnimationLauncher {
       () -> TanhTerrainIsoclinesGL.main(new String[]{}),
       """
       Tanh Terrain Isoclines Controls:
-      ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?
+      ─────────────────────────────────
       1 / 2  : Scale +/-
       3 / 4  : Octaves +/-
       5 / 6  : Lacunarity +/-
