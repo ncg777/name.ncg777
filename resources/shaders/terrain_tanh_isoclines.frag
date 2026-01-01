@@ -80,20 +80,18 @@ void main() {
   float signed0 = base0 * 2.0 - 1.0;
   float tanh0 = tanh(1.35 * signed0);
 
-  // Nonlinear warp using tanh height and a gentle swirl
+  // Nonlinear warp using tanh height and a gentle swirl (kept smooth)
   vec2 swirl = vec2(-p.y, p.x);
-  vec2 warp = (0.28 * uScale) * (0.7 * swirl * tanh0
-             + 0.3 * vec2(sin(world.y * 1.05 + tanh0 * 2.5), cos(world.x * 1.05 - tanh0 * 2.5)));
+  vec2 warp = (0.18 * uScale) * (swirl * tanh0)
+            + (0.12 * uScale) * vec2(sin(world.y * 0.8), cos(world.x * 0.8)) * tanh0;
   vec2 world2 = world + warp;
 
-  // Tanh-shaped terrain with extra nonlinear remap
+  // Tanh-shaped terrain with smooth nonlinear remap
   float base1 = fbm(world2 + warpOff * 0.6, max(1, uOctaves), max(1.01, uLacunarity), clamp(uGain, 0.01, 0.99));
   float signed1 = base1 * 2.0 - 1.0;
-  float h = 0.5 + 0.5 * tanh(1.55 * signed1);
-  h = clamp(h + 0.18 * sin(TAU * h + 1.3 * tanh0), 0.0, 1.0);
+  float h = 0.5 + 0.5 * tanh(1.25 * signed1);
   float hCurve = h * h * (3.0 - 2.0 * h); // smoothstep curve
-  float ridged = 1.0 - abs(2.0 * hCurve - 1.0);
-  float hFinal = mix(hCurve, ridged, 0.35 + 0.15 * sin(TAU * uPhase));
+  float hFinal = mix(h, hCurve, 0.6);
 
   // Bubbling displacement: loop-safe temporal wave modulated by localized noise
   float bubbleDet = max(0.25, uBubbleDetail);
