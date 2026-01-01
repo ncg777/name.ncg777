@@ -54,6 +54,26 @@ public class GLAnimationLauncher {
       """
     ));
 
+    ANIMATIONS.put("Tanh Terrain Isoclines", new AnimationEntry(
+      () -> TanhTerrainIsoclinesGL.main(new String[]{}),
+      """
+      Tanh Terrain Isoclines Controls:
+      ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?ƒ"?
+      1 / 2  : Scale +/-
+      3 / 4  : Octaves +/-
+      5 / 6  : Lacunarity +/-
+      7 / 8  : Gain +/-
+      Q / A  : Iso Bands +/-
+      W / S  : Line Thickness +/-
+      E / D  : Bubble Amplitude +/-
+      R / F  : Bubble Frequency +/-
+      T / G  : Bubble Detail +/-
+      
+      Hold SHIFT for larger steps.
+      ESC or close window to exit.
+      """
+    ));
+
     ANIMATIONS.put("Polar Rose", new AnimationEntry(
       () -> PolarRoseGL.main(new String[]{}),
       """
