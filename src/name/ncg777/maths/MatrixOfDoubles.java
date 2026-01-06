@@ -2,6 +2,7 @@ package name.ncg777.maths;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
@@ -59,6 +60,49 @@ public class MatrixOfDoubles extends Matrix<Double> {
   }
 
   /**
+   * Generates a random doubly stochastic matrix using a convex combination of
+   * permutation matrices (Birkhoff-von Neumann theorem).
+   *
+   * @param size  The size of the square matrix.
+   * @param terms The number of permutation matrices to mix.
+   * @param rng   Random source.
+   * @return A doubly stochastic matrix.
+   */
+  public static MatrixOfDoubles generateDoublyStochasticMatrix(int size, int terms, Random rng) {
+    if (size <= 0) {
+      throw new IllegalArgumentException("Matrix size must be positive.");
+    }
+    if (terms <= 0) {
+      throw new IllegalArgumentException("Number of terms must be positive.");
+    }
+    if (rng == null) {
+      throw new IllegalArgumentException("Random source cannot be null.");
+    }
+
+    double[][] result = new double[size][size];
+    double[] weights = sampleDirichletWeights(terms, rng);
+
+    for (int t = 0; t < terms; t++) {
+      int[] permutation = randomPermutation(size, rng);
+      double weight = weights[t];
+      for (int i = 0; i < size; i++) {
+        result[i][permutation[i]] += weight;
+      }
+    }
+    return new MatrixOfDoubles(result);
+  }
+
+  /**
+   * Generates a random doubly stochastic matrix using {@code size} terms.
+   *
+   * @param size The size of the square matrix.
+   * @return A doubly stochastic matrix.
+   */
+  public static MatrixOfDoubles generateDoublyStochasticMatrix(int size) {
+    return generateDoublyStochasticMatrix(size, size, new Random());
+  }
+
+  /**
    * Generates a Haar matrix of size n x n.
    * 
    * @param n The size of the matrix (must be a power of 2).
@@ -113,6 +157,37 @@ public class MatrixOfDoubles extends Matrix<Double> {
       // Recursive calls for the next levels of detail
       fillHaarMatrix(matrix, rowStart, colStart, half, scale / Math.sqrt(2)); // Low-pass
       fillHaarMatrix(matrix, rowStart + half, colStart, half, scale / Math.sqrt(2)); // High-pass
+  }
+
+  private static double[] sampleDirichletWeights(int terms, Random rng) {
+    double[] weights = new double[terms];
+    double sum = 0.0;
+    for (int i = 0; i < terms; i++) {
+      double u = rng.nextDouble();
+      while (u == 0.0) {
+        u = rng.nextDouble();
+      }
+      weights[i] = -Math.log(u);
+      sum += weights[i];
+    }
+    for (int i = 0; i < terms; i++) {
+      weights[i] /= sum;
+    }
+    return weights;
+  }
+
+  private static int[] randomPermutation(int size, Random rng) {
+    int[] perm = new int[size];
+    for (int i = 0; i < size; i++) {
+      perm[i] = i;
+    }
+    for (int i = size - 1; i > 0; i--) {
+      int j = rng.nextInt(i + 1);
+      int tmp = perm[i];
+      perm[i] = perm[j];
+      perm[j] = tmp;
+    }
+    return perm;
   }
 
   /**

@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import junit.framework.TestCase;
 import java.util.List;
+import java.util.Random;
 
 public class MatrixOfDoublesTests extends TestCase{
 
@@ -32,4 +33,29 @@ public class MatrixOfDoublesTests extends TestCase{
       assertThat(Double.valueOf(eigenvalues.get(0)*10000).intValue(), is(53722));
       assertThat(Double.valueOf(eigenvalues.get(1)*10000).intValue(), is(-3722));
   }  
+
+  public void testGenerateDoublyStochasticMatrix() {
+      int size = 5;
+      MatrixOfDoubles m = MatrixOfDoubles.generateDoublyStochasticMatrix(size, 10, new Random(1234));
+      double[][] arr = m.toDoubleArray();
+      double epsilon = 1e-9;
+
+      for (int i = 0; i < size; i++) {
+          double rowSum = 0.0;
+          for (int j = 0; j < size; j++) {
+              double v = arr[i][j];
+              assertTrue("Entry is negative at (" + i + "," + j + ")", v >= -epsilon);
+              rowSum += v;
+          }
+          assertTrue("Row sum not close to 1 at row " + i + ": " + rowSum, Math.abs(rowSum - 1.0) <= 1e-8);
+      }
+
+      for (int j = 0; j < size; j++) {
+          double colSum = 0.0;
+          for (int i = 0; i < size; i++) {
+              colSum += arr[i][j];
+          }
+          assertTrue("Column sum not close to 1 at column " + j + ": " + colSum, Math.abs(colSum - 1.0) <= 1e-8);
+      }
+  }
 }
