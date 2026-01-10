@@ -3,8 +3,11 @@ package name.ncg777.maths;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import name.ncg777.computing.RecursiveOptimizer;
+import name.ncg777.maths.enumerations.MixedRadixEnumeration;
 import name.ncg777.maths.sequences.Sequence;
 import name.ncg777.statistics.SegmentationScore;
 
@@ -98,6 +101,47 @@ public class Composition extends Combination {
     o.add(n);
     return o;
 
+  }
+
+  /**
+   * Enumerates all ordered factor refinements of each segment in this composition and returns the
+   * resulting compositions as a set.
+   */
+  public Set<Composition> factorRefinements() {
+    Sequence parts = asSequence();
+    List<List<int[]>> factorPairs = new ArrayList<>();
+    List<Integer> bases = new ArrayList<>();
+
+    for (int part : parts) {
+      if (part <= 0) {
+        throw new IllegalArgumentException("Composition contains non-positive segment length.");
+      }
+      List<int[]> pairs = new ArrayList<>();
+      for (int a = 1; a <= part; a++) {
+        if (part % a == 0) {
+          pairs.add(new int[] {a, part / a});
+        }
+      }
+      factorPairs.add(pairs);
+      bases.add(pairs.size());
+    }
+
+    Set<Composition> out = new TreeSet<>();
+    MixedRadixEnumeration mre = new MixedRadixEnumeration(bases);
+    while (mre.hasMoreElements()) {
+      int[] indices = mre.nextElement();
+      Sequence refined = new Sequence();
+      for (int i = 0; i < parts.size(); i++) {
+        int[] pair = factorPairs.get(i).get(indices[i]);
+        int count = pair[0];
+        int size = pair[1];
+        for (int j = 0; j < count; j++) {
+          refined.add(size);
+        }
+      }
+      out.add(fromSequence(refined));
+    }
+    return out;
   }
   public Combination asCombination() {
     Combination o = new Combination(m_n + 1);
@@ -193,5 +237,36 @@ public class Composition extends Combination {
       o.add(new Composition(c.get(i)));
     }
     return o;
+  }
+
+  private static Composition fromSequence(Sequence seq) {
+    if (seq == null || seq.isEmpty()) {
+      throw new IllegalArgumentException("Sequence must be non-empty.");
+    }
+    int total = seq.sum();
+    if (total < 1) {
+      throw new IllegalArgumentException("Sequence must have a positive sum.");
+    }
+
+    List<Boolean> marks = new ArrayList<>(Math.max(0, total - 1));
+    for (int i = 0; i < total - 1; i++) {
+      marks.add(false);
+    }
+
+    int acc = 0;
+    for (int i = 0; i < seq.size(); i++) {
+      int part = seq.get(i);
+      if (part <= 0) {
+        throw new IllegalArgumentException("Sequence contains non-positive segment length.");
+      }
+      acc += part;
+      if (i < seq.size() - 1) {
+        marks.set(acc - 1, true);
+      }
+    }
+    if (acc != total) {
+      throw new IllegalArgumentException("Sequence sum mismatch.");
+    }
+    return new Composition(marks);
   }
 }
