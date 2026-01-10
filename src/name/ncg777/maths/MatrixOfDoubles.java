@@ -103,6 +103,39 @@ public class MatrixOfDoubles extends Matrix<Double> {
   }
 
   /**
+   * Simulates a non-deterministic walk using this matrix as a transition matrix.
+   *
+   * @param startState Starting state index.
+   * @param steps Number of steps to simulate.
+   * @param rng Random source.
+   * @return The visited states, including the start state.
+   */
+  public int[] simulateWalk(int startState, int steps, Random rng) {
+    if (m != n) {
+      throw new IllegalArgumentException("Matrix must be square to simulate a walk.");
+    }
+    if (startState < 0 || startState >= n) {
+      throw new IllegalArgumentException("Start state out of range.");
+    }
+    if (steps < 0) {
+      throw new IllegalArgumentException("Number of steps must be non-negative.");
+    }
+    if (rng == null) {
+      throw new IllegalArgumentException("Random source cannot be null.");
+    }
+
+    int[] path = new int[steps + 1];
+    int current = startState;
+    path[0] = current;
+
+    for (int s = 1; s <= steps; s++) {
+      current = sampleNextState(current, rng);
+      path[s] = current;
+    }
+    return path;
+  }
+
+  /**
    * Generates a Haar matrix of size n x n.
    * 
    * @param n The size of the matrix (must be a power of 2).
@@ -188,6 +221,30 @@ public class MatrixOfDoubles extends Matrix<Double> {
       perm[j] = tmp;
     }
     return perm;
+  }
+
+  private int sampleNextState(int row, Random rng) {
+    double sum = 0.0;
+    for (int j = 0; j < n; j++) {
+      double v = get(row, j);
+      if (v < 0.0) {
+        throw new IllegalArgumentException("Transition probabilities must be non-negative.");
+      }
+      sum += v;
+    }
+    if (sum <= 0.0) {
+      throw new IllegalArgumentException("Row sums to zero; cannot sample next state.");
+    }
+
+    double threshold = rng.nextDouble() * sum;
+    double cumulative = 0.0;
+    for (int j = 0; j < n; j++) {
+      cumulative += get(row, j);
+      if (threshold <= cumulative) {
+        return j;
+      }
+    }
+    return n - 1;
   }
 
   /**
