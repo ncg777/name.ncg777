@@ -3,32 +3,68 @@ out vec4 FragColor;
 
 uniform vec2  uResolution;     // pixels
 uniform float uPhase;          // [0,1] loop time
-uniform int   uSymmetry;       // rotational symmetry copies (n)
-uniform int   uSubdivisions;   // how many line segments per copy
+uniform int   uSymmetry;       // rotational symmetry copies
+uniform int   uSubdivisions;   // curve sample points per copy
 uniform float uScale;          // overall radius scale (0.0 - 1.0)
 
-// Transformation params extracted from the original f20250708 function:
-//   transformation = (1 + sinAmp*sin((baseFreq + modAmp*sin(2*PI*sin(theta*modFreq*PI)/modDiv))*theta*thetaScale*PI))*PI
-uniform float uSinAmp;         // amplitude of the outer sine (default 0.25)
-uniform float uBaseFreq;       // base frequency term (default 2.0)
-uniform float uModAmp;         // amplitude modulator (default 1.0)
-uniform float uModFreq;        // inner modulation frequency (default 1024.0)
-uniform float uModDiv;         // inner modulation divisor (default 4.0)
-uniform float uThetaScale;     // scale of theta (default 0.95)
+uniform float uSinAmp;         // amplitude of the outer sine
+uniform float uBaseFreq;       // base frequency term
+uniform float uModAmp;         // amplitude modulator
+uniform float uModFreq;        // inner modulation frequency
+uniform float uModDiv;         // inner modulation divisor
+uniform float uThetaScale;     // scale of theta
 
 uniform float uLineWidth;      // antialiased line width in pixels
-uniform float uHueCycles;      // hue cycles per segment loop
+uniform float uHueCycles;      // hue cycles per loop
 
 uniform float uSeed;           // random seed for variation
 
 const float PI  = 3.14159265358979323846;
 const float TAU = 6.28318530717958647692;
 
-// Signed distance to a line segment
-float sdLine(vec2 p, vec2 a, vec2 b) {
-  vec2 pa = p - a, ba = b - a;
-  float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-  return length(pa - ba * h);
+float dot2(vec2 v) { return dot(v, v); }
+
+// Exact SDF to quadratic Bezier (Inigo Quilez), returns vec2(distance, closest_t)
+// where closest_t in [0,1] is the parameter on the Bezier nearest to pos.
+vec2 sdBezier(vec2 pos, vec2 A, vec2 B, vec2 C) {
+  vec2 a = B - A;
+  vec2 b = A - 2.0*B + C;
+  if (dot(b, b) < 1e-10) {
+    // Degenerate: line fallback — compute t along segment
+    vec2 pa = pos - A, ba = C - A;
+    float ht = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return vec2(length(pa - ba * ht), ht);
+  }
+  vec2 c = a * 2.0;
+  vec2 d = A - pos;
+  float kk = 1.0 / dot(b, b);
+  float kx = kk * dot(a, b);
+  float ky = kk * (2.0*dot(a,a) + dot(d,b)) / 3.0;
+  float kz = kk * dot(d, a);
+  float p  = ky - kx*kx;
+  float p3 = p*p*p;
+  float q  = kx*(2.0*kx*kx - 3.0*ky) + kz;
+  float h  = q*q + 4.0*p3;
+  float res;
+  float bestT;
+  if (h >= 0.0) {
+    h = sqrt(h);
+    vec2 x = (vec2(h, -h) - q) / 2.0;
+    vec2 uv = sign(x) * pow(abs(x), vec2(1.0/3.0));
+    bestT = clamp(uv.x + uv.y - kx, 0.0, 1.0);
+    res = dot2(d + (c + b*bestT)*bestT);
+  } else {
+    float z = sqrt(-p);
+    float v = acos(q/(p*z*2.0)) / 3.0;
+    float m = cos(v);
+    float n = sin(v) * 1.732050808;
+    vec3  t = clamp(vec3(m+m, -n-m, n-m)*z - kx, 0.0, 1.0);
+    float d0 = dot2(d + (c + b*t.x)*t.x);
+    float d1 = dot2(d + (c + b*t.y)*t.y);
+    if (d0 < d1) { res = d0; bestT = t.x; }
+    else         { res = d1; bestT = t.y; }
+  }
+  return vec2(sqrt(res), bestT);
 }
 
 // The transformation function from original code
@@ -38,16 +74,26 @@ float transformation(float t) {
   return (1.0 + uSinAmp * sin(outer * t * uThetaScale * PI)) * PI;
 }
 
+// Evaluate a point on the polar rose curve with symmetry rotation
+vec2 curvePoint(float t, float cosR, float sinR) {
+  float theta = transformation(t);
+  float r = sin(t * TAU + uPhase * TAU) * uScale * 0.5;
+  vec2 c = vec2(r * cos(theta), r * sin(theta));
+  return vec2(cosR * c.x - sinR * c.y, sinR * c.x + cosR * c.y);
+}
+
 void main() {
   float minDim = min(uResolution.x, uResolution.y);
-  vec2 p = (gl_FragCoord.xy - 0.5 * uResolution) / minDim; // [-0.5, 0.5]
+  vec2 px = (gl_FragCoord.xy - 0.5 * uResolution) / minDim;
 
-  // Compute closest distance to any drawn segment across all symmetry copies
   float dMin = 1e9;
-  float closestT = 0.0; // for hue
+  float closestT = 0.0;
 
-  int subdiv = max(1, uSubdivisions);
+  int N   = max(3, uSubdivisions);
   int sym = max(1, uSymmetry);
+
+  // Bounding-box margin covers the glow radius
+  float margin = uLineWidth * 3.0 / minDim;
 
   for (int s = 0; s < 128; ++s) {
     if (s >= sym) break;
@@ -55,52 +101,66 @@ void main() {
     float cosR = cos(rotAngle);
     float sinR = sin(rotAngle);
 
+    // Closed-loop Catmull-Rom Bezier: N sample points, indices wrap mod N
+    // so the curve forms a seamless loop with no dangling endpoints.
+    vec2 Pprev = curvePoint(float(N - 1) / float(N), cosR, sinR);
+    vec2 Pcurr = curvePoint(0.0, cosR, sinR);
+
     for (int i = 0; i < 8192; ++i) {
-      if (i >= subdiv - 1) break;
+      if (i >= N) break;
 
-      float t1 = float(i) / float(subdiv);
-      float t2 = float(i + 1) / float(subdiv);
+      vec2 Pnext = curvePoint(float((i + 1) % N) / float(N), cosR, sinR);
 
-      float theta1 = transformation(t1);
-      float theta2 = transformation(t2);
+      // Catmull-Rom midpoint Bezier: mid(prev,curr) → curr → mid(curr,next)
+      // Gives C1-continuous joins — no sharp corners anywhere.
+      vec2 A = 0.5 * (Pprev + Pcurr);
+      vec2 B = Pcurr;
+      vec2 C = 0.5 * (Pcurr + Pnext);
 
-      // radius oscillates with phase (exactly as original)
-      float r1 = sin(t1 * TAU + uPhase * TAU) * uScale * 0.5;
-      float r2 = sin(t2 * TAU + uPhase * TAU) * uScale * 0.5;
+      // Bounding-box culling: skip the expensive sdBezier when far away.
+      vec2 lo = min(A, min(B, C)) - margin;
+      vec2 hi = max(A, max(B, C)) + margin;
 
-      // polar -> cartesian
-      vec2 c1 = vec2(r1 * cos(theta1), r1 * sin(theta1));
-      vec2 c2 = vec2(r2 * cos(theta2), r2 * sin(theta2));
-
-      // apply symmetry rotation
-      c1 = vec2(cosR * c1.x - sinR * c1.y, sinR * c1.x + cosR * c1.y);
-      c2 = vec2(cosR * c2.x - sinR * c2.y, sinR * c2.x + cosR * c2.y);
-
-      float d = sdLine(p, c1, c2);
-      if (d < dMin) {
-        dMin = d;
-        closestT = t1;
+      if (px.x >= lo.x && px.x <= hi.x && px.y >= lo.y && px.y <= hi.y) {
+        vec2 db = sdBezier(px, A, B, C);  // .x = distance, .y = bezier param [0,1]
+        if (db.x < dMin) {
+          dMin = db.x;
+          // Continuous curve parameter: segment i, interpolated by Bezier parameter
+          closestT = (float(i) + db.y) / float(N);
+        }
       }
+
+      Pprev = Pcurr;
+      Pcurr = Pnext;
     }
   }
 
-  // Antialiased line mask
+  // --- Sharp core + soft bloom glow ---
   float lineHalf = uLineWidth * 0.5 / minDim;
-  float alpha = 1.0 - smoothstep(lineHalf * 0.5, lineHalf, dMin);
 
-  // Hue from closestT and phase (matching original HSB logic)
+  // Sharp antialiased core
+  float core = 1.0 - smoothstep(lineHalf * 0.35, lineHalf, dMin);
+
+  // Soft bloom glow extending beyond the core
+  float glowR = lineHalf * 5.0;
+  float glow  = exp(-dMin * dMin / (glowR * glowR * 0.18)) * 0.3;
+
+  float alpha = max(core, glow);
+
+  // Hue from curve parameter
   float hue = 0.5 + 0.5 * sin(closestT * TAU * uHueCycles);
   hue = fract(hue + 0.1 * sin(uPhase * TAU));
 
-  float sat = 0.8 + 0.2 * cos(uPhase * TAU);
+  // Glow is slightly desaturated; core is vivid
+  float sat = mix(0.55, 0.9, core);
   float val = 0.99;
 
-  // HSV to RGB
+  // HSV → RGB
   vec3 rgb;
   {
-    vec3 c = vec3(hue, sat, val);
-    vec3 q = abs(fract(c.xxx + vec3(0., 2./6., 4./6.)) * 6. - 3.);
-    rgb = c.z * mix(vec3(1.), clamp(q - 1., 0., 1.), c.y);
+    vec3 cv = vec3(hue, sat, val);
+    vec3 q  = abs(fract(cv.xxx + vec3(0.0, 2.0/6.0, 4.0/6.0)) * 6.0 - 3.0);
+    rgb = cv.z * mix(vec3(1.0), clamp(q - 1.0, 0.0, 1.0), cv.y);
   }
 
   FragColor = vec4(rgb * alpha, alpha);

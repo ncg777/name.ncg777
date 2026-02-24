@@ -177,7 +177,7 @@ public class PolarRoseGL {
     int width = 1280, height = 720, fps = 60;
     double dur = 8.0;
     // symmetry, subdivisions, scale, sinAmp, baseFreq, modAmp, modFreq, modDiv, thetaScale, lineWidth, hueCycles
-    final float[] params = { 7f, 64f, 0.9f, 0.5f, 3.0f, 0.5f, 512.0f, 5.0f, 0.95f, 1.0f, 2.0f };
+    final float[] params = { 7f, 64f, 0.9f, 0.25f, 3.0f, 0.5f, 256.0f, 4.0f, 0.95f, 2.0f, 3.0f };
     final long seed = System.nanoTime();
 
     long win = GLUtils.createWindow(width, height, "Polar Rose (GL) - Interactive", true);
