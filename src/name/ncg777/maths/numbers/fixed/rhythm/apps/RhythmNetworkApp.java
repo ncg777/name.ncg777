@@ -222,7 +222,10 @@ public final class RhythmNetworkApp implements Callable<Integer> {
 
       List<FixedLength.Natural> walk = nav.walk(steps);
       System.out.println("# walk (τ=" + navTemperature + ", T=" + temperature + ")");
-      walk.forEach(r -> System.out.println(r.toString()));
+      String walkStr = walk.stream()
+          .map(FixedLength.Natural::toString)
+          .collect(java.util.stream.Collectors.joining(" "));
+      System.out.println(walkStr);
 
       System.err.printf("Walk generated in %.0f ms%n", (System.nanoTime() - tWalk) / 1e6);
     }

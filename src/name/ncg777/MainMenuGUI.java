@@ -63,6 +63,7 @@ public class MainMenuGUI {
     addAppButton(panel, "maths.numbers.fixed.apps.ScaleModulo",name.ncg777.maths.numbers.fixed.apps.ScaleModulo.class);
     addAppButton(panel, "maths.numbers.fixed.apps.SequenceGenerator",name.ncg777.maths.numbers.fixed.apps.SequenceGenerator.class);
     addAppButton(panel, "maths.numbers.fixed.apps.XORCircularConvolver",name.ncg777.maths.numbers.fixed.apps.XORCircularConvolver.class);
+    addAppButton(panel, "maths.numbers.fixed.rhythm.apps.RhythmNetworkGUI",name.ncg777.maths.numbers.fixed.rhythm.apps.RhythmNetworkGUI.class);
     addAppButton(panel, "maths.sequences.apps.Calculator",name.ncg777.maths.sequences.apps.Calculator.class);
     addAppButton(panel, "maths.sequences.apps.Convolver",name.ncg777.maths.sequences.apps.Convolver.class);
     addAppButton(panel, "maths.sequences.apps.Mapper",name.ncg777.maths.sequences.apps.Mapper.class);

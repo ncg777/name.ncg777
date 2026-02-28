@@ -1,5 +1,6 @@
 package name.ncg777.maths.numbers.fixed;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
@@ -14,8 +15,9 @@ import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.numbers.Cipher;
 import name.ncg777.maths.sequences.Sequence;
 
-public class FixedLength {
-  
+public class FixedLength implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   protected int L = -1;
   public FixedLength(int L) {this.L=L;}
   public static FixedLength of(int L) {return new FixedLength(L);}
