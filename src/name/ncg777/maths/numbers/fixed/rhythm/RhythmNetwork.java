@@ -67,16 +67,22 @@ public final class RhythmNetwork implements Serializable {
   private final int L;
   private final Cipher.Name cipher;
   private final double temperature;
+  private final String vertexClause;
+  private final String juxtClause;
 
   private RhythmNetwork(
       DefaultDirectedWeightedGraph<FixedLength.Natural, DefaultWeightedEdge> graph,
       int L,
       Cipher.Name cipher,
-      double temperature) {
+      double temperature,
+      String vertexClause,
+      String juxtClause) {
     this.graph = graph;
     this.L = L;
     this.cipher = cipher;
     this.temperature = temperature;
+    this.vertexClause = vertexClause != null ? vertexClause : "";
+    this.juxtClause = juxtClause != null ? juxtClause : "";
   }
 
   // ───────────────────────────────────────── serialisation ──────────────
@@ -116,6 +122,12 @@ public final class RhythmNetwork implements Serializable {
   /** Returns the Boltzmann temperature used to compute edge weights. */
   public double getTemperature() { return temperature; }
 
+  /** Returns the vertex-filter clause string (empty string means accept all). */
+  public String getVertexClause() { return vertexClause; }
+
+  /** Returns the juxtaposition-filter clause string (empty string means accept all pairs). */
+  public String getJuxtClause() { return juxtClause; }
+
   /** Returns an unmodifiable sorted set of all vertex rhythms. */
   public Set<FixedLength.Natural> getVertices() {
     return Collections.unmodifiableSet(new TreeSet<>(graph.vertexSet()));
@@ -149,13 +161,13 @@ public final class RhythmNetwork implements Serializable {
     private double temperature  = 1.0;
     private boolean selfLoops   = false;
 
-    public Builder length(int L)                       { this.L = L;                return this; }
-    public Builder cipher(Cipher.Name c)               { this.cipher = c;           return this; }
-    public Builder vertexClause(String clause)         { this.vertexClause = clause; return this; }
-    public Builder juxtapositionClause(String clause)  { this.juxtClause = clause;  return this; }
-    public Builder distance(RhythmDistance d)          { this.distance = d;         return this; }
-    public Builder temperature(double t)               { this.temperature = t;      return this; }
-    public Builder selfLoops(boolean v)                { this.selfLoops = v;        return this; }
+    public Builder length(int L)                       { this.L = L; return this; }
+    public Builder cipher(Cipher.Name c)               { this.cipher = c; return this; }
+    public Builder vertexClause(String clause)         { this.vertexClause = clause != null ? clause : ""; return this; }
+    public Builder juxtapositionClause(String clause)  { this.juxtClause = clause != null ? clause : ""; return this; }
+    public Builder distance(RhythmDistance d)          { this.distance = d; return this; }
+    public Builder temperature(double t)               { this.temperature = t; return this; }
+    public Builder selfLoops(boolean v)                { this.selfLoops = v; return this; }
 
     /**
      * Builds the {@link RhythmNetwork} by enumerating, filtering, and connecting all rhythms.
@@ -243,7 +255,7 @@ public final class RhythmNetwork implements Serializable {
       System.err.printf("  Edge building: %,d edges in %,d ms%n", edgesAdded, buildMs);
       System.err.printf("  Total build time: %,d ms%n", totalMs);
 
-      return new RhythmNetwork(g, L, cipher, temperature);
+      return new RhythmNetwork(g, L, cipher, temperature, vertexClause, juxtClause);
     }
   }
 }

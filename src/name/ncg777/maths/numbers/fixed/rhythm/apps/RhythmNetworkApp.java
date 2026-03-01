@@ -474,8 +474,8 @@ public final class RhythmNetworkApp implements Callable<Integer> {
               int stepCount = parseIntOrDefault(prompt(scanner, "Steps", Integer.toString(steps)), steps);
               double navT = parseDoubleOrDefault(prompt(scanner, "Navigation τ", Double.toString(navTemperature)), navTemperature);
               long walkSeed = parseLongOrDefault(prompt(scanner, "Seed (-1 random)", Long.toString(seed)), seed);
-              String successiveClause = prompt(scanner, "Successive clause", "").trim();
-              String simultaneousClause = prompt(scanner, "Simultaneous clause", "").trim();
+              String successiveClause = prompt(scanner, "Successive clause", sn.network.getJuxtClause()).trim();
+              String simultaneousClause = prompt(scanner, "Simultaneous clause", sn.network.getVertexClause()).trim();
               int maxAttempts = parseIntOrDefault(prompt(scanner, "Max attempts", "2000"), 2000);
 
               Predicate<BinaryNatural> successivePred = RhythmClauseParser.parse(successiveClause);

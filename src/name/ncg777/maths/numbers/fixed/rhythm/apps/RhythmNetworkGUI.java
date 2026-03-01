@@ -68,8 +68,6 @@ public class RhythmNetworkGUI {
   private JCheckBox analyzeCheckBox;
   private JCheckBox noWalkCheckBox;
   private JSpinner walkCountSpinner;
-  private JTextField successiveClauseField;
-  private JTextField simultaneousClauseField;
   private JSpinner maxAttemptsSpinner;
 
   private JTextField networkNameField;
@@ -232,26 +230,6 @@ public class RhythmNetworkGUI {
     maxAttemptsSpinner = new JSpinner(new SpinnerNumberModel(2000, 10, 5000000, 10));
     walkPanel.add(maxAttemptsSpinner, gbc);
     gbc.weightx = 0.0;
-
-    row++;
-
-    gbc.gridx = 0; gbc.gridy = row;
-    walkPanel.add(new JLabel("Successive Clause:"), gbc);
-    gbc.gridx = 1; gbc.gridy = row; gbc.gridwidth = 3; gbc.weightx = 1.0;
-    successiveClauseField = new JTextField("");
-    successiveClauseField.setToolTipText("Predicate on each adjacent pair in a walk (via juxtaposition)");
-    walkPanel.add(successiveClauseField, gbc);
-    gbc.gridwidth = 1; gbc.weightx = 0.0;
-
-    row++;
-
-    gbc.gridx = 0; gbc.gridy = row;
-    walkPanel.add(new JLabel("Simultaneous Clause:"), gbc);
-    gbc.gridx = 1; gbc.gridy = row; gbc.gridwidth = 3; gbc.weightx = 1.0;
-    simultaneousClauseField = new JTextField("");
-    simultaneousClauseField.setToolTipText("Predicate on pairwise differences between rows at each column");
-    walkPanel.add(simultaneousClauseField, gbc);
-    gbc.gridwidth = 1; gbc.weightx = 0.0;
 
     row++;
 
@@ -713,8 +691,8 @@ public class RhythmNetworkGUI {
         int walkCount = (int) walkCountSpinner.getValue();
         int maxAttempts = (int) maxAttemptsSpinner.getValue();
         long seed = Long.parseLong(seedField.getText().trim());
-        String successiveClause = successiveClauseField.getText().trim();
-        String simultaneousClause = simultaneousClauseField.getText().trim();
+        String successiveClause = network.getJuxtClause();
+        String simultaneousClause = network.getVertexClause();
 
         log(String.format("Using network '%s': %,d vertices, %,d edges",
             selectedName, network.vertexCount(), network.edgeCount()));
