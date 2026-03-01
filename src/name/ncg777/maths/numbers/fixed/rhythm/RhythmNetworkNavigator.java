@@ -142,18 +142,31 @@ public final class RhythmNetworkNavigator {
 
   /**
    * Generates a random walk starting from a uniformly-chosen vertex.
+   * If a particular starting path reaches a dead-end, it shuffles and tries 
+   * other starting vertices until a valid walk is found.
    *
    * @param steps total number of rhythm steps in the walk (including start)
    * @return the walk as an ordered list of rhythms
    */
   public List<FixedLength.Natural> walk(int steps) {
     if (vertexList.isEmpty()) return List.of();
-    FixedLength.Natural start = vertexList.get(random.nextInt(vertexList.size()));
-    return walk(start, steps);
+    
+    List<FixedLength.Natural> candidates = new ArrayList<>(vertexList);
+    java.util.Collections.shuffle(candidates, random);
+    
+    for (FixedLength.Natural start : candidates) {
+      List<FixedLength.Natural> path = new ArrayList<>(steps);
+      if (walkRecursive(start, steps, path)) {
+        return path;
+      }
+    }
+    
+    throw new IllegalStateException("Could not generate a walk of length " + steps + " from any starting point in the network.");
   }
 
   /**
-   * Generates a random walk starting from {@code start}.
+   * Generates a random walk starting from {@code start}. Uses backtracking
+   * to avoid getting stuck in sink nodes.
    *
    * @param start the initial rhythm
    * @param steps total number of steps (including the start)
@@ -161,13 +174,46 @@ public final class RhythmNetworkNavigator {
    */
   public List<FixedLength.Natural> walk(FixedLength.Natural start, int steps) {
     List<FixedLength.Natural> path = new ArrayList<>(steps);
-    FixedLength.Natural current = start;
-    path.add(current);
-    for (int i = 1; i < steps; i++) {
-      current = nextStep(current);
-      path.add(current);
+    if (!walkRecursive(start, steps, path)) {
+        throw new IllegalStateException("Could not generate a walk of length " + steps + " from " + start + " without encountering a dead-end.");
     }
     return path;
+  }
+
+  private boolean walkRecursive(FixedLength.Natural current, int stepsRemaining, List<FixedLength.Natural> path) {
+    path.add(current);
+    if (stepsRemaining == 1) {
+        return true;
+    }
+
+    List<double[]> cdf = transitionMap.get(current);
+    if (cdf == null || cdf.isEmpty()) {
+       path.remove(path.size() - 1); // backtrack
+       return false;
+    }
+
+    // Try a few times to find a valid path forward. 
+    // Since we sample probabilistically, we might pick a bad node.
+    // We cap retries so we don't loop forever on mostly-dead subgraphs.
+    int maxRetries = Math.min(10, cdf.size() * 5); 
+    for(int tries=0; tries < maxRetries; tries++) {
+        double r = random.nextDouble();
+        FixedLength.Natural next = null;
+        for (double[] entry : cdf) {
+            if (r <= entry[0]) {
+                next = vertexList.get((int) entry[1]);
+                break;
+            }
+        }
+        if (next == null) next = vertexList.get((int) cdf.get(cdf.size() - 1)[1]);
+        
+        if (walkRecursive(next, stepsRemaining - 1, path)) {
+            return true;
+        }
+    }
+    
+    path.remove(path.size() - 1); // backtrack
+    return false;
   }
 
   /**

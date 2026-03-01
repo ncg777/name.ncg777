@@ -5,6 +5,43 @@ First, you should extract the zip file wherever you want.
 
 To run the main menu application that lets one open the apps with graphical interfaces, simply double click on the jar file or run the name.ncg777.cmd (windows) or name.ncg777.sh (linux) script.
 
+# Rhythm Network CLI (Interactive)
+`name.ncg777.maths.numbers.fixed.rhythm.apps.RhythmNetworkApp` now supports an interactive session mode for keeping multiple networks loaded in memory and reusing them for fast walk generation.
+
+Start interactive mode with:
+
+`--interactive` (or `-i`)
+
+Inside interactive mode, type `help`.
+
+Main commands:
+- `list` : show loaded networks (`*` marks selected)
+- `build` : build and add a network in memory
+- `load` : load and add a saved `.rnet` network
+- `select <name>` : select active network
+- `save` : save a loaded network to file
+- `unload <name|selected|all>` : remove network(s) from memory
+- `analyze [navTemp]` : run analysis on selected network
+- `walk [steps] [navTemp] [seed]` : generate one walk
+- `matrix` : generate N constrained walks as a matrix
+- `quit` / `exit` : leave interactive mode
+
+`matrix` prompts for:
+- walk count `N`
+- steps
+- navigation temperature `τ`
+- seed (`-1` for random)
+- successive clause (applied to adjacent walk elements via juxtaposition)
+- simultaneous clause (applied across matrix rows via differences)
+- max attempts
+
+Typical session:
+1. `build` (or `load`)
+2. `list` / `select <name>`
+3. `walk` for single walk, or `matrix` for constrained N-walk output
+4. `save` if needed
+5. `unload` when done
+
 # Enumeration Scripts Documentation
 Arguments' names cannot be specified and are just determined positionally.
 
