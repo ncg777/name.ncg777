@@ -88,7 +88,7 @@ public class Partitioner {
         var abc = (Cipher.Name)comboBox.getSelectedItem();
         
         NaturalSequence r = Quartal.instance.newNaturalSequence(abc, txtR.getText().trim());
-        BinaryNatural r1 = r.toBinaryNatural();
+        BinaryNatural r1 = r.toBinaryNatural().reverse();
         Sequence p0 = Sequence.parse(txtPartition.getText());
         Sequence p = p0.asOrdinalsUnipolar().addToEach(-1);
         int k = p.size();
