@@ -8,10 +8,13 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import name.ncg777.maths.numbers.Cipher;
-import name.ncg777.maths.numbers.fixed.Quartal;
+import name.ncg777.maths.numbers.fixed.FixedLength;
 import name.ncg777.maths.numbers.BinaryNatural;
 import name.ncg777.maths.sequences.Sequence;
 
@@ -48,9 +51,13 @@ public class SequenceGenerator {
   JTextArea txtrAaBb = new JTextArea();
   JTextField textField = new JTextField();
   private final JComboBox<Cipher.Name> comboBox = new JComboBox<Cipher.Name>(new DefaultComboBoxModel<Cipher.Name>(Cipher.Name.values()));
+  private final JLabel lblGrouping = new JLabel("Grouping (L):");
+  private final JSpinner spinnerL = new JSpinner(new SpinnerNumberModel(4, 1, 64, 1));
 
   private void initialize() {
     comboBox.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    lblGrouping.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
+    spinnerL.setFont(new Font("DejaVu Sans Mono", Font.PLAIN, 11));
     frmRhythmicSeqGen = new JFrame();
     frmRhythmicSeqGen.setTitle("Rhythmic Sequence Generator");
     frmRhythmicSeqGen.setBounds(100, 100, 450, 373);
@@ -73,8 +80,9 @@ public class SequenceGenerator {
             return;
           }
           
+          int L = (Integer) spinnerL.getValue();
           binaryNaturals.add(
-              Quartal.instance.newNaturalSequence(
+              FixedLength.of(L).newNaturalSequence(
                   (Cipher.Name)comboBox.getSelectedItem(), 
                   l[0].trim()).toNatural().toBinaryNatural());
           
@@ -126,13 +134,20 @@ public class SequenceGenerator {
               .addGap(13))
             .addGroup(groupLayout.createSequentialGroup()
               .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
-              .addContainerGap(252, Short.MAX_VALUE))))
+              .addPreferredGap(ComponentPlacement.UNRELATED)
+              .addComponent(lblGrouping)
+              .addPreferredGap(ComponentPlacement.RELATED)
+              .addComponent(spinnerL, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+              .addContainerGap(80, Short.MAX_VALUE))))
     );
     groupLayout.setVerticalGroup(
       groupLayout.createParallelGroup(Alignment.LEADING)
         .addGroup(groupLayout.createSequentialGroup()
           .addContainerGap()
-          .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+          .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+            .addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
+            .addComponent(lblGrouping)
+            .addComponent(spinnerL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
           .addGap(3)
           .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
           .addPreferredGap(ComponentPlacement.RELATED)
