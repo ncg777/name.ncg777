@@ -6,13 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import com.google.common.base.Joiner;
 
 import name.ncg777.maths.music.pcs12.Pcs12;
-import name.ncg777.maths.sequences.Sequence;
 
 import javax.swing.JTextField;
-import javax.swing.JSpinner;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 
 public class Polychord {
@@ -84,28 +80,32 @@ public class Polychord {
         var scale = Pcs12.parseForte(comboBox.getSelectedItem().toString());
         
         var scaleseq = scale.asSequence();
-        var chstr = textChords.getText().trim().split("\\s+");
-        var chlist = new ArrayList<Pcs12>();
-        for(int i = 0;i<chstr.length;i++) {chlist.add(Pcs12.parseForte(chstr[i]));}
-        
-        ArrayList<Pcs12> orig = new ArrayList<Pcs12>();
-        for(var c : chlist) orig.add(c);
-        
-        int o = 0;
-        for(int i=0;i<chlist.size();i++) {
-          int mult = (int)Math.round(Math.pow(2, i*scale.getK()));
-          var ch = chlist.get(i).asSequence();
-          var indexes = new ArrayList<Integer>(ch.stream().map((v) -> scaleseq.indexOf(v)).toList());
-          int k = 0;
-          for(var x : indexes) {
-            if(x==-1) continue;
-            k+= (int)Math.round(Math.pow(2.0, x));
+        var list = textChords.getText().trim().split(",");
+        String outputStr = "";
+        for(var elem: list) {
+          var chstr = elem.trim().split("\\s+");
+          var chlist = new ArrayList<Pcs12>();
+          for(int i = 0;i<chstr.length;i++) {chlist.add(Pcs12.parseForte(chstr[i]));}
+          
+
+          int o = 0;
+          for(int i=0;i<chlist.size();i++) {
+            int mult = (int)Math.round(Math.pow(2, i*scale.getK()));
+            var ch = chlist.get(i).asSequence();
+            var indexes = new ArrayList<Integer>(ch.stream().map((v) -> scaleseq.indexOf(v)).toList());
+            int k = 0;
+            for(var x : indexes) {
+              if(x==-1) continue;
+              k+= (int)Math.round(Math.pow(2.0, x));
+            }
+            o += k*mult;
           }
-          o += k*mult;
+          
+          
+          outputStr += Integer.toString(o) + " ";
+            
         }
-        
-        
-        textResult.setText(Integer.toString(o));
+        textResult.setText(outputStr.trim());
         
       }
     });
