@@ -114,7 +114,11 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
     UPDOWN,
     DOWNUP,
     SIGMAUP,
-    SIGMADOWN
+    SIGMADOWN,
+    OUTSIDE_IN,
+    INSIDE_OUT,
+    ASCEND_SKIP,
+    DESCEND_SKIP
   }
   
   public static Sequence arp(ArpType arpType, int k) {
@@ -170,6 +174,61 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
       case SIGMADOWN:
         for(int i=0; i<k;i++) {
           o = o.juxtapose(Sequence.stair(k-1, i+1, -1));
+        }
+        break;
+      case OUTSIDE_IN:
+        // Alternate from both extremes toward the center: 0, k-1, 1, k-2, 2, k-3, ...
+        for(int i = 0; i < (k + 1) / 2; i++) {
+          o.add(i);
+          if(i != k - 1 - i) {
+            o.add(k - 1 - i);
+          }
+        }
+        if(repeatBottom) {
+          o.add(o.size(), 0);
+        }
+        if(repeatTop) {
+          o.add(0, k - 1);
+        }
+        break;
+      case INSIDE_OUT:
+        // From the center outward, alternating left and right: center, center+1, center-1, ...
+        int center = (k - 1) / 2;
+        o.add(center);
+        for(int r = 1; r <= center; r++) {
+          o.add(center + r);
+          o.add(center - r);
+        }
+        if(k % 2 == 0) {
+          o.add(k - 1);
+        }
+        if(repeatBottom) {
+          o.add(o.size(), 0);
+        }
+        if(repeatTop) {
+          o.add(0, k - 1);
+        }
+        break;
+      case ASCEND_SKIP:
+        // Even-indexed positions first (0, 2, 4, ...) then odd-indexed (1, 3, 5, ...)
+        for(int i = 0; i < k; i += 2) o.add(i);
+        for(int i = 1; i < k; i += 2) o.add(i);
+        if(repeatBottom) {
+          o.add(o.size(), 0);
+        }
+        if(repeatTop) {
+          o.add(0, k - 1);
+        }
+        break;
+      case DESCEND_SKIP:
+        // Odd-indexed positions first (k-1, k-3, ...) then even-indexed (k-2, k-4, ...)
+        for(int i = k - 1; i >= 0; i -= 2) o.add(i);
+        for(int i = k - 2; i >= 0; i -= 2) o.add(i);
+        if(repeatBottom) {
+          o.add(0);
+        }
+        if(repeatTop) {
+          o.add(0, k - 1);
         }
         break;
     }
@@ -267,55 +326,31 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
   public Sequence wrapseq(int p_min, int p_amp) {
     if(p_amp == 0) throw new RuntimeException("Sequence.wrapseq: amp must be non-zero");
     int d = 1;
-    if(p_amp<0){
+    if(p_amp < 0) {
       d = -1;
       p_amp = Math.abs(p_amp);
     }
-    
-    Sequence allowed = stair(p_min, p_amp,d);
-    int asz = allowed.size();
-    
-    int min = this.getMin();
-    int max = this.getMax();
-    int minmap = p_min;
-    while(minmap > min) minmap -= asz;
-    int maxmap = p_min + p_amp;
-    while(maxmap < max) maxmap += asz;
-    
-    TreeMap<Integer,Integer> map = new TreeMap<>();
-    int acc = 0;
-    for(int i=minmap;i<=maxmap;i++) {
-      map.put(i, allowed.get(Numbers.correctMod(acc++, allowed.size())));
-    }
-    return this.map(map);
+    final int dir = d;
+    final int min = p_min;
+    final int amp = p_amp;
+    return this.apply(v -> min + Numbers.correctMod(v - min, amp) * dir);
   }
   
   public Sequence bounceseq(int p_min, int p_amp) {
     if(p_amp == 0) throw new RuntimeException("Sequence.bounceseq: amp must be non-zero");
     int d = 1;
-    
-    if(p_amp<0) {
+    if(p_amp < 0) {
       d = -1;
       p_amp = Math.abs(p_amp);
     }
-    
-    Sequence allowed = tri(p_min, p_amp, d);
-    
-    int asz = allowed.size();
-    
-    int min = this.getMin();
-    int max = this.getMax();
-    int minmap = p_min;
-    while(minmap > min) minmap -= asz;
-    int maxmap = p_min + p_amp;
-    while(maxmap < max) maxmap += asz;
-    
-    TreeMap<Integer,Integer> map = new TreeMap<>();
-    int acc = 0;
-    for(int i=minmap;i<=maxmap;i++) {
-      map.put(i, allowed.get(acc++%asz));
-    }
-    return this.map(map);
+    final int dir = d;
+    final int min = p_min;
+    final int amp = p_amp;
+    final int period = 2 * amp;
+    return this.apply(v -> {
+      int idx = Numbers.correctMod(v - min, period);
+      return idx < amp ? min + idx * dir : min + (period - idx) * dir;
+    });
   }
   
   public Sequence flip()
@@ -577,13 +612,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    * @return
    */
   public int getMin() {
-    int m = this.get(0);
-    for (int i = 0; i < this.size(); i++) {
-      if (this.get(i) < m) {
-        m = this.get(i);
-      }
-    }
-    return m;
+    return this.stream().mapToInt(Integer::intValue).min().orElseThrow();
   }
 
   /**
@@ -592,13 +621,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    * @return
    */
   public int getMax() {
-    int m = this.get(0);
-    for (int i = 0; i < this.size(); i++) {
-      if (this.get(i) > m) {
-        m = this.get(i);
-      }
-    }
-    return m;
+    return this.stream().mapToInt(Integer::intValue).max().orElseThrow();
   }
 
   /**
@@ -607,12 +630,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    * @return
    */
   public double getMean() {
-    Iterator<Integer> i = this.iterator();
-    double s = 0;
-    while (i.hasNext()) {
-      s += i.next();
-    }
-    return s / (double) this.size();
+    return this.stream().mapToInt(Integer::intValue).average().orElse(0.0);
   }
 
   /**
@@ -622,13 +640,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    */
   public double getStdDev() {
     double m = getMean();
-    Iterator<Integer> i = this.iterator();
-    double s = 0;
-    while (i.hasNext()) {
-      double d = i.next() - m;
-      s += d * d;
-    }
-    return Math.sqrt(s / (double) this.size());
+    return Math.sqrt(this.stream().mapToDouble(v -> (v - m) * (v - m)).average().orElse(0.0));
   }
 
   public Sequence difference() {
@@ -772,11 +784,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    * @return The sum of the sequence.
    */
   public int sum() {
-    Integer output = 0;
-    for (int i = 0; i < this.size(); i++) {
-      output += this.get(i);
-    }
-    return output;
+    return this.stream().mapToInt(Integer::intValue).sum();
   }
 
   /**
