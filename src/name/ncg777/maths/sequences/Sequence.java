@@ -185,10 +185,10 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           }
         }
         if(repeatBottom) {
-          o.add(o.size(), 0);
+          o.add(0);
         }
         if(repeatTop) {
-          o.add(0, k - 1);
+          o.add(k - 1);
         }
         break;
       case INSIDE_OUT:
@@ -203,10 +203,10 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           o.add(k - 1);
         }
         if(repeatBottom) {
-          o.add(o.size(), 0);
+          o.add(0);
         }
         if(repeatTop) {
-          o.add(0, k - 1);
+          o.add(k - 1);
         }
         break;
       case ASCEND_SKIP:
@@ -214,14 +214,14 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
         for(int i = 0; i < k; i += 2) o.add(i);
         for(int i = 1; i < k; i += 2) o.add(i);
         if(repeatBottom) {
-          o.add(o.size(), 0);
+          o.add(0, 0);
         }
         if(repeatTop) {
-          o.add(0, k - 1);
+          o.add(k - 1);
         }
         break;
       case DESCEND_SKIP:
-        // Odd-indexed positions first (k-1, k-3, ...) then even-indexed (k-2, k-4, ...)
+        // Descending, skipping: (k-1, k-3, ...) then (k-2, k-4, ...)
         for(int i = k - 1; i >= 0; i -= 2) o.add(i);
         for(int i = k - 2; i >= 0; i -= 2) o.add(i);
         if(repeatBottom) {
