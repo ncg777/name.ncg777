@@ -134,12 +134,6 @@ public class Pulsations {
             if(sdurations.get(i) < 0) { throw new Exception("Periods must be positive"); }
           }
           Sequence smultiples = Sequence.parse(multiples.getText());
-          for(int i=0;i<scompo.size();i++) {
-            if(scompo.get(i) < (smultiples.get(i % smultiples.size()))*sdurations.get(i % sdurations.size())) {
-              throw new Exception("Duration*Multiple must not exceed corresponding composition element.");
-            }
-          }
-          
           BinaryNatural rh = BinaryNatural.build(new BitSet(scompo_sum), scompo_sum);
           int acc = 0;
           
@@ -153,9 +147,9 @@ public class Pulsations {
                         
             for(int j=0; j<m; j++) {
               if(!isTail) {
-                rh.set(acc+j*d, true);
+                rh.set(acc + (j*d) % c, true);
               } else {
-                rh.set(acc + c-((j+1)*d), true); 
+                rh.set(acc + ((c - (j+1)*d) % c + c) % c, true); 
               }
             }
             
