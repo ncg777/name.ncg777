@@ -9,11 +9,10 @@ import name.ncg777.maths.music.apps.kernelEvaluator.ParameterType;
 import name.ncg777.maths.sequences.Sequence;
 
 public class Recycle implements Kernel {
-  private Sequence s;
-  
+
   @Override
   public int getValue(Map<String, Object> parameters, int i) {
-    s = (Sequence)parameters.get("s");
+    Sequence s = (Sequence)parameters.get("s");
     return s.get(i % s.size());
   }
 
@@ -39,7 +38,7 @@ public class Recycle implements Kernel {
 
   @Override
   public ParameterType getParameterType(String name) {
-    if(name == "s") return ParameterType.SEQUENCE;
+    if(name.equals("s")) return ParameterType.SEQUENCE;
     return null;
   }
 
