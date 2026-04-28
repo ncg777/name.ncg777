@@ -214,7 +214,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
         for(int i = 0; i < k; i += 2) o.add(i);
         for(int i = 1; i < k; i += 2) o.add(i);
         if(repeatBottom) {
-          o.add(0, 0);
+          o.add(0, 0); // insert extra 0 (bottom) at the start of the sequence
         }
         if(repeatTop) {
           o.add(k - 1);
@@ -228,7 +228,7 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
           o.add(0);
         }
         if(repeatTop) {
-          o.add(0, k - 1);
+          o.add(0, k - 1); // insert extra top value at the start (mirrors DOWN behavior)
         }
         break;
     }
@@ -612,7 +612,8 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    * @return
    */
   public int getMin() {
-    return this.stream().mapToInt(Integer::intValue).min().orElseThrow();
+    return this.stream().mapToInt(Integer::intValue).min()
+        .orElseThrow(() -> new IllegalStateException("Cannot compute min of an empty sequence"));
   }
 
   /**
@@ -621,7 +622,8 @@ public class Sequence extends ArrayList<Integer> implements Function<Integer,Int
    * @return
    */
   public int getMax() {
-    return this.stream().mapToInt(Integer::intValue).max().orElseThrow();
+    return this.stream().mapToInt(Integer::intValue).max()
+        .orElseThrow(() -> new IllegalStateException("Cannot compute max of an empty sequence"));
   }
 
   /**
