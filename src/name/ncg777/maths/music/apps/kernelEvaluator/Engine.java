@@ -11,11 +11,7 @@ import name.ncg777.maths.music.apps.kernelEvaluator.kernels.Constant;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.Dummy;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.ModsRecycle;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.Recycle;
-import name.ncg777.maths.music.apps.kernelEvaluator.kernels.Recycle8LevelsHex;
-import name.ncg777.maths.music.apps.kernelEvaluator.kernels.Recycle8LevelsOctal;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleAdd;
-import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleAdd4;
-import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleByteAdd;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleMultiLevel;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleScale;
 import name.ncg777.maths.music.apps.kernelEvaluator.kernels.RecycleStepAdd;
@@ -33,12 +29,8 @@ public class Engine {
     Kernels.add(new Recycle());
     Kernels.add(new RecycleScale());
     Kernels.add(new RecycleAdd());
-    Kernels.add(new RecycleAdd4());
     Kernels.add(new RecycleStepAdd());
-    Kernels.add(new RecycleByteAdd());
     Kernels.add(new RecycleMultiLevel());
-    Kernels.add(new Recycle8LevelsHex());
-    Kernels.add(new Recycle8LevelsOctal());
     Kernels.add(new ModsRecycle());
     // END
     
