@@ -9,25 +9,17 @@ import name.ncg777.maths.music.apps.kernelEvaluator.ParameterType;
 import name.ncg777.maths.sequences.Sequence;
 
 public class Recycle8LevelsOctal implements Kernel {
-  private Sequence s1;
-  private Sequence s2;
-  private Sequence s3;
-  private Sequence s6;
-  private Sequence s12;
-  private Sequence s24;
-  private Sequence s48;
-  private Sequence s96;
-  
+
   @Override
   public int getValue(Map<String, Object> parameters, int i) {
-    s1 = (Sequence)parameters.get("s1");
-    s2 = (Sequence)parameters.get("s2");
-    s3 = (Sequence)parameters.get("s3");
-    s6 = (Sequence)parameters.get("s6");
-    s12 = (Sequence)parameters.get("s12");
-    s24 = (Sequence)parameters.get("s24");
-    s48 = (Sequence)parameters.get("s48");
-    s96 = (Sequence)parameters.get("s96");
+    Sequence s1 = (Sequence)parameters.get("s1");
+    Sequence s2 = (Sequence)parameters.get("s2");
+    Sequence s3 = (Sequence)parameters.get("s3");
+    Sequence s6 = (Sequence)parameters.get("s6");
+    Sequence s12 = (Sequence)parameters.get("s12");
+    Sequence s24 = (Sequence)parameters.get("s24");
+    Sequence s48 = (Sequence)parameters.get("s48");
+    Sequence s96 = (Sequence)parameters.get("s96");
     
     return s1.get(i % s1.size()) +
         s2.get((i/2)%s2.size()) +
@@ -68,14 +60,14 @@ public class Recycle8LevelsOctal implements Kernel {
 
   @Override
   public ParameterType getParameterType(String name) {
-    if(name == "s1") return ParameterType.SEQUENCE;
-    if(name == "s2") return ParameterType.SEQUENCE;
-    if(name == "s3") return ParameterType.SEQUENCE;
-    if(name == "s6") return ParameterType.SEQUENCE;
-    if(name == "s12") return ParameterType.SEQUENCE;
-    if(name == "s24") return ParameterType.SEQUENCE;
-    if(name == "s48") return ParameterType.SEQUENCE;
-    if(name == "s96") return ParameterType.SEQUENCE;
+    if(name.equals("s1")) return ParameterType.SEQUENCE;
+    if(name.equals("s2")) return ParameterType.SEQUENCE;
+    if(name.equals("s3")) return ParameterType.SEQUENCE;
+    if(name.equals("s6")) return ParameterType.SEQUENCE;
+    if(name.equals("s12")) return ParameterType.SEQUENCE;
+    if(name.equals("s24")) return ParameterType.SEQUENCE;
+    if(name.equals("s48")) return ParameterType.SEQUENCE;
+    if(name.equals("s96")) return ParameterType.SEQUENCE;
     return null;
   }
 

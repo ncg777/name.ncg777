@@ -9,17 +9,13 @@ import name.ncg777.maths.music.apps.kernelEvaluator.ParameterType;
 import name.ncg777.maths.sequences.Sequence;
 
 public class RecycleAdd4 implements Kernel {
-  private Sequence s1;
-  private Sequence s2;
-  private Sequence s3;
-  private Sequence s4;
-  
+
   @Override
   public int getValue(Map<String, Object> parameters, int i) {
-    s1 = (Sequence)parameters.get("s1");
-    s2 = (Sequence)parameters.get("s2");
-    s3 = (Sequence)parameters.get("s3");
-    s4 = (Sequence)parameters.get("s4");
+    Sequence s1 = (Sequence)parameters.get("s1");
+    Sequence s2 = (Sequence)parameters.get("s2");
+    Sequence s3 = (Sequence)parameters.get("s3");
+    Sequence s4 = (Sequence)parameters.get("s4");
     return s1.get(i % s1.size()) + s2.get(i % s2.size()) + s3.get(i % s3.size()) + s4.get(i % s4.size());
   }
 
@@ -48,10 +44,10 @@ public class RecycleAdd4 implements Kernel {
 
   @Override
   public ParameterType getParameterType(String name) {
-    if(name == "s1") return ParameterType.SEQUENCE;
-    if(name == "s2") return ParameterType.SEQUENCE;
-    if(name == "s3") return ParameterType.SEQUENCE;
-    if(name == "s4") return ParameterType.SEQUENCE;
+    if(name.equals("s1")) return ParameterType.SEQUENCE;
+    if(name.equals("s2")) return ParameterType.SEQUENCE;
+    if(name.equals("s3")) return ParameterType.SEQUENCE;
+    if(name.equals("s4")) return ParameterType.SEQUENCE;
     return null;
   }
 

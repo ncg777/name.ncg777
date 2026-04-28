@@ -9,13 +9,11 @@ import name.ncg777.maths.music.apps.kernelEvaluator.ParameterType;
 import name.ncg777.maths.sequences.Sequence;
 
 public class RecycleByteAdd implements Kernel {
-  private Sequence s;
-  private Sequence b;
-  
+
   @Override
   public int getValue(Map<String, Object> parameters, int i) {
-    s = (Sequence)parameters.get("s");
-    b = (Sequence)parameters.get("b");
+    Sequence s = (Sequence)parameters.get("s");
+    Sequence b = (Sequence)parameters.get("b");
     return s.get(i % s.size())+b.get((i/8)%b.size());
   }
 
@@ -42,8 +40,8 @@ public class RecycleByteAdd implements Kernel {
 
   @Override
   public ParameterType getParameterType(String name) {
-    if(name == "s") return ParameterType.SEQUENCE;
-    if(name == "b") return ParameterType.SEQUENCE;
+    if(name.equals("s")) return ParameterType.SEQUENCE;
+    if(name.equals("b")) return ParameterType.SEQUENCE;
     return null;
   }
 
