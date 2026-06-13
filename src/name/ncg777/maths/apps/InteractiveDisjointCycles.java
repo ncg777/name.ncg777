@@ -408,7 +408,6 @@ public class InteractiveDisjointCycles {
       return new ArrayList<>();
     }
     return Arrays.stream(tokensField.getText().trim().split("\\s+"))
-        .filter(s -> !s.isBlank())
         .collect(Collectors.toCollection(ArrayList::new));
   }
 

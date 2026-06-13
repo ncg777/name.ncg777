@@ -43,7 +43,7 @@ public class MainMenuGUI {
     panel.setOpaque(false);
     panel.setLayout(new GridLayout(0, 1)); // Dynamic vertical layout
     
-    addAppButton(panel, "maths.apps.InteractiveDisjointCycles",name.ncg777.maths.apps.InteractiveDisjointCycles.class);
+    addAppButton(panel, "maths.apps.InteractiveDisjointCycles", name.ncg777.maths.apps.InteractiveDisjointCycles.class);
     addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
