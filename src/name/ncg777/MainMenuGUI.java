@@ -1,23 +1,49 @@
 package name.ncg777;
 
 import javax.swing.JButton;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.io.File;
 import java.net.URISyntaxException;
 
 public class MainMenuGUI {
   public static void main(String[] args) {
+    try {
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     JFrame mainFrame = new JFrame("Main Menu");
     mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    mainFrame.setSize(500, 800);
+    mainFrame.setSize(560, 860);
+    JPanel root = new GradientPanel();
+    root.setLayout(new BorderLayout(12, 12));
+    root.setBorder(BorderFactory.createEmptyBorder(18, 18, 18, 18));
+
+    JLabel title = new JLabel("name.ncg777 app launcher", SwingConstants.CENTER);
+    title.setForeground(Color.WHITE);
+    title.setFont(title.getFont().deriveFont(Font.BOLD, 26f));
+    root.add(title, BorderLayout.NORTH);
+
     JPanel panel = new JPanel();
+    panel.setOpaque(false);
     panel.setLayout(new GridLayout(0, 1)); // Dynamic vertical layout
     
+    addAppButton(panel, "maths.apps.InteractiveDisjointCycles", name.ncg777.maths.apps.InteractiveDisjointCycles.class);
     addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
     addAppButton(panel, "maths.apps.NecklaceGenerator",name.ncg777.maths.apps.NecklaceGenerator.class);
@@ -82,9 +108,13 @@ public class MainMenuGUI {
     
     JScrollPane scrollPane = new JScrollPane(panel);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder());
+    scrollPane.getViewport().setOpaque(false);
+    scrollPane.setOpaque(false);
 
     // Add the scroll pane to the main frame
-    mainFrame.add(scrollPane);
+    root.add(scrollPane, BorderLayout.CENTER);
+    mainFrame.add(root);
 
     // Set frame visibility
     mainFrame.setVisible(true);
@@ -92,10 +122,18 @@ public class MainMenuGUI {
 
   private static void addAppButton(JPanel panel, String appName, Class<?> appClass) {
     JButton button = new JButton(appName);
+    button.setAlignmentX(Component.LEFT_ALIGNMENT);
+    button.setFocusPainted(false);
+    button.setHorizontalAlignment(SwingConstants.LEFT);
+    button.setForeground(Color.WHITE);
+    button.setBackground(new Color(45, 58, 96));
+    button.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(120, 210, 255)),
+        BorderFactory.createEmptyBorder(10, 16, 10, 16)));
+    button.setFont(button.getFont().deriveFont(Font.BOLD, 14f));
     button.addActionListener(e -> {
       openApp(appClass);
     });
-    button.setHorizontalAlignment(SwingConstants.LEFT);
     panel.add(button);
   }
 
@@ -120,5 +158,19 @@ public class MainMenuGUI {
     String jarPath = MainMenuGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
     
     return jarPath;
+  }
+
+  private static class GradientPanel extends JPanel {
+    @Override
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      Graphics2D g2 = (Graphics2D) g.create();
+      GradientPaint paint = new GradientPaint(
+          0, 0, new Color(20, 24, 42),
+          getWidth(), getHeight(), new Color(92, 38, 115));
+      g2.setPaint(paint);
+      g2.fillRect(0, 0, getWidth(), getHeight());
+      g2.dispose();
+    }
   }
 }
