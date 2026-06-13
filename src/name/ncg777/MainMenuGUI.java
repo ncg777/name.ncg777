@@ -125,7 +125,7 @@ public class MainMenuGUI {
     button.setAlignmentX(Component.LEFT_ALIGNMENT);
     button.setFocusPainted(false);
     button.setHorizontalAlignment(SwingConstants.LEFT);
-    button.setForeground(Color.WHITE);
+    button.setForeground(Color.BLACK);
     button.setBackground(new Color(45, 58, 96));
     button.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(120, 210, 255)),

@@ -33,7 +33,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -48,12 +47,12 @@ import javax.swing.event.ChangeListener;
 import name.ncg777.computing.structures.CollectionUtils;
 
 public class InteractiveDisjointCycles {
-  private static final Color BACKGROUND = new Color(21, 25, 43);
-  private static final Color PANEL = new Color(34, 40, 66);
+  private static final Color BACKGROUND = new Color(50, 50, 50);
+  private static final Color PANEL = new Color(100, 100, 100);
   private static final Color ACCENT = new Color(120, 210, 255);
   private static final Color HOT = new Color(255, 113, 181);
-  private static final Color TEXT = new Color(240, 246, 255);
-  private static final Color MUTED = new Color(166, 177, 203);
+  private static final Color TEXT = new Color(0, 0, 0);
+  private static final Color MUTED = new Color(75, 75, 100);
   private static final Color[] CYCLE_COLORS = {
       new Color(255, 113, 181), new Color(92, 225, 230), new Color(255, 211, 105),
       new Color(157, 122, 255), new Color(121, 255, 177), new Color(255, 151, 87)
@@ -223,7 +222,7 @@ public class InteractiveDisjointCycles {
 
     cycleListModel = new DefaultListModel<>();
     JList<String> cycleList = new JList<>(cycleListModel);
-    cycleList.setBackground(new Color(24, 29, 49));
+    cycleList.setBackground(new Color(124, 129, 149));
     cycleList.setForeground(TEXT);
     cycleList.setSelectionBackground(HOT);
     cycleList.setVisibleRowCount(5);
@@ -490,17 +489,21 @@ public class InteractiveDisjointCycles {
     area.setEditable(false);
     area.setLineWrap(true);
     area.setWrapStyleWord(true);
-    area.setBackground(new Color(17, 22, 38));
+    area.setBackground(new Color(117, 122, 108));
     area.setForeground(TEXT);
     area.setCaretColor(TEXT);
     return area;
   }
 
   private class CycleCanvas extends JPanel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private final ArrayList<Point> nodeLocations = new ArrayList<>();
 
     CycleCanvas() {
-      setBackground(new Color(16, 20, 35));
+      setBackground(new Color(16, 20, 55));
       addMouseListener(new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
           int node = nodeAt(e.getPoint());
