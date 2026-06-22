@@ -384,7 +384,7 @@ public class InteractiveDisjointCycles {
     List<Integer> p = Arrays.asList(permutation);
     List<String> tokens = tokensForObjects();
     List<String> permuted = CollectionUtils.permutate(p, tokens);
-    List<String> rendered = insertGapFillers(permuted);
+    List<String> rendered = insertGapFillersForOrbit(permuted);
     long order = CollectionUtils.getPermutationOrder(permutation);
 
     permutationArea.setText(joinIntegers(p));
@@ -394,7 +394,7 @@ public class InteractiveDisjointCycles {
     StringBuilder orbit = new StringBuilder();
     List<String> current = new ArrayList<>(tokens);
     for (long i = 0; i < order; i++) {
-      orbit.append(i).append(": ").append(String.join(" ", insertGapFillers(current))).append("\n");
+      orbit.append(i).append(": ").append(String.join(" ", insertGapFillersForOrbit(current))).append("\n");
       current = CollectionUtils.permutate(p, current);
     }
     orbitArea.setText(orbit.toString());
@@ -421,6 +421,22 @@ public class InteractiveDisjointCycles {
       if (!filler.isBlank()) {
         rendered.add(filler);
       }
+    }
+    return rendered;
+  }
+
+  private List<String> insertGapFillersForOrbit(List<String> tokens) {
+    if (tokens.isEmpty()) {
+      return new ArrayList<>(tokens);
+    }
+    ArrayList<String> rendered = new ArrayList<>(tokens.size() * 2);
+    for (int i = 0; i < tokens.size(); i++) {
+      int fillerIndex = (i + tokens.size() - 1) % tokens.size();
+      String filler = fillerIndex < gapFillers.size() ? gapFillers.get(fillerIndex) : "";
+      if (!filler.isBlank()) {
+        rendered.add(filler);
+      }
+      rendered.add(tokens.get(i));
     }
     return rendered;
   }
