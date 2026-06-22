@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
@@ -33,6 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -71,6 +73,7 @@ public class InteractiveDisjointCycles {
 
   private final List<List<Integer>> cycles = new ArrayList<>();
   private final List<Integer> currentCycle = new ArrayList<>();
+  private final List<String> gapFillers = new ArrayList<>();
   private int objectCount = 6;
   private Integer[] permutation = identity(objectCount);
 
@@ -90,6 +93,7 @@ public class InteractiveDisjointCycles {
 
   public InteractiveDisjointCycles() {
     initialize();
+    ensureGapFillerSize();
     refreshAll("Click nodes to build a cycle, then press Add cycle.");
   }
 
@@ -290,6 +294,7 @@ public class InteractiveDisjointCycles {
 
   private void setObjectCount(int n) {
     objectCount = n;
+    ensureGapFillerSize();
     cycles.clear();
     currentCycle.clear();
     refreshAll("Object count changed; cycles reset.");
@@ -375,22 +380,49 @@ public class InteractiveDisjointCycles {
     if (permutationArea == null) {
       return;
     }
+    ensureGapFillerSize();
     List<Integer> p = Arrays.asList(permutation);
     List<String> tokens = tokensForObjects();
     List<String> permuted = CollectionUtils.permutate(p, tokens);
+    List<String> rendered = insertGapFillers(permuted);
     long order = CollectionUtils.getPermutationOrder(permutation);
 
     permutationArea.setText(joinIntegers(p));
-    tokensArea.setText(String.join(" ", permuted));
+    tokensArea.setText(String.join(" ", rendered));
     orderLabel.setText("Order: " + order);
 
     StringBuilder orbit = new StringBuilder();
     List<String> current = new ArrayList<>(tokens);
     for (long i = 0; i < order; i++) {
-      orbit.append(i).append(": ").append(String.join(" ", current)).append("\n");
+      orbit.append(i).append(": ").append(String.join(" ", insertGapFillers(current))).append("\n");
       current = CollectionUtils.permutate(p, current);
     }
     orbitArea.setText(orbit.toString());
+  }
+
+  private void ensureGapFillerSize() {
+    int target = Math.max(0, objectCount);
+    while (gapFillers.size() < target) {
+      gapFillers.add("");
+    }
+    while (gapFillers.size() > target) {
+      gapFillers.remove(gapFillers.size() - 1);
+    }
+  }
+
+  private List<String> insertGapFillers(List<String> tokens) {
+    if (tokens.isEmpty()) {
+      return new ArrayList<>(tokens);
+    }
+    ArrayList<String> rendered = new ArrayList<>(tokens.size() * 2);
+    for (int i = 0; i < tokens.size(); i++) {
+      rendered.add(tokens.get(i));
+      String filler = i < gapFillers.size() ? gapFillers.get(i) : "";
+      if (!filler.isBlank()) {
+        rendered.add(filler);
+      }
+    }
+    return rendered;
   }
 
   private List<String> tokensForObjects() {
@@ -501,6 +533,8 @@ public class InteractiveDisjointCycles {
      */
     private static final long serialVersionUID = 1L;
     private final ArrayList<Point> nodeLocations = new ArrayList<>();
+    private final ArrayList<Point> fillerLocations = new ArrayList<>();
+    private final ArrayList<Rectangle> fillerBounds = new ArrayList<>();
 
     CycleCanvas() {
       setBackground(new Color(16, 20, 55));
@@ -509,6 +543,11 @@ public class InteractiveDisjointCycles {
           int node = nodeAt(e.getPoint());
           if (node >= 0) {
             addNodeToCurrentCycle(node);
+            return;
+          }
+          int fillerIndex = fillerAt(e.getPoint());
+          if (fillerIndex >= 0) {
+            editFillerAt(fillerIndex);
           }
         }
       });
@@ -524,12 +563,14 @@ public class InteractiveDisjointCycles {
         drawCycle(g2, cycles.get(i), CYCLE_COLORS[i % CYCLE_COLORS.length], true);
       }
       drawCycle(g2, currentCycle, ACCENT, false);
+      drawFillerLabels(g2);
       drawNodes(g2);
       g2.dispose();
     }
 
     private void updateNodeLocations() {
       nodeLocations.clear();
+      fillerLocations.clear();
       int w = getWidth();
       int h = getHeight();
       int cx = w / 2;
@@ -541,6 +582,49 @@ public class InteractiveDisjointCycles {
         nodeLocations.add(new Point(
             cx + (int) Math.round(Math.cos(angle) * radius),
             cy + (int) Math.round(Math.sin(angle) * radius)));
+      }
+      int gapCount = Math.max(0, objectCount);
+      for (int i = 0; i < gapCount; i++) {
+        Point a = nodeLocations.get(i);
+        Point b = nodeLocations.get((i + 1) % objectCount);
+        int mx = (a.x + b.x) / 2;
+        int my = (a.y + b.y) / 2;
+        double vx = mx - cx;
+        double vy = my - cy;
+        double norm = Math.max(1.0, Math.hypot(vx, vy));
+        int offset = 20;
+        fillerLocations.add(new Point(
+            (int) Math.round(mx + vx * offset / norm),
+            (int) Math.round(my + vy * offset / norm)));
+      }
+    }
+
+    private void drawFillerLabels(Graphics2D g2) {
+      ensureGapFillerSize();
+      fillerBounds.clear();
+      Font font = getFont().deriveFont(Font.BOLD, 12f);
+      g2.setFont(font);
+      FontMetrics metrics = g2.getFontMetrics();
+      for (int i = 0; i < fillerLocations.size(); i++) {
+        Point p = fillerLocations.get(i);
+        String filler = gapFillers.get(i);
+        String text = filler.isBlank() ? "..." : filler;
+        int pad = 5;
+        int tw = metrics.stringWidth(text);
+        int th = metrics.getHeight();
+        int w = tw + pad * 2;
+        int h = th + 2;
+        int x = p.x - w / 2;
+        int y = p.y - h / 2;
+
+        g2.setColor(new Color(10, 14, 35, 220));
+        g2.fillRoundRect(x, y, w, h, 8, 8);
+        g2.setColor(new Color(120, 210, 255));
+        g2.drawRoundRect(x, y, w, h, 8, 8);
+        g2.setColor(filler.isBlank() ? new Color(180, 190, 220) : new Color(242, 247, 255));
+        g2.drawString(text, x + pad, y + metrics.getAscent() + 1);
+
+        fillerBounds.add(new Rectangle(x, y, w, h));
       }
     }
 
@@ -617,6 +701,28 @@ public class InteractiveDisjointCycles {
         }
       }
       return -1;
+    }
+
+    private int fillerAt(Point p) {
+      for (int i = 0; i < fillerBounds.size(); i++) {
+        if (fillerBounds.get(i).contains(p)) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    private void editFillerAt(int index) {
+      if (index < 0 || index >= gapFillers.size()) {
+        return;
+      }
+      String current = gapFillers.get(index);
+      String label = "Filler between token " + index + " and token " + ((index + 1) % objectCount) + ":";
+      String value = JOptionPane.showInputDialog(frame, label, current);
+      if (value != null) {
+        gapFillers.set(index, value.trim());
+        refreshAll("Updated filler between token " + index + " and token " + ((index + 1) % objectCount) + ".");
+      }
     }
   }
 }
