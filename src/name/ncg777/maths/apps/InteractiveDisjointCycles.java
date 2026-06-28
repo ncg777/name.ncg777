@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.awt.geom.QuadCurve2D;
 import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
@@ -116,7 +117,7 @@ public class InteractiveDisjointCycles {
 
     canvas = new CycleCanvas();
     canvas.setPreferredSize(new Dimension(560, 560));
-    root.add(wrapPanel(canvas, "Visual cycle entry"), BorderLayout.CENTER);
+    root.add(wrapPanel(canvas, "Railway diagram"), BorderLayout.CENTER);
 
     JPanel controls = new JPanel(new GridBagLayout());
     controls.setOpaque(false);
@@ -401,7 +402,7 @@ public class InteractiveDisjointCycles {
   }
 
   private void ensureGapFillerSize() {
-    int target = Math.max(0, objectCount);
+    int target = Math.max(0, objectCount + 1);
     while (gapFillers.size() < target) {
       gapFillers.add("");
     }
@@ -414,10 +415,14 @@ public class InteractiveDisjointCycles {
     if (tokens.isEmpty()) {
       return new ArrayList<>(tokens);
     }
-    ArrayList<String> rendered = new ArrayList<>(tokens.size() * 2);
+    ArrayList<String> rendered = new ArrayList<>(tokens.size() * 2 + 1);
+    String pre = !gapFillers.isEmpty() ? gapFillers.get(0) : "";
+    if (!pre.isBlank()) {
+      rendered.add(pre);
+    }
     for (int i = 0; i < tokens.size(); i++) {
       rendered.add(tokens.get(i));
-      String filler = i < gapFillers.size() ? gapFillers.get(i) : "";
+      String filler = (i + 1) < gapFillers.size() ? gapFillers.get(i + 1) : "";
       if (!filler.isBlank()) {
         rendered.add(filler);
       }
@@ -429,14 +434,17 @@ public class InteractiveDisjointCycles {
     if (tokens.isEmpty()) {
       return new ArrayList<>(tokens);
     }
-    ArrayList<String> rendered = new ArrayList<>(tokens.size() * 2);
+    ArrayList<String> rendered = new ArrayList<>(tokens.size() * 2 + 1);
+    String pre = !gapFillers.isEmpty() ? gapFillers.get(0) : "";
+    if (!pre.isBlank()) {
+      rendered.add(pre);
+    }
     for (int i = 0; i < tokens.size(); i++) {
-      int fillerIndex = (i + tokens.size() - 1) % tokens.size();
-      String filler = fillerIndex < gapFillers.size() ? gapFillers.get(fillerIndex) : "";
+      rendered.add(tokens.get(i));
+      String filler = (i + 1) < gapFillers.size() ? gapFillers.get(i + 1) : "";
       if (!filler.isBlank()) {
         rendered.add(filler);
       }
-      rendered.add(tokens.get(i));
     }
     return rendered;
   }
@@ -548,6 +556,9 @@ public class InteractiveDisjointCycles {
      * 
      */
     private static final long serialVersionUID = 1L;
+    private static final int NODE_RADIUS = 22;
+    private static final int ARC_BASE_OFFSET = 55;
+    private static final int ARC_LANE_HEIGHT = 50;
     private final ArrayList<Point> nodeLocations = new ArrayList<>();
     private final ArrayList<Point> fillerLocations = new ArrayList<>();
     private final ArrayList<Rectangle> fillerBounds = new ArrayList<>();
@@ -574,11 +585,11 @@ public class InteractiveDisjointCycles {
       Graphics2D g2 = (Graphics2D) g.create();
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       updateNodeLocations();
-      drawGlow(g2);
+      drawTrack(g2);
       for (int i = 0; i < cycles.size(); i++) {
-        drawCycle(g2, cycles.get(i), CYCLE_COLORS[i % CYCLE_COLORS.length], true);
+        drawRailwayArcs(g2, cycles.get(i), CYCLE_COLORS[i % CYCLE_COLORS.length], true, i);
       }
-      drawCycle(g2, currentCycle, ACCENT, false);
+      drawRailwayArcs(g2, currentCycle, ACCENT, false, cycles.size());
       drawFillerLabels(g2);
       drawNodes(g2);
       g2.dispose();
@@ -587,32 +598,27 @@ public class InteractiveDisjointCycles {
     private void updateNodeLocations() {
       nodeLocations.clear();
       fillerLocations.clear();
+      if (objectCount == 0) return;
       int w = getWidth();
       int h = getHeight();
-      int cx = w / 2;
-      int cy = h / 2;
-      int radius = Math.max(80, Math.min(w, h) / 2 - 60);
-      double start = -Math.PI / 2.0;
+      int nodeY = h - 90;
+      int fillerY = h - 48;
+      int marginX = 60;
+      int nodeSpacing = objectCount > 1 ? (w - 2 * marginX) / (objectCount - 1) : 0;
       for (int i = 0; i < objectCount; i++) {
-        double angle = start + 2.0 * Math.PI * i / objectCount;
-        nodeLocations.add(new Point(
-            cx + (int) Math.round(Math.cos(angle) * radius),
-            cy + (int) Math.round(Math.sin(angle) * radius)));
+        int x = objectCount == 1 ? w / 2 : marginX + i * nodeSpacing;
+        nodeLocations.add(new Point(x, nodeY));
       }
-      int gapCount = Math.max(0, objectCount);
-      for (int i = 0; i < gapCount; i++) {
-        Point a = nodeLocations.get(i);
-        Point b = nodeLocations.get((i + 1) % objectCount);
-        int mx = (a.x + b.x) / 2;
-        int my = (a.y + b.y) / 2;
-        double vx = mx - cx;
-        double vy = my - cy;
-        double norm = Math.max(1.0, Math.hypot(vx, vy));
-        int offset = 20;
-        fillerLocations.add(new Point(
-            (int) Math.round(mx + vx * offset / norm),
-            (int) Math.round(my + vy * offset / norm)));
+      // n+1 filler positions: before first node, between each pair, after last node
+      int edgeOffset = objectCount > 1 ? nodeSpacing / 2 : 50;
+      fillerLocations.add(new Point(
+          Math.max(10, nodeLocations.get(0).x - edgeOffset), fillerY));
+      for (int i = 1; i < objectCount; i++) {
+        int mx = (nodeLocations.get(i - 1).x + nodeLocations.get(i).x) / 2;
+        fillerLocations.add(new Point(mx, fillerY));
       }
+      fillerLocations.add(new Point(
+          Math.min(w - 10, nodeLocations.get(objectCount - 1).x + edgeOffset), fillerY));
     }
 
     private void drawFillerLabels(Graphics2D g2) {
@@ -644,50 +650,68 @@ public class InteractiveDisjointCycles {
       }
     }
 
-    private void drawGlow(Graphics2D g2) {
-      int size = Math.min(getWidth(), getHeight()) - 70;
-      int x = (getWidth() - size) / 2;
-      int y = (getHeight() - size) / 2;
+    private void drawTrack(Graphics2D g2) {
+      if (nodeLocations.isEmpty()) return;
+      int leftX = nodeLocations.get(0).x;
+      int rightX = nodeLocations.get(nodeLocations.size() - 1).x;
+      int y = nodeLocations.get(0).y;
+      int margin = 40;
       g2.setColor(new Color(45, 60, 105));
       g2.setStroke(new BasicStroke(3f));
-      g2.drawOval(x, y, size, size);
+      g2.drawLine(leftX - margin, y, rightX + margin, y);
       g2.setColor(new Color(120, 210, 255, 40));
       g2.setStroke(new BasicStroke(10f));
-      g2.drawOval(x + 4, y + 4, size - 8, size - 8);
+      g2.drawLine(leftX - margin, y, rightX + margin, y);
     }
 
-    private void drawCycle(Graphics2D g2, List<Integer> cycle, Color color, boolean closed) {
-      if (cycle.size() < 2) {
-        return;
-      }
+    private void drawRailwayArcs(Graphics2D g2, List<Integer> cycle, Color color,
+        boolean closed, int laneIndex) {
+      if (cycle.size() < 2 || nodeLocations.isEmpty()) return;
       g2.setColor(color);
       g2.setStroke(new BasicStroke(closed ? 3.5f : 2.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+      int nodeY = nodeLocations.get(0).y;
+      int arcPeakY = Math.max(20, nodeY - ARC_BASE_OFFSET - laneIndex * ARC_LANE_HEIGHT);
       int limit = closed ? cycle.size() : cycle.size() - 1;
       for (int i = 0; i < limit; i++) {
-        Point a = nodeLocations.get(cycle.get(i));
-        Point b = nodeLocations.get(cycle.get((i + 1) % cycle.size()));
-        drawArrow(g2, a, b, color);
+        int fromNode = cycle.get(i);
+        int toNode = cycle.get((i + 1) % cycle.size());
+        drawArc(g2, fromNode, toNode, arcPeakY, color);
       }
     }
 
-    private void drawArrow(Graphics2D g2, Point a, Point b, Color color) {
-      double dx = b.x - a.x;
-      double dy = b.y - a.y;
-      double len = Math.max(1.0, Math.hypot(dx, dy));
-      int nodeRadius = 24;
-      int x1 = (int) Math.round(a.x + dx * nodeRadius / len);
-      int y1 = (int) Math.round(a.y + dy * nodeRadius / len);
-      int x2 = (int) Math.round(b.x - dx * nodeRadius / len);
-      int y2 = (int) Math.round(b.y - dy * nodeRadius / len);
-      g2.drawLine(x1, y1, x2, y2);
+    private void drawArc(Graphics2D g2, int fromNode, int toNode, int arcPeakY, Color color) {
+      if (fromNode >= nodeLocations.size() || toNode >= nodeLocations.size()) return;
+      Point from = nodeLocations.get(fromNode);
+      Point to = nodeLocations.get(toNode);
+      int x1 = from.x, y1 = from.y;
+      int x2 = to.x, y2 = to.y;
+      int midY = (y1 + y2) / 2;
+      // Set control point so the arc's midpoint actually reaches arcPeakY
+      int ctrlX = (x1 + x2) / 2;
+      int ctrlY = 2 * arcPeakY - midY;
+      g2.draw(new QuadCurve2D.Float(x1, y1, ctrlX, ctrlY, x2, y2));
+      // Tangent at end of quadratic bezier: direction = (P2 - P1)
+      double tx = x2 - ctrlX;
+      double ty = y2 - ctrlY;
+      double tlen = Math.max(1.0, Math.hypot(tx, ty));
+      tx /= tlen;
+      ty /= tlen;
+      // Place arrowhead tip at the node edge
+      int tipX = (int) (x2 - tx * NODE_RADIUS);
+      int tipY = (int) (y2 - ty * NODE_RADIUS);
+      drawArrowhead(g2, tipX, tipY, tx, ty, color);
+    }
 
-      double angle = Math.atan2(y2 - y1, x2 - x1);
+    private void drawArrowhead(Graphics2D g2, int tipX, int tipY, double tx, double ty,
+        Color color) {
       int arrow = 11;
-      int ax1 = (int) Math.round(x2 - arrow * Math.cos(angle - Math.PI / 6));
-      int ay1 = (int) Math.round(y2 - arrow * Math.sin(angle - Math.PI / 6));
-      int ax2 = (int) Math.round(x2 - arrow * Math.cos(angle + Math.PI / 6));
-      int ay2 = (int) Math.round(y2 - arrow * Math.sin(angle + Math.PI / 6));
-      g2.fillPolygon(new int[] {x2, ax1, ax2}, new int[] {y2, ay1, ay2}, 3);
+      double angle = Math.atan2(ty, tx);
+      int ax1 = (int) (tipX - arrow * Math.cos(angle - Math.PI / 6));
+      int ay1 = (int) (tipY - arrow * Math.sin(angle - Math.PI / 6));
+      int ax2 = (int) (tipX - arrow * Math.cos(angle + Math.PI / 6));
+      int ay2 = (int) (tipY - arrow * Math.sin(angle + Math.PI / 6));
+      g2.setColor(color);
+      g2.fillPolygon(new int[] {tipX, ax1, ax2}, new int[] {tipY, ay1, ay2}, 3);
     }
 
     private void drawNodes(Graphics2D g2) {
@@ -733,11 +757,18 @@ public class InteractiveDisjointCycles {
         return;
       }
       String current = gapFillers.get(index);
-      String label = "Filler between token " + index + " and token " + ((index + 1) % objectCount) + ":";
+      String label;
+      if (index == 0) {
+        label = "Filler before token 0:";
+      } else if (index == objectCount) {
+        label = "Filler after token " + (objectCount - 1) + ":";
+      } else {
+        label = "Filler between token " + (index - 1) + " and token " + index + ":";
+      }
       String value = JOptionPane.showInputDialog(frame, label, current);
       if (value != null) {
         gapFillers.set(index, value.trim());
-        refreshAll("Updated filler between token " + index + " and token " + ((index + 1) % objectCount) + ".");
+        refreshAll("Updated filler " + index + ".");
       }
     }
   }
