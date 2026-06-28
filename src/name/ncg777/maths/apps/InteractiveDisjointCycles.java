@@ -559,6 +559,8 @@ public class InteractiveDisjointCycles {
     private static final int NODE_RADIUS = 22;
     private static final int ARC_BASE_OFFSET = 55;
     private static final int ARC_LANE_HEIGHT = 50;
+    private static final int TRACK_MARGIN = 40;
+    private static final int MIN_FILLER_MARGIN = 10;
     private final ArrayList<Point> nodeLocations = new ArrayList<>();
     private final ArrayList<Point> fillerLocations = new ArrayList<>();
     private final ArrayList<Rectangle> fillerBounds = new ArrayList<>();
@@ -612,13 +614,13 @@ public class InteractiveDisjointCycles {
       // n+1 filler positions: before first node, between each pair, after last node
       int edgeOffset = objectCount > 1 ? nodeSpacing / 2 : 50;
       fillerLocations.add(new Point(
-          Math.max(10, nodeLocations.get(0).x - edgeOffset), fillerY));
+          Math.max(MIN_FILLER_MARGIN, nodeLocations.get(0).x - edgeOffset), fillerY));
       for (int i = 1; i < objectCount; i++) {
         int mx = (nodeLocations.get(i - 1).x + nodeLocations.get(i).x) / 2;
         fillerLocations.add(new Point(mx, fillerY));
       }
       fillerLocations.add(new Point(
-          Math.min(w - 10, nodeLocations.get(objectCount - 1).x + edgeOffset), fillerY));
+          Math.min(w - MIN_FILLER_MARGIN, nodeLocations.get(objectCount - 1).x + edgeOffset), fillerY));
     }
 
     private void drawFillerLabels(Graphics2D g2) {
@@ -655,13 +657,12 @@ public class InteractiveDisjointCycles {
       int leftX = nodeLocations.get(0).x;
       int rightX = nodeLocations.get(nodeLocations.size() - 1).x;
       int y = nodeLocations.get(0).y;
-      int margin = 40;
       g2.setColor(new Color(45, 60, 105));
       g2.setStroke(new BasicStroke(3f));
-      g2.drawLine(leftX - margin, y, rightX + margin, y);
+      g2.drawLine(leftX - TRACK_MARGIN, y, rightX + TRACK_MARGIN, y);
       g2.setColor(new Color(120, 210, 255, 40));
       g2.setStroke(new BasicStroke(10f));
-      g2.drawLine(leftX - margin, y, rightX + margin, y);
+      g2.drawLine(leftX - TRACK_MARGIN, y, rightX + TRACK_MARGIN, y);
     }
 
     private void drawRailwayArcs(Graphics2D g2, List<Integer> cycle, Color color,
@@ -686,7 +687,8 @@ public class InteractiveDisjointCycles {
       int x1 = from.x, y1 = from.y;
       int x2 = to.x, y2 = to.y;
       int midY = (y1 + y2) / 2;
-      // Set control point so the arc's midpoint actually reaches arcPeakY
+      // Control point is set so the bezier midpoint B(0.5) = (P0+2P1+P2)/4 reaches arcPeakY:
+      // solving (y1+y2)/2 * 0.5 + ctrlY * 0.5 = arcPeakY gives ctrlY = 2*arcPeakY - midY
       int ctrlX = (x1 + x2) / 2;
       int ctrlY = 2 * arcPeakY - midY;
       g2.draw(new QuadCurve2D.Float(x1, y1, ctrlX, ctrlY, x2, y2));
