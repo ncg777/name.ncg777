@@ -91,14 +91,7 @@ public class CollectionUtils {
   
   public static int getPermutationNumber(List<Integer> perm) {
     int k = perm.size();
-
-    int offset = 0;
-    int fact = 1;
-
-    for (int i = 1; i < k; i++) {
-      fact *= i;
-      offset += fact;
-    }
+    int offset = offset(k);
 
     List<Integer> elements = new ArrayList<>();
     for (int i = 0; i < k; i++) {
@@ -111,10 +104,7 @@ public class CollectionUtils {
       int idx = elements.indexOf(perm.get(i));
       int remaining = k - i - 1;
 
-      int f = 1;
-      for (int j = 1; j <= remaining; j++) {
-        f *= j;
-      }
+      int f = factorial(remaining);
 
       rank += idx * f;
       elements.remove(idx);
@@ -146,7 +136,6 @@ public class CollectionUtils {
     }
 
     int k = 1;
-
     while (offset(k + 1) <= n) {
       k++;
     }
