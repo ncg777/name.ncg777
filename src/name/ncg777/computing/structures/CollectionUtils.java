@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -90,74 +89,91 @@ public class CollectionUtils {
     return o;
   }
   
-  /**
-   * Returns the nth permutation (lexicographic order) of [0, 1, 2, ..., k]
-   * where k is minimal so that k! > n and n >= 0.
-   * For n < 0, returns the reverse of the corresponding permutation for -n.
-   * Throws IllegalArgumentException if n is too large for the permutation size.
-   */
-  public static List<Integer> getPermutation(int n) {
-      if (n == 0) return Arrays.asList(0);
-
-      int absN = Math.abs(n);
-
-      // Find minimal k such that k! > absN
-      int k = 1;
-      int fact = 1;
-      while (fact <= absN) {
-          k++;
-          fact *= k;
-      }
-      k--; // overshot
-
-      int totalPerms = fact / (k + 1) * (k + 1); // (k+1)!
-      if (absN >= totalPerms) {
-          throw new IllegalArgumentException("n is too large to generate a permutation of size " + (k + 1));
-      }
-
-      // Build Lehmer code
-      List<Integer> lehmerCode = new ArrayList<>();
-      int remaining = absN;
-      fact /= (k + 1); // Start with k! for k+1 elements
-      for (int i = k; i >= 1; i--) {
-          lehmerCode.add(remaining / fact);
-          remaining %= fact;
-          if (i > 1) fact /= i;
-      }
-
-      // Build permutation from Lehmer code
-      List<Integer> elements = new ArrayList<>();
-      for (int i = 0; i <= k; i++) elements.add(i);
-
-      List<Integer> permutation = new ArrayList<>();
-      for (int code : lehmerCode) {
-          permutation.add(elements.remove(code));
-      }
-      permutation.add(elements.get(0)); // add last remaining element
-
-      // For negative n, reverse the permutation
-      if (n < 0) Collections.reverse(permutation);
-
-      return permutation;
-  }
-  
   public static int getPermutationNumber(List<Integer> perm) {
-    int n = perm.size();
-    List<Integer> elements = new ArrayList<>();
-    for (int i = 0; i < n; i++) elements.add(i);
+    int k = perm.size();
 
-    int number = 0;
+    int offset = 0;
     int fact = 1;
-    for (int i = 2; i <= n; i++) fact *= i; // n!
-    fact /= n; // (n-1)!
 
-    for (int i = 0; i < n - 1; i++) {
-        int idx = elements.indexOf(perm.get(i));
-        number += idx * fact;
-        elements.remove(idx);
-        if (i < n - 2) fact /= (n - 1 - i);
+    for (int i = 1; i < k; i++) {
+      fact *= i;
+      offset += fact;
     }
-    return number;
+
+    List<Integer> elements = new ArrayList<>();
+    for (int i = 0; i < k; i++) {
+      elements.add(i);
+    }
+
+    int rank = 0;
+
+    for (int i = 0; i < k; i++) {
+      int idx = elements.indexOf(perm.get(i));
+      int remaining = k - i - 1;
+
+      int f = 1;
+      for (int j = 1; j <= remaining; j++) {
+        f *= j;
+      }
+
+      rank += idx * f;
+      elements.remove(idx);
+    }
+
+    return offset + rank;
+  }
+
+  static int factorial(int n) {
+    int f = 1;
+    for (int i = 2; i <= n; i++) {
+      f *= i;
+    }
+    return f;
+  }
+
+  static int offset(int k) {
+    int sum = 0;
+    for (int i = 1; i < k; i++) {
+      sum += factorial(i);
+    }
+    return sum;
+  }
+
+  public static List<Integer> getPermutation(int n) {
+
+    if (n == 0) {
+      return List.of(0);
+    }
+
+    int k = 1;
+
+    while (offset(k + 1) <= n) {
+      k++;
+    }
+
+    int rank = n - offset(k);
+
+    List<Integer> elements = new ArrayList<>();
+    for (int i = 0; i < k; i++) {
+      elements.add(i);
+    }
+
+    List<Integer> perm = new ArrayList<>();
+
+    int fact = factorial(k - 1);
+
+    for (int i = k; i >= 1; i--) {
+      int idx = rank / fact;
+      rank %= fact;
+
+      perm.add(elements.remove(idx));
+
+      if (i > 1) {
+        fact /= (i - 1);
+      }
+    }
+
+    return perm;
   }
   public static <
   A extends Comparable<? super A>,
