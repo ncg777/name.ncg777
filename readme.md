@@ -177,3 +177,9 @@ The int[] type is printed or parsed as space-separated lists of integers (ex: "1
 
 ---
 This application was compiled with Microsoft's build of OpenJDK 21.
+
+## Market forecast
+
+A Swing app for free-source price charts and two-bar probabilistic forecasts, with symbol/bar-size selection,
+background training, automatic refresh, CSV import and a held-out independent baseline comparison.
+Launch **Market forecast** from the main menu; see [the guide](docs/market-forecast.md).
