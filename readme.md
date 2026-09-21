@@ -183,3 +183,9 @@ This application was compiled with Microsoft's build of OpenJDK 21.
 A Swing app for free-source price charts and two-bar probabilistic forecasts, with symbol/bar-size selection,
 background training, automatic refresh, CSV import and a held-out independent baseline comparison.
 Launch **Market forecast** from the main menu; see [the guide](docs/market-forecast.md).
+
+## Virtual ternary machine
+
+`TritWord64` represents exact 64-trit balanced integers. `TernaryMachine` executes
+three-symbol transition programs on a sparse tape with an explicit step budget.
+Run a program from a text file or use the Java API; see [the machine guide](docs/ternary-machine.md).
