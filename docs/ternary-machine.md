@@ -19,3 +19,7 @@ java -cp target/classes name.ncg777.computing.apps.TernaryMachineApp examples/te
 This prints `halted=true` and a word ending in `TTT`. A nonhalting program stops when the step budget is exhausted and reports `halted=false`.
 
 The demonstration rewrites a run of `+1` trits into `-1` trits and stops at the first zero. Programs can branch on all three possible trits and can extend their tape in either direction. This is the familiar three-symbol Turing-machine structure; with a suitable finite rule table and a tape that can grow without a fixed bound, it can express general computation. Actual JVM memory and time are finite, and each `run` call is explicitly bounded. A fixed 64-trit word alone is a finite-state device, however large its state space. The existing `TernarySpinModel` is an equilibrium probability model with symmetric interactions; it does not execute transition rules and its 64-node training cap is unrelated to tape length. A future integration could use it to *propose* or *score* configurations, while the machine retains explicit deterministic semantics.
+# Expression workbench
+
+See [Ternary expressions](ternary-expressions.md) for a Swing truth-table explorer
+and bounded expression-to-tape compiler using all existing Trit operations.
