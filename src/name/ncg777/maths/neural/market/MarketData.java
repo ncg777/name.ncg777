@@ -56,7 +56,7 @@ public final class MarketData {
       .followRedirects(HttpClient.Redirect.NORMAL).build();
   private static final ObjectMapper JSON = new ObjectMapper();
 
-  private static String get(URI uri) throws IOException, InterruptedException {
+  static String get(URI uri) throws IOException, InterruptedException {
     var request = HttpRequest.newBuilder(uri).timeout(Duration.ofSeconds(25))
         .header("User-Agent", "Mozilla/5.0 name.ncg777 MarketForecast/1.0")
         .header("Accept", "application/json,text/csv,text/plain").GET().build();
