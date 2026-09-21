@@ -1,0 +1,5 @@
+# state read write move next
+# Rewrite a run of 1s as Ts, then halt on the first 0 or T.
+0 T T 0 HALT
+0 0 0 0 HALT
+0 1 T 1 0
