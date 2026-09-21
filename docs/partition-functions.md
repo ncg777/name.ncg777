@@ -75,8 +75,9 @@ Positive J favors agreement, negative J opposition, positive delta favors
 neutrality, and h favors an orientation. Neutral nodes contribute no pairwise
 interaction. J must be square, exactly symmetric and zero on the diagonal.
 Finite parameters are copied; a computed nonfinite energy is rejected.
-This is a spin-one equilibrium model, not a general asymmetric recurrent network
-or a trained neural-network framework.
+This is a spin-one equilibrium model, not a general asymmetric recurrent network.
+The [minimal training framework](ternary-training.md) learns its parameters from
+complete ternary examples using exact or sampled model statistics.
 
 ```java
 var model = new TernarySpinModel(
@@ -142,8 +143,9 @@ d log Z / d beta   = -E[E(s)]
 Consequently, the average data log-likelihood gradient for one coupling is
 `beta * (dataAgreement - modelAgreement)`. The demo iteratively fits a two-node
 coupling to target agreement 0.5 at beta=1. Analytic and finite-difference tests
-check the identities. This is a small exact learning example; larger models
-need estimated expectations and convergence checks. The general energy-based
+check the identities. For fitting all parameters from data, see the
+[training framework](ternary-training.md), including resource limits, sampled
+expectations and held-out validation. The general energy-based
 learning relation is also described in [Hinton's practical guide, section 2](https://www.cs.toronto.edu/~hinton/absps/guideTR.pdf).
 
 ## Active subsets and lattice transforms

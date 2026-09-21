@@ -12,6 +12,10 @@ models with exact statistics and Gibbs sampling, and Boolean-lattice zeta/Möbiu
 See [the guide and runnable examples](docs/partition-functions.md) for constrained pattern
 generation, trajectory weighting, thermal activations and learning a coupling from observations.
 
+A [minimal ternary network training framework](docs/ternary-training.md) learns connections,
+biases and neutrality from example patterns, with exact or sampled training, work limits,
+validation-based early stopping and reusable JSON checkpoints.
+
 # Rhythm Network CLI (Interactive)
 `name.ncg777.maths.numbers.fixed.rhythm.apps.RhythmNetworkApp` now supports an interactive session mode for keeping multiple networks loaded in memory and reusing them for fast walk generation.
 
