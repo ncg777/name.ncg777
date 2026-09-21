@@ -1,0 +1,7 @@
+; Functions return one trit. Inputs are supplied separately when running.
+(inputs a b)
+(def agreement (x y)
+  (CONS x y))
+
+(let answer (agreement a b)
+  (case answer T 0 1))

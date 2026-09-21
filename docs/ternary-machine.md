@@ -23,3 +23,9 @@ The demonstration rewrites a run of `+1` trits into `-1` trits and stops at the 
 
 See [Ternary expressions](ternary-expressions.md) for a Swing truth-table explorer
 and bounded expression-to-tape compiler using all existing Trit operations.
+
+## Functional language
+
+The [functional language guide](ternary-functional.md) introduces named functions,
+immutable local values, and three-way branches compiled into tape routines.
+Open **Ternary functional language** from the main menu to edit and run programs.
