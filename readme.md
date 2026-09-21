@@ -200,3 +200,7 @@ controller executes arithmetic and call frames on the ternary tape; see
 Open **Ternary associative memory** to compare learned spin-model recall with
 nearest stored patterns. Hide positions with `?`, allow noisy observations, and
 measure recovery of damaged memories; see [the guide](docs/ternary-associative-memory.md).
+
+Open **Ternary image laboratory** to paint black/white/transparent 8×8 memories,
+reconstruct hidden pixels, and compare a small convolutional boundary detector
+with an explicit rule on synthetic shapes; see [the image guide](docs/ternary-image-laboratory.md).
