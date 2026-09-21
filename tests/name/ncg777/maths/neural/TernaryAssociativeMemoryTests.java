@@ -60,7 +60,7 @@ public class TernaryAssociativeMemoryTests {
   }
   @Test public void validatesFormatsAndLimits() {
     assertArrayEquals(new int[]{-1, 0, 1}, TernaryAssociativeMemory.parsePatterns("T 0 1")[0]);
-    for (String input : List.of("", "1111111", "T?1", "12", "T1\n0"))
+    for (String input : List.of("", "1".repeat(65), "T?1", "12", "T1\n0"))
       assertThrows(IllegalArgumentException.class, () -> TernaryAssociativeMemory.parsePatterns(input));
     var memory = uniform("11");
     assertThrows(IllegalArgumentException.class, () -> memory.recall(TernaryAssociativeMemory.parseCue("?"), 0));
@@ -72,5 +72,50 @@ public class TernaryAssociativeMemoryTests {
       Thread.currentThread().interrupt();
       assertThrows(CancellationException.class, () -> memory.benchmark(10, 1, 0, 1));
     } finally { Thread.interrupted(); }
+  }
+
+  @Test public void sixtyFourTritRecallClampsEvidenceAndMatchesKnownMarginal() {
+    int n = 64; double[] fields = new double[n], penalties = new double[n];
+    fields[63] = 0.7; penalties[63] = 0.2;
+    var model = new TernarySpinModel(new double[n][n], penalties, fields);
+    var memory = TernaryAssociativeMemory.fromModel(new int[][]{new int[n]}, model, 1.3);
+    var settings = new TernaryAssociativeMemory.Sampling(2, 20, 2048, 1, 23);
+    var cue = TernaryAssociativeMemory.parseCue("0".repeat(63) + "?");
+    var result = memory.recall(cue, 0, settings);
+    assertTrue(result.approximate()); assertEquals(4096, result.samples());
+    assertEquals(3, result.spin().size());
+    var expected = model.conditionalDistribution(new int[n], 63, 1.3);
+    for (var candidate : result.spin()) {
+      assertTrue(candidate.pattern().startsWith("0".repeat(63)));
+      int value = "T01".indexOf(candidate.pattern().charAt(63));
+      assertEquals(expected.probability(value), candidate.weight(), 0.03);
+    }
+    assertEquals(result, memory.recall(cue, 0, settings));
+    var complete = memory.recall(TernaryAssociativeMemory.parseCue("0".repeat(64)), 0);
+    assertEquals(1, complete.spin().size()); assertEquals(1, complete.spin().get(0).weight(), 0);
+  }
+
+  @Test public void sampledNoisyEvidenceAndNearestMatchingScalePastSix() {
+    var memory = uniform("1".repeat(12) + "\n" + "0".repeat(12));
+    var cue = TernaryAssociativeMemory.parseCue("1" + "?".repeat(11));
+    var settings = new TernaryAssociativeMemory.Sampling(2, 20, 2048, 1, 42);
+    var result = memory.recall(cue, 0.2, settings);
+    double probability = result.spin().stream().filter(c -> c.pattern().charAt(0) == '1').mapToDouble(c -> c.weight()).sum();
+    assertEquals(0.8, probability, 0.03);
+    assertEquals("1".repeat(12), result.nearest().get(0).pattern());
+    assertEquals(1, result.spin().stream().mapToDouble(c -> c.weight()).sum(), 1e-12);
+    assertTrue(result.spin().stream().anyMatch(c -> !c.stored()));
+  }
+
+  @Test public void largeTrainingParsingAndWorkBudgets() {
+    var rows = TernaryAssociativeMemory.parsePatterns("1 ".repeat(64) + "\n" + "T ".repeat(64));
+    var memory = TernaryAssociativeMemory.train(rows, 5);
+    assertEquals(64, memory.width()); assertTrue(memory.approximate()); assertEquals(20, memory.defaultTrials());
+    var cue = TernaryAssociativeMemory.parseCue("1".repeat(64));
+    assertEquals("1".repeat(64), memory.recall(cue, 0).spin().get(0).pattern());
+    assertThrows(IllegalArgumentException.class, () -> memory.recall(cue, 0,
+        new TernaryAssociativeMemory.Sampling(16, 10000, 2048, 1000, 1)));
+    assertThrows(IllegalArgumentException.class, () -> memory.benchmark(500, 1, 0, 777));
+    assertThrows(IllegalArgumentException.class, () -> new TernaryAssociativeMemory.Sampling(0, 1, 1, 1, 1));
   }
 }
