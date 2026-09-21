@@ -6,6 +6,9 @@
 	<artifactId>name.ncg777</artifactId>
 	<version>20260502T1743Z</version>
 	<url>https://github.com/ncg777/name.ncg777.git</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<build>
 		<resources>
 			<resource>
