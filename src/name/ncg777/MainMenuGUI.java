@@ -47,6 +47,7 @@ public class MainMenuGUI {
     addAppButton(panel, "Market forecast", name.ncg777.maths.neural.apps.MarketForecastApp.class);
     addAppButton(panel, "Ternary expressions", name.ncg777.computing.apps.TernaryExpressionApp.class);
     addAppButton(panel, "Ternary associative memory", name.ncg777.maths.neural.apps.TernaryMemoryApp.class);
+    addAppButton(panel, "Ternary image laboratory", name.ncg777.maths.neural.apps.TernaryImageMemoryApp.class);
     addAppButton(panel, "Ternary functional language", name.ncg777.computing.apps.TernaryFunctionalApp.class);
     addAppButton(panel, "maths.apps.LatticePath",name.ncg777.maths.apps.LatticePath.class);
     addAppButton(panel, "maths.apps.MixedRadix",name.ncg777.maths.apps.MixedRadix.class);
