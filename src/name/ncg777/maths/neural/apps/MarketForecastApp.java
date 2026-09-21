@@ -37,6 +37,7 @@ public class MarketForecastApp {
   };
   private final Timer timer;
   private SwingWorker<View, View> worker;
+  private MarketScreenerDialog screenerDialog;
   private View current;
   private int lastHistory, lastEpochs;
   private boolean imported, changing;
@@ -66,6 +67,16 @@ public class MarketForecastApp {
     JPanel second = new JPanel(new FlowLayout(FlowLayout.LEFT));
     second.add(new JLabel("Refresh")); second.add(refresh); second.add(new JLabel("Recent completed bars")); second.add(history);
     second.add(new JLabel("Training passes")); second.add(epochs);
+    JButton screener = new JButton("Symbols & screener…"); second.add(screener);
+    screener.addActionListener(e -> {
+      refresh.setSelectedIndex(0);
+      if (screenerDialog == null || !screenerDialog.isDisplayable()) screenerDialog = new MarketScreenerDialog(frame, ticker -> {
+        if (worker != null) { status.setText("Wait for the current chart refresh, then open the selected symbol."); return; }
+        provider.setSelectedIndex(0); interval.setSelectedItem(Interval.DAY);
+        symbol.setSelectedItem(ticker); start(null);
+      });
+      screenerDialog.setVisible(true); screenerDialog.toFront();
+    });
     second.add(new JLabel("Chart bars"));
     JSlider chartBars = new JSlider(30, 500, 160); chartBars.setPreferredSize(new Dimension(140, 24));
     chartBars.addChangeListener(e -> { prices.visibleBars = chartBars.getValue(); prices.repaint(); }); second.add(chartBars);
