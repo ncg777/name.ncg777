@@ -34,15 +34,18 @@ public final class TernaryImageMemoryApp {
   private TernaryEdgeNetwork network;
   private Raster edgeSource = TernaryContours.generate(32, 777);
   private SwingWorker<?, ?> worker;
+  private final TernarySegmentationPanel segmentation = new TernarySegmentationPanel();
   private long seed = 777;
 
   public TernaryImageMemoryApp() {
     root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     JTabbedPane tabs = new JTabbedPane(); tabs.addTab("Image memory", memoryPanel()); tabs.addTab("Local boundaries", edgePanel());
+    tabs.addTab("Contours & regions", segmentation);
     root.add(tabs, BorderLayout.CENTER);
     status.setEditable(false); status.setLineWrap(true); status.setWrapStyleWord(true);
     JPanel footer = new JPanel(new BorderLayout(8, 0)); footer.add(new JScrollPane(status), BorderLayout.CENTER);
     footer.add(cancel, BorderLayout.EAST); root.add(footer, BorderLayout.SOUTH);
+    tabs.addChangeListener(e -> footer.setVisible(tabs.getSelectedComponent() != segmentation));
     cancel.setEnabled(false); cancel.addActionListener(e -> cancel());
     loadExamples(); updateEdges();
     status.setText("Paint an image, store it, and train. Hide pixels with ? and recall. Checkerboard is known transparency (0), not missing data.");
@@ -50,7 +53,7 @@ public final class TernaryImageMemoryApp {
   }
 
   public JComponent component() { return root; }
-  public void cancel() { if (worker != null) worker.cancel(true); }
+  public void cancel() { if (worker != null) worker.cancel(true); segmentation.cancel(); }
 
   public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {

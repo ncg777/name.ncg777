@@ -4,6 +4,10 @@ Launch **Ternary image laboratory** from the main menu, or run
 `name.ncg777.maths.neural.apps.TernaryImageMemoryApp`.
 No additional dependencies, downloads, GPU, or external datasets are required.
 
+The **Contours & regions** tab adds overlapping learned 8×8 windows, contour
+restoration, hole-aware inside/outside labeling, and held-out comparisons on larger
+synthetic images. See [the contour segmentation guide](ternary-contour-segmentation.md).
+
 ## Image memory
 
 Each 8×8 image is a row-major vector of 64 trits:
