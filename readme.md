@@ -207,3 +207,6 @@ with an explicit rule on synthetic shapes; see [the image guide](docs/ternary-im
 Its **Contours & regions** tab slides learned 8×8 patches over larger images and
 compares contour restoration and inside/outside maps, including holes and damaged
 outlines; see [the segmentation guide](docs/ternary-contour-segmentation.md).
+The **Ternary embeddings** tab learns discrete contour codes, reconstructs images
+from editable trits, and compares code sizes against held-out baselines; see
+[the embedding guide](docs/ternary-embeddings.md).
