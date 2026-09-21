@@ -191,5 +191,6 @@ three-symbol transition programs on a sparse tape with an explicit step budget.
 Run a program from a text file or use the Java API; see [the machine guide](docs/ternary-machine.md).
 
 Open **Ternary functional language** from the main menu to write programs with
-named functions, immutable local values, and three-way branches. Programs compile
-into actual tape transitions; see [the language guide](docs/ternary-functional.md).
+integers, recursive functions, lexical closures, and three-way branches. A microcoded
+controller executes arithmetic and call frames on the ternary tape; see
+[the language guide](docs/ternary-functional-runtime.md).

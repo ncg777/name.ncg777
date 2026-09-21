@@ -1,9 +1,9 @@
-# A small functional language for the ternary machine
+# Legacy static functional compiler
 
-Open **Ternary functional language** in the main menu. The editor accepts a
-program and input assignments such as `a=T b=1`. Choose **Compile and run**;
-the result and execution statistics appear below. Compilation and execution run
-in a background worker, with a selectable execution budget.
+The Swing editor now uses the [recursive functional runtime](ternary-functional-runtime.md),
+which adds integers, recursion, and closures. This page documents the original
+`TernaryFunctional.compile` Java API, retained for compatibility and small static
+transition tables. The example syntax below also works in the new runtime.
 
 This is a pure, first-order language: expressions return a single trit, local
 bindings are immutable, and named functions compose without side effects.
@@ -90,12 +90,11 @@ limits inherent in ternary computation. Inlining repeated function calls can
 increase code size quickly; compilation stops with an error before exceeding its
 budget. Recursion would require a separate runtime stack design.
 
-The editor permits up to ten million execution steps. The Java API and CLI accept
-an explicit nonnegative long step budget. The current compiler favors simple,
+The legacy Java API accepts an explicit nonnegative long step budget. This compiler favors simple,
 verifiable routines and returns the head to cell zero between expressions, so
 programs may take many more transitions than a handwritten machine program.
 
-Run the included example without opening Swing:
+Run the included example using the new runtime without opening Swing:
 
 ```sh
 java -cp target/classes name.ncg777.computing.apps.TernaryFunctionalApp examples/ternary-machine/agreement.tfun 100000 "a=1 b=1"

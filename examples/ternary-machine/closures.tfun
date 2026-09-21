@@ -1,0 +1,5 @@
+; The returned function remembers x after make-adder returns.
+(def make_adder (x)
+  (lambda (y) (+ x y)))
+(let add_seven (make_adder 7)
+  (add_seven 35))
