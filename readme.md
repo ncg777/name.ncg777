@@ -204,3 +204,6 @@ measure recovery of damaged memories; see [the guide](docs/ternary-associative-m
 Open **Ternary image laboratory** to paint black/white/transparent 8×8 memories,
 reconstruct hidden pixels, and compare a small convolutional boundary detector
 with an explicit rule on synthetic shapes; see [the image guide](docs/ternary-image-laboratory.md).
+Its **Contours & regions** tab slides learned 8×8 patches over larger images and
+compares contour restoration and inside/outside maps, including holes and damaged
+outlines; see [the segmentation guide](docs/ternary-contour-segmentation.md).
