@@ -26,6 +26,6 @@ and bounded expression-to-tape compiler using all existing Trit operations.
 
 ## Functional language
 
-The [functional language guide](ternary-functional.md) introduces named functions,
-immutable local values, and three-way branches compiled into tape routines.
+The [functional language guide](ternary-functional-runtime.md) introduces integers,
+recursion, closures, immutable local values, and three-way branches on the tape runtime.
 Open **Ternary functional language** from the main menu to edit and run programs.

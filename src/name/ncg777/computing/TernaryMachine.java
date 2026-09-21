@@ -79,14 +79,20 @@ public final class TernaryMachine {
     }
   }
 
-  private final Program program;
+  /** A compact microcoded controller may include bounded control registers. Each
+   * execution must own its controller; program data and call frames live on tape. */
+  @FunctionalInterface
+  public interface Controller { Rule rule(int state, int read); }
+
+  private final Controller controller;
   private final Map<BigInteger, Integer> tape = new HashMap<>();
   private BigInteger head = BigInteger.ZERO;
   private int state;
   private long steps;
   private boolean halted;
 
-  public TernaryMachine(Program program) { this.program = Objects.requireNonNull(program); }
+  public TernaryMachine(Program program) { this(Objects.requireNonNull(program)::rule); }
+  public TernaryMachine(Controller controller) { this.controller = Objects.requireNonNull(controller); }
 
   /** Loads a word at cells 0..63 before execution. */
   public TernaryMachine(Program program, TritWord64 input) {
@@ -117,7 +123,7 @@ public final class TernaryMachine {
   public boolean step() {
     if (halted) return false;
     if (steps == Long.MAX_VALUE) throw new IllegalStateException("Step counter overflow");
-    Rule rule = program.rule(state, read(head));
+    Rule rule = controller.rule(state, read(head));
     write(head, rule.write());
     head = head.add(BigInteger.valueOf(rule.move()));
     state = rule.nextState();

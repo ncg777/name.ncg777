@@ -1,0 +1,8 @@
+; Recursion over arbitrary-precision integers. For negative n this example returns 0.
+(inputs n)
+(def factorial (x)
+  (case (compare x 0)
+    0
+    1
+    (* x (factorial (- x 1)))))
+(factorial n)
