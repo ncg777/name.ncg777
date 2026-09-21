@@ -53,6 +53,16 @@ public final class TernarySpinModel {
 
   public int size() { return fields.length; }
 
+  /** Defensive parameter copies for fitting or persisting a model. */
+  public double[][] couplings() {
+    double[][] copy = new double[size()][];
+    for (int i = 0; i < size(); i++) copy[i] = couplings[i].clone();
+    return copy;
+  }
+
+  public double[] penalties() { return penalties.clone(); }
+  public double[] fields() { return fields.clone(); }
+
   private void validateState(int[] state) {
     if (state.length != size()) throw new IllegalArgumentException("State dimension mismatch");
     for (int value : state) Trit.BUF(value);
