@@ -194,3 +194,9 @@ Open **Ternary functional language** from the main menu to write programs with
 integers, recursive functions, lexical closures, and three-way branches. A microcoded
 controller executes arithmetic and call frames on the ternary tape; see
 [the language guide](docs/ternary-functional-runtime.md).
+
+## Ternary associative memory
+
+Open **Ternary associative memory** to compare learned spin-model recall with
+nearest stored patterns. Hide positions with `?`, allow noisy observations, and
+measure recovery of damaged memories; see [the guide](docs/ternary-associative-memory.md).
