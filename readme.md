@@ -5,6 +5,13 @@ First, you should extract the zip file wherever you want.
 
 To run the main menu application that lets one open the apps with graphical interfaces, simply double click on the jar file or run the name.ncg777.cmd (windows) or name.ncg777.sh (linux) script.
 
+# Partition functions and ternary networks
+
+The library includes stable finite Boltzmann distributions, ternary attraction-neutrality-repulsion
+models with exact statistics and Gibbs sampling, and Boolean-lattice zeta/Möbius transforms.
+See [the guide and runnable examples](docs/partition-functions.md) for constrained pattern
+generation, trajectory weighting, thermal activations and learning a coupling from observations.
+
 # Rhythm Network CLI (Interactive)
 `name.ncg777.maths.numbers.fixed.rhythm.apps.RhythmNetworkApp` now supports an interactive session mode for keeping multiple networks loaded in memory and reusing them for fast walk generation.
 
