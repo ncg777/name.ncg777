@@ -1,5 +1,36 @@
 # Rhythm contour embeddings
 
+## Rhythm completion and bulk generation
+
+Open **Ternary image laboratory → Rhythm completion**. No training is required.
+Enter four bar masks, top to bottom. A mask can contain four hexadecimal digits
+and `?` placeholders (for example `8?8?`), or sixteen binary digits and `?`
+placeholders (for example `1???0???1???0???`). `????` leaves a whole bar open;
+`8080` fixes it completely. Each hexadecimal `?` leaves four bits unspecified.
+Binary masks follow the ordinary most-significant-first expansion of the displayed
+hexadecimal digits, so `8080` is `1000000010000000`.
+
+Click **Complete rhythms**. Every known digit is preserved; every returned bar
+is nonempty and SCI, and both directed differences of every pair are SCI.
+Repeated bars are allowed. Select a completed matrix to view its contours and
+copy its hexadecimal or binary representation. Each matrix has four rows and
+one 16-step bar per row.
+
+The default request is 1,000 matrices; select up to 10,000 per run. **Variation
+seed** changes the candidate order reproducibly. Results are distinct matrices,
+but can share individual bars; the status reports the number of distinct rhythm
+patterns. **Export matrices and patterns** saves all returned matrices followed
+by their sorted unique hexadecimal patterns in one UTF-8 text file.
+
+The engine reuses the complete SCI catalogue and performs backtracking, starting
+with the most constrained bar. Search stops after 100,000 candidate attempts,
+the requested result count, cancellation, or exhaustion of all possibilities.
+It explicitly distinguishes an exhausted search with no solution from a budget
+limit; either may return fewer matrices than requested. Results are constraint-
+valid alternatives, not neural predictions, uniformly sampled matrices, or
+rankings of musical quality. Change the seed or specify more digits if the
+search limit is reached. Editing a mask clears stale results.
+
 Open **Ternary image laboratory → Rhythm contours**, then **Train rhythm
 contours**. This is the four-bar view: four full-width rhythm contours stacked
 vertically, with sixteen sampled heights per bar. The complete 4×16 array is
