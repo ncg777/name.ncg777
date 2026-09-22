@@ -210,3 +210,6 @@ outlines; see [the segmentation guide](docs/ternary-contour-segmentation.md).
 The **Ternary embeddings** tab learns discrete contour codes, reconstructs images
 from editable trits, and compares code sizes against held-out baselines; see
 [the embedding guide](docs/ternary-embeddings.md).
+The **Rhythm contours** tab uses SCI hexadecimal rhythms to learn distortions of
+four stacked bar contours (4×16 sampled heights), with source hex labels and
+editable codes; see [the rhythm guide](docs/rhythm-contour-embeddings.md).

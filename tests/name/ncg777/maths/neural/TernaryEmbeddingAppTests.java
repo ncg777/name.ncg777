@@ -25,7 +25,7 @@ public class TernaryEmbeddingAppTests {
     assertTrue(done.await(15, TimeUnit.SECONDS));
     SwingUtilities.invokeAndWait(() -> {
       JTable table = (JTable) components.stream().filter(c -> c instanceof JTable).findFirst().orElseThrow(); assertEquals(14, table.getRowCount());
-      JComboBox<?> width = (JComboBox<?>) components.stream().filter(c -> c instanceof JComboBox<?>).findFirst().orElseThrow(); width.setSelectedItem(8);
+      JComboBox<?> width = (JComboBox<?>) components.stream().filter(c -> c instanceof JComboBox<?> combo && combo.getItemAt(0) instanceof Integer).findFirst().orElseThrow(); width.setSelectedItem(8);
       JLabel detail = (JLabel) components.stream().filter(c -> c instanceof JLabel l && l.getText() != null && l.getText().startsWith("<html>8 trits:")).findFirst().orElseThrow();
       String original = detail.getText();
       JComponent code = (JComponent) components.stream().filter(c -> c.getClass().getSimpleName().equals("CodeCanvas")).findFirst().orElseThrow();

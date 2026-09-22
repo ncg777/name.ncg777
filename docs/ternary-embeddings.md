@@ -5,9 +5,14 @@ four code sizes**. This experiment encodes an 8×8 binary contour into 8, 16, 32
 or 64 learned trits and reconstructs the contour using only that discrete code.
 No new dependencies or external datasets are needed.
 
+The **Examples** selector also offers SCI hexadecimal rhythm contours, using the
+project's existing musical predicates. For four full-width bar contours stacked
+vertically, open the dedicated **Rhythm contours** tab. See
+[the rhythm embedding guide](rhythm-contour-embeddings.md).
+
 ## Explore the representation
 
-- Select a code width and one of 64 held-out examples. The five images show the
+- Select a code width and a held-out example (64 for synthetic shapes, 23 for SCI rhythms). The five images show the
   clean target, possibly corrupted encoder input, decoded code, nearest training
   image by pixel distance, and nearest training image by code distance.
 - Adjust **Input flips %** to change the displayed observation. Noise is seeded
@@ -24,8 +29,8 @@ Black pixels mean empty and white pixels mean contour. The code colours represen
 learned features: blue −1, gray 0, orange +1. A zero trit is a middle activation,
 not transparency or missing data. Features do not have assigned semantic names.
 
-The benchmark table is separate from the displayed example. It always evaluates
-all 64 test images with clean inputs and with 5% independent bit-flip corruption.
+The benchmark table is separate from the displayed example. It evaluates
+all test images in the selected source with clean inputs and with 5% independent bit-flip corruption.
 Display edits do not alter its results. Models and codes are held in memory for
 the current session; this is not a serialized image-compression format.
 
