@@ -9,6 +9,23 @@ import org.junit.Test;
 import name.ncg777.maths.neural.apps.*;
 
 public class RhythmEmbeddingAppTests {
+  @Test public void completionWorksWithoutTrainingAndClearsEditedResults() throws Exception {
+    java.util.List<Component> components = new ArrayList<>(); CountDownLatch done = new CountDownLatch(1);
+    SwingUtilities.invokeAndWait(() -> {
+      components.addAll(children(new RhythmCompletionPanel()));
+      button(components, "Cancel completion").addPropertyChangeListener("enabled", e -> { if (Boolean.FALSE.equals(e.getNewValue())) done.countDown(); });
+      for (Component c : components) if (c instanceof JTextField field && field.getName() != null && field.getName().startsWith("Bar ")) field.setText("8080");
+      button(components, "Complete rhythms").doClick();
+    });
+    assertTrue(done.await(20, TimeUnit.SECONDS));
+    SwingUtilities.invokeAndWait(() -> {
+      JList<?> list = (JList<?>) components.stream().filter(c -> c instanceof JList<?>).findFirst().orElseThrow();
+      assertEquals(1, list.getModel().getSize()); assertEquals("8080 8080 8080 8080", list.getSelectedValue());
+      assertTrue(button(components, "Export matrices and patterns").isEnabled());
+      JTextField field = (JTextField) components.stream().filter(c -> c instanceof JTextField f && "Bar 1".equals(f.getName())).findFirst().orElseThrow();
+      field.setText("????"); assertEquals(0, list.getModel().getSize()); assertFalse(button(components, "Export matrices and patterns").isEnabled());
+    });
+  }
   private static java.util.List<Component> children(Container p) {
     java.util.List<Component> result = new ArrayList<>(); for (Component c : p.getComponents()) { result.add(c); if (c instanceof Container cc) result.addAll(children(cc)); } return result;
   }
