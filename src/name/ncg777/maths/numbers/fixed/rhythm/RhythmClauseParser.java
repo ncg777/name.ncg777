@@ -2,6 +2,7 @@ package name.ncg777.maths.numbers.fixed.rhythm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 
 import name.ncg777.maths.numbers.BinaryNatural;
@@ -64,7 +65,7 @@ public final class RhythmClauseParser {
         int start = i++;
         while (i < input.length() && (Character.isLetterOrDigit(input.charAt(i)) || input.charAt(i) == '_')) i++;
         String word = input.substring(start, i);
-        switch (word.toUpperCase()) {
+        switch (word.toUpperCase(Locale.ROOT)) {
           case "AND": tokens.add(new Token(TokKind.AND, word)); break;
           case "OR":  tokens.add(new Token(TokKind.OR,  word)); break;
           case "NOT": tokens.add(new Token(TokKind.NOT, word)); break;
@@ -134,7 +135,7 @@ public final class RhythmClauseParser {
 
     Predicate<BinaryNatural> parseAtom() {
       Token t = expect(TokKind.NAME);
-      String name = t.text.toUpperCase();
+      String name = t.text.toUpperCase(Locale.ROOT);
 
       // Special universals
       if (name.equals("TRUE") || name.equals("ALL"))   return bn -> true;
