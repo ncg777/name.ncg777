@@ -213,3 +213,11 @@ from editable trits, and compares code sizes against held-out baselines; see
 The **Rhythm contours** tab uses SCI hexadecimal rhythms to learn distortions of
 four stacked bar contours (4×16 sampled heights), with source hex labels and
 editable codes; see [the rhythm guide](docs/rhythm-contour-embeddings.md).
+
+## Rhythm Explorer
+
+A Swing GUI and matching CLI for predicate-based rhythm completion and evolving drum patterns.
+Edit binary/octal/hex masks, build Boolean expressions (including Euclidean rhythms),
+protect steps, erase and recomplete, audition results, and export MIDI or JSONL.
+Open **Rhythm Explorer** from the main menu. See the [guide](docs/rhythm-explorer.md)
+for setup, reproducibility, examples, and search limits.
