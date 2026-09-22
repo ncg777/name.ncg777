@@ -28,6 +28,22 @@ public class RhythmEmbeddingAppTests {
       button(components, "Re-encode").doClick(); assertEquals(original, code.getText());
       for (int row = 0; row < 7; row++) System.out.println("Rhythm benchmark: " + table.getValueAt(row, 0) + " / " + table.getValueAt(row, 1) + " / " + table.getValueAt(row, 2));
     });
+    CountDownLatch projected = new CountDownLatch(1);
+    SwingUtilities.invokeAndWait(() -> {
+      button(components, "Cancel").addPropertyChangeListener("enabled", e -> { if (Boolean.FALSE.equals(e.getNewValue())) projected.countDown(); });
+      JTextField code = (JTextField) components.stream().filter(c -> c instanceof JTextField f && f.getColumns() == 65).findFirst().orElseThrow();
+      code.setText("0".repeat(16));
+      button(components, "Decode to valid rhythms").doClick();
+    });
+    assertTrue(projected.await(20, TimeUnit.SECONDS));
+    SwingUtilities.invokeAndWait(() -> {
+      JTextField output = (JTextField) components.stream().filter(c -> c instanceof JTextField f && f.getColumns() == 24).findFirst().orElseThrow();
+      assertTrue(output.getText(), output.getText().matches("[0-9A-F]{4}( [0-9A-F]{4}){3}"));
+      for (String hex : output.getText().split(" ")) RhythmContourEmbeddings.example(hex);
+      JTextField code = (JTextField) components.stream().filter(c -> c instanceof JTextField f && f.getColumns() == 65).findFirst().orElseThrow();
+      code.setText("0".repeat(16)); assertEquals("", output.getText());
+      button(components, "Re-encode").doClick(); assertEquals("", output.getText());
+    });
   }
   @Test public void changingTheImageExampleSourceLoadsRhythmsAndInvalidatesModels() throws Exception {
     java.util.List<Component> components = new ArrayList<>(); CountDownLatch done = new CountDownLatch(1);

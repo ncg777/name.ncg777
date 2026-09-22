@@ -10,7 +10,8 @@ rhythm. This view is not a 4×16 grid of separate rhythms or miniature images.
 It shows continuous reference, input and decoded curves, plus a nearest-training
 baseline. Orange curves in **Learned distortion** are overlaid on the gray
 reference. The intentionally imperfect reconstruction is left as produced by the
-decoder; it is not snapped to a valid rhythm.
+decoder. **Decode to valid rhythms** displays a constrained interpretation in the
+fourth panel and four copyable hexadecimal bars below the code.
 
 ## Existing project definitions
 
@@ -77,7 +78,32 @@ Select the code size and test stack, edit the `T/0/1` code, and click **Decode
 edited code** to explore other curves. **Re-encode** restores the encoding of the
 displayed input. These decoded curves need not correspond to hexadecimal rhythms,
 be SCI, or satisfy the stack's difference relations. Only the source examples
-have those guarantees. A trit still has no assigned musical meaning.
+have those guarantees until you use **Decode to valid rhythms**. A trit still has
+no assigned musical meaning.
+
+### Valid hexadecimal output
+
+**Decode to valid rhythms** reads the current code directly, including edits,
+then projects its decoded curves onto nonempty SCI rhythms. Copy the four space-
+separated hexadecimal bars from the output field, in top-to-bottom order. The
+fourth plot shows their actual resampled contours; editing the code or changing
+the input clears this output and restores the nearest-training comparison.
+
+The projector enumerates all 1,211 valid rhythms, retaining alternatives with
+identical contours. For each row, it selects the smallest squared contour error
+among candidates compatible with every previously selected row. Ties use the
+lowest hexadecimal number. Repeating a bar is allowed and guarantees a feasible
+choice. Thus all four rhythms and both directed differences of every pair are
+SCI. This greedy search is bounded by four passes over the catalogue (at most
+six compatibility checks per candidate across the rows), but does not guarantee
+the globally closest stack. Enumeration and projection run in a cancellable
+background worker; the catalogue is reused within the panel.
+
+Different rhythms can share a normalized contour, so valid output is not unique
+recovery of the original onset pattern. The displayed adjustment RMSE compares
+the projected contours with the neural decoder's curves. This full-domain
+constraint catalogue is separate from training; projection does not change the
+held-out benchmark or constitute evidence of improved generalization.
 
 Training is capped at 1,024 examples, 200 epochs, and work estimate
 `examples × epochs × codeWidth × 64 <= 100 million`. Allowed widths are 8, 16, 32,
