@@ -12,6 +12,10 @@ The **Ternary embeddings** tab compares 8-, 16-, 32-, and 64-trit autoencoders,
 with editable codes and held-out reconstruction/denoising baselines. See
 [the embedding guide](ternary-embeddings.md).
 
+The **Rhythm contours** tab encodes four stacked bar contours into one ternary
+code and displays their learned distortion as continuous curves. It reuses SCI
+and Matrix Generator difference relations; see [the rhythm guide](rhythm-contour-embeddings.md).
+
 ## Image memory
 
 Each 8×8 image is a row-major vector of 64 trits:
